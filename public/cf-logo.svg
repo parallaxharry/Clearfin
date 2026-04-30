@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5E6C8"/>
+      <stop offset="40%" stop-color="#D4A843"/>
+      <stop offset="70%" stop-color="#F0C96A"/>
+      <stop offset="100%" stop-color="#B8892A"/>
+    </linearGradient>
+    <linearGradient id="goldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5E6C8"/>
+      <stop offset="100%" stop-color="#9A6E1E"/>
+    </linearGradient>
+  </defs>
+  <!-- Black background with subtle border radius -->
+  <rect width="120" height="120" rx="22" fill="#0A0A0A"/>
+  <!-- Subtle gold inner border -->
+  <rect x="4" y="4" width="112" height="112" rx="19" fill="none" stroke="#D4A843" stroke-width="0.5" opacity="0.4"/>
+  <!-- C letter -->
+  <text
+    x="22"
+    y="82"
+    font-family="'Georgia', 'Times New Roman', serif"
+    font-size="70"
+    font-weight="700"
+    font-style="italic"
+    fill="url(#gold)"
+    letter-spacing="-4"
+  >CF</text>
+  <!-- Thin gold underline accent -->
+  <line x1="20" y1="95" x2="100" y2="95" stroke="url(#goldStroke)" stroke-width="1.2" opacity="0.6"/>
+</svg>
