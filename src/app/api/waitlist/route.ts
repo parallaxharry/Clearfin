@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
+    const body = await req.json();
+    const { email, source } = body as { email?: string; source?: string };
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
       return NextResponse.json({ error: "Valid email required." }, { status: 400 });
     }
 
-    // Lazy import to avoid build errors if @supabase/ssr isn't installed yet
     const { createServerClient } = await import("@supabase/ssr");
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -18,7 +18,10 @@ export async function POST(req: NextRequest) {
 
     const { error } = await supabase
       .from("waitlist_users")
-      .insert({ email: email.toLowerCase().trim() });
+      .insert({
+        email: email.toLowerCase().trim(),
+        source: source ?? "waitlist",
+      });
 
     if (error) {
       // Duplicate email → treat as success (silent dedup)

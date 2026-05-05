@@ -1,35 +1,21 @@
+import Image from "next/image";
 import Loader from "@/components/Loader";
 import Nav from "@/components/Nav";
 import SideRail from "@/components/SideRail";
 import PageEffects from "@/components/PageEffects";
 import InteractiveTool from "@/components/InteractiveTool";
-import CardParade from "@/components/CardParade";
+import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
+import StatementUpload from "@/components/StatementUpload";
 
-/* ── Static card used in hero deck ── */
-function CardFace({
-  variant, issuer, num, label, network,
-}: { variant: string; issuer: string; num: string; label: string; network: string }) {
-  return (
-    <div className={`card ${variant}`}>
-      <div className="card-bg" />
-      <div className="card-grid" />
-      <div className="card-noise" />
-      <div className="card-sheen" />
-      <div className="card-row">
-        <div className="card-chip" />
-        <div className="card-issuer">{issuer}</div>
-      </div>
-      <div className="card-mid">
-        <div className="card-num">{num}</div>
-      </div>
-      <div className="card-foot">
-        <div className="card-name">{label}</div>
-        <div className="card-network">{network}</div>
-      </div>
-    </div>
-  );
-}
+/* ── Real card images for hero deck ── */
+const HERO_CARDS = [
+  { img: "/cards/amex-cobalt.avif",       label: "Amex Cobalt",      badge: "5x Dining",      pos: "card-c1" },
+  { img: "/cards/scotia-gold-amex.webp",  label: "Scotia Gold",      badge: "6x Grocery",     pos: "card-c2" },
+  { img: "/cards/td-aeroplan-infinite.jpeg", label: "TD Aeroplan",   badge: "Best Travel",    pos: "card-c3" },
+  { img: "/cards/rbc-avion-infinite.webp",label: "RBC Avion",        badge: "Most Flexible",  pos: "card-c4" },
+  { img: "/cards/bmo-eclipse.webp",       label: "BMO Eclipse",      badge: "5x Gas",         pos: "card-c5" },
+];
 
 export default function HomePage() {
   return (
@@ -62,8 +48,9 @@ export default function HomePage() {
               for <span className="ital">you?</span>
             </h1>
             <p className="hero-sub reveal">
-              The average Canadian holds <b>4 credit cards</b> and uses the wrong one on{" "}
-              <b>63% of purchases</b>. ClearFin tells you which card to tap — before you tap.
+              The average Canadian holds <b>4 credit cards</b> and leaves{" "}
+              <b>$847/year</b> in rewards unclaimed. ClearFin finds your best card for every
+              purchase — instantly.
             </p>
             <div className="hero-cta-row reveal">
               <a href="#tool" className="btn-primary">
@@ -71,7 +58,7 @@ export default function HomePage() {
                 <span className="btn-arrow">→</span>
               </a>
               <a href="#showcase" className="btn-secondary">
-                See the cards <span className="btn-arrow">→</span>
+                See top cards <span className="btn-arrow">→</span>
               </a>
             </div>
             <div className="hero-stats reveal">
@@ -90,7 +77,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right: 3D card deck */}
+          {/* Right: real card fan */}
           <div className="hero-visual">
             <div className="orbit orbit-3" />
             <div className="orbit orbit-1">
@@ -100,20 +87,29 @@ export default function HomePage() {
               <div className="orbit-node" style={{ top: 0, left: "50%" }} />
             </div>
             <div className="hero-pill hero-pill-1">
-              <span className="hero-pill-dot" />Optimal · Cobalt 5x
+              <span className="hero-pill-dot" />Optimal · Scotia 6x
             </div>
             <div className="hero-pill hero-pill-2">
-              <span className="hero-pill-dot" />Real-time
+              <span className="hero-pill-dot" />AI-powered
             </div>
             <div className="hero-pill hero-pill-3">
               <span className="hero-pill-dot" />17 issuers
             </div>
             <div className="card-deck">
-              <CardFace variant="card-c1 card-violet"   issuer="RBC"     num="•••• 4421" label="Avion"     network="VISA" />
-              <CardFace variant="card-c2 card-rose"     issuer="Amex"    num="•••• 8203" label="Cobalt"    network="AMEX" />
-              <CardFace variant="card-c3 card-obsidian" issuer="ClearFin" num="•••• ••••" label="Optimizer" network="PRO" />
-              <CardFace variant="card-c4 card-sapphire" issuer="TD"      num="•••• 1167" label="Aeroplan"  network="VISA" />
-              <CardFace variant="card-c5 card-champagne" issuer="Scotia"  num="•••• 9082" label="Gold"      network="AMEX" />
+              {HERO_CARDS.map((c, i) => (
+                <div key={c.pos} className={`hero-real-card ${c.pos}`}>
+                  <Image
+                    src={c.img}
+                    alt={c.label}
+                    fill
+                    sizes="220px"
+                    style={{ objectFit: "cover", borderRadius: "inherit" }}
+                    priority={i === 2}
+                  />
+                  <div className="hero-card-overlay" />
+                  <span className="hero-card-badge">{c.badge}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -131,53 +127,17 @@ export default function HomePage() {
       <InteractiveTool />
 
       {/* ══════════════════════════════════════
-          03 CARD SHOWCASE
+          03 TOP PICKS BY CATEGORY
       ══════════════════════════════════════ */}
-      <CardParade />
+      <TopPicks />
 
       {/* ══════════════════════════════════════
-          04 FEAT: Wrong-card alerts
+          04 STATEMENT UPLOAD + CONSULTATION
       ══════════════════════════════════════ */}
-      <section className="feat" id="feat-1">
-        <div className="section-num">04 / Wrong-card Alerts</div>
-        <div className="feat-wrap">
-          <div className="feat-text reveal">
-            <div className="feat-eyebrow">The core differentiator</div>
-            <h2 className="feat-title">
-              A nudge <span className="ital">before</span> you tap.
-            </h2>
-            <p className="feat-body">
-              When you&apos;re about to swipe the wrong card, ClearFin sends a real-time push
-              notification telling you which card in your wallet would have earned more. You decide.
-              We just make sure you decide with the math in front of you.
-            </p>
-            <div className="feat-list">
-              <div className="feat-list-item">Real-time merchant detection</div>
-              <div className="feat-list-item">Cross-reference 107-card database</div>
-              <div className="feat-list-item">Cashback delta in dollars, not points</div>
-            </div>
-          </div>
-          <div className="feat-visual reveal">
-            <div className="phone">
-              <div className="phone-notch" />
-              <div className="phone-screen">
-                <div className="alert-card">
-                  <div className="alert-tag">⚠ Wrong Card</div>
-                  <div className="alert-merchant">Loblaws — Groceries</div>
-                  <div className="alert-amount">$84.20 on RBC Avion</div>
-                  <div className="alert-rec">
-                    <span>Use Scotia Gold Amex</span><span>+$3.36</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="section-divider-bottom" />
-      </section>
+      <StatementUpload />
 
       {/* ══════════════════════════════════════
-          05 FEAT: Comparison engine
+          05 COMPARISON ENGINE
       ══════════════════════════════════════ */}
       <section className="feat" id="feat-2">
         <div className="section-num">05 / Comparison Engine</div>
@@ -188,8 +148,8 @@ export default function HomePage() {
               We did the <span className="ital">spreadsheet</span> so you don&apos;t have to.
             </h2>
             <p className="feat-body">
-              Every Canadian credit card, broken down by category, multiplier, annual fee, welcome
-              bonus, and net-of-fee return on your spend. Updated continuously.
+              Every Canadian credit card broken down by category, multiplier, annual fee,
+              welcome bonus, and net-of-fee return on your actual spend. Updated continuously.
             </p>
             <div className="feat-list">
               <div className="feat-list-item">Category-by-category multiplier mapping</div>
@@ -221,42 +181,67 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════
-          06 FEAT: ClearSave
+          06 APP PREVIEW + CLEARSAVE
       ══════════════════════════════════════ */}
-      <section className="feat" id="feat-3">
-        <div className="section-num">06 / ClearSave Offers</div>
+      <section className="feat" id="feat-app">
+        <div className="section-num">06 / Coming Soon</div>
         <div className="feat-wrap">
           <div className="feat-text reveal">
-            <div className="feat-eyebrow">Merchant-funded · No clipping</div>
+            <div className="feat-eyebrow">Mobile App · 2026</div>
             <h2 className="feat-title">
-              Cashback that <span className="ital">activates itself.</span>
+              Your wallet,<br />
+              <span className="ital">supercharged.</span>
             </h2>
             <p className="feat-body">
-              No coupons. No codes. Just statement credits the next morning. We negotiate with
-              brands; you keep tapping the way you already do.
+              The ClearFin app gives you real-time card recommendations at checkout, tracks
+              your rewards across all issuers in one place, and unlocks <strong>ClearSave</strong> —
+              our exclusive merchant reward program.
             </p>
             <div className="feat-list">
-              <div className="feat-list-item">Auto-applied at checkout</div>
-              <div className="feat-list-item">Statement credit within 24 hours</div>
-              <div className="feat-list-item">Stacks with card rewards</div>
+              <div className="feat-list-item">Real-time best-card recommendations at checkout</div>
+              <div className="feat-list-item">Track rewards across all your cards in one dashboard</div>
+              <div className="feat-list-item">ClearSave: earn bonus cashback at partner merchants — auto-applied, no codes</div>
+              <div className="feat-list-item">Statement credits within 24 hours, stacks with card rewards</div>
             </div>
+            <a href="#waitlist" className="btn-primary" style={{ marginTop: "32px", display: "inline-flex" }}>
+              <span>Join Waitlist for App Access</span>
+              <span className="btn-arrow">→</span>
+            </a>
           </div>
           <div className="feat-visual reveal">
-            <div className="offers">
-              {[
-                { merchant: "Fresh Prep",  detail: "First 4 boxes", back: "12%" },
-                { merchant: "Knix",        detail: "$80+ orders",   back: "8%"  },
-                { merchant: "Three Ships", detail: "Storewide",     back: "15%" },
-                { merchant: "Tim Hortons", detail: "Mobile order",  back: "5%"  },
-              ].map((o) => (
-                <div className="offer-card" key={o.merchant}>
-                  <div>
-                    <div className="offer-merchant">{o.merchant}</div>
-                    <div className="offer-detail">{o.detail}</div>
-                  </div>
-                  <div className="offer-back">{o.back}</div>
+            <div className="app-preview-frame">
+              <div className="app-preview-screen">
+                <div className="app-preview-header">
+                  <span className="app-preview-brand">ClearFin</span>
+                  <span className="app-preview-tag">· Live</span>
                 </div>
-              ))}
+                <div className="app-preview-card-row">
+                  <div className="app-mini-card app-mini-cobalt">
+                    <div className="app-mini-card-name">Cobalt</div>
+                    <div className="app-mini-card-pts">+5x</div>
+                  </div>
+                  <div className="app-mini-card app-mini-scotia">
+                    <div className="app-mini-card-name">Scotia</div>
+                    <div className="app-mini-card-pts">+6x</div>
+                  </div>
+                  <div className="app-mini-card app-mini-td">
+                    <div className="app-mini-card-name">Aeroplan</div>
+                    <div className="app-mini-card-pts">+3x</div>
+                  </div>
+                </div>
+                <div className="app-preview-rec">
+                  <div className="app-preview-rec-label">Best for your Loblaws shop</div>
+                  <div className="app-preview-rec-card">Scotia Gold Amex</div>
+                  <div className="app-preview-rec-earn">+$4.20 more than your current card</div>
+                </div>
+                <div className="clearsave-badge">
+                  <span className="clearsave-icon">✦</span>
+                  <div>
+                    <div className="clearsave-title">ClearSave active</div>
+                    <div className="clearsave-desc">Extra 3% at Fresh Prep — auto-applied</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -264,75 +249,19 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════
-          07 FEAT: Open Banking
-      ══════════════════════════════════════ */}
-      <section className="feat" id="feat-4">
-        <div className="section-num">07 / Open Banking</div>
-        <div className="feat-wrap">
-          <div className="feat-text reveal">
-            <div className="feat-eyebrow">Canada · 2026 Framework</div>
-            <h2 className="feat-title">
-              Open banking is <span className="ital">coming.</span> We were built for it.
-            </h2>
-            <p className="feat-body">
-              PIPEDA-compliant, Quebec Law 25-aligned, designed against the 2026
-              Consumer-Driven Banking framework. Your data, your control, your portability.
-            </p>
-            <div className="feat-list">
-              <div className="feat-list-item">Read-only account access via Flinks</div>
-              <div className="feat-list-item">PCI-DSS handled by Plaid</div>
-              <div className="feat-list-item">Delete-everything switch built in</div>
-            </div>
-          </div>
-          <div className="feat-visual reveal">
-            <div className="constel">
-              {[
-                { top: "10%", left: "50%", label: "CORE",     lt: "4%",  ll: "54%" },
-                { top: "30%", left: "18%", label: "FLINKS",   lt: "35%", ll: "8%"  },
-                { top: "38%", left: "80%", label: "PLAID",    lt: "42%", ll: "78%" },
-                { top: "62%", left: "30%", label: "GIFTBIT",  lt: "67%", ll: "22%" },
-                { top: "70%", left: "68%", label: "INVERITE", lt: "75%", ll: "62%" },
-                { top: "88%", left: "50%", label: "YOU",      lt: "92%", ll: "44%" },
-              ].map((d) => (
-                <span key={d.label}>
-                  <span className="constel-dot" style={{ top: d.top, left: d.left }} />
-                  <span className="constel-label" style={{ top: d.lt, left: d.ll }}>{d.label}</span>
-                </span>
-              ))}
-              {[
-                { top: "11%", left: "50%", width: "140px", rotate: "120deg" },
-                { top: "11%", left: "50%", width: "140px", rotate: "60deg"  },
-                { top: "31%", left: "18%", width: "200px", rotate: "15deg"  },
-                { top: "39%", left: "80%", width: "180px", rotate: "160deg" },
-                { top: "63%", left: "30%", width: "170px", rotate: "20deg"  },
-                { top: "71%", left: "68%", width: "90px",  rotate: "120deg" },
-              ].map((l, i) => (
-                <span
-                  key={i}
-                  className="constel-line"
-                  style={{ top: l.top, left: l.left, width: l.width, transform: `rotate(${l.rotate})` }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="section-divider-bottom" />
-      </section>
-
-      {/* ══════════════════════════════════════
-          08 WAITLIST
+          07 WAITLIST
       ══════════════════════════════════════ */}
       <section id="waitlist">
-        <div className="section-num">08 / Waitlist</div>
+        <div className="section-num">07 / Waitlist</div>
         <div className="wait-wrap">
           <div className="wait-eyebrow reveal">Limited spots · Calgary first</div>
           <h2 className="wait-title reveal">
-            Stop tapping <br />
-            the <span className="ital">wrong</span> card.
+            Stop leaving<br />
+            rewards on the <span className="ital">table.</span>
           </h2>
           <p className="wait-sub reveal">
-            Join the waitlist. Early access drops in waves — Calgary first, then nationally. No
-            spam. Just one email when it&apos;s your turn.
+            Join the waitlist. Early access drops in waves — Calgary first, then nationally.
+            No spam. Just one email when it&apos;s your turn.
           </p>
           <WaitlistForm />
           <div className="wait-foot reveal">No credit card required · Built in 🇨🇦</div>
