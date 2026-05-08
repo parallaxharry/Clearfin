@@ -193,12 +193,12 @@ export default function HomePage() {
               <span className="ital">supercharged.</span>
             </h2>
             <p className="feat-body">
-              The ClearFin app gives you real-time card recommendations at checkout, tracks
-              your rewards across all issuers in one place, and unlocks <strong>ClearSave</strong> —
+              The ClearFin app tracks your rewards across all issuers in one place,
+              surfaces the best card for every spending category, and unlocks <strong>ClearSave</strong> —
               our exclusive merchant reward program.
             </p>
             <div className="feat-list">
-              <div className="feat-list-item">Real-time best-card recommendations at checkout</div>
+              <div className="feat-list-item">Know the best card to use for every category — grocery, travel, gas, dining</div>
               <div className="feat-list-item">Track rewards across all your cards in one dashboard</div>
               <div className="feat-list-item">ClearSave: earn bonus cashback at partner merchants — auto-applied, no codes</div>
               <div className="feat-list-item">Statement credits within 24 hours, stacks with card rewards</div>

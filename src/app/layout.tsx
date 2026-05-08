@@ -27,7 +27,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "ClearFin — Every swipe should hit maximum cashback.",
   description:
-    "ClearFin tells you which card to use, before you tap. Maximize rewards on every transaction. Built for Canada.",
+    "ClearFin finds your best credit card for every purchase. Maximize rewards on every transaction. Built for Canada.",
   keywords: [
     "credit card optimizer Canada",
     "best credit card rewards Canada",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ClearFin — Every swipe should hit maximum cashback.",
     description:
-      "ClearFin tells you which card to use, before you tap. Built for Canada.",
+      "ClearFin finds your best credit card for every purchase. Built for Canada.",
     type: "website",
     locale: "en_CA",
   },

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 
 /* ══════════════════════════════════════════════════════════
@@ -15,9 +14,6 @@ interface CardDef {
   badge: string;
   color: string;
   description: string;
-  img: string;
-  bankUrl: string;
-  perks: string[];
 }
 
 const CARDS: CardDef[] = [
@@ -30,9 +26,6 @@ const CARDS: CardDef[] = [
     badge: "🍽️ Best for Dining",
     color: "var(--accent-rose)",
     description: "5x points on dining & groceries. Massive welcome bonus. Best for food spenders.",
-    img: "/cards/amex-cobalt.avif",
-    bankUrl: "https://www.americanexpress.com/en-ca/credit-cards/cobalt-card/",
-    perks: ["5x on dining & food delivery", "5x on groceries", "2x on travel & transit", "1x everything else", "$156/yr · $13/month"],
   },
   {
     id: "scotia-gold",
@@ -43,9 +36,6 @@ const CARDS: CardDef[] = [
     badge: "🛒 Best Grocery Card",
     color: "var(--accent-warm)",
     description: "6x on groceries + 5x dining. Exceptional for everyday Canadian spending.",
-    img: "/cards/scotia-gold-amex.webp",
-    bankUrl: "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/gold-american-express-card.html",
-    perks: ["6x Scene+ on groceries", "5x on dining & entertainment", "3x on gas & transit", "No foreign transaction fees", "$120/yr annual fee"],
   },
   {
     id: "td-aeroplan",
@@ -56,9 +46,6 @@ const CARDS: CardDef[] = [
     badge: "✈️ Best Travel",
     color: "#6B8FC9",
     description: "3x on Air Canada & travel. 1.5x on everyday. Best for Air Canada flyers.",
-    img: "/cards/td-aeroplan-infinite.jpeg",
-    bankUrl: "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/",
-    perks: ["3x Aeroplan on Air Canada", "3x on grocery & dining", "1.5x on all other purchases", "Air Canada companion pass", "$139/yr annual fee"],
   },
   {
     id: "rbc-avion",
@@ -69,9 +56,6 @@ const CARDS: CardDef[] = [
     badge: "🔄 Most Flexible",
     color: "#4A90D9",
     description: "1.25x on everything. Transfer to 30+ airline partners. Suits diverse spenders.",
-    img: "/cards/rbc-avion-infinite.webp",
-    bankUrl: "https://www.rbc.com/creditcards/avion-visa-infinite.html",
-    perks: ["1.25x RBC Avion points on all purchases", "Transfer to 30+ airline partners", "Airport lounge access", "Travel insurance included", "$120/yr annual fee"],
   },
   {
     id: "bmo-eclipse",
@@ -82,9 +66,6 @@ const CARDS: CardDef[] = [
     badge: "⛽ Best Gas Card",
     color: "#2B6CB0",
     description: "5x on dining, grocery, and gas. $50 lifestyle credit. Great all-rounder.",
-    img: "/cards/bmo-eclipse.webp",
-    bankUrl: "https://www.bmo.com/en-ca/main/personal/credit-cards/eclipse-visa-infinite/",
-    perks: ["5x on dining, grocery & gas", "5x on drugstore purchases", "$50 annual lifestyle credit", "No foreign transaction fees", "$120/yr annual fee"],
   },
   {
     id: "wealthsimple",
@@ -95,9 +76,6 @@ const CARDS: CardDef[] = [
     badge: "💸 No-Fee Pick",
     color: "#48BB78",
     description: "1% cashback on everything. No annual fee. Ideal as a backup or starter card.",
-    img: "/cards/wealthsimple.webp",
-    bankUrl: "https://www.wealthsimple.com/en-ca/spend",
-    perks: ["1% back in cash or crypto", "No annual fee ever", "No foreign transaction fees", "Instant cashback at checkout", "Works with all major retailers"],
   },
 ];
 
@@ -248,8 +226,6 @@ export default function InteractiveTool() {
   const [stepValue, setStepValue] = useState(STEPS[0].defaultVal);
   const [animDir, setAnimDir] = useState<"in" | "out">("in");
   const [visible, setVisible] = useState(true);
-  const [modalCard, setModalCard] = useState<(CardDef & { netValue: number }) | null>(null);
-  const [cardFlipped, setCardFlipped] = useState(false);
   const ticker = useTicker();
 
   // Sync stepValue when step changes
@@ -304,19 +280,8 @@ export default function InteractiveTool() {
       setCurrentStep(0);
       setSpend({ dining: 400, grocery: 600, gas: 150, travel: 300, other: 500 });
       setStepValue(STEPS[0].defaultVal);
-      // Go straight to step 1, skip gate
-      setToolState("step");
+      setToolState("gate");
     });
-  };
-
-  const openModal = (card: CardDef & { netValue: number }) => {
-    setModalCard(card);
-    setCardFlipped(false);
-    document.body.style.overflow = "hidden";
-  };
-  const closeModal = () => {
-    setModalCard(null);
-    document.body.style.overflow = "";
   };
 
   /* ── Calculated values ── */
@@ -332,7 +297,6 @@ export default function InteractiveTool() {
   const progress = ((currentStep) / STEPS.length) * 100;
 
   return (
-    <>
     <section id="tool">
       <div className="section-num">02 / Calculator</div>
       <div className="tool-wrap">
@@ -509,12 +473,7 @@ export default function InteractiveTool() {
                     travel: "Travel", other: "Shopping",
                   };
                   return (
-                    <div
-                      className={`result-card${i === 0 ? " result-card-top" : ""}`}
-                      key={card.id}
-                      onClick={() => openModal(card)}
-                      style={{ cursor: "pointer" }}
-                    >
+                    <div className={`result-card${i === 0 ? " result-card-top" : ""}`} key={card.id}>
                       {i === 0 && <div className="result-card-rank">#1 Best Match</div>}
                       <div className="result-card-left">
                         <div className="result-card-badge">{card.badge}</div>
@@ -531,7 +490,6 @@ export default function InteractiveTool() {
                         <div className="result-card-fee">
                           {card.annualFee === 0 ? "No annual fee" : `$${card.annualFee}/yr fee`}
                         </div>
-                        <div className="result-card-tap">Tap for details →</div>
                       </div>
                     </div>
                   );
@@ -566,68 +524,5 @@ export default function InteractiveTool() {
       </div>
       <div className="section-divider-bottom" />
     </section>
-
-    {/* ── Card Detail Modal ── */}
-    {modalCard && (
-      <div className="card-modal-overlay" onClick={closeModal}>
-        <div className="card-modal" onClick={(e) => e.stopPropagation()}>
-          <button className="card-modal-close" onClick={closeModal}>✕</button>
-
-          {/* Left: details */}
-          <div className="card-modal-left">
-            <div className="card-modal-badge">{modalCard.badge}</div>
-            <h3 className="card-modal-name">{modalCard.name}</h3>
-            <div className="card-modal-issuer">{modalCard.issuer}</div>
-            <div className="card-modal-net-row">
-              <span className="card-modal-net">{fmt(modalCard.netValue)}</span>
-              <span className="card-modal-net-label">net / year for your spend</span>
-            </div>
-            <div className="card-modal-perks">
-              {modalCard.perks.map((p, i) => (
-                <div className="card-modal-perk" key={i}>
-                  <span className="card-modal-perk-dot">✦</span>
-                  {p}
-                </div>
-              ))}
-            </div>
-            <a
-              href={modalCard.bankUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card-modal-cta"
-              onClick={() => fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {})}
-            >
-              Apply at {modalCard.issuer} →
-            </a>
-          </div>
-
-          {/* Right: rotating card */}
-          <div className="card-modal-right">
-            <div
-              className={`card-modal-spinner${cardFlipped ? " flipped" : ""}`}
-              onClick={() => setCardFlipped(!cardFlipped)}
-            >
-              <div className="card-modal-spin-front">
-                <Image
-                  src={modalCard.img}
-                  alt={modalCard.name}
-                  fill
-                  sizes="320px"
-                  style={{ objectFit: "cover", borderRadius: "inherit" }}
-                />
-                <div className="card-modal-sheen" />
-              </div>
-              <div className="card-modal-spin-back">
-                <div className="card-modal-back-stripe" />
-                <div className="card-modal-back-sig" />
-                <div className="card-modal-back-label">Tap to flip</div>
-              </div>
-            </div>
-            <div className="card-modal-spin-hint">Click card to flip</div>
-          </div>
-        </div>
-      </div>
-    )}
-    </>
   );
 }
