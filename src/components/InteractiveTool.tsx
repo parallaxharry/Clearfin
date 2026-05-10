@@ -30,7 +30,7 @@ const CARDS: CardDef[] = [
     badge: "🍽️ Best for Dining",
     color: "var(--accent-rose)",
     description: "5x points on dining & groceries. Massive welcome bonus. Best for food spenders.",
-    img: "/cards/amex-cobalt.avif",
+    img: "/cards/amex-cobalt.webp",
     bankUrl: "https://www.americanexpress.com/en-ca/credit-cards/cobalt-card/",
     perks: ["5x on dining & food delivery", "5x on groceries", "2x on travel & transit", "1x everything else", "$156/yr · $13/month"],
   },
@@ -43,8 +43,8 @@ const CARDS: CardDef[] = [
     badge: "🛒 Best Grocery Card",
     color: "var(--accent-warm)",
     description: "6x on groceries + 5x dining. Exceptional for everyday Canadian spending.",
-    img: "/cards/scotia-gold-amex.webp",
-    bankUrl: "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/gold-american-express-card.html",
+    img: "/cards/Scotiabank-gold-amex.avif",
+    bankUrl: "https://hello.scotiabank.com/lending/triage?productCode=AXG&subProductCode=GC&source=116B&language=en",
     perks: ["6x Scene+ on groceries", "5x on dining & entertainment", "3x on gas & transit", "No foreign transaction fees", "$120/yr annual fee"],
   },
   {
@@ -56,7 +56,7 @@ const CARDS: CardDef[] = [
     badge: "✈️ Best Travel",
     color: "#6B8FC9",
     description: "3x on Air Canada & travel. 1.5x on everyday. Best for Air Canada flyers.",
-    img: "/cards/td-aeroplan-infinite.jpeg",
+    img: "/cards/td-aeroplan-infinite.png",
     bankUrl: "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/",
     perks: ["3x Aeroplan on Air Canada", "3x on grocery & dining", "1.5x on all other purchases", "Air Canada companion pass", "$139/yr annual fee"],
   },
@@ -70,7 +70,7 @@ const CARDS: CardDef[] = [
     color: "#4A90D9",
     description: "1.25x on everything. Transfer to 30+ airline partners. Suits diverse spenders.",
     img: "/cards/rbc-avion-infinite.webp",
-    bankUrl: "https://www.rbc.com/creditcards/avion-visa-infinite.html",
+    bankUrl: "https://apps.royalbank.com/apps/IAO/apply/cardapp?pid1=avion_inf&ASC=3D2111&_gl=1*1jecaqy*_gcl_au*MzQ5OTM5MDc2LjE3NzgzNzQ5MjI.*_ga*MjEwMDcyNDEyNC4xNzc4Mzc0OTIy*_ga_89NPCTDXQR*czE3NzgzNzQ5MjEkbzEkZzEkdDE3NzgzNzQ5NDgkajMzJGwwJGgw",
     perks: ["1.25x RBC Avion points on all purchases", "Transfer to 30+ airline partners", "Airport lounge access", "Travel insurance included", "$120/yr annual fee"],
   },
   {
@@ -82,8 +82,8 @@ const CARDS: CardDef[] = [
     badge: "⛽ Best Gas Card",
     color: "#2B6CB0",
     description: "5x on dining, grocery, and gas. $50 lifestyle credit. Great all-rounder.",
-    img: "/cards/bmo-eclipse.webp",
-    bankUrl: "https://www.bmo.com/en-ca/main/personal/credit-cards/eclipse-visa-infinite/",
+    img: "/cards/bmo-eclipse.png",
+    bankUrl: "https://www.bmo.com/main/personal/credit-cards/getting-started/?lang=en&rg=BMO&PID=VISDX&MID=3930192&OFFERCODE=RQTSX00008&OFFERDATE=20251031&income_quiz=true&income=60000&household_income=100000&monthly_spend=1250&PIDBASE=VPVDM&PIDUP=VISDY&MIDBASE=3930758&OFFERCODEBASE=RQTVP00001&OFFERDATEBASE=20220910&MIDUP=6011141&OFFERCODEUP=RQTSY00005&OFFERDATEUP=20251031&income_up=150000&household_income_up=200000&monthly_spend_up=4167",
     perks: ["5x on dining, grocery & gas", "5x on drugstore purchases", "$50 annual lifestyle credit", "No foreign transaction fees", "$120/yr annual fee"],
   },
   {
@@ -95,7 +95,7 @@ const CARDS: CardDef[] = [
     badge: "💸 No-Fee Pick",
     color: "#48BB78",
     description: "1% cashback on everything. No annual fee. Ideal as a backup or starter card.",
-    img: "/cards/wealthsimple.webp",
+    img: "/cards/newwealthsimple.webp",
     bankUrl: "https://www.wealthsimple.com/en-ca/spend",
     perks: ["1% back in cash or crypto", "No annual fee ever", "No foreign transaction fees", "Instant cashback at checkout", "Works with all major retailers"],
   },
@@ -249,7 +249,6 @@ export default function InteractiveTool() {
   const [animDir, setAnimDir] = useState<"in" | "out">("in");
   const [visible, setVisible] = useState(true);
   const [modalCard, setModalCard] = useState<(CardDef & { netValue: number }) | null>(null);
-  const [cardFlipped, setCardFlipped] = useState(false);
   const ticker = useTicker();
 
   // Sync stepValue when step changes
@@ -311,7 +310,6 @@ export default function InteractiveTool() {
 
   const openModal = (card: CardDef & { netValue: number }) => {
     setModalCard(card);
-    setCardFlipped(false);
     document.body.style.overflow = "hidden";
   };
   const closeModal = () => {
@@ -599,14 +597,14 @@ export default function InteractiveTool() {
             >
               Apply at {modalCard.issuer} →
             </a>
+            <div className="card-modal-disclaimer">
+              Issuer terms apply. ClearFin is not affiliated with this provider.
+            </div>
           </div>
 
-          {/* Right: rotating card */}
+          {/* Right: card preview */}
           <div className="card-modal-right">
-            <div
-              className={`card-modal-spinner${cardFlipped ? " flipped" : ""}`}
-              onClick={() => setCardFlipped(!cardFlipped)}
-            >
+            <div className="card-modal-spinner">
               <div className="card-modal-spin-front">
                 <Image
                   src={modalCard.img}
@@ -617,13 +615,7 @@ export default function InteractiveTool() {
                 />
                 <div className="card-modal-sheen" />
               </div>
-              <div className="card-modal-spin-back">
-                <div className="card-modal-back-stripe" />
-                <div className="card-modal-back-sig" />
-                <div className="card-modal-back-label">Tap to flip</div>
-              </div>
             </div>
-            <div className="card-modal-spin-hint">Click card to flip</div>
           </div>
         </div>
       </div>

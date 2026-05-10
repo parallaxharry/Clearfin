@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Loader from "@/components/Loader";
 import Nav from "@/components/Nav";
 import SideRail from "@/components/SideRail";
@@ -7,15 +6,6 @@ import InteractiveTool from "@/components/InteractiveTool";
 import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
 import StatementUpload from "@/components/StatementUpload";
-
-/* ── Real card images for hero deck ── */
-const HERO_CARDS = [
-  { img: "/cards/amex-cobalt.avif",       label: "Amex Cobalt",      badge: "5x Dining",      pos: "card-c1" },
-  { img: "/cards/scotia-gold-amex.webp",  label: "Scotia Gold",      badge: "6x Grocery",     pos: "card-c2" },
-  { img: "/cards/td-aeroplan-infinite.jpeg", label: "TD Aeroplan",   badge: "Best Travel",    pos: "card-c3" },
-  { img: "/cards/rbc-avion-infinite.webp",label: "RBC Avion",        badge: "Most Flexible",  pos: "card-c4" },
-  { img: "/cards/bmo-eclipse.webp",       label: "BMO Eclipse",      badge: "5x Gas",         pos: "card-c5" },
-];
 
 export default function HomePage() {
   return (
@@ -31,6 +21,18 @@ export default function HomePage() {
           01 HERO
       ══════════════════════════════════════ */}
       <section id="hero">
+        <video
+          className="hero-bg-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="/real card video0001-0288.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-bg-overlay" />
         <div className="section-num">01 / Hero</div>
         <div className="hero-wrap">
 
@@ -38,7 +40,7 @@ export default function HomePage() {
           <div className="hero-text">
             <div className="hero-tag">
               <span className="hero-tag-dot" />
-              Built for Canada · Live 2026
+              Built for Canada - Live 2026
             </div>
             <h1 className="hero-headline reveal">
               What if your <span className="ital">cards</span>
@@ -49,16 +51,16 @@ export default function HomePage() {
             </h1>
             <p className="hero-sub reveal">
               The average Canadian holds <b>4 credit cards</b> and leaves{" "}
-              <b>$847/year</b> in rewards unclaimed. ClearFin finds your best card for every
-              purchase — instantly.
+              <b>$847/year</b> in rewards unclaimed. Use ClearFin to choose your next credit
+              card based on how you actually shop.
             </p>
             <div className="hero-cta-row reveal">
               <a href="#tool" className="btn-primary">
                 <span>Open the Calculator</span>
-                <span className="btn-arrow">→</span>
+                <span className="btn-arrow">-&gt;</span>
               </a>
               <a href="#showcase" className="btn-secondary">
-                See top cards <span className="btn-arrow">→</span>
+                See top cards <span className="btn-arrow">-&gt;</span>
               </a>
             </div>
             <div className="hero-stats reveal">
@@ -76,46 +78,10 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-
-          {/* Right: real card fan */}
-          <div className="hero-visual">
-            <div className="orbit orbit-3" />
-            <div className="orbit orbit-1">
-              <div className="orbit-node" style={{ top: "50%", left: 0 }} />
-            </div>
-            <div className="orbit orbit-2">
-              <div className="orbit-node" style={{ top: 0, left: "50%" }} />
-            </div>
-            <div className="hero-pill hero-pill-1">
-              <span className="hero-pill-dot" />Optimal · Scotia 6x
-            </div>
-            <div className="hero-pill hero-pill-2">
-              <span className="hero-pill-dot" />AI-powered
-            </div>
-            <div className="hero-pill hero-pill-3">
-              <span className="hero-pill-dot" />17 issuers
-            </div>
-            <div className="card-deck">
-              {HERO_CARDS.map((c, i) => (
-                <div key={c.pos} className={`hero-real-card ${c.pos}`}>
-                  <Image
-                    src={c.img}
-                    alt={c.label}
-                    fill
-                    sizes="220px"
-                    style={{ objectFit: "cover", borderRadius: "inherit" }}
-                    priority={i === 2}
-                  />
-                  <div className="hero-card-overlay" />
-                  <span className="hero-card-badge">{c.badge}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         <div className="scroll-hint">
-          <span>Scroll · Calculate</span>
+          <span>Scroll - Calculate</span>
           <span className="scroll-hint-line" />
         </div>
         <div className="section-divider-bottom" />
@@ -193,15 +159,14 @@ export default function HomePage() {
               <span className="ital">supercharged.</span>
             </h2>
             <p className="feat-body">
-              The ClearFin app tracks your rewards across all issuers in one place,
-              surfaces the best card for every spending category, and unlocks <strong>ClearSave</strong> —
-              our exclusive merchant reward program.
+              All your finances in one app. Track your cards, compare rewards, and take
+              control of your spending from a single ClearFin dashboard.
             </p>
             <div className="feat-list">
-              <div className="feat-list-item">Know the best card to use for every category — grocery, travel, gas, dining</div>
+              <div className="feat-list-item">Get payment reminders before bills are due</div>
+              <div className="feat-list-item">Get notified about active subscriptions</div>
+              <div className="feat-list-item">Get spending limit reminders before you go over budget</div>
               <div className="feat-list-item">Track rewards across all your cards in one dashboard</div>
-              <div className="feat-list-item">ClearSave: earn bonus cashback at partner merchants — auto-applied, no codes</div>
-              <div className="feat-list-item">Statement credits within 24 hours, stacks with card rewards</div>
             </div>
             <a href="#waitlist" className="btn-primary" style={{ marginTop: "32px", display: "inline-flex" }}>
               <span>Join Waitlist for App Access</span>
@@ -272,10 +237,15 @@ export default function HomePage() {
       <footer className="footer">
         <div className="footer-info">© 2026 ClearFin Digital Inc · Calgary, AB</div>
         <div className="footer-links">
-          <a href="#">Privacy</a>
+          <a href="/privacy">Privacy</a>
           <a href="#">Terms</a>
-          <a href="#">PIPEDA</a>
-          <a href="#">Contact</a>
+          <a href="/disclosures">Disclosures</a>
+          <a href="mailto:info@clearfin.ca">Contact</a>
+        </div>
+        <div className="footer-disclaimer">
+          ClearFin is independent and is not affiliated with any bank, issuer, or credit
+          card provider. For corrections, removals, or updates, contact{" "}
+          <a href="mailto:info@clearfin.ca">info@clearfin.ca</a>.
         </div>
       </footer>
     </>

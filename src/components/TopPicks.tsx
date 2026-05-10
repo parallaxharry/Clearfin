@@ -21,7 +21,7 @@ const PICKS: PickCard[] = [
     issuer: "American Express",
     rate: "5x on dining",
     desc: "5x points on restaurants & food delivery. Massive welcome bonus. Canada's top dining card.",
-    img: "/cards/amex-cobalt.avif",
+    img: "/cards/amex-cobalt.webp",
     bankUrl: "https://www.americanexpress.com/en-ca/credit-cards/cobalt-card/",
   },
   {
@@ -31,8 +31,8 @@ const PICKS: PickCard[] = [
     issuer: "Scotiabank",
     rate: "6x on groceries",
     desc: "6x Scene+ points on grocery stores + 5x dining. Best everyday Canadian card.",
-    img: "/cards/scotia-gold-amex.webp",
-    bankUrl: "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/gold-american-express-card.html",
+    img: "/cards/Scotiabank-gold-amex.avif",
+    bankUrl: "https://hello.scotiabank.com/lending/triage?productCode=AXG&subProductCode=GC&source=116B&language=en",
   },
   {
     id: "td-aeroplan",
@@ -41,7 +41,7 @@ const PICKS: PickCard[] = [
     issuer: "TD Bank",
     rate: "3x on travel",
     desc: "3x Aeroplan points on Air Canada & travel purchases. Top choice for frequent flyers.",
-    img: "/cards/td-aeroplan-infinite.jpeg",
+    img: "/cards/td-aeroplan-infinite.png",
     bankUrl: "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/",
   },
   {
@@ -51,8 +51,8 @@ const PICKS: PickCard[] = [
     issuer: "BMO",
     rate: "5x on gas",
     desc: "5x points on gas, grocery & dining + $50 annual lifestyle credit. Great all-rounder.",
-    img: "/cards/bmo-eclipse.webp",
-    bankUrl: "https://www.bmo.com/en-ca/main/personal/credit-cards/eclipse-visa-infinite/",
+    img: "/cards/bmo-eclipse.png",
+    bankUrl: "https://www.bmo.com/main/personal/credit-cards/getting-started/?lang=en&rg=BMO&PID=VISDX&MID=3930192&OFFERCODE=RQTSX00008&OFFERDATE=20251031&income_quiz=true&income=60000&household_income=100000&monthly_spend=1250&PIDBASE=VPVDM&PIDUP=VISDY&MIDBASE=3930758&OFFERCODEBASE=RQTVP00001&OFFERDATEBASE=20220910&MIDUP=6011141&OFFERCODEUP=RQTSY00005&OFFERDATEUP=20251031&income_up=150000&household_income_up=200000&monthly_spend_up=4167",
   },
   {
     id: "wealthsimple",
@@ -61,7 +61,7 @@ const PICKS: PickCard[] = [
     issuer: "Wealthsimple",
     rate: "1% on everything",
     desc: "1% cashback in cash or crypto. No annual fee. The cleanest everyday backup card.",
-    img: "/cards/wealthsimple.webp",
+    img: "/cards/newwealthsimple.webp",
     bankUrl: "https://www.wealthsimple.com/en-ca/spend",
   },
   {
@@ -72,7 +72,7 @@ const PICKS: PickCard[] = [
     rate: "1.25x on everything",
     desc: "1.25x on all purchases. Transfer to 30+ airline partners. Suits diverse spenders.",
     img: "/cards/rbc-avion-infinite.webp",
-    bankUrl: "https://www.rbc.com/creditcards/avion-visa-infinite.html",
+    bankUrl: "https://apps.royalbank.com/apps/IAO/apply/cardapp?pid1=avion_inf&ASC=3D2111&_gl=1*1jecaqy*_gcl_au*MzQ5OTM5MDc2LjE3NzgzNzQ5MjI.*_ga*MjEwMDcyNDEyNC4xNzc4Mzc0OTIy*_ga_89NPCTDXQR*czE3NzgzNzQ5MjEkbzEkZzEkdDE3NzgzNzQ5NDgkajMzJGwwJGgw",
   },
 ];
 
@@ -98,6 +98,9 @@ export default function TopPicks() {
           <h2 className="top-picks-title">
             Best card for <span className="ital">every</span> category.
           </h2>
+          <p className="top-picks-disclaimer">
+            Independent comparison. ClearFin is not affiliated with banks or credit card issuers.
+          </p>
         </div>
 
         <div className="top-picks-grid">
@@ -116,7 +119,7 @@ export default function TopPicks() {
                   alt={card.name}
                   fill
                   sizes="280px"
-                  style={{ objectFit: "contain", padding: "16px" }}
+                  style={{ objectFit: "contain", padding: "36px 16px 14px" }}
                 />
                 <span className="pick-cat-badge">{card.category}</span>
               </div>

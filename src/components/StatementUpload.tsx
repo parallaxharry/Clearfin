@@ -6,13 +6,18 @@ export default function StatementUpload() {
   const [dragOver, setDragOver] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [statementEmail, setStatementEmail] = useState("");
+  const [uploadUnlocked, setUploadUnlocked] = useState(false);
+  const [uploadEmailLoading, setUploadEmailLoading] = useState(false);
+  const [uploadEmailError, setUploadEmailError] = useState("");
   const [consultEmail, setConsultEmail] = useState("");
   const [consultSent, setConsultSent] = useState(false);
   const [consultLoading, setConsultLoading] = useState(false);
 
   const handleFile = (file: File) => {
+    if (!uploadUnlocked) return;
     setFileName(file.name);
-    // Future: parse statement and calculate leak
+    // Future: parse statement and calculate leak.
     setTimeout(() => setSubmitted(true), 600);
   };
 
@@ -28,9 +33,38 @@ export default function StatementUpload() {
     if (file) handleFile(file);
   };
 
+  const handleStatementAccess = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!statementEmail || uploadEmailLoading) return;
+
+    setUploadEmailLoading(true);
+    setUploadEmailError("");
+
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: statementEmail, source: "statement_upload" }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setUploadEmailError(data?.error || "Enter a valid email to continue.");
+        return;
+      }
+
+      setUploadUnlocked(true);
+    } catch {
+      setUploadEmailError("Network error. Please try again.");
+    } finally {
+      setUploadEmailLoading(false);
+    }
+  };
+
   const handleConsult = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!consultEmail || consultLoading) return;
+
     setConsultLoading(true);
     try {
       await fetch("/api/waitlist", {
@@ -40,7 +74,7 @@ export default function StatementUpload() {
       });
       setConsultSent(true);
     } catch {
-      setConsultSent(true); // Optimistic
+      setConsultSent(true);
     } finally {
       setConsultLoading(false);
     }
@@ -50,23 +84,41 @@ export default function StatementUpload() {
     <section className="feat" id="statement">
       <div className="section-num">04 / Analyse Your Cards</div>
       <div className="statement-wrap">
-
-        {/* Left: Statement Upload */}
         <div className="statement-left reveal">
-          <div className="statement-eyebrow">Upload · Instant analysis</div>
+          <div className="statement-eyebrow">Upload - Instant analysis</div>
           <h2 className="statement-title">
             Find out exactly how much <span className="ital">you&apos;re losing.</span>
           </h2>
           <p className="statement-body">
-            Upload your credit card statement (PDF or CSV). We&apos;ll scan every transaction,
-            cross-reference our 107-card database, and show you the exact dollar amount you
-            left unclaimed — category by category.
+            Upload your credit card statement (PDF or CSV). We&apos;ll scan every
+            transaction, cross-reference our 107-card database, and show you the exact
+            dollar amount you left unclaimed - category by category.
           </p>
 
-          {!submitted ? (
+          {!uploadUnlocked ? (
+            <form className="statement-email-form" onSubmit={handleStatementAccess}>
+              <input
+                type="email"
+                placeholder="your@email.ca"
+                required
+                value={statementEmail}
+                onChange={(e) => setStatementEmail(e.target.value)}
+              />
+              <button type="submit" className="consult-btn" disabled={uploadEmailLoading}>
+                {uploadEmailLoading ? "Checking..." : "Continue to Upload ->"}
+              </button>
+              {uploadEmailError && <div className="statement-email-error">{uploadEmailError}</div>}
+              <div className="statement-email-note">
+                Enter your email first so we can send your report when analysis is ready.
+              </div>
+            </form>
+          ) : !submitted ? (
             <div
               className={`upload-box${dragOver ? " drag-over" : ""}`}
-              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOver(true);
+              }}
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               onClick={() => document.getElementById("stmt-file-input")?.click()}
@@ -78,47 +130,51 @@ export default function StatementUpload() {
                 style={{ display: "none" }}
                 onChange={handleFileInput}
               />
-              <div className="upload-icon">📄</div>
+              <div className="upload-icon">&#128196;</div>
               <div className="upload-title">
                 {dragOver ? "Drop it!" : "Upload your statement"}
               </div>
               <div className="upload-sub">Drag & drop or click to browse</div>
-              <div className="upload-formats">PDF · CSV · XLSX — All major banks supported</div>
+              <div className="upload-formats">PDF / CSV / XLSX - All major banks supported</div>
             </div>
           ) : (
             <div className="upload-success">
-              <div className="upload-success-icon">✓</div>
+              <div className="upload-success-icon">&#10003;</div>
               <div className="upload-success-title">Statement received</div>
               <div className="upload-success-body">
-                We&apos;re building full statement analysis — join the waitlist below to be
-                first to know when it launches. We&apos;ll send your personalised report the
-                moment it&apos;s ready.
+                {fileName ? `${fileName} is queued. ` : ""}
+                We&apos;re building full statement analysis and will send your personalised
+                report to {statementEmail} the moment it&apos;s ready.
               </div>
               <a href="#waitlist" className="consult-btn" style={{ marginTop: "20px" }}>
-                Join Waitlist →
+                Join Waitlist -&gt;
               </a>
             </div>
           )}
         </div>
 
-        {/* Right: Book a Consultation */}
         <div className="statement-right reveal">
           <div className="consult-card">
-            <div className="consult-eyebrow">Free · 30 minutes</div>
+            <div className="consult-eyebrow">Free - 30 minutes</div>
             <div className="consult-title">Book a card strategy session</div>
             <p className="consult-body">
               Talk to a ClearFin expert. We&apos;ll review your spending profile, current
-              card lineup, and build you a personalised card strategy — completely free.
+              card lineup, and build you a personalised card strategy - completely free.
             </p>
             <div className="consult-items">
               <div className="consult-item">Personalised card stack recommendation</div>
               <div className="consult-item">Annual fee vs. rewards analysis</div>
               <div className="consult-item">Welcome bonus timing strategy</div>
-              <div className="consult-item">ClearSave offer matching for your merchants</div>
+              <div className="consult-disclaimer">
+                <strong>* This is not financial advice. Educational information only.</strong>
+              </div>
             </div>
 
             {!consultSent ? (
-              <form onSubmit={handleConsult} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <form
+                onSubmit={handleConsult}
+                style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+              >
                 <input
                   type="email"
                   placeholder="your@email.ca"
@@ -126,23 +182,43 @@ export default function StatementUpload() {
                   value={consultEmail}
                   onChange={(e) => setConsultEmail(e.target.value)}
                   style={{
-                    background: "rgba(0,0,0,.5)", border: "1px solid rgba(255,255,255,.1)",
-                    borderRadius: "4px", padding: "12px 16px", color: "var(--ink)",
-                    fontFamily: "var(--font-archivo)", fontSize: "14px",
+                    background: "rgba(0,0,0,.5)",
+                    border: "1px solid rgba(255,255,255,.1)",
+                    borderRadius: "4px",
+                    padding: "12px 16px",
+                    color: "var(--ink)",
+                    fontFamily: "var(--font-archivo)",
+                    fontSize: "14px",
                   }}
                 />
                 <button type="submit" className="consult-btn" disabled={consultLoading}>
-                  {consultLoading ? "Booking..." : "Book Free Consultation →"}
+                  {consultLoading ? "Booking..." : "Book Free Consultation ->"}
                 </button>
               </form>
             ) : (
-              <div style={{ color: "var(--accent-emerald)", fontFamily: "var(--font-jetbrains)", fontSize: "11px", letterSpacing: ".2em" }}>
-                ✓ WE&apos;LL BE IN TOUCH WITHIN 24 HOURS
+              <div
+                style={{
+                  color: "var(--accent-emerald)",
+                  fontFamily: "var(--font-jetbrains)",
+                  fontSize: "11px",
+                  letterSpacing: ".2em",
+                }}
+              >
+                WE&apos;LL BE IN TOUCH WITHIN 24 HOURS
               </div>
             )}
 
-            <div style={{ marginTop: "20px", fontFamily: "var(--font-jetbrains)", fontSize: "9px", letterSpacing: ".15em", textTransform: "uppercase", color: "var(--ink-mute)" }}>
-              No obligations · Free forever for early users
+            <div
+              style={{
+                marginTop: "20px",
+                fontFamily: "var(--font-jetbrains)",
+                fontSize: "9px",
+                letterSpacing: ".15em",
+                textTransform: "uppercase",
+                color: "var(--ink-mute)",
+              }}
+            >
+              No obligations - Free for early users
             </div>
           </div>
         </div>
