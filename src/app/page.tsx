@@ -45,7 +45,7 @@ export default function HomePage() {
             <h1 className="hero-headline reveal">
               What if your <span className="ital">cards</span>
               <br />
-              actually <span className="strike">worked</span>
+              actually <span className="quote-mark">&quot;</span>worked<span className="quote-mark">&quot;</span>
               <br />
               for <span className="ital">you?</span>
             </h1>

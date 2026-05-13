@@ -16,7 +16,7 @@ export default function Nav() {
     <header className={`nav${scrolled ? " scrolled" : ""}`}>
       <a href="#hero" className="logo">
         <div className="logo-mark">
-          <Image src="/cf-logo.svg" alt="ClearFin" width={40} height={40} priority />
+          <Image src="/logo.png" alt="ClearFin" width={40} height={40} priority />
         </div>
         <div className="logo-word">
           <span className="clear">Clear</span>

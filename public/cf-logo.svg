@@ -15,17 +15,27 @@
   <rect width="120" height="120" rx="22" fill="#0A0A0A"/>
   <!-- Subtle gold inner border -->
   <rect x="4" y="4" width="112" height="112" rx="19" fill="none" stroke="#D4A843" stroke-width="0.5" opacity="0.4"/>
-  <!-- C letter -->
+  <!-- Optically centered CF mark -->
   <text
-    x="22"
-    y="82"
+    x="43"
+    y="63"
     font-family="'Georgia', 'Times New Roman', serif"
-    font-size="70"
+    font-size="62"
     font-weight="700"
     font-style="italic"
     fill="url(#gold)"
-    letter-spacing="-4"
-  >CF</text>
-  <!-- Thin gold underline accent -->
-  <line x1="20" y1="95" x2="100" y2="95" stroke="url(#goldStroke)" stroke-width="1.2" opacity="0.6"/>
+    text-anchor="middle"
+    dominant-baseline="middle"
+  >C</text>
+  <text
+    x="75"
+    y="63"
+    font-family="'Georgia', 'Times New Roman', serif"
+    font-size="62"
+    font-weight="700"
+    font-style="italic"
+    fill="url(#gold)"
+    text-anchor="middle"
+    dominant-baseline="middle"
+  >F</text>
 </svg>

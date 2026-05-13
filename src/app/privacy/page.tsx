@@ -14,23 +14,31 @@ const privacySections = [
       "Contact details you choose to share, such as your name and email address when you join the waitlist, request early access, or book a card strategy call.",
       "Card comparison inputs you provide, such as spending categories, estimated monthly spend, preferred issuers, and reward preferences.",
       "Website usage information, including basic analytics, card click activity, browser type, device information, and pages visited, so we can improve the product and understand which comparisons are useful.",
-      "Statement upload previews if you choose to use that feature. We only use this information to help explain card and rewards options, and we will update this statement before introducing broader file storage or automated financial account connections.",
+      "Credit card statement files you choose to upload, including related metadata such as file name, file type, file size, upload status, and the email address connected to the upload.",
     ],
   },
   {
     title: "How We Use Information",
     body: [
-      "To operate the website, waitlist, calculator, statement preview, and card comparison features.",
+      "To operate the website, waitlist, calculator, statement upload, and card comparison features.",
       "To personalize educational card recommendations based on your stated shopping habits and spending categories.",
       "To respond to your requests, send product updates, and manage early access communications.",
       "To measure website performance, prevent misuse, debug errors, and improve ClearFin.",
     ],
   },
   {
+    title: "Where Information Is Stored",
+    body: [
+      "Waitlist emails, card click activity, and statement upload records are stored in ClearFin's Supabase-hosted database.",
+      "Uploaded statement files are stored in a private Supabase Storage bucket named statement_uploads. The website does not expose public file download links.",
+      "Access to stored emails, upload records, and statement files is restricted to ClearFin's authorized Supabase access and server-side systems.",
+    ],
+  },
+  {
     title: "How We Share Information",
     body: [
       "We do not sell your personal information.",
-      "We may share limited information with trusted service providers that help us host the website, manage the waitlist, process analytics, send emails, or keep the service secure.",
+      "We may share limited information with trusted service providers, including hosting, database, file storage, analytics, email, scheduling, and security providers that help us operate ClearFin.",
       "We may disclose information if required by law, to protect our rights, or to investigate security or fraud concerns.",
     ],
   },
@@ -46,7 +54,8 @@ const privacySections = [
     title: "Security And Retention",
     body: [
       "We use reasonable administrative, technical, and organizational safeguards designed to protect personal information.",
-      "No website, email, or internet transmission is completely secure, so please avoid uploading sensitive information unless it is needed for the feature you are using.",
+      "Uploaded statement files are stored in private storage and are not intended to be publicly accessible through the website.",
+      "No website, email, storage system, or internet transmission is completely secure, so please avoid uploading information unless it is needed for the feature you are using.",
       "We keep personal information only as long as reasonably necessary for the purposes described in this statement, unless a longer period is required or permitted by law.",
     ],
   },

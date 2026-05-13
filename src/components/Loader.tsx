@@ -14,7 +14,7 @@ export default function Loader() {
   return (
     <div className={`loader${done ? " done" : ""}`}>
       <Image
-        src="/cf-logo.svg"
+        src="/logo.png"
         alt="ClearFin"
         width={72}
         height={72}

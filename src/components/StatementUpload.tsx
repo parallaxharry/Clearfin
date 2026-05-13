@@ -10,27 +10,50 @@ export default function StatementUpload() {
   const [uploadUnlocked, setUploadUnlocked] = useState(false);
   const [uploadEmailLoading, setUploadEmailLoading] = useState(false);
   const [uploadEmailError, setUploadEmailError] = useState("");
-  const [consultEmail, setConsultEmail] = useState("");
-  const [consultSent, setConsultSent] = useState(false);
-  const [consultLoading, setConsultLoading] = useState(false);
+  const [fileUploading, setFileUploading] = useState(false);
+  const [fileUploadError, setFileUploadError] = useState("");
 
-  const handleFile = (file: File) => {
-    if (!uploadUnlocked) return;
+  const handleFile = async (file: File) => {
+    if (!uploadUnlocked || fileUploading) return;
+
     setFileName(file.name);
-    // Future: parse statement and calculate leak.
-    setTimeout(() => setSubmitted(true), 600);
+    setFileUploading(true);
+    setFileUploadError("");
+
+    try {
+      const formData = new FormData();
+      formData.append("email", statementEmail);
+      formData.append("file", file);
+
+      const res = await fetch("/api/statement-upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setFileUploadError(data?.error || "Upload failed. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setFileUploadError("Network error. Please try again.");
+    } finally {
+      setFileUploading(false);
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
     const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    if (file) void handleFile(file);
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) handleFile(file);
+    if (file) void handleFile(file);
   };
 
   const handleStatementAccess = async (e: React.FormEvent) => {
@@ -58,25 +81,6 @@ export default function StatementUpload() {
       setUploadEmailError("Network error. Please try again.");
     } finally {
       setUploadEmailLoading(false);
-    }
-  };
-
-  const handleConsult = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!consultEmail || consultLoading) return;
-
-    setConsultLoading(true);
-    try {
-      await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: consultEmail, source: "consultation" }),
-      });
-      setConsultSent(true);
-    } catch {
-      setConsultSent(true);
-    } finally {
-      setConsultLoading(false);
     }
   };
 
@@ -113,30 +117,38 @@ export default function StatementUpload() {
               </div>
             </form>
           ) : !submitted ? (
-            <div
-              className={`upload-box${dragOver ? " drag-over" : ""}`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver(true);
-              }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={handleDrop}
-              onClick={() => document.getElementById("stmt-file-input")?.click()}
-            >
-              <input
-                id="stmt-file-input"
-                type="file"
-                accept=".pdf,.csv,.xlsx"
-                style={{ display: "none" }}
-                onChange={handleFileInput}
-              />
-              <div className="upload-icon">&#128196;</div>
-              <div className="upload-title">
-                {dragOver ? "Drop it!" : "Upload your statement"}
+            <>
+              <div
+                className={`upload-box${dragOver ? " drag-over" : ""}`}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragOver(true);
+                }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={handleDrop}
+                onClick={() => {
+                  if (!fileUploading) document.getElementById("stmt-file-input")?.click();
+                }}
+              >
+                <input
+                  id="stmt-file-input"
+                  type="file"
+                  accept=".pdf,.csv,.xlsx"
+                  style={{ display: "none" }}
+                  onChange={handleFileInput}
+                  disabled={fileUploading}
+                />
+                <div className="upload-icon">&#128196;</div>
+                <div className="upload-title">
+                  {fileUploading ? "Uploading..." : dragOver ? "Drop it!" : "Upload your statement"}
+                </div>
+                <div className="upload-sub">
+                  {fileUploading ? "Securely storing your file" : "Drag & drop or click to browse"}
+                </div>
+                <div className="upload-formats">PDF / CSV / XLSX - All major banks supported</div>
               </div>
-              <div className="upload-sub">Drag & drop or click to browse</div>
-              <div className="upload-formats">PDF / CSV / XLSX - All major banks supported</div>
-            </div>
+              {fileUploadError && <div className="statement-email-error">{fileUploadError}</div>}
+            </>
           ) : (
             <div className="upload-success">
               <div className="upload-success-icon">&#10003;</div>
@@ -170,43 +182,14 @@ export default function StatementUpload() {
               </div>
             </div>
 
-            {!consultSent ? (
-              <form
-                onSubmit={handleConsult}
-                style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-              >
-                <input
-                  type="email"
-                  placeholder="your@email.ca"
-                  required
-                  value={consultEmail}
-                  onChange={(e) => setConsultEmail(e.target.value)}
-                  style={{
-                    background: "rgba(0,0,0,.5)",
-                    border: "1px solid rgba(255,255,255,.1)",
-                    borderRadius: "4px",
-                    padding: "12px 16px",
-                    color: "var(--ink)",
-                    fontFamily: "var(--font-archivo)",
-                    fontSize: "14px",
-                  }}
-                />
-                <button type="submit" className="consult-btn" disabled={consultLoading}>
-                  {consultLoading ? "Booking..." : "Book Free Consultation ->"}
-                </button>
-              </form>
-            ) : (
-              <div
-                style={{
-                  color: "var(--accent-emerald)",
-                  fontFamily: "var(--font-jetbrains)",
-                  fontSize: "11px",
-                  letterSpacing: ".2em",
-                }}
-              >
-                WE&apos;LL BE IN TOUCH WITHIN 24 HOURS
-              </div>
-            )}
+            <a
+              href="https://calendly.com/simran-clearfin/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="consult-btn"
+            >
+              Schedule Free Session -&gt;
+            </a>
 
             <div
               style={{

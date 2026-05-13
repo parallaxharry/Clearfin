@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
+
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,12 +11,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Valid cardId required." }, { status: 400 });
     }
 
-    const { createServerClient } = await import("@supabase/ssr");
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      { cookies: { getAll: () => [], setAll: () => {} } }
-    );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      return NextResponse.json({ ok: true }, { status: 200 });
+    }
+
+    const supabase = createClient(supabaseUrl, serviceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
 
     const { error } = await supabase
       .from("card_clicks")

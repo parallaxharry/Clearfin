@@ -131,10 +131,15 @@ img { max-width: 100%; display: block; }
 .logo-mark {
   position: relative; width: 44px; height: 44px;
   border-radius: 10px;
+  overflow: hidden;
   animation: logo-glow 4s ease-in-out infinite;
   transition: transform .5s var(--ease), box-shadow .5s var(--ease);
 }
-.logo-mark img { border-radius: 10px; }
+.logo-mark img {
+  border-radius: 10px;
+  object-fit: cover;
+  transform: scale(1.22);
+}
 .logo:hover .logo-mark {
   transform: scale(1.08);
   box-shadow: 0 0 28px rgba(212,168,67,.6), 0 0 60px rgba(212,168,67,.2);
@@ -268,13 +273,7 @@ section {
   text-shadow: 0 24px 60px rgba(0,0,0,.85);
 }
 .hero-headline .ital { font-family: var(--font-fraunces), serif; font-style: italic; font-weight: 300; color: var(--accent-warm); }
-.hero-headline .strike { position: relative; display: inline-block; }
-.hero-headline .strike::after {
-  content: ''; position: absolute; left: -4%; right: -4%; top: 55%; height: 3px;
-  background: var(--accent-rose); transform: scaleX(0); transform-origin: left;
-  animation: strike-in 1.2s var(--ease) 1.4s forwards;
-}
-@keyframes strike-in { to { transform: scaleX(1); } }
+.hero-headline .quote-mark { color: var(--accent-rose); }
 .hero-sub {
   grid-row: 2;
   font-size: 17px; line-height: 1.55; color: rgba(245,245,242,.76);
@@ -1353,6 +1352,8 @@ section {
 .card-modal-net-row { display: flex; align-items: baseline; gap: 10px; margin: 8px 0; }
 .card-modal-net { font-family: var(--font-fraunces), serif; font-style: italic; font-size: 40px; color: var(--accent-warm); font-weight: 300; }
 .card-modal-net-label { font-family: var(--font-jetbrains), monospace; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-mute); }
+.top-picks-modal .card-modal-net { font-size: clamp(28px, 3vw, 38px); }
+.card-modal-summary { font-size: 13px; line-height: 1.6; color: rgba(245,245,242,.68); margin: 0; }
 .card-modal-perks { display: flex; flex-direction: column; gap: 8px; margin: 4px 0; }
 .card-modal-perk {
   font-size: 13px; color: var(--ink-mute); display: flex; align-items: center; gap: 8px;
@@ -1392,6 +1393,10 @@ section {
   position: absolute; inset: 0; border-radius: 16px; overflow: hidden;
   box-shadow: 0 24px 60px rgba(0,0,0,.6);
 }
+.top-picks-modal-card .card-modal-spin-front {
+  background: transparent;
+  box-shadow: none;
+}
 .card-modal-sheen {
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.15) 48%, transparent 65%);
@@ -1427,8 +1432,10 @@ section {
   border-radius: 16px; overflow: hidden;
   transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
   text-decoration: none; display: flex; flex-direction: column;
-  cursor: pointer;
+  cursor: pointer; width: 100%; color: inherit; font: inherit; text-align: left;
+  padding: 0; appearance: none;
 }
+.pick-card:focus-visible { outline: 1px solid var(--accent-warm); outline-offset: 4px; }
 .pick-card:hover {
   transform: translateY(-6px);
   border-color: rgba(212,168,67,.4);
