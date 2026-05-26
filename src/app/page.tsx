@@ -342,8 +342,9 @@ export default function HomePage() {
       <footer className="footer">
         <div className="footer-info">© 2026 ClearFin Digital Inc · Calgary, AB</div>
         <div className="footer-links">
-          <a href="/privacy">Privacy</a>
+          <a href="/about">About</a>
           <a href="/faq">FAQ</a>
+          <a href="/privacy">Privacy</a>
           <a href="/disclosures">Disclosures</a>
           <a href="mailto:info@clearfin.ca">Contact</a>
         </div>

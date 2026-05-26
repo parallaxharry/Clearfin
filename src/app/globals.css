@@ -989,6 +989,40 @@ section {
   text-underline-offset: 4px;
 }
 
+/* About — team grid */
+.about-team {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.about-card {
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.about-initials {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--grad-cool);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 18px; font-weight: 600;
+  color: #000;
+}
+.about-card-name {
+  font-size: 17px; font-weight: 500; color: var(--ink);
+}
+.about-card-title {
+  font-size: 13px; color: var(--ink-mute);
+  font-family: var(--font-jetbrains), monospace;
+  letter-spacing: .02em;
+  line-height: 1.5;
+}
+
 @media (max-width: 700px) {
   .privacy-page { padding: 30px 22px 64px; }
   .privacy-back { margin-bottom: 62px; }

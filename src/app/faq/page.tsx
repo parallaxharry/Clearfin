@@ -73,7 +73,7 @@ const faqs = [
   {
     question: "What is ClearSave?",
     answer:
-      "ClearSave is an upcoming feature in the ClearFin mobile app that will automatically apply extra rewards at eligible retailers. It is part of the 2026 app launch and is not yet available.",
+      "ClearSave is an upcoming feature in the ClearFin mobile app. It analyses the card you used for a purchase and tells you whether it was the best card for that spending category — helping you maximise rewards on every transaction. It is part of the 2026 app launch and is not yet available.",
   },
   {
     question: "Does using ClearFin affect my credit score?",
