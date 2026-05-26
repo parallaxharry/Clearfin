@@ -32,7 +32,7 @@ const team = [
   },
   {
     name: "Kashyap Badiani",
-    title: "CFO",
+    title: "Founder & CFO",
     initials: "KB",
   },
 ];
