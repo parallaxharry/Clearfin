@@ -25,6 +25,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://clearfin.ca"),
   title: "ClearFin — Every swipe should hit maximum cashback.",
   description:
     "ClearFin finds your best credit card for every purchase. Maximize rewards on every transaction. Built for Canada.",
@@ -35,12 +36,32 @@ export const metadata: Metadata = {
     "Canadian credit cards",
     "credit card comparison Canada",
   ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "ClearFin — Every swipe should hit maximum cashback.",
     description:
       "ClearFin finds your best credit card for every purchase. Built for Canada.",
     type: "website",
     locale: "en_CA",
+    url: "https://clearfin.ca",
+    siteName: "ClearFin",
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "ClearFin — Canadian credit card optimizer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "ClearFin — Every swipe should hit maximum cashback.",
+    description:
+      "ClearFin finds your best credit card for every purchase. Built for Canada.",
+    images: ["/logo.png"],
   },
   robots: { index: true, follow: true },
 };
