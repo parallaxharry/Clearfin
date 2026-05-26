@@ -4,7 +4,19 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Disclosures | ClearFin",
   description:
-    "ClearFin independence, affiliation, card information, and correction request disclosures.",
+    "ClearFin is independent — not affiliated with any bank or card issuer. These disclosures cover our independence, card data sourcing, and correction request process.",
+  alternates: {
+    canonical: "/disclosures",
+  },
+  openGraph: {
+    title: "Disclosures | ClearFin",
+    description:
+      "ClearFin is independent — not affiliated with any bank or card issuer. These disclosures cover our independence, card data sourcing, and correction request process.",
+    type: "website",
+    locale: "en_CA",
+    url: "https://clearfin.ca/disclosures",
+    siteName: "ClearFin",
+  },
 };
 
 const disclosureSections = [

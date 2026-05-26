@@ -4,7 +4,19 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Privacy Statement | ClearFin",
   description:
-    "How ClearFin collects, uses, protects, and manages personal information.",
+    "How ClearFin collects, uses, protects, and manages personal information. ClearFin is built for Canada and handles data in line with Canadian privacy principles.",
+  alternates: {
+    canonical: "/privacy",
+  },
+  openGraph: {
+    title: "Privacy Statement | ClearFin",
+    description:
+      "How ClearFin collects, uses, protects, and manages personal information. ClearFin is built for Canada and handles data in line with Canadian privacy principles.",
+    type: "website",
+    locale: "en_CA",
+    url: "https://clearfin.ca/privacy",
+    siteName: "ClearFin",
+  },
 };
 
 const privacySections = [
