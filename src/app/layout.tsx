@@ -50,8 +50,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/logo.png",
-        width: 512,
-        height: 512,
+        width: 1254,
+        height: 1254,
         alt: "ClearFin — Canadian credit card optimizer",
       },
     ],
