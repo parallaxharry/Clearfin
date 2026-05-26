@@ -66,6 +66,34 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ClearFin",
+  alternateName: "ClearFin Digital Inc.",
+  url: "https://clearfin.ca",
+  logo: "https://clearfin.ca/logo.png",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "info@clearfin.ca",
+    contactType: "customer support",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Calgary",
+    addressRegion: "AB",
+    addressCountry: "CA",
+  },
+  sameAs: [] as string[],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "ClearFin",
+  url: "https://clearfin.ca",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -74,7 +102,17 @@ export default function RootLayout({
       lang="en"
       className={`${archivo.variable} ${fraunces.variable} ${jetbrains.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
