@@ -7,9 +7,91 @@ import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
 import StatementUpload from "@/components/StatementUpload";
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "ClearFin Credit Card Calculator",
+  applicationCategory: "FinanceApplication",
+  operatingSystem: "Web",
+  url: "https://clearfin.ca/#tool",
+  description:
+    "Compare 107 Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "CAD",
+  },
+  creator: {
+    "@type": "Organization",
+    name: "ClearFin",
+    url: "https://clearfin.ca",
+  },
+};
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "How to find your best Canadian credit card with ClearFin",
+  description:
+    "Answer 5 quick questions about your monthly spending. ClearFin calculates your exact reward leak and shows which of 107 Canadian credit cards earns you the most.",
+  totalTime: "PT1M",
+  step: [
+    {
+      "@type": "HowToStep",
+      position: 1,
+      name: "Open the ClearFin calculator",
+      text: "Click 'Open the Calculator' or 'Start in 30 seconds' on the ClearFin homepage.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 2,
+      name: "Enter your monthly dining spend",
+      text: "Enter how much you spend each month on restaurants, cafes, takeout, and food delivery.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 3,
+      name: "Enter your monthly grocery budget",
+      text: "Enter your monthly spend at supermarkets, Costco, and grocery stores.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 4,
+      name: "Enter your monthly gas spend",
+      text: "Enter your monthly fuel costs including petrol, diesel, and EV charging.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 5,
+      name: "Enter your monthly travel spend",
+      text: "Enter your average monthly travel budget including flights, hotels, and car rentals.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 6,
+      name: "Enter your remaining monthly spend",
+      text: "Enter everything else: shopping, utilities, subscriptions, and services.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 7,
+      name: "Review your personalized card recommendations",
+      text: "ClearFin calculates your estimated annual earnings across all 107 Canadian cards and ranks them by net value for your specific spending profile.",
+    },
+  ],
+};
+
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
       {/* ── Global overlays ── */}
       <Loader />
       <div className="grain" />
@@ -124,7 +206,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="feat-visual reveal">
-            <div className="bars">
+            <div className="bars" aria-hidden="true">
               {[
                 { name: "Cobalt",    w: 0.92, amt: "$1,142" },
                 { name: "Scotia G", w: 0.78, amt: "$967" },
@@ -141,6 +223,29 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+            <table className="sr-only">
+              <caption>Estimated annual cashback and rewards by Canadian credit card</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Card</th>
+                  <th scope="col">Estimated Annual Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { name: "Amex Cobalt", amt: "$1,142" },
+                  { name: "Scotiabank Gold Amex", amt: "$967" },
+                  { name: "TD Aeroplan Visa Infinite", amt: "$754" },
+                  { name: "RBC Avion Visa Infinite", amt: "$595" },
+                  { name: "Tangerine Money-Back", amt: "$421" },
+                ].map((row) => (
+                  <tr key={row.name}>
+                    <td>{row.name}</td>
+                    <td>{row.amt}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
         <div className="section-divider-bottom" />
@@ -238,7 +343,7 @@ export default function HomePage() {
         <div className="footer-info">© 2026 ClearFin Digital Inc · Calgary, AB</div>
         <div className="footer-links">
           <a href="/privacy">Privacy</a>
-          <a href="#">Terms</a>
+          <a href="/faq">FAQ</a>
           <a href="/disclosures">Disclosures</a>
           <a href="mailto:info@clearfin.ca">Contact</a>
         </div>
