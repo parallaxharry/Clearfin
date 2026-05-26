@@ -27,7 +27,7 @@ const team = [
   },
   {
     name: "Jainam Shah",
-    title: "Founder & Chief Commission Person, Marketing",
+    title: "Founder & Chief Marketing Officer (CMO)",
     initials: "JS",
   },
   {
