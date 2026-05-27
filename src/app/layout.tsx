@@ -35,6 +35,13 @@ export const metadata: Metadata = {
     "cashback maximizer",
     "Canadian credit cards",
     "credit card comparison Canada",
+    "best credit cards Canada 2026",
+    "best cashback credit cards Canada",
+    "best travel credit cards Canada",
+    "best grocery credit cards Canada",
+    "best no fee credit cards Canada",
+    "best student credit cards Canada",
+    "credit card rewards guide Canada",
   ],
   alternates: {
     canonical: "/",
