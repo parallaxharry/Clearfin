@@ -2115,9 +2115,9 @@ section {
 }
 
 .cmp-wrap {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 40px;
 }
 
 /* header */
@@ -2269,7 +2269,7 @@ section {
 .cmp-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
 }
 
 /* card columns */
@@ -2277,38 +2277,50 @@ section {
   border: 1px solid var(--line-strong);
   border-radius: 14px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
   background: var(--bg-soft);
 }
 .cmp-col-a { border-color: rgba(255,255,255,.2); }
 .cmp-col-b { border-color: rgba(255,255,255,.14); }
 
-.cmp-card-img-fallback {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-jetbrains), monospace;
-  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--ink-mute);
-  background: rgba(255,255,255,.03);
+/* inner row: left=details, right=image+apply */
+.cmp-card-body {
+  display: grid;
+  grid-template-columns: 1fr 220px;
 }
 
-/* card image — same floating style as modal */
+/* left panel — all text content */
+.cmp-modal-left {
+  padding: 16px 20px 16px !important;
+  overflow-y: unset !important;
+  border-right: 1px solid var(--line);
+}
+
+/* right panel — image + apply, everything centred */
+.cmp-card-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 14px;
+  gap: 16px;
+}
+
+/* card image in side panel */
 .cmp-card-spinner {
-  height: 120px;
+  width: 192px;
+  height: 122px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
-  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
 }
 .cmp-card-spin-front {
   position: relative;
-  width: 180px;
-  height: 110px;
+  width: 192px;
+  height: 122px;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 8px 28px rgba(0,0,0,.5);
+  box-shadow: 0 8px 28px rgba(0,0,0,.55);
 }
 .cmp-card-sheen {
   position: absolute;
@@ -2317,24 +2329,32 @@ section {
   border-radius: inherit;
   pointer-events: none;
 }
-
-/* override modal-left padding inside column */
-.cmp-modal-left {
-  padding: 16px 20px 8px !important;
-  overflow-y: unset !important;
-  flex: 1;
+.cmp-card-img-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--ink-mute);
+  background: rgba(255,255,255,.03);
 }
 
-/* apply + disclaimer at bottom of column */
+/* apply button in side panel */
 .cmp-apply {
-  margin: 0 16px 8px;
+  width: 100%;
   display: flex !important;
   justify-content: center;
+  font-size: 10px !important;
+  padding: 8px 6px !important;
+  text-align: center;
+  line-height: 1.3;
 }
 .cmp-disclaimer {
-  margin: 0 16px 14px !important;
-  font-size: 10px !important;
+  font-size: 9px !important;
   text-align: center;
+  color: var(--ink-mute);
+  opacity: .5;
+  line-height: 1.4;
+  margin: 0 !important;
 }
 
 /* empty placeholder column */

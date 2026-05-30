@@ -23,101 +23,103 @@ function CardColumn({
 
   return (
     <div className={`cmp-card-col${isTop ? " cmp-col-a" : " cmp-col-b"}`}>
+      <div className="cmp-card-body">
 
-      {/* Card image — same spinner style as modal */}
-      <div className="cmp-card-spinner">
-        <div className="cmp-card-spin-front">
-          {card.img && !imgErr ? (
-            <Image
-              src={card.img}
-              alt={card.name}
-              fill
-              sizes="400px"
-              style={{ objectFit: "cover", borderRadius: "inherit" }}
-              onError={() => setImgErr(true)}
-            />
-          ) : (
-            <div className="cmp-card-img-fallback">{card.issuer}</div>
-          )}
-          <div className="cmp-card-sheen" />
-        </div>
-      </div>
-
-      {/* Details — identical to card-modal-left */}
-      <div className="card-modal-left cmp-modal-left">
-        <div className="card-modal-badge">{card.badge}</div>
-        <h3 className="card-modal-name">{card.name}</h3>
-        <div className="card-modal-issuer">{card.issuer}</div>
-        <div className="card-modal-net-row">
-          <span className="card-modal-net">{fmt(card.netValue)}</span>
-          <span className="card-modal-net-label">net / year for your spend</span>
-        </div>
-        <div className="card-modal-perks">
-          {card.perks.map((p, i) => (
-            <div className="card-modal-perk" key={i}>
-              <span className="card-modal-perk-dot">✦</span>
-              {p}
-            </div>
-          ))}
-        </div>
-
-        {/* Breakdown — identical to modal */}
-        <div className="modal-breakdown">
-          <div className="modal-breakdown-label">How we calculated this</div>
-          <div className="modal-bd-table">
-            <div className="modal-bd-head">
-              <span>Category</span>
-              <span>Monthly</span>
-              <span>Rate</span>
-              <span>Per year</span>
-            </div>
-            {rows.map((r) => (
-              <div key={r.key} className="modal-bd-row">
-                <span className="modal-bd-cat">{r.label}</span>
-                <span className="modal-bd-monthly">{fmt(spend[r.key])}</span>
-                <span className="modal-bd-rate">{fmtRate(r.rate)}</span>
-                <span className="modal-bd-earn">{fmt(r.annual)}</span>
+        {/* Left: all text details */}
+        <div className="card-modal-left cmp-modal-left">
+          <div className="card-modal-badge">{card.badge}</div>
+          <h3 className="card-modal-name">{card.name}</h3>
+          <div className="card-modal-issuer">{card.issuer}</div>
+          <div className="card-modal-net-row">
+            <span className="card-modal-net">{fmt(card.netValue)}</span>
+            <span className="card-modal-net-label">net / year for your spend</span>
+          </div>
+          <div className="card-modal-perks">
+            {card.perks.map((p, i) => (
+              <div className="card-modal-perk" key={i}>
+                <span className="card-modal-perk-dot">✦</span>
+                {p}
               </div>
             ))}
-            <div className="modal-bd-row bd-gross">
-              <span className="modal-bd-cat">Gross rewards</span>
-              <span /><span />
-              <span className="modal-bd-earn">{fmt(gross)}</span>
-            </div>
-            <div className="modal-bd-row bd-fee">
-              <span className="modal-bd-cat">Annual fee</span>
-              <span /><span />
-              <span className="modal-bd-earn">
-                {card.annualFee === 0 ? "None" : `-$${card.annualFee}`}
-              </span>
-            </div>
-            <div className="modal-bd-row bd-net">
-              <span className="modal-bd-cat">Net value</span>
-              <span /><span />
-              <span className="modal-bd-earn">{fmt(gross - card.annualFee)}</span>
+          </div>
+
+          <div className="modal-breakdown">
+            <div className="modal-breakdown-label">How we calculated this</div>
+            <div className="modal-bd-table">
+              <div className="modal-bd-head">
+                <span>Category</span>
+                <span>Monthly</span>
+                <span>Rate</span>
+                <span>Per year</span>
+              </div>
+              {rows.map((r) => (
+                <div key={r.key} className="modal-bd-row">
+                  <span className="modal-bd-cat">{r.label}</span>
+                  <span className="modal-bd-monthly">{fmt(spend[r.key])}</span>
+                  <span className="modal-bd-rate">{fmtRate(r.rate)}</span>
+                  <span className="modal-bd-earn">{fmt(r.annual)}</span>
+                </div>
+              ))}
+              <div className="modal-bd-row bd-gross">
+                <span className="modal-bd-cat">Gross rewards</span>
+                <span /><span />
+                <span className="modal-bd-earn">{fmt(gross)}</span>
+              </div>
+              <div className="modal-bd-row bd-fee">
+                <span className="modal-bd-cat">Annual fee</span>
+                <span /><span />
+                <span className="modal-bd-earn">
+                  {card.annualFee === 0 ? "None" : `-$${card.annualFee}`}
+                </span>
+              </div>
+              <div className="modal-bd-row bd-net">
+                <span className="modal-bd-cat">Net value</span>
+                <span /><span />
+                <span className="modal-bd-earn">{fmt(gross - card.annualFee)}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Apply button */}
-      <a
-        href={card.bankUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="card-modal-cta cmp-apply"
-        onClick={() =>
-          fetch("/api/track-click", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cardId: card.id }),
-          }).catch(() => {})
-        }
-      >
-        Apply at {card.issuer} →
-      </a>
-      <div className="card-modal-disclaimer cmp-disclaimer">
-        Issuer terms apply. ClearFin is not affiliated with this provider.
+        {/* Right: card image + apply */}
+        <div className="cmp-card-side">
+          <div className="cmp-card-spinner">
+            <div className="cmp-card-spin-front">
+              {card.img && !imgErr ? (
+                <Image
+                  src={card.img}
+                  alt={card.name}
+                  fill
+                  sizes="180px"
+                  style={{ objectFit: "cover", borderRadius: "inherit" }}
+                  onError={() => setImgErr(true)}
+                />
+              ) : (
+                <div className="cmp-card-img-fallback">{card.issuer}</div>
+              )}
+              <div className="cmp-card-sheen" />
+            </div>
+          </div>
+          <a
+            href={card.bankUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="card-modal-cta cmp-apply"
+            onClick={() =>
+              fetch("/api/track-click", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ cardId: card.id }),
+              }).catch(() => {})
+            }
+          >
+            Apply at {card.issuer} →
+          </a>
+          <div className="card-modal-disclaimer cmp-disclaimer">
+            Issuer terms apply. Not affiliated.
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -167,6 +169,20 @@ function CardSlot({
 
   const selectedCard = selectedId ? CARDS.find((c) => c.id === selectedId) : null;
 
+  const PRIORITY_ISSUERS = [
+    "American Express",
+    "Scotiabank",
+    "BMO",
+    "CIBC",
+    "RBC",
+    "TD Bank",
+  ];
+
+  const issuerRank = (issuer: string) => {
+    const i = PRIORITY_ISSUERS.indexOf(issuer);
+    return i === -1 ? PRIORITY_ISSUERS.length : i;
+  };
+
   const filtered = CARDS
     .filter((c) => {
       if (c.id === otherSelectedId) return false;
@@ -175,9 +191,20 @@ function CardSlot({
       return c.name.toLowerCase().includes(q) || c.issuer.toLowerCase().includes(q);
     })
     .sort((a, b) => {
-      if (a.img && !b.img) return -1;
-      if (!a.img && b.img) return 1;
-      return 0;
+      const aHasImg = !!a.img;
+      const bHasImg = !!b.img;
+      const aRank = issuerRank(a.issuer);
+      const bRank = issuerRank(b.issuer);
+
+      // No image always goes to the bottom
+      if (aHasImg && !bHasImg) return -1;
+      if (!aHasImg && bHasImg) return 1;
+
+      // Both have images or both missing: sort by priority issuer first
+      if (aRank !== bRank) return aRank - bRank;
+
+      // Same issuer group: alphabetical by name
+      return a.name.localeCompare(b.name);
     });
 
   return (
