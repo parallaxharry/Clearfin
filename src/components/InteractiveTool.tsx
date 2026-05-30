@@ -101,7 +101,6 @@ const CARDS: CardDef[] = [
   },
 ];
 
-const BASE_RATE = 0.012; // 1.2% average Canadian card return
 
 /* ══════════════════════════════════════════════════════════
    STEP DEFINITIONS
@@ -202,6 +201,25 @@ const STEPS: Step[] = [
 ══════════════════════════════════════════════════════════ */
 function fmt(n: number) {
   return "$" + Math.round(n).toLocaleString("en-CA");
+}
+
+function fmtRate(r: number): string {
+  return parseFloat((r * 100).toFixed(2)) + "%";
+}
+
+const CAT_LABELS: Record<SpendKey, string> = {
+  dining: "Dining", grocery: "Groceries", gas: "Gas", travel: "Travel", other: "Shopping",
+};
+
+function getBreakdown(card: CardDef, spend: Record<SpendKey, number>) {
+  const rows = STEPS.map((s) => ({
+    key: s.key,
+    label: CAT_LABELS[s.key],
+    rate: card.rates[s.key],
+    annual: spend[s.key] * 12 * card.rates[s.key],
+  }));
+  const gross = rows.reduce((sum, r) => sum + r.annual, 0);
+  return { rows, gross };
 }
 
 function scoreCard(card: CardDef, spend: Record<SpendKey, number>): number {
@@ -318,12 +336,10 @@ export default function InteractiveTool() {
   };
 
   /* ── Calculated values ── */
-  const totalMonthly = Object.values(spend).reduce((a, b) => a + b, 0);
+  const totalMonthly = Object.values(spend).reduce((a, b: number) => a + b, 0);
   const annualSpend = totalMonthly * 12;
-  const currentEarn = annualSpend * BASE_RATE;
   const topCards = getTopCards(spend);
   const bestNetValue = topCards[0]?.netValue ?? 0;
-  const leak = Math.max(0, bestNetValue - currentEarn);
 
   const step = STEPS[currentStep];
   const pct = Math.min((stepValue / step.max) * 100, 100);
@@ -467,10 +483,8 @@ export default function InteractiveTool() {
               <div className="result-header">
                 <div className="result-eyebrow">Your personalised analysis</div>
                 <h2 className="result-title">
-                  You&apos;re leaving{" "}
-                  <span className="result-leak">{fmt(leak)}</span>
-                  <br />
-                  on the table <span className="ital">every year.</span>
+                  <span className="ital">{topCards[0]?.name}</span> will earn you{" "}
+                  <span className="result-leak">{fmt(bestNetValue)}</span> every year.
                 </h2>
               </div>
 
@@ -481,12 +495,8 @@ export default function InteractiveTool() {
                   <div className="result-stat-label">Annual spend</div>
                 </div>
                 <div className="result-stat">
-                  <div className="result-stat-num">{fmt(currentEarn)}</div>
-                  <div className="result-stat-label">Current rewards</div>
-                </div>
-                <div className="result-stat accent">
                   <div className="result-stat-num">{fmt(bestNetValue)}</div>
-                  <div className="result-stat-label">With best card</div>
+                  <div className="result-stat-label">Net rewards / year</div>
                 </div>
               </div>
 
@@ -588,21 +598,56 @@ export default function InteractiveTool() {
                 </div>
               ))}
             </div>
-            <a
-              href={modalCard.bankUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card-modal-cta"
-              onClick={() => fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {})}
-            >
-              Apply at {modalCard.issuer} →
-            </a>
-            <div className="card-modal-disclaimer">
-              Issuer terms apply. ClearFin is not affiliated with this provider.
-            </div>
+
+            {/* Calculation breakdown */}
+            {(() => {
+              const { rows, gross } = getBreakdown(modalCard, spend);
+              return (
+                <div className="modal-breakdown">
+                  <div className="modal-breakdown-label">How we calculated this</div>
+                  <div className="modal-bd-table">
+                    <div className="modal-bd-head">
+                      <span>Category</span>
+                      <span>Monthly</span>
+                      <span>Rate</span>
+                      <span>Per year</span>
+                    </div>
+                    {rows.map((r) => (
+                      <div key={r.key} className="modal-bd-row">
+                        <span className="modal-bd-cat">{r.label}</span>
+                        <span className="modal-bd-monthly">{fmt(spend[r.key])}</span>
+                        <span className="modal-bd-rate">{fmtRate(r.rate)}</span>
+                        <span className="modal-bd-earn">{fmt(r.annual)}</span>
+                      </div>
+                    ))}
+                    <div className="modal-bd-row bd-gross">
+                      <span className="modal-bd-cat">Gross rewards</span>
+                      <span />
+                      <span />
+                      <span className="modal-bd-earn">{fmt(gross)}</span>
+                    </div>
+                    <div className="modal-bd-row bd-fee">
+                      <span className="modal-bd-cat">Annual fee</span>
+                      <span />
+                      <span />
+                      <span className="modal-bd-earn">
+                        {modalCard.annualFee === 0 ? "None" : `-$${modalCard.annualFee}`}
+                      </span>
+                    </div>
+                    <div className="modal-bd-row bd-net">
+                      <span className="modal-bd-cat">Net value</span>
+                      <span />
+                      <span />
+                      <span className="modal-bd-earn">{fmt(gross - modalCard.annualFee)}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
           </div>
 
-          {/* Right: card preview */}
+          {/* Right: card preview + apply */}
           <div className="card-modal-right">
             <div className="card-modal-spinner">
               <div className="card-modal-spin-front">
@@ -615,6 +660,18 @@ export default function InteractiveTool() {
                 />
                 <div className="card-modal-sheen" />
               </div>
+            </div>
+            <a
+              href={modalCard.bankUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-modal-cta"
+              onClick={() => fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {})}
+            >
+              Apply at {modalCard.issuer} →
+            </a>
+            <div className="card-modal-disclaimer">
+              Issuer terms apply. ClearFin is not affiliated with this provider.
             </div>
           </div>
         </div>
