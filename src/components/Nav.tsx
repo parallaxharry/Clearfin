@@ -27,7 +27,7 @@ export default function Nav() {
       <nav className="nav-links">
         <a href="#tool">Calculator</a>
         <a href="#showcase">Cards</a>
-        <a href="#feat-1">Features</a>
+        <a href="#compare">Compare</a>
         <a href="#waitlist">Waitlist</a>
       </nav>
 

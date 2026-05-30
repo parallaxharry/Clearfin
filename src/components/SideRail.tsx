@@ -7,7 +7,7 @@ const SECTIONS = [
   { id: "tool",      num: "02", label: "Calculator" },
   { id: "showcase",  num: "03", label: "Top Picks" },
   { id: "statement", num: "04", label: "Analyse" },
-  { id: "feat-2",    num: "05", label: "Compare" },
+  { id: "compare",   num: "05", label: "Compare" },
   { id: "feat-app",  num: "06", label: "App" },
   { id: "waitlist",  num: "07", label: "Waitlist" },
 ];

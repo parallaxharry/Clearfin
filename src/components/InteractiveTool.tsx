@@ -2,240 +2,11 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-
-/* ══════════════════════════════════════════════════════════
-   CARD DATABASE — Canadian cards with real earn rates
-══════════════════════════════════════════════════════════ */
-interface CardDef {
-  id: string;
-  name: string;
-  issuer: string;
-  annualFee: number;
-  rates: { dining: number; grocery: number; gas: number; travel: number; other: number };
-  badge: string;
-  color: string;
-  description: string;
-  img: string;
-  bankUrl: string;
-  perks: string[];
-}
-
-const CARDS: CardDef[] = [
-  {
-    id: "cobalt",
-    name: "Amex Cobalt",
-    issuer: "American Express",
-    annualFee: 156,
-    rates: { dining: 0.05, grocery: 0.05, gas: 0.02, travel: 0.02, other: 0.01 },
-    badge: "🍽️ Best for Dining",
-    color: "var(--accent-rose)",
-    description: "5x points on dining & groceries. Massive welcome bonus. Best for food spenders.",
-    img: "/cards/amex-cobalt.webp",
-    bankUrl: "https://www.americanexpress.com/en-ca/credit-cards/cobalt-card/",
-    perks: ["5x on dining & food delivery", "5x on groceries", "2x on travel & transit", "1x everything else", "$156/yr · $13/month"],
-  },
-  {
-    id: "scotia-gold",
-    name: "Scotia Gold Amex",
-    issuer: "Scotiabank",
-    annualFee: 120,
-    rates: { dining: 0.05, grocery: 0.06, gas: 0.03, travel: 0.03, other: 0.01 },
-    badge: "🛒 Best Grocery Card",
-    color: "var(--accent-warm)",
-    description: "6x on groceries + 5x dining. Exceptional for everyday Canadian spending.",
-    img: "/cards/Scotiabank-gold-amex.avif",
-    bankUrl: "https://hello.scotiabank.com/lending/triage?productCode=AXG&subProductCode=GC&source=116B&language=en",
-    perks: ["6x Scene+ on groceries", "5x on dining & entertainment", "3x on gas & transit", "No foreign transaction fees", "$120/yr annual fee"],
-  },
-  {
-    id: "td-aeroplan",
-    name: "TD Aeroplan Visa Infinite",
-    issuer: "TD Bank",
-    annualFee: 139,
-    rates: { dining: 0.03, grocery: 0.015, gas: 0.015, travel: 0.03, other: 0.01 },
-    badge: "✈️ Best Travel",
-    color: "#6B8FC9",
-    description: "3x on Air Canada & travel. 1.5x on everyday. Best for Air Canada flyers.",
-    img: "/cards/td-aeroplan-infinite.png",
-    bankUrl: "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/",
-    perks: ["3x Aeroplan on Air Canada", "3x on grocery & dining", "1.5x on all other purchases", "Air Canada companion pass", "$139/yr annual fee"],
-  },
-  {
-    id: "rbc-avion",
-    name: "RBC Avion Visa Infinite",
-    issuer: "RBC",
-    annualFee: 120,
-    rates: { dining: 0.0125, grocery: 0.0125, gas: 0.0125, travel: 0.0125, other: 0.0125 },
-    badge: "🔄 Most Flexible",
-    color: "#4A90D9",
-    description: "1.25x on everything. Transfer to 30+ airline partners. Suits diverse spenders.",
-    img: "/cards/rbc-avion-infinite.webp",
-    bankUrl: "https://apps.royalbank.com/apps/IAO/apply/cardapp?pid1=avion_inf&ASC=3D2111&_gl=1*1jecaqy*_gcl_au*MzQ5OTM5MDc2LjE3NzgzNzQ5MjI.*_ga*MjEwMDcyNDEyNC4xNzc4Mzc0OTIy*_ga_89NPCTDXQR*czE3NzgzNzQ5MjEkbzEkZzEkdDE3NzgzNzQ5NDgkajMzJGwwJGgw",
-    perks: ["1.25x RBC Avion points on all purchases", "Transfer to 30+ airline partners", "Airport lounge access", "Travel insurance included", "$120/yr annual fee"],
-  },
-  {
-    id: "bmo-eclipse",
-    name: "BMO Eclipse Visa Infinite",
-    issuer: "BMO",
-    annualFee: 120,
-    rates: { dining: 0.05, grocery: 0.05, gas: 0.05, travel: 0.01, other: 0.01 },
-    badge: "⛽ Best Gas Card",
-    color: "#2B6CB0",
-    description: "5x on dining, grocery, and gas. $50 lifestyle credit. Great all-rounder.",
-    img: "/cards/bmo-eclipse.png",
-    bankUrl: "https://www.bmo.com/main/personal/credit-cards/getting-started/?lang=en&rg=BMO&PID=VISDX&MID=3930192&OFFERCODE=RQTSX00008&OFFERDATE=20251031&income_quiz=true&income=60000&household_income=100000&monthly_spend=1250&PIDBASE=VPVDM&PIDUP=VISDY&MIDBASE=3930758&OFFERCODEBASE=RQTVP00001&OFFERDATEBASE=20220910&MIDUP=6011141&OFFERCODEUP=RQTSY00005&OFFERDATEUP=20251031&income_up=150000&household_income_up=200000&monthly_spend_up=4167",
-    perks: ["5x on dining, grocery & gas", "5x on drugstore purchases", "$50 annual lifestyle credit", "No foreign transaction fees", "$120/yr annual fee"],
-  },
-  {
-    id: "wealthsimple",
-    name: "Wealthsimple Card",
-    issuer: "Wealthsimple",
-    annualFee: 0,
-    rates: { dining: 0.01, grocery: 0.01, gas: 0.01, travel: 0.01, other: 0.01 },
-    badge: "💸 No-Fee Pick",
-    color: "#48BB78",
-    description: "1% cashback on everything. No annual fee. Ideal as a backup or starter card.",
-    img: "/cards/newwealthsimple.webp",
-    bankUrl: "https://www.wealthsimple.com/en-ca/spend",
-    perks: ["1% back in cash or crypto", "No annual fee ever", "No foreign transaction fees", "Instant cashback at checkout", "Works with all major retailers"],
-  },
-];
-
-
-/* ══════════════════════════════════════════════════════════
-   STEP DEFINITIONS
-══════════════════════════════════════════════════════════ */
-type SpendKey = "dining" | "grocery" | "gas" | "travel" | "other";
-
-interface Step {
-  key: SpendKey;
-  icon: string;
-  label: string;
-  question: string;
-  hint: string;
-  max: number;
-  defaultVal: number;
-  presets: { label: string; value: number }[];
-}
-
-const STEPS: Step[] = [
-  {
-    key: "dining",
-    icon: "🍽️",
-    label: "Dining & Restaurants",
-    question: "How much do you spend eating out each month?",
-    hint: "Restaurants, cafes, takeout, food delivery",
-    max: 2000,
-    defaultVal: 400,
-    presets: [
-      { label: "Light ($200)", value: 200 },
-      { label: "Average ($400)", value: 400 },
-      { label: "Frequent ($800)", value: 800 },
-      { label: "Daily ($1,500)", value: 1500 },
-    ],
-  },
-  {
-    key: "grocery",
-    icon: "🛒",
-    label: "Groceries",
-    question: "What's your monthly grocery budget?",
-    hint: "Supermarkets, Costco, farm boxes",
-    max: 3000,
-    defaultVal: 600,
-    presets: [
-      { label: "Solo ($300)", value: 300 },
-      { label: "Couple ($600)", value: 600 },
-      { label: "Family ($1,000)", value: 1000 },
-      { label: "Large family ($1,800)", value: 1800 },
-    ],
-  },
-  {
-    key: "gas",
-    icon: "⛽",
-    label: "Gas & Fuel",
-    question: "How much do you spend on gas monthly?",
-    hint: "Petrol, diesel, EV charging",
-    max: 1500,
-    defaultVal: 150,
-    presets: [
-      { label: "Minimal ($50)", value: 50 },
-      { label: "Commuter ($150)", value: 150 },
-      { label: "Heavy driver ($300)", value: 300 },
-      { label: "Fleet ($600)", value: 600 },
-    ],
-  },
-  {
-    key: "travel",
-    icon: "✈️",
-    label: "Travel",
-    question: "What do you spend monthly on travel?",
-    hint: "Flights, hotels, car rentals (annual total ÷ 12)",
-    max: 5000,
-    defaultVal: 300,
-    presets: [
-      { label: "Occasional ($100)", value: 100 },
-      { label: "A few trips ($300)", value: 300 },
-      { label: "Frequent ($700)", value: 700 },
-      { label: "Road warrior ($2,000)", value: 2000 },
-    ],
-  },
-  {
-    key: "other",
-    icon: "🛍️",
-    label: "Shopping & Other",
-    question: "Everything else — what's left?",
-    hint: "Shopping, utilities, subscriptions, services",
-    max: 5000,
-    defaultVal: 500,
-    presets: [
-      { label: "Minimal ($200)", value: 200 },
-      { label: "Average ($500)", value: 500 },
-      { label: "Active ($1,000)", value: 1000 },
-      { label: "Heavy ($2,500)", value: 2500 },
-    ],
-  },
-];
-
-/* ══════════════════════════════════════════════════════════
-   HELPERS
-══════════════════════════════════════════════════════════ */
-function fmt(n: number) {
-  return "$" + Math.round(n).toLocaleString("en-CA");
-}
-
-function fmtRate(r: number): string {
-  return parseFloat((r * 100).toFixed(2)) + "%";
-}
-
-const CAT_LABELS: Record<SpendKey, string> = {
-  dining: "Dining", grocery: "Groceries", gas: "Gas", travel: "Travel", other: "Shopping",
-};
-
-function getBreakdown(card: CardDef, spend: Record<SpendKey, number>) {
-  const rows = STEPS.map((s) => ({
-    key: s.key,
-    label: CAT_LABELS[s.key],
-    rate: card.rates[s.key],
-    annual: spend[s.key] * 12 * card.rates[s.key],
-  }));
-  const gross = rows.reduce((sum, r) => sum + r.annual, 0);
-  return { rows, gross };
-}
-
-function scoreCard(card: CardDef, spend: Record<SpendKey, number>): number {
-  const annualEarn = Object.entries(spend).reduce(
-    (sum, [k, v]) => sum + v * 12 * card.rates[k as SpendKey],
-    0
-  );
-  return annualEarn - card.annualFee;
-}
-
-function getTopCards(spend: Record<SpendKey, number>, n = 3) {
-  return [...CARDS]
-    .map((c) => ({ ...c, netValue: scoreCard(c, spend) }))
-    .sort((a, b) => b.netValue - a.netValue)
-    .slice(0, n);
-}
+import {
+  CARDS, CardDef, SpendKey, DEFAULT_SPEND, STEPS,
+  fmt, fmtRate, getBreakdown, getTopCards,
+} from "@/lib/cards";
+import { useSpend } from "@/context/SpendContext";
 
 /* ══════════════════════════════════════════════════════════
    LIVE TICKER — Canadians lose every minute
@@ -258,11 +29,9 @@ function useTicker(start = 1612) {
 type ToolState = "gate" | "step" | "result";
 
 export default function InteractiveTool() {
+  const { spend, setSpend: onSpendChange } = useSpend();
   const [toolState, setToolState] = useState<ToolState>("gate");
   const [currentStep, setCurrentStep] = useState(0);
-  const [spend, setSpend] = useState<Record<SpendKey, number>>({
-    dining: 400, grocery: 600, gas: 150, travel: 300, other: 500,
-  });
   const [stepValue, setStepValue] = useState(STEPS[0].defaultVal);
   const [animDir, setAnimDir] = useState<"in" | "out">("in");
   const [visible, setVisible] = useState(true);
@@ -299,7 +68,7 @@ export default function InteractiveTool() {
   const handleNext = () => {
     const key = STEPS[currentStep].key;
     const newSpend = { ...spend, [key]: stepValue };
-    setSpend(newSpend);
+    onSpendChange(newSpend);
 
     if (currentStep < STEPS.length - 1) {
       transition(() => setCurrentStep((s) => s + 1));
@@ -319,9 +88,8 @@ export default function InteractiveTool() {
   const handleRestart = () => {
     transition(() => {
       setCurrentStep(0);
-      setSpend({ dining: 400, grocery: 600, gas: 150, travel: 300, other: 500 });
+      onSpendChange(DEFAULT_SPEND);
       setStepValue(STEPS[0].defaultVal);
-      // Go straight to step 1, skip gate
       setToolState("step");
     });
   };

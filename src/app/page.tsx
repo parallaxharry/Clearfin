@@ -3,9 +3,11 @@ import Nav from "@/components/Nav";
 import SideRail from "@/components/SideRail";
 import PageEffects from "@/components/PageEffects";
 import InteractiveTool from "@/components/InteractiveTool";
+import CompareSection from "@/components/CompareSection";
 import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
 import StatementUpload from "@/components/StatementUpload";
+import { SpendProvider } from "@/context/SpendContext";
 
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
@@ -169,87 +171,27 @@ export default function HomePage() {
         <div className="section-divider-bottom" />
       </section>
 
-      {/* ══════════════════════════════════════
-          02 INTERACTIVE TOOL
-      ══════════════════════════════════════ */}
-      <InteractiveTool />
+      <SpendProvider>
+        {/* ══════════════════════════════════════
+            02 INTERACTIVE TOOL
+        ══════════════════════════════════════ */}
+        <InteractiveTool />
 
-      {/* ══════════════════════════════════════
-          03 TOP PICKS BY CATEGORY
-      ══════════════════════════════════════ */}
-      <TopPicks />
+        {/* ══════════════════════════════════════
+            03 TOP PICKS BY CATEGORY
+        ══════════════════════════════════════ */}
+        <TopPicks />
 
-      {/* ══════════════════════════════════════
-          04 STATEMENT UPLOAD + CONSULTATION
-      ══════════════════════════════════════ */}
-      <StatementUpload />
+        {/* ══════════════════════════════════════
+            04 STATEMENT UPLOAD + CONSULTATION
+        ══════════════════════════════════════ */}
+        <StatementUpload />
 
-      {/* ══════════════════════════════════════
-          05 COMPARISON ENGINE
-      ══════════════════════════════════════ */}
-      <section className="feat" id="feat-2">
-        <div className="section-num">05 / Comparison Engine</div>
-        <div className="feat-wrap">
-          <div className="feat-text reveal">
-            <div className="feat-eyebrow">107 cards · 17 issuers</div>
-            <h2 className="feat-title">
-              We did the <span className="ital">spreadsheet</span> so you don&apos;t have to.
-            </h2>
-            <p className="feat-body">
-              Every Canadian credit card broken down by category, multiplier, annual fee,
-              welcome bonus, and net-of-fee return on your actual spend. Updated continuously.
-            </p>
-            <div className="feat-list">
-              <div className="feat-list-item">Category-by-category multiplier mapping</div>
-              <div className="feat-list-item">Net-of-annual-fee return calculation</div>
-              <div className="feat-list-item">Welcome bonus tracking</div>
-            </div>
-          </div>
-          <div className="feat-visual reveal">
-            <div className="bars" aria-hidden="true">
-              {[
-                { name: "Cobalt",    w: 0.92, amt: "$1,142" },
-                { name: "Scotia G", w: 0.78, amt: "$967" },
-                { name: "Aeroplan", w: 0.61, amt: "$754" },
-                { name: "Avion",    w: 0.48, amt: "$595" },
-                { name: "Tangerine",w: 0.34, amt: "$421" },
-              ].map((b) => (
-                <div className="bar-row" key={b.name}>
-                  <div className="bar-name">{b.name}</div>
-                  <div className="bar-track">
-                    <div className="bar-fill" style={{ "--w": b.w } as React.CSSProperties} />
-                  </div>
-                  <div className="bar-amt">{b.amt}</div>
-                </div>
-              ))}
-            </div>
-            <table className="sr-only">
-              <caption>Estimated annual cashback and rewards by Canadian credit card</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Card</th>
-                  <th scope="col">Estimated Annual Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { name: "Amex Cobalt", amt: "$1,142" },
-                  { name: "Scotiabank Gold Amex", amt: "$967" },
-                  { name: "TD Aeroplan Visa Infinite", amt: "$754" },
-                  { name: "RBC Avion Visa Infinite", amt: "$595" },
-                  { name: "Tangerine Money-Back", amt: "$421" },
-                ].map((row) => (
-                  <tr key={row.name}>
-                    <td>{row.name}</td>
-                    <td>{row.amt}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="section-divider-bottom" />
-      </section>
+        {/* ══════════════════════════════════════
+            05 COMPARE CARDS
+        ══════════════════════════════════════ */}
+        <CompareSection />
+      </SpendProvider>
 
       {/* ══════════════════════════════════════
           06 APP PREVIEW + CLEARSAVE
