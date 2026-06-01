@@ -384,6 +384,10 @@ export default function CompareSection() {
         </div>
 
         <p className="cmp-disclaimer-foot">
+          Cards that earn points or miles are shown as an estimated cash value.{" "}
+          <a href="/credit-card-rewards-canada-guide">See the Rewards Guide</a> for how we convert points to a percentage.
+        </p>
+        <p className="cmp-disclaimer-foot cmp-disclaimer-fine">
           Estimates based on publicly available reward rates · Actual rewards may vary · ClearFin is not affiliated with any card issuer
         </p>
       </div>
