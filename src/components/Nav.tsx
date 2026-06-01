@@ -28,6 +28,7 @@ export default function Nav() {
         <a href="#tool">Calculator</a>
         <a href="#showcase">Cards</a>
         <a href="#compare">Compare</a>
+        <a href="/credit-card-rewards-canada-guide">Rewards Guide</a>
         <a href="#waitlist">Waitlist</a>
       </nav>
 

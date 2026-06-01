@@ -111,8 +111,9 @@ img { max-width: 100%; display: block; }
 }
 .nav.scrolled { backdrop-filter: blur(20px); background: rgba(0,0,0,.5); border-bottom: 1px solid var(--line); }
 .nav-links {
-  display: flex; gap: 40px; font-family: var(--font-jetbrains), monospace;
+  display: flex; gap: 30px; font-family: var(--font-jetbrains), monospace;
   font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-mute);
+  white-space: nowrap;
 }
 .nav-links a { transition: color .2s; }
 .nav-links a:hover { color: var(--ink); }
