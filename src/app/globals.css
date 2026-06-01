@@ -1488,8 +1488,8 @@ section {
 .modal-bd-head,
 .modal-bd-row {
   display: grid;
-  grid-template-columns: 1fr 52px 40px 64px;
-  gap: 8px; padding: 10px 14px; align-items: center;
+  grid-template-columns: 1fr 56px 44px 68px;
+  gap: 14px; padding: 10px 14px; align-items: center;
 }
 .modal-bd-head {
   background: rgba(255,255,255,.06);
@@ -1497,7 +1497,7 @@ section {
 }
 .modal-bd-head span {
   font-family: var(--font-jetbrains), monospace;
-  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
   color: rgba(245,245,242,.55);
 }
 .modal-bd-head span:nth-child(2),

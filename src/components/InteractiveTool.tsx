@@ -378,7 +378,7 @@ export default function InteractiveTool() {
                       <span>Category</span>
                       <span>Monthly</span>
                       <span>Rate</span>
-                      <span>Per year</span>
+                      <span>Yearly</span>
                     </div>
                     {rows.map((r) => (
                       <div key={r.key} className="modal-bd-row">
