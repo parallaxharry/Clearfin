@@ -183,14 +183,14 @@ export default function HomePage() {
         <TopPicks />
 
         {/* ══════════════════════════════════════
-            04 STATEMENT UPLOAD + CONSULTATION
-        ══════════════════════════════════════ */}
-        <StatementUpload />
-
-        {/* ══════════════════════════════════════
-            05 COMPARE CARDS
+            04 COMPARE CARDS
         ══════════════════════════════════════ */}
         <CompareSection />
+
+        {/* ══════════════════════════════════════
+            05 STATEMENT UPLOAD + CONSULTATION
+        ══════════════════════════════════════ */}
+        <StatementUpload />
       </SpendProvider>
 
       {/* ══════════════════════════════════════

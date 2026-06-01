@@ -86,7 +86,7 @@ export default function StatementUpload() {
 
   return (
     <section className="feat" id="statement">
-      <div className="section-num">04 / Analyse Your Cards</div>
+      <div className="section-num">05 / Analyse Your Cards</div>
       <div className="statement-wrap">
         <div className="statement-left reveal">
           <div className="statement-eyebrow">Upload - Instant analysis</div>

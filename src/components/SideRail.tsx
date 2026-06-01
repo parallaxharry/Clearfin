@@ -6,8 +6,8 @@ const SECTIONS = [
   { id: "hero",      num: "01", label: "Hero" },
   { id: "tool",      num: "02", label: "Calculator" },
   { id: "showcase",  num: "03", label: "Top Picks" },
-  { id: "statement", num: "04", label: "Analyse" },
-  { id: "compare",   num: "05", label: "Compare" },
+  { id: "compare",   num: "04", label: "Compare" },
+  { id: "statement", num: "05", label: "Analyse" },
   { id: "feat-app",  num: "06", label: "App" },
   { id: "waitlist",  num: "07", label: "Waitlist" },
 ];

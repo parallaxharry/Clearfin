@@ -307,7 +307,7 @@ export default function CompareSection() {
 
   return (
     <section id="compare">
-      <div className="section-num">05 / Compare Cards</div>
+      <div className="section-num">04 / Compare Cards</div>
       <div className="cmp-wrap">
 
         {/* Header */}
