@@ -26,7 +26,7 @@ const CURATION: { id: string; category: string; rate: string }[] = [
   { id: "td-aeroplan",  category: "Best for Travel",    rate: "1.5x on Air Canada" },
   { id: "bmo-eclipse",  category: "Best for Gas",       rate: "5x on gas" },
   { id: "wealthsimple", category: "Best No-Fee Card",   rate: "2% on everything" },
-  { id: "rbc-avion",    category: "Most Flexible",      rate: "1.25x on travel" },
+  { id: "rbc-avion",    category: "Most Flexible",      rate: "30+ transfer partners" },
 ];
 
 const PICKS: PickCard[] = CURATION.flatMap((pick) => {
