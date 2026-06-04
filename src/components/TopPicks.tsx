@@ -143,7 +143,6 @@ export default function TopPicks() {
                 <span className="card-modal-net">{selectedCard.rate}</span>
                 <span className="card-modal-net-label">reward highlight</span>
               </div>
-              <p className="card-modal-summary">{selectedCard.desc}</p>
               <div className="card-modal-perks">
                 {selectedCard.perks.map((perk) => (
                   <div className="card-modal-perk" key={perk}>
