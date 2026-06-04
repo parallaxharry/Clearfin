@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { CARDS } from "@/lib/cards";
 
 interface PickCard {
   id: string;
@@ -15,104 +16,34 @@ interface PickCard {
   perks: string[];
 }
 
-const PICKS: PickCard[] = [
-  {
-    id: "amex-cobalt",
-    category: "Best for Dining",
-    name: "Amex Cobalt",
-    issuer: "American Express",
-    rate: "5x on dining",
-    desc: "5x points on restaurants and food delivery. Massive welcome bonus. Canada's top dining card.",
-    img: "/cards/amex-cobalt.webp",
-    bankUrl: "https://www.americanexpress.com/en-ca/credit-cards/cobalt-card/",
-    perks: [
-      "5x points on dining and food delivery",
-      "5x points on groceries",
-      "2x points on travel and transit",
-      "Strong everyday rewards for food-heavy spenders",
-    ],
-  },
-  {
-    id: "scotia-gold",
-    category: "Best for Groceries",
-    name: "Scotiabank Gold Amex",
-    issuer: "Scotiabank",
-    rate: "6x on groceries",
-    desc: "6x Scene+ points on grocery stores plus 5x dining. Best everyday Canadian card.",
-    img: "/cards/Scotiabank-gold-amex.avif",
-    bankUrl: "https://hello.scotiabank.com/lending/triage?productCode=AXG&subProductCode=GC&source=116B&language=en",
-    perks: [
-      "6x Scene+ points on groceries",
-      "5x points on dining and entertainment",
-      "3x points on gas and transit",
-      "Useful for everyday Canadian spending",
-    ],
-  },
-  {
-    id: "td-aeroplan",
-    category: "Best for Travel",
-    name: "TD Aeroplan Visa Infinite",
-    issuer: "TD Bank",
-    rate: "3x on travel",
-    desc: "3x Aeroplan points on Air Canada and travel purchases. Top choice for frequent flyers.",
-    img: "/cards/td-aeroplan-infinite.png",
-    bankUrl: "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/",
-    perks: [
-      "Aeroplan points on Air Canada purchases",
-      "Elevated travel rewards",
-      "Strong fit for frequent flyers",
-      "Travel benefits depend on issuer terms",
-    ],
-  },
-  {
-    id: "bmo-eclipse",
-    category: "Best for Gas",
-    name: "BMO Eclipse Visa Infinite",
-    issuer: "BMO",
-    rate: "5x on gas",
-    desc: "5x points on gas, grocery, and dining plus a $50 annual lifestyle credit. Great all-rounder.",
-    img: "/cards/bmo-eclipse.png",
-    bankUrl: "https://www.bmo.com/main/personal/credit-cards/getting-started/?lang=en&rg=BMO&PID=VISDX&MID=3930192&OFFERCODE=RQTSX00008&OFFERDATE=20251031&income_quiz=true&income=60000&household_income=100000&monthly_spend=1250&PIDBASE=VPVDM&PIDUP=VISDY&MIDBASE=3930758&OFFERCODEBASE=RQTVP00001&OFFERDATEBASE=20220910&MIDUP=6011141&OFFERCODEUP=RQTSY00005&OFFERDATEUP=20251031&income_up=150000&household_income_up=200000&monthly_spend_up=4167",
-    perks: [
-      "5x points on gas, groceries, and dining",
-      "Useful for regular commuter spending",
-      "$50 annual lifestyle credit",
-      "Good all-round card for mixed categories",
-    ],
-  },
-  {
-    id: "wealthsimple",
-    category: "Best No-Fee Card",
-    name: "Wealthsimple Card",
-    issuer: "Wealthsimple",
-    rate: "1% on everything",
-    desc: "1% cashback in cash or crypto. No annual fee. The cleanest everyday backup card.",
-    img: "/cards/newwealthsimple.webp",
-    bankUrl: "https://www.wealthsimple.com/en-ca/spend",
-    perks: [
-      "1% back on everyday purchases",
-      "No annual fee",
-      "Simple rewards structure",
-      "Good backup card for uncategorized spending",
-    ],
-  },
-  {
-    id: "rbc-avion",
-    category: "Most Flexible",
-    name: "RBC Avion Visa Infinite",
-    issuer: "RBC",
-    rate: "1.25x on everything",
-    desc: "1.25x on all purchases. Transfer to 30+ airline partners. Suits diverse spenders.",
-    img: "/cards/rbc-avion-infinite.webp",
-    bankUrl: "https://apps.royalbank.com/apps/IAO/apply/cardapp?pid1=avion_inf&ASC=3D2111&_gl=1*1jecaqy*_gcl_au*MzQ5OTM5MDc2LjE3NzgzNzQ5MjI.*_ga*MjEwMDcyNDEyNC4xNzc4Mzc0OTIy*_ga_89NPCTDXQR*czE3NzgzNzQ5MjEkbzEkZzEkdDE3NzgzNzQ5NDgkajMzJGwwJGgw",
-    perks: [
-      "Flexible Avion points on purchases",
-      "Useful transfer options for travellers",
-      "Good fit for varied spending",
-      "Travel redemption value depends on program terms",
-    ],
-  },
+/* Editorial curation only: which cards are featured, the category label, and the
+   headline highlight. All factual data (name, issuer, image, perks, description,
+   apply link) is pulled from the verified card database in lib/cards.ts so it can
+   never drift out of sync. */
+const CURATION: { id: string; category: string; rate: string }[] = [
+  { id: "cobalt",       category: "Best for Dining",    rate: "5x on dining" },
+  { id: "scotia-gold",  category: "Best for Groceries", rate: "6x on groceries" },
+  { id: "td-aeroplan",  category: "Best for Travel",    rate: "1.5x on Air Canada" },
+  { id: "bmo-eclipse",  category: "Best for Gas",       rate: "5x on gas" },
+  { id: "wealthsimple", category: "Best No-Fee Card",   rate: "2% on everything" },
+  { id: "rbc-avion",    category: "Most Flexible",      rate: "1.25x on travel" },
 ];
+
+const PICKS: PickCard[] = CURATION.flatMap((pick) => {
+  const card = CARDS.find((c) => c.id === pick.id);
+  if (!card) return [];
+  return [{
+    id: card.id,
+    category: pick.category,
+    name: card.name,
+    issuer: card.issuer,
+    rate: pick.rate,
+    desc: card.description,
+    img: card.img,
+    bankUrl: card.bankUrl,
+    perks: card.perks,
+  }];
+});
 
 async function trackClick(cardId: string) {
   try {

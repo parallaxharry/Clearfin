@@ -251,8 +251,8 @@ export default function InteractiveTool() {
               <div className="result-header">
                 <div className="result-eyebrow">Your personalised analysis</div>
                 <h2 className="result-title">
-                  <span className="ital">{topCards[0]?.name}</span> will earn you{" "}
-                  <span className="result-leak">{fmt(bestNetValue)}</span> every year.
+                  <span className="ital">{topCards[0]?.name}</span> could earn you an
+                  estimated <span className="result-leak">{fmt(bestNetValue)}</span> a year.
                 </h2>
               </div>
 
@@ -264,7 +264,7 @@ export default function InteractiveTool() {
                 </div>
                 <div className="result-stat">
                   <div className="result-stat-num">{fmt(bestNetValue)}</div>
-                  <div className="result-stat-label">Net rewards / year</div>
+                  <div className="result-stat-label">Est. rewards / year</div>
                 </div>
               </div>
 
