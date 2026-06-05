@@ -6,7 +6,6 @@ import InteractiveTool from "@/components/InteractiveTool";
 import CompareSection from "@/components/CompareSection";
 import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
-import StatementUpload from "@/components/StatementUpload";
 import { SpendProvider } from "@/context/SpendContext";
 
 const softwareApplicationSchema = {
@@ -186,18 +185,13 @@ export default function HomePage() {
             04 COMPARE CARDS
         ══════════════════════════════════════ */}
         <CompareSection />
-
-        {/* ══════════════════════════════════════
-            05 STATEMENT UPLOAD + CONSULTATION
-        ══════════════════════════════════════ */}
-        <StatementUpload />
       </SpendProvider>
 
       {/* ══════════════════════════════════════
-          06 APP PREVIEW + CLEARSAVE
+          05 APP PREVIEW + CLEARSAVE
       ══════════════════════════════════════ */}
       <section className="feat" id="feat-app">
-        <div className="section-num">06 / Coming Soon</div>
+        <div className="section-num">05 / Coming Soon</div>
         <div className="feat-wrap">
           <div className="feat-text reveal">
             <div className="feat-eyebrow">Mobile App · 2026</div>
@@ -261,10 +255,10 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════
-          07 WAITLIST
+          06 WAITLIST
       ══════════════════════════════════════ */}
       <section id="waitlist">
-        <div className="section-num">07 / Waitlist</div>
+        <div className="section-num">06 / Waitlist</div>
         <div className="wait-wrap">
           <div className="wait-eyebrow reveal">Limited spots · Calgary first</div>
           <h2 className="wait-title reveal">

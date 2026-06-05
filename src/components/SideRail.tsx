@@ -7,9 +7,8 @@ const SECTIONS = [
   { id: "tool",      num: "02", label: "Calculator" },
   { id: "showcase",  num: "03", label: "Top Picks" },
   { id: "compare",   num: "04", label: "Compare" },
-  { id: "statement", num: "05", label: "Analyse" },
-  { id: "feat-app",  num: "06", label: "App" },
-  { id: "waitlist",  num: "07", label: "Waitlist" },
+  { id: "feat-app",  num: "05", label: "App" },
+  { id: "waitlist",  num: "06", label: "Waitlist" },
 ];
 
 export default function SideRail() {
