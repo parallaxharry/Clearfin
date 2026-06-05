@@ -35,6 +35,8 @@ L.push(`  purchase_apr        numeric,`);
 L.push(`  fx_fee              numeric,`);
 L.push(`  welcome_bonus       text,`);
 L.push(`  earn_caps           text,`);
+L.push(`  credit_score        text,`);
+L.push(`  reward_program      text,`);
 L.push(`  affiliate_url       text,`);
 L.push(`  is_active           boolean not null default true,`);
 L.push(`  notes               text,`);

@@ -29,6 +29,8 @@ create table if not exists public.card_catalog (
   fx_fee              numeric,
   welcome_bonus       text,
   earn_caps           text,
+  credit_score        text,
+  reward_program      text,
   affiliate_url       text,
   is_active           boolean not null default true,
   notes               text,
