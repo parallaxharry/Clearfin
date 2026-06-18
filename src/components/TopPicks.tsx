@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CARDS } from "@/lib/cards";
+import { useCatalog } from "@/context/CatalogContext";
 
 interface PickCard {
   id: string;
@@ -59,6 +61,21 @@ async function trackClick(cardId: string) {
 
 export default function TopPicks() {
   const [selectedCard, setSelectedCard] = useState<PickCard | null>(null);
+  const catalog = useCatalog();
+
+  // Overlay Supabase display fields onto each curated pick (perks ← rewards).
+  const picks: PickCard[] = PICKS.map((p) => {
+    const info = catalog[p.id];
+    if (!info) return p;
+    return {
+      ...p,
+      name: info.name ?? p.name,
+      issuer: info.issuer ?? p.issuer,
+      img: info.img ?? p.img,
+      bankUrl: info.bankUrl ?? p.bankUrl,
+      perks: info.rewards.length > 0 ? info.rewards : p.perks,
+    };
+  });
 
   useEffect(() => {
     document.body.style.overflow = selectedCard ? "hidden" : "";
@@ -84,7 +101,7 @@ export default function TopPicks() {
           </div>
 
           <div className="top-picks-grid">
-            {PICKS.map((card) => (
+            {picks.map((card) => (
               <button
                 key={card.id}
                 type="button"
@@ -160,6 +177,9 @@ export default function TopPicks() {
               >
                 Apply at {selectedCard.issuer} -&gt;
               </a>
+              <Link href={`/credit-cards/${selectedCard.id}`} className="card-modal-view">
+                View full details
+              </Link>
               <div className="card-modal-disclaimer">
                 Issuer terms apply. ClearFin is not affiliated with this provider.
               </div>

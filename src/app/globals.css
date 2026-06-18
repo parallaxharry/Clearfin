@@ -1418,6 +1418,21 @@ section {
   transition: all .2s;
 }
 .card-modal-cta:hover { background: var(--ink); }
+/* Secondary "View full details" action beside the Apply CTA → /credit-cards/<id>.
+   Outlined button so it reads as a clear, bold secondary action. */
+.card-modal-view {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 10px;
+  font-family: var(--font-jetbrains), monospace; font-size: 11px; letter-spacing: .2em;
+  text-transform: uppercase; font-weight: 600; color: var(--ink);
+  background: transparent; border: 1px solid var(--line-strong); border-radius: 2px;
+  padding: 11px 22px; align-self: flex-start;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.card-modal-view::after { content: "→"; opacity: .85; transition: transform .2s; }
+.card-modal-view:hover { background: rgba(255,255,255,.05); border-color: var(--ink); }
+.card-modal-view:hover::after { transform: translateX(3px); }
+.card-modal-right .card-modal-view { align-self: center; }
+.cmp-view { width: 100%; justify-content: center; align-self: center; font-size: 10px; letter-spacing: .12em; padding: 9px 8px; }
 .card-modal-disclaimer {
   font-family: var(--font-jetbrains), monospace;
   font-size: 11px;
@@ -2403,4 +2418,336 @@ section {
   .cmp-wrap { padding: 0 24px; }
   .cmp-grid { grid-template-columns: 1fr; }
   .cmp-selector-row { gap: 8px; }
+}
+
+/* ─────────────────────────────────────────────
+   CARD DETAIL PAGE  (/credit-cards/[id])
+   Extends the ClearFin dark editorial brand.
+   Asymmetric content + sticky facts sidebar.
+   Uses div/article/header (never <section>) to avoid
+   the global full-viewport scroll-snap behaviour.
+───────────────────────────────────────────── */
+.cardpg { background: var(--bg); min-height: 100dvh; }
+/* Left-anchored to the nav's 48px gutter so the hero lines up under the logo (not centered) */
+.cardpg-main { max-width: 1760px; margin: 0 auto 0 0; padding: 112px 48px 0; }
+
+/* ── Hero: copy left, card right (no frame) ── */
+.cardpg-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: 56px;
+  align-items: center;
+  padding: 20px 0 36px;
+}
+.cardpg-hero-copy { min-width: 0; }
+.cardpg-eyebrow {
+  font-family: var(--font-jetbrains), monospace; font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--accent-warm);
+  margin-bottom: 20px;
+}
+.cardpg-title {
+  font-family: var(--font-fraunces), serif; font-weight: 400;
+  font-size: clamp(38px, 5vw, 64px); line-height: 1.04;
+  letter-spacing: -.02em; color: var(--ink); margin-bottom: 20px;
+  text-wrap: balance;
+}
+.cardpg-lede {
+  font-size: 20px; line-height: 1.55; color: rgba(245,245,242,.9);
+  max-width: 40ch; margin-bottom: 28px; font-weight: 300;
+}
+.cardpg-lede strong { color: var(--accent-warm); font-weight: 400; }
+.cardpg-hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+/* Hero spec strip - the card's economics, hairline-divided */
+.cardpg-hero-stats {
+  display: flex; flex-wrap: wrap; gap: 0;
+  margin-top: 38px; padding-top: 26px; border-top: 1px solid var(--line);
+}
+.cardpg-stat { flex: 1 1 130px; min-width: 0; padding: 0 24px; border-left: 1px solid var(--line); }
+.cardpg-stat:first-child { padding-left: 0; border-left: none; }
+.cardpg-stat-label {
+  font-family: var(--font-jetbrains), monospace; font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--ink-mute);
+  margin-bottom: 11px;
+}
+.cardpg-stat-value {
+  font-family: var(--font-fraunces), serif; font-weight: 400;
+  font-size: 27px; line-height: 1; color: var(--ink); margin: 0;
+}
+.cardpg-stat-sub { font-size: 12.5px; line-height: 1.3; color: var(--accent-warm); margin-top: 8px; }
+@media (max-width: 600px) {
+  .cardpg-hero-stats { gap: 22px 0; }
+  .cardpg-stat { flex-basis: 45%; padding: 0; border-left: none; }
+  .cardpg-stat-credit { flex-basis: 100%; }
+}
+
+/* Hero card image - clean, no surrounding panel */
+.cardpg-hero-media { position: relative; justify-self: end; align-self: start; margin-top: 16px; width: 100%; max-width: 420px; min-width: 0; }
+.cardpg-hero-img {
+  width: 100%; max-width: 100%; height: auto; border-radius: 14px;
+  box-shadow: 0 40px 90px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06);
+}
+.cardpg-badge {
+  position: absolute; top: 14px; left: 14px;
+  font-family: var(--font-jetbrains), monospace; font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: #000; background: var(--accent-warm);
+  padding: 6px 12px; border-radius: 999px;
+}
+
+/* ── CTAs ── */
+.cardpg-apply {
+  display: inline-flex; align-items: center; gap: 10px; justify-content: center;
+  background: var(--accent-warm); color: #000;
+  padding: 15px 28px; border-radius: 999px;
+  font-family: var(--font-archivo), sans-serif; font-weight: 600; font-size: 15px;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.cardpg-apply:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(231,217,183,.24); }
+.cardpg-apply:active { transform: translateY(0) scale(.98); }
+.cardpg-apply-arrow { transition: transform .3s var(--ease); }
+.cardpg-apply:hover .cardpg-apply-arrow { transform: translateX(4px); }
+.cardpg-cta-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-jetbrains), monospace; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute);
+  transition: color .25s;
+}
+.cardpg-cta-secondary:hover { color: var(--ink); }
+.cardpg-microcopy {
+  font-size: 12.5px; line-height: 1.65; color: rgba(245,245,242,.55); max-width: 60ch;
+}
+.cardpg-microcopy a { color: var(--accent); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.cardpg-microcopy a:hover { border-color: var(--accent); }
+
+/* ── Body: single-column content ── */
+.cardpg-body { padding-bottom: 24px; }
+.cardpg-content { min-width: 0; }
+
+/* Welcome bonus + How you earn share a row, breaking out wider to fill the empty
+   space on the right. Closed top + bottom rules with a full-height vertical
+   divider frame the two columns so the lines read as complete and matched. */
+.cardpg-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  column-gap: 64px;
+  align-items: stretch;
+  border-block: 1px solid var(--line);
+}
+.cardpg-split > .cardpg-block { border-top: none; padding: 38px 0; }
+.cardpg-span-all { grid-column: 1 / -1; }
+.cardpg-split-rule { align-self: stretch; background: var(--line); }
+@media (max-width: 860px) {
+  .cardpg-split { grid-template-columns: 1fr; width: auto; border-bottom: none; }
+  .cardpg-split-rule { display: none; }
+  .cardpg-split > .cardpg-block { padding: 32px 0; }
+  .cardpg-split > .cardpg-block:last-child { border-top: 1px solid var(--line); }
+}
+
+/* Full-width detail region (perks + verdict). No top border on the first block:
+   the split's bottom rule already separates it. */
+.cardpg-wide { padding-bottom: 8px; }
+.cardpg-wide .cardpg-block:first-child { border-top: none; padding-top: 34px; }
+
+/* ── Content blocks ── */
+.cardpg-block { padding: 30px 0; border-top: 1px solid var(--line); }
+.cardpg-block:first-child { padding-top: 4px; border-top: none; }
+.cardpg-h2 {
+  font-family: var(--font-fraunces), serif; font-weight: 400;
+  font-size: clamp(26px, 3vw, 34px); color: var(--ink); margin-bottom: 12px;
+  text-wrap: balance;
+}
+.cardpg-intro {
+  font-size: 17px; line-height: 1.7; color: rgba(245,245,242,.82);
+  max-width: 68ch; margin-bottom: 28px;
+}
+.cardpg-intro strong { color: var(--ink); font-weight: 500; }
+.cardpg-sublabel {
+  font-family: var(--font-jetbrains), monospace; font-size: 11px;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--accent-warm);
+  margin: 0 0 16px;
+}
+
+/* Welcome bonus - compact steps */
+.cardpg-wb-steps { list-style: none; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.cardpg-wb-step {
+  display: grid; grid-template-columns: minmax(130px, 230px) 1fr; gap: 14px 20px; align-items: baseline;
+}
+.cardpg-wb-reward {
+  font-family: var(--font-jetbrains), monospace; font-size: 14px; font-weight: 500;
+  color: var(--accent-warm); line-height: 1.45;
+}
+.cardpg-wb-req { font-size: 15px; line-height: 1.55; color: rgba(245,245,242,.82); }
+
+/* Earn rates - rewards list */
+.cardpg-rewards { display: flex; flex-direction: column; gap: 0; list-style: none; margin: 0; }
+.cardpg-reward {
+  position: relative; padding: 18px 0 18px 30px;
+  font-size: 16.5px; line-height: 1.6; color: rgba(245,245,242,.88);
+  border-bottom: 1px solid var(--line);
+}
+.cardpg-reward:last-child { border-bottom: none; }
+.cardpg-reward::before {
+  content: ''; position: absolute; left: 4px; top: 26px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-warm); box-shadow: 0 0 8px var(--accent-warm);
+}
+
+/* Earn rates - fallback category grid */
+.cardpg-rate-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.cardpg-rate {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 20px; border: 1px solid var(--line); border-radius: 14px;
+  background: rgba(255,255,255,.02);
+}
+.cardpg-rate-icon { font-size: 22px; }
+.cardpg-rate-cat { font-size: 14px; color: rgba(245,245,242,.7); }
+.cardpg-rate-val {
+  font-family: var(--font-jetbrains), monospace; font-size: 18px;
+  color: var(--accent-warm); font-weight: 500;
+}
+
+/* Fees & rates table */
+.cardpg-table { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.cardpg-table-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 17px 22px; border-bottom: 1px solid var(--line);
+}
+.cardpg-table-row:last-child { border-bottom: none; }
+.cardpg-table-row:nth-child(even) { background: rgba(255,255,255,.02); }
+.cardpg-table-key { font-size: 15px; color: rgba(245,245,242,.7); }
+.cardpg-table-val {
+  font-family: var(--font-jetbrains), monospace; font-size: 14.5px;
+  color: var(--ink); text-align: right;
+}
+
+/* Credit score gauge - 5 tiers, the card's recommended range lit up */
+.cardpg-scorebar {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px; max-width: 680px; margin: 26px 0 4px;
+}
+.cardpg-tier { display: flex; flex-direction: column; gap: 9px; transition: opacity .3s var(--ease); }
+.cardpg-tier-bar { height: 5px; border-radius: 999px; background: var(--tier); }
+.cardpg-tier:not(.is-active) .cardpg-tier-bar { opacity: .22; }
+.cardpg-tier.is-active .cardpg-tier-bar { height: 6px; box-shadow: 0 0 12px -2px var(--tier); }
+.cardpg-tier-score {
+  font-family: var(--font-jetbrains), monospace; font-size: 14px; font-weight: 600;
+  letter-spacing: .02em; color: rgba(245,245,242,.4);
+}
+.cardpg-tier.is-active .cardpg-tier-score { color: var(--tier); }
+.cardpg-tier-label { font-size: 12.5px; color: rgba(245,245,242,.4); }
+.cardpg-tier.is-active .cardpg-tier-label { color: var(--ink); }
+@media (max-width: 560px) {
+  .cardpg-scorebar { gap: 8px; }
+  .cardpg-tier-score { font-size: 12px; }
+  .cardpg-tier-label { font-size: 10.5px; }
+}
+
+/* Compact credit gauge living as a wide stat in the hero spec strip */
+.cardpg-stat-credit { flex: 2 1 320px; padding-left: 48px; }
+.cardpg-scorebar-mini { margin: 0; max-width: none; gap: 10px; }
+.cardpg-scorebar-mini .cardpg-tier { gap: 7px; }
+.cardpg-scorebar-mini .cardpg-tier-score { font-size: 12.5px; }
+.cardpg-scorebar-mini .cardpg-tier-label { font-size: 11px; }
+
+/* Perks & coverage - 4 columns (8 perks = two rows), readable */
+.cardpg-perks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 1100px) { .cardpg-perks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .cardpg-perks { grid-template-columns: 1fr; } }
+.cardpg-perk {
+  display: grid; grid-template-columns: 22px 1fr; gap: 16px; align-items: start;
+  padding: 22px 24px; border: 1px solid var(--line); border-radius: 14px;
+  background: rgba(255,255,255,.02); transition: border-color .3s var(--ease);
+}
+.cardpg-perk:hover { border-color: var(--line-strong); }
+.cardpg-perk-check {
+  width: 22px; height: 22px; border-radius: 50%; margin-top: 2px;
+  background: rgba(183,231,197,.12); border: 1px solid rgba(183,231,197,.4);
+  position: relative;
+}
+.cardpg-perk-check::after {
+  content: ''; position: absolute; left: 7px; top: 4px;
+  width: 5px; height: 9px; border: solid var(--accent-emerald);
+  border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
+}
+.cardpg-perk-title { font-size: 16px; color: var(--ink); font-weight: 500; margin-bottom: 7px; }
+.cardpg-perk-body { font-size: 14.5px; line-height: 1.65; color: rgba(245,245,242,.66); }
+
+/* Perks "show more": first 8 stay visible, the rest reveal below with the toggle
+   pinned to the bottom in both states (flex order keeps the summary last). */
+.cardpg-perks-disc { display: flex; flex-direction: column; }
+.cardpg-perks-disc > summary { order: 2; }
+.cardpg-perks-disc > .cardpg-perks-extra { order: 1; margin-top: 14px; }
+.cardpg-perks-toggle {
+  list-style: none; cursor: pointer; width: max-content; margin-top: 24px;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-jetbrains), monospace; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent-warm);
+  transition: color .2s;
+}
+.cardpg-perks-toggle::-webkit-details-marker { display: none; }
+.cardpg-perks-toggle:hover { color: var(--ink); }
+.cardpg-perks-toggle::after { content: '+'; font-size: 17px; line-height: 1; color: var(--ink-mute); }
+.cardpg-perks-disc[open] .cardpg-perks-toggle::after { content: '\2212'; }
+.cardpg-perks-toggle-less { display: none; }
+.cardpg-perks-disc[open] .cardpg-perks-toggle-more { display: none; }
+.cardpg-perks-disc[open] .cardpg-perks-toggle-less { display: inline; }
+
+/* Pros & cons */
+.cardpg-proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.cardpg-pros, .cardpg-cons {
+  padding: 28px; border: 1px solid var(--line); border-radius: 16px;
+  background: rgba(255,255,255,.02);
+}
+.cardpg-pc-head {
+  font-family: var(--font-jetbrains), monospace; font-size: 11px;
+  letter-spacing: .2em; text-transform: uppercase; margin-bottom: 18px;
+}
+.cardpg-pros .cardpg-pc-head { color: var(--accent-emerald); }
+.cardpg-cons .cardpg-pc-head { color: var(--accent-rose); }
+.cardpg-proscons ul { list-style: none; margin: 0; display: flex; flex-direction: column; gap: 13px; }
+.cardpg-proscons li { font-size: 15px; line-height: 1.55; color: rgba(245,245,242,.84); padding-left: 22px; position: relative; }
+.cardpg-pros li::before, .cardpg-cons li::before {
+  content: ''; position: absolute; left: 2px; top: 8px; width: 6px; height: 6px; border-radius: 50%;
+}
+.cardpg-pros li::before { background: var(--accent-emerald); }
+.cardpg-cons li::before { background: var(--accent-rose); }
+
+/* Fineprint */
+.cardpg-fineprint { font-size: 12.5px; line-height: 1.7; color: var(--ink-mute); margin-top: 18px; max-width: 80ch; }
+
+/* Closing disclosure line */
+.cardpg-disclosure {
+  font-size: 12.5px; line-height: 1.65; color: rgba(245,245,242,.5);
+  margin: 36px 0 64px; max-width: 80ch;
+}
+.cardpg-disclosure a { color: var(--accent); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.cardpg-disclosure a:hover { border-color: var(--accent); }
+
+/* Footer (subclasses unstyled globally - scope here) */
+.cardpg .seo-footer { max-width: none; }
+.cardpg .seo-footer-inner {
+  width: 100%; max-width: 1200px; margin: 0 auto 0 0; padding: 0 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.cardpg .seo-footer-logo { font-size: 18px; display: flex; align-items: baseline; }
+.cardpg .seo-footer-links { display: flex; gap: 22px; }
+.cardpg .seo-footer-copy { width: 100%; text-align: left; opacity: .7; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .cardpg-main { padding: 100px 24px 0; }
+  .cardpg-hero { grid-template-columns: 1fr; gap: 32px; padding: 16px 0 40px; }
+  .cardpg-hero-media { order: -1; max-width: 360px; justify-self: start; }
+  .cardpg-proscons { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .cardpg-main { padding: 92px 18px 0; }
+  .cardpg-block { padding: 36px 0; }
+  .cardpg-title { font-size: clamp(30px, 8vw, 40px); overflow-wrap: anywhere; }
+  .cardpg-hero-actions { flex-direction: column; align-items: stretch; gap: 14px; }
+  .cardpg-hero-actions .cardpg-apply { width: 100%; }
+  .cardpg-hero-actions .cardpg-cta-secondary { justify-content: center; }
+  .cardpg-wb-step { grid-template-columns: 1fr; gap: 4px; }
 }

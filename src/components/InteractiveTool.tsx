@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import {
   CARDS, CardDef, SpendKey, DEFAULT_SPEND, STEPS,
   fmt, fmtRate, getBreakdown, getTopCards,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
+import { useCatalog, withCatalog } from "@/context/CatalogContext";
 
 /* ══════════════════════════════════════════════════════════
    LIVE TICKER — Canadians lose every minute
@@ -106,7 +108,9 @@ export default function InteractiveTool() {
   /* ── Calculated values ── */
   const totalMonthly = Object.values(spend).reduce((a, b: number) => a + b, 0);
   const annualSpend = totalMonthly * 12;
-  const topCards = getTopCards(spend);
+  const catalog = useCatalog();
+  // Display fields overlaid from Supabase; rates/fee (and thus netValue) stay on cards.ts.
+  const topCards = getTopCards(spend).map((c) => withCatalog(c, catalog));
   const bestNetValue = topCards[0]?.netValue ?? 0;
 
   const step = STEPS[currentStep];
@@ -438,6 +442,9 @@ export default function InteractiveTool() {
             >
               Apply at {modalCard.issuer} →
             </a>
+            <Link href={`/credit-cards/${modalCard.id}`} className="card-modal-view">
+              View full details
+            </Link>
             <div className="card-modal-disclaimer">
               Issuer terms apply. ClearFin is not affiliated with this provider.
             </div>
