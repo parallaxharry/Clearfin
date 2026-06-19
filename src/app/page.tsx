@@ -39,7 +39,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "How to find your best Canadian credit card with ClearFin",
   description:
-    "Answer 5 quick questions about your monthly spending. ClearFin calculates your exact reward leak and shows which of 107 Canadian credit cards earns you the most.",
+    "Answer 7 quick questions about your spending, income, and credit score. ClearFin calculates your exact reward leak and shows which Canadian credit cards you qualify for earn you the most.",
   totalTime: "PT1M",
   step: [
     {

@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "How does ClearFin work?",
     answer:
-      "ClearFin compares 107 Canadian credit cards based on your actual monthly spending. Answer 5 quick questions about your dining, grocery, gas, travel, and other spend. ClearFin applies each card's earn rate to your numbers, calculates annual rewards, subtracts the annual fee, and ranks the cards by net annual value.",
+      "ClearFin compares Canadian credit cards based on your actual monthly spending. Answer 7 quick questions about your dining, grocery, gas, travel, and other spend, plus your income and credit score. ClearFin applies each card's earn rate to your numbers, calculates annual rewards, subtracts the annual fee, ranks the cards by net annual value, and shows only the cards you qualify for.",
   },
   {
     question: "Is ClearFin free to use?",
