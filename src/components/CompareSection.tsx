@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   CARDS, CardDef, SpendKey,
   fmt, fmtRate, getBreakdown, scoreCard, getTopCards,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
+import { useCatalog, withCatalog } from "@/context/CatalogContext";
 
 function CardColumn({
   card,
@@ -115,6 +117,9 @@ function CardColumn({
           >
             Apply at {card.issuer} →
           </a>
+          <Link href={`/credit-cards/${card.id}`} className="card-modal-view cmp-view">
+            View full details
+          </Link>
           <div className="card-modal-disclaimer cmp-disclaimer">
             Issuer terms apply. Not affiliated.
           </div>
@@ -167,7 +172,9 @@ function CardSlot({
     return () => document.removeEventListener("mousedown", handleClick);
   }, [isOpen, onClose]);
 
-  const selectedCard = selectedId ? CARDS.find((c) => c.id === selectedId) : null;
+  const catalog = useCatalog();
+  const selectedBase = selectedId ? CARDS.find((c) => c.id === selectedId) : null;
+  const selectedCard = selectedBase ? withCatalog(selectedBase, catalog) : null;
 
   const PRIORITY_ISSUERS = [
     "American Express",
@@ -255,8 +262,8 @@ function CardSlot({
                 onClick={() => { onSelect(c.id); onClose(); }}
               >
                 <div className="cmp-di-left">
-                  <div className="cmp-di-name">{c.name}</div>
-                  <div className="cmp-di-issuer">{c.issuer}</div>
+                  <div className="cmp-di-name">{catalog[c.id]?.name ?? c.name}</div>
+                  <div className="cmp-di-issuer">{catalog[c.id]?.issuer ?? c.issuer}</div>
                 </div>
                 <div className="cmp-di-val">{fmt(scoreCard(c, spend))}/yr</div>
               </div>
@@ -298,11 +305,13 @@ export default function CompareSection() {
     setOpenSlot(slot);
   };
 
+  const catalog = useCatalog();
   const scoredCards = selectedIds.map((id) => {
     if (!id) return null;
     const card = CARDS.find((c) => c.id === id);
     if (!card) return null;
-    return { ...card, netValue: scoreCard(card, effectiveSpend) };
+    // Display fields from Supabase; scoreCard uses cards.ts rates/fee (math unchanged).
+    return withCatalog({ ...card, netValue: scoreCard(card, effectiveSpend) }, catalog);
   }) as [(CardDef & { netValue: number }) | null, (CardDef & { netValue: number }) | null];
 
   return (

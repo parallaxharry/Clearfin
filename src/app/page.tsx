@@ -7,6 +7,11 @@ import CompareSection from "@/components/CompareSection";
 import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
 import { SpendProvider } from "@/context/SpendContext";
+import { CatalogProvider } from "@/context/CatalogContext";
+import { getCatalogDisplayMap } from "@/lib/cardDetail";
+
+// ISR: home-page card display refreshes from Supabase card_catalog every ~5 min.
+export const revalidate = 300;
 
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
@@ -82,7 +87,8 @@ const howToSchema = {
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const catalog = await getCatalogDisplayMap();
   return (
     <>
       <script
@@ -171,20 +177,22 @@ export default function HomePage() {
       </section>
 
       <SpendProvider>
-        {/* ══════════════════════════════════════
-            02 INTERACTIVE TOOL
-        ══════════════════════════════════════ */}
-        <InteractiveTool />
+        <CatalogProvider map={catalog}>
+          {/* ══════════════════════════════════════
+              02 INTERACTIVE TOOL
+          ══════════════════════════════════════ */}
+          <InteractiveTool />
 
-        {/* ══════════════════════════════════════
-            03 TOP PICKS BY CATEGORY
-        ══════════════════════════════════════ */}
-        <TopPicks />
+          {/* ══════════════════════════════════════
+              03 TOP PICKS BY CATEGORY
+          ══════════════════════════════════════ */}
+          <TopPicks />
 
-        {/* ══════════════════════════════════════
-            04 COMPARE CARDS
-        ══════════════════════════════════════ */}
-        <CompareSection />
+          {/* ══════════════════════════════════════
+              04 COMPARE CARDS
+          ══════════════════════════════════════ */}
+          <CompareSection />
+        </CatalogProvider>
       </SpendProvider>
 
       {/* ══════════════════════════════════════

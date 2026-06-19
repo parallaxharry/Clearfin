@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .migration-data/
+
+# dev artifacts
+dev-cardpg.log
+.superpowers/
