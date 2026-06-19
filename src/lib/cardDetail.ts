@@ -190,7 +190,7 @@ export const getCard = cache(async (id: string): Promise<CardDetail | null> => {
   return merge((data as CardCatalogRow) ?? null, fallback);
 });
 
-/** Catalog display fields for the home page (overlaid onto static cards by id). */
+/** Catalog display + eligibility fields for the home page (matched onto static cards by id). */
 export interface CatalogDisplay {
   name: string | null;
   issuer: string | null;
@@ -198,6 +198,9 @@ export interface CatalogDisplay {
   badge: string | null;
   bankUrl: string | null;
   rewards: string[];
+  /** Eligibility (for the calculator's income/credit matching). null = no stated requirement. */
+  minIncome: number | null;
+  creditMin: number | null;
 }
 
 /**
@@ -211,7 +214,7 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,badge,bank_url,rewards");
+    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,credit_score");
   if (error || !data) {
     if (error) console.error("getCatalogDisplayMap error:", error.message);
     return {};
@@ -226,7 +229,10 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
     badge: string | null;
     bank_url: string | null;
     rewards: string[] | null;
+    min_income_personal: number | null;
+    credit_score: CreditScore | null;
   }>) {
+    const cMin = r.credit_score?.estimated_credit_score_range?.min;
     map[r.id] = {
       name: r.name,
       issuer: r.issuer,
@@ -234,6 +240,8 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
       badge: r.badge,
       bankUrl: r.bank_url,
       rewards: r.rewards ?? [],
+      minIncome: typeof r.min_income_personal === "number" ? r.min_income_personal : null,
+      creditMin: typeof cMin === "number" ? cMin : null,
     };
   }
 
