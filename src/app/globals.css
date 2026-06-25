@@ -921,6 +921,8 @@ section {
   transition: color .2s;
 }
 .privacy-back:hover { color: var(--ink); }
+/* Brand logo standing in for the old text back-link at the top of info pages. */
+.privacy-logo { display: inline-flex; margin-bottom: 88px; }
 .privacy-hero {
   border-bottom: 1px solid var(--line-strong);
   padding-bottom: 48px;
@@ -1041,7 +1043,7 @@ section {
 
 @media (max-width: 700px) {
   .privacy-page { padding: 30px 22px 64px; }
-  .privacy-back { margin-bottom: 62px; }
+  .privacy-back, .privacy-logo { margin-bottom: 62px; }
   .privacy-hero { padding-bottom: 36px; }
   .privacy-hero h1 { font-size: clamp(52px, 17vw, 76px); }
   .privacy-notice { padding: 18px; }

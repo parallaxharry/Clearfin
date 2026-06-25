@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export const metadata: Metadata = {
   title: "Disclosures | ClearFin",
@@ -47,9 +47,7 @@ export default function DisclosuresPage() {
     <main className="privacy-page">
       <div className="grain" />
       <div className="privacy-shell">
-        <Link href="/" className="privacy-back">
-          &lt;- Back to ClearFin
-        </Link>
+        <Logo className="privacy-logo" />
 
         <header className="privacy-hero">
           <div className="privacy-kicker">ClearFin Digital Inc.</div>

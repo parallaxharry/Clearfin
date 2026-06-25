@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import Logo from "@/components/Logo";
 import SearchTrigger from "@/components/SearchTrigger";
 
 interface SeoLayoutProps {
@@ -21,15 +21,7 @@ export default function SeoLayout({
     <div className="seo-page">
       {/* ── Nav ── */}
       <header className="seo-nav">
-        <Link href="/" className="seo-nav-logo">
-          <div className="seo-nav-logo-mark">
-            <Image src="/cf-logo.svg" alt="ClearFin" width={36} height={36} />
-          </div>
-          <div className="seo-nav-logo-word">
-            <span className="clear">Clear</span>
-            <span className="fin">Fin</span>
-          </div>
-        </Link>
+        <Logo />
 
         <div className="seo-nav-right">
           <SearchTrigger className="nav-search" />
