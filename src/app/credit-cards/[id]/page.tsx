@@ -127,14 +127,15 @@ export default async function CardPage({
   })();
 
   // Hero spec strip: the card's economics at a glance. Each stat only renders if we have the data.
-  const heroStats: { label: string; value: string; sub?: string }[] = [
+  const heroStats: { label: string; value: string; sub?: string; className?: string }[] = [
     {
       label: "Annual fee",
       value: card.annualFee > 0 ? money(card.annualFee) : "$0",
-      sub: card.firstYearFree ? "First year free" : undefined,
+      sub: card.feeNote ?? (card.firstYearFree ? "First year free" : undefined),
     },
   ];
-  if (card.rewardProgram) heroStats.push({ label: "Reward type", value: card.rewardProgram });
+  if (card.rewardProgram)
+    heroStats.push({ label: "Reward type", value: card.rewardProgram, className: "cardpg-stat-reward" });
   if (card.pointValueCpp)
     heroStats.push({ label: "Point value", value: `${card.pointValueCpp}¢`, sub: "per point" });
 
@@ -225,7 +226,7 @@ export default async function CardPage({
 
             <dl className="cardpg-hero-stats">
               {heroStats.map((s) => (
-                <div className="cardpg-stat" key={s.label}>
+                <div className={`cardpg-stat${s.className ? ` ${s.className}` : ""}`} key={s.label}>
                   <dt className="cardpg-stat-label">{s.label}</dt>
                   <dd className="cardpg-stat-value">{s.value}</dd>
                   {s.sub ? <p className="cardpg-stat-sub">{s.sub}</p> : null}

@@ -92,6 +92,7 @@ export interface CardDetail {
   network: string | null;
   rewardProgram: string | null;
   firstYearFree: boolean | null;
+  feeNote: string | null;
   minIncomePersonal: number | null;
   minIncomeHousehold: number | null;
   purchaseApr: number | null;
@@ -152,6 +153,7 @@ function merge(row: CardCatalogRow | null, fallback: CardDef | undefined): CardD
     network: row?.network ?? null,
     rewardProgram: row?.reward_program ?? null,
     firstYearFree: row?.first_year_free ?? null,
+    feeNote: fallback?.feeNote ?? null,
     minIncomePersonal: row?.min_income_personal ?? null,
     minIncomeHousehold: row?.min_income_household ?? null,
     purchaseApr: row?.purchase_apr ?? null,
