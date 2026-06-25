@@ -138,6 +138,22 @@ export default async function CardPage({
   if (card.pointValueCpp)
     heroStats.push({ label: "Point value", value: `${card.pointValueCpp}¢`, sub: "per point" });
 
+  // Income requirement: many premium cards (World Elite, Infinite Privilege) gate on a
+  // minimum stated income. Show it only when the catalog has it; lead with the personal
+  // figure and fold the household figure into the sub-line.
+  if (card.minIncomePersonal || card.minIncomeHousehold) {
+    heroStats.push({
+      label: "Income required",
+      value: money(card.minIncomePersonal ?? card.minIncomeHousehold!),
+      sub:
+        card.minIncomePersonal && card.minIncomeHousehold
+          ? `personal · or ${money(card.minIncomeHousehold)} household`
+          : card.minIncomePersonal
+            ? "personal"
+            : "household",
+    });
+  }
+
   // Credit score gauge: built from the minimum (the approval threshold).
   const csr = card.creditScore?.estimated_credit_score_range;
   const creditTiers =

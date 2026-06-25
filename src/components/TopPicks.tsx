@@ -27,7 +27,7 @@ const CURATION: { id: string; category: string; rate: string }[] = [
   { id: "scotia-gold",  category: "Best for Groceries", rate: "6x on groceries" },
   { id: "td-aeroplan",  category: "Best for Travel",    rate: "1.5x on Air Canada" },
   { id: "bmo-eclipse",  category: "Best for Gas",       rate: "5x on gas" },
-  { id: "wealthsimple", category: "Best No-Fee Card",   rate: "2% on everything" },
+  { id: "wealthsimple", category: "Best Flat-Rate Cashback", rate: "2% on everything" },
   { id: "rbc-avion",    category: "Most Flexible",      rate: "30+ transfer partners" },
 ];
 
