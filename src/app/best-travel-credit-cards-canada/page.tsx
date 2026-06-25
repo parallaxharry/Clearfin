@@ -1,4 +1,5 @@
 import SeoLayout from "@/components/SeoLayout";
+import SeoCardImage from "@/components/SeoCardImage";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -41,6 +42,7 @@ export default function BestTravelCreditCardsCanada() {
         {/* Card 1 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#1</div>
+          <SeoCardImage name="TD Aeroplan Visa Infinite" />
           <div className="seo-card-box-name">TD Aeroplan Visa Infinite</div>
           <div className="seo-card-box-issuer">TD Bank</div>
           <div className="seo-card-box-detail">
@@ -57,6 +59,7 @@ export default function BestTravelCreditCardsCanada() {
         {/* Card 2 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#2</div>
+          <SeoCardImage name="American Express Cobalt Card" />
           <div className="seo-card-box-name">
             American Express Cobalt Card
           </div>
@@ -75,6 +78,7 @@ export default function BestTravelCreditCardsCanada() {
         {/* Card 3 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#3</div>
+          <SeoCardImage name="RBC Avion Visa Infinite" />
           <div className="seo-card-box-name">RBC Avion Visa Infinite</div>
           <div className="seo-card-box-issuer">RBC</div>
           <div className="seo-card-box-detail">
@@ -91,6 +95,7 @@ export default function BestTravelCreditCardsCanada() {
         {/* Card 4 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#4</div>
+          <SeoCardImage name="Scotiabank Passport Visa Infinite" />
           <div className="seo-card-box-name">
             Scotiabank Passport Visa Infinite
           </div>
@@ -109,6 +114,7 @@ export default function BestTravelCreditCardsCanada() {
         {/* Card 5 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#5</div>
+          <SeoCardImage name="CIBC Aventura Visa Infinite" />
           <div className="seo-card-box-name">CIBC Aventura Visa Infinite</div>
           <div className="seo-card-box-issuer">CIBC</div>
           <div className="seo-card-box-detail">

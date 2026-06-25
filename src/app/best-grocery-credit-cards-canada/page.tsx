@@ -1,4 +1,5 @@
 import SeoLayout from "@/components/SeoLayout";
+import SeoCardImage from "@/components/SeoCardImage";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -41,6 +42,7 @@ export default function BestGroceryCreditCardsCanada() {
         {/* Card 1 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#1</div>
+          <SeoCardImage name="Scotiabank Gold American Express" />
           <div className="seo-card-box-name">Scotiabank Gold American Express</div>
           <div className="seo-card-box-issuer">Scotiabank</div>
           <div className="seo-card-box-detail">
@@ -55,6 +57,7 @@ export default function BestGroceryCreditCardsCanada() {
         {/* Card 2 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#2</div>
+          <SeoCardImage name="American Express Cobalt Card" />
           <div className="seo-card-box-name">American Express Cobalt Card</div>
           <div className="seo-card-box-issuer">American Express</div>
           <div className="seo-card-box-detail">
@@ -70,6 +73,7 @@ export default function BestGroceryCreditCardsCanada() {
         {/* Card 3 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#3</div>
+          <SeoCardImage name="CIBC Dividend Visa Infinite" />
           <div className="seo-card-box-name">CIBC Dividend Visa Infinite</div>
           <div className="seo-card-box-issuer">CIBC</div>
           <div className="seo-card-box-detail">
@@ -84,6 +88,7 @@ export default function BestGroceryCreditCardsCanada() {
         {/* Card 4 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#4</div>
+          <SeoCardImage name="BMO Eclipse Visa Infinite" />
           <div className="seo-card-box-name">BMO Eclipse Visa Infinite</div>
           <div className="seo-card-box-issuer">BMO</div>
           <div className="seo-card-box-detail">
@@ -98,6 +103,7 @@ export default function BestGroceryCreditCardsCanada() {
         {/* Card 5 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#5</div>
+          <SeoCardImage name="PC Financial World Elite Mastercard" />
           <div className="seo-card-box-name">PC Financial World Elite Mastercard</div>
           <div className="seo-card-box-issuer">President&apos;s Choice Financial</div>
           <div className="seo-card-box-detail">

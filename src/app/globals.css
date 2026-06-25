@@ -1890,6 +1890,25 @@ section {
   border-radius: 16px;
   padding: 28px;
 }
+.seo-card-box-img {
+  margin: 0 0 20px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
+  aspect-ratio: 1.6 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.seo-card-box-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 16px;
+  transition: transform 0.4s var(--ease-out);
+}
+.seo-card-box:hover .seo-card-box-img img { transform: scale(1.04); }
 .seo-card-box-rank {
   font-family: var(--font-jetbrains), monospace;
   font-size: 11px;

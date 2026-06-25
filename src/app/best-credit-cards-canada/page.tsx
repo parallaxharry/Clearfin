@@ -1,4 +1,5 @@
 import SeoLayout from "@/components/SeoLayout";
+import SeoCardImage from "@/components/SeoCardImage";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -111,6 +112,7 @@ export default function BestCreditCardsCanadaPage() {
 
         <div className="seo-card-grid">
           <div className="seo-card-box">
+            <SeoCardImage name="Amex Cobalt" />
             <h3>Amex Cobalt</h3>
             <p><strong>Best Overall</strong></p>
             <p>
@@ -123,6 +125,7 @@ export default function BestCreditCardsCanadaPage() {
           </div>
 
           <div className="seo-card-box">
+            <SeoCardImage name="Scotia Gold Amex" />
             <h3>Scotia Gold Amex</h3>
             <p><strong>Best for Groceries</strong></p>
             <p>
@@ -135,6 +138,7 @@ export default function BestCreditCardsCanadaPage() {
           </div>
 
           <div className="seo-card-box">
+            <SeoCardImage name="TD Aeroplan Visa Infinite" />
             <h3>TD Aeroplan Visa Infinite</h3>
             <p><strong>Best for Travel</strong></p>
             <p>
@@ -147,6 +151,7 @@ export default function BestCreditCardsCanadaPage() {
           </div>
 
           <div className="seo-card-box">
+            <SeoCardImage name="CIBC Dividend Visa Infinite" />
             <h3>CIBC Dividend Visa Infinite</h3>
             <p><strong>Best Cashback</strong></p>
             <p>
@@ -159,6 +164,7 @@ export default function BestCreditCardsCanadaPage() {
           </div>
 
           <div className="seo-card-box">
+            <SeoCardImage name="Tangerine Money-Back Mastercard" />
             <h3>Tangerine Money-Back Mastercard</h3>
             <p><strong>Best No Fee</strong></p>
             <p>

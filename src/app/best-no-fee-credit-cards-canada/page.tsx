@@ -1,4 +1,5 @@
 import SeoLayout from "@/components/SeoLayout";
+import SeoCardImage from "@/components/SeoCardImage";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -41,6 +42,7 @@ export default function BestNoFeeCreditCardsCanada() {
         {/* Card 1 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#1</div>
+          <SeoCardImage name="Tangerine Money-Back Credit Card" />
           <div className="seo-card-box-name">Tangerine Money-Back Credit Card</div>
           <div className="seo-card-box-issuer">Tangerine (Scotiabank)</div>
           <div className="seo-card-box-detail">
@@ -56,6 +58,7 @@ export default function BestNoFeeCreditCardsCanada() {
         {/* Card 2 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#2</div>
+          <SeoCardImage name="SimplyCash Card from American Express" />
           <div className="seo-card-box-name">SimplyCash Card from American Express</div>
           <div className="seo-card-box-issuer">American Express</div>
           <div className="seo-card-box-detail">
@@ -71,6 +74,7 @@ export default function BestNoFeeCreditCardsCanada() {
         {/* Card 3 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#3</div>
+          <SeoCardImage name="PC Financial World Elite Mastercard" />
           <div className="seo-card-box-name">PC Financial World Elite Mastercard</div>
           <div className="seo-card-box-issuer">President&apos;s Choice Financial</div>
           <div className="seo-card-box-detail">
@@ -86,6 +90,7 @@ export default function BestNoFeeCreditCardsCanada() {
         {/* Card 4 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#4</div>
+          <SeoCardImage name="CIBC Dividend Visa Card" />
           <div className="seo-card-box-name">CIBC Dividend Visa Card</div>
           <div className="seo-card-box-issuer">CIBC</div>
           <div className="seo-card-box-detail">
@@ -101,6 +106,7 @@ export default function BestNoFeeCreditCardsCanada() {
         {/* Card 5 */}
         <div className="seo-card-box">
           <div className="seo-card-box-rank">#5</div>
+          <SeoCardImage name="BMO CashBack Mastercard" />
           <div className="seo-card-box-name">BMO CashBack Mastercard</div>
           <div className="seo-card-box-issuer">BMO</div>
           <div className="seo-card-box-detail">
