@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, Fraunces, JetBrains_Mono } from "next/font/google";
+import { SearchProvider } from "@/context/SearchContext";
+import { getSearchCards } from "@/lib/cardDetail";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -101,9 +103,10 @@ const websiteSchema = {
   url: "https://clearfin.ca",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const searchCards = await getSearchCards();
   return (
     <html
       lang="en"
@@ -118,7 +121,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        {children}
+        <SearchProvider cards={searchCards}>{children}</SearchProvider>
       </body>
     </html>
   );

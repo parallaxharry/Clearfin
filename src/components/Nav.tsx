@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import SearchTrigger from "@/components/SearchTrigger";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -32,9 +33,12 @@ export default function Nav() {
         <a href="#waitlist">Waitlist</a>
       </nav>
 
-      <a href="#waitlist" className="nav-cta">
-        Get Early Access
-      </a>
+      <div className="nav-right">
+        <SearchTrigger className="nav-search" />
+        <a href="#waitlist" className="nav-cta">
+          Get Early Access
+        </a>
+      </div>
     </header>
   );
 }

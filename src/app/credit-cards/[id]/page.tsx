@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCard, getAllCardIds } from "@/lib/cardDetail";
 import TrackedApplyLink from "@/components/TrackedApplyLink";
+import SearchTrigger from "@/components/SearchTrigger";
 
 // ISR: Supabase card_catalog edits go live within ~5 min, no redeploy needed.
 export const revalidate = 300;
@@ -166,9 +167,12 @@ export default async function CardPage({
             <span className="fin">Fin</span>
           </div>
         </Link>
-        <Link href="/#tool" className="seo-nav-cta">
-          Find Your Card
-        </Link>
+        <div className="seo-nav-right">
+          <SearchTrigger className="nav-search" />
+          <Link href="/#tool" className="seo-nav-cta">
+            Find Your Card
+          </Link>
+        </div>
       </header>
 
       <main className="cardpg-main">

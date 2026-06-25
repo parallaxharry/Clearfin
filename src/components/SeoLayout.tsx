@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import SearchTrigger from "@/components/SearchTrigger";
 
 interface SeoLayoutProps {
   title: string;
@@ -30,9 +31,12 @@ export default function SeoLayout({
           </div>
         </Link>
 
-        <Link href="/#waitlist" className="seo-nav-cta">
-          Get Early Access
-        </Link>
+        <div className="seo-nav-right">
+          <SearchTrigger className="nav-search" />
+          <Link href="/#waitlist" className="seo-nav-cta">
+            Get Early Access
+          </Link>
+        </div>
       </header>
 
       <main className="seo-main">

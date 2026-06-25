@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { CARDS, type CardDef, type SpendKey } from "@/lib/cards";
+import type { SearchCard } from "@/lib/searchIndex";
 
 // ---------- Rich card_catalog shapes (jsonb) ----------
 
@@ -251,6 +252,22 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
   }
 
   return map;
+});
+
+/** Lightweight card list for site search: cards.ts cards overlaid with catalog
+ *  name/issuer/img (alias-aware). Links use cards.ts ids, which the detail route
+ *  resolves. Cached; falls back to plain cards.ts when Supabase is unavailable. */
+export const getSearchCards = cache(async (): Promise<SearchCard[]> => {
+  const map = await getCatalogDisplayMap();
+  return CARDS.map((c) => {
+    const info = map[c.id];
+    return {
+      id: c.id,
+      name: info?.name ?? c.name,
+      issuer: info?.issuer ?? c.issuer,
+      img: info?.img ?? c.img,
+    };
+  });
 });
 
 /** All card ids for generateStaticParams — union of card_catalog and static cards.ts. */
