@@ -283,6 +283,23 @@ export default function CompareSection() {
   const [queries, setQueries] = useState<[string, string]>(["", ""]);
   const [openSlot, setOpenSlot] = useState<0 | 1 | null>(null);
 
+  // Accept a pair of cards from the search palette: ?compare=a,b on load
+  // (cross-page) or a "clearfin:compare" event (palette used on this page).
+  useEffect(() => {
+    const applyIds = (ids: string[]) => {
+      const valid = ids.filter((id) => CARDS.some((c) => c.id === id)).slice(0, 2);
+      if (valid.length !== 2) return;
+      setSelectedIds([valid[0], valid[1]]);
+      document.getElementById("compare")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    const param = new URLSearchParams(window.location.search).get("compare");
+    if (param) applyIds(param.split(","));
+    const onCompare = (e: Event) =>
+      applyIds((e as CustomEvent<{ ids: string[] }>).detail?.ids ?? []);
+    window.addEventListener("clearfin:compare", onCompare);
+    return () => window.removeEventListener("clearfin:compare", onCompare);
+  }, []);
+
   const selectCard = (slot: 0 | 1, id: string) => {
     setSelectedIds((prev) => {
       const next: [string | null, string | null] = [...prev] as [string | null, string | null];

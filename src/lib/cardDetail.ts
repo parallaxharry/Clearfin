@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { CARDS, type CardDef, type SpendKey } from "@/lib/cards";
-import type { SearchCard } from "@/lib/searchIndex";
+import type { SearchCard, RichSearchCard } from "@/lib/searchIndex";
 
 // ---------- Rich card_catalog shapes (jsonb) ----------
 
@@ -270,6 +270,84 @@ export const getSearchCards = cache(async (): Promise<SearchCard[]> => {
       img: info?.img ?? c.img,
     };
   });
+});
+
+/**
+ * Rich search index for /api/search-index: the union of card_catalog and
+ * cards.ts, with the catalog's benefits/rewards/pros text made searchable.
+ * Alias-aware (rows are keyed by their cards.ts id where one exists) so links
+ * resolve exactly like getSearchCards. Falls back to cards.ts perks when
+ * Supabase is unavailable.
+ */
+export const getRichSearchIndex = cache(async (): Promise<RichSearchCard[]> => {
+  const byId = new Map<string, RichSearchCard>();
+  for (const c of CARDS) {
+    byId.set(c.id, {
+      id: c.id,
+      name: c.name,
+      issuer: c.issuer,
+      img: c.img,
+      annualFee: c.annualFee,
+      fxFee: null,
+      badge: c.badge,
+      network: null,
+      rewardProgram: null,
+      rewards: c.perks,
+      benefits: [],
+      pros: [],
+    });
+  }
+
+  const supabase = readClient();
+  if (!supabase) return [...byId.values()];
+
+  const { data, error } = await supabase
+    .from("card_catalog")
+    .select("id,name,issuer,img,badge,annual_fee,fx_fee,network,reward_program,rewards,benefits,pros");
+  if (error || !data) {
+    if (error) console.error("getRichSearchIndex error:", error.message);
+    return [...byId.values()];
+  }
+
+  const staticIdByCatalogId = new Map(
+    Object.entries(ID_ALIASES).map(([staticId, realId]) => [realId, staticId])
+  );
+  for (const r of data as Array<{
+    id: string;
+    name: string | null;
+    issuer: string | null;
+    img: string | null;
+    badge: string | null;
+    annual_fee: number | null;
+    fx_fee: number | null;
+    network: string | null;
+    reward_program: string | null;
+    rewards: string[] | null;
+    benefits: Benefit[] | null;
+    pros: string[] | null;
+  }>) {
+    const id = staticIdByCatalogId.get(r.id) ?? r.id;
+    const base = byId.get(id);
+    byId.set(id, {
+      id,
+      name: r.name ?? base?.name ?? r.id,
+      issuer: r.issuer ?? base?.issuer ?? "",
+      img: r.img ?? base?.img ?? "",
+      annualFee: r.annual_fee ?? base?.annualFee ?? null,
+      fxFee: r.fx_fee ?? null,
+      badge: r.badge ?? base?.badge ?? "",
+      network: r.network,
+      rewardProgram: r.reward_program,
+      rewards: r.rewards?.length ? r.rewards : base?.rewards ?? [],
+      benefits: (r.benefits ?? []).map((b) => ({
+        title: b.title ?? "",
+        description: b.description ?? "",
+      })),
+      pros: r.pros ?? [],
+    });
+  }
+
+  return [...byId.values()];
 });
 
 /** All card ids for generateStaticParams — union of card_catalog and static cards.ts. */
