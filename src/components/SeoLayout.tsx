@@ -84,6 +84,7 @@ export default function SeoLayout({
 
           <div className="seo-footer-links">
             <Link href="/">Home</Link>
+            <Link href="/blog">Blog</Link>
             <Link href="/#tool">Calculator</Link>
             <Link href="/#waitlist">Waitlist</Link>
           </div>

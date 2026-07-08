@@ -295,6 +295,7 @@ export default async function HomePage() {
             <a href="/best-no-fee-credit-cards-canada">Best No-Fee Cards</a>
             <a href="/best-student-credit-cards-canada">Best Student Cards</a>
             <a href="/credit-card-rewards-canada-guide">Rewards Guide</a>
+            <a href="/blog">Blog</a>
           </div>
         </div>
         <div className="footer-bottom">

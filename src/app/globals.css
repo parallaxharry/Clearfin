@@ -1975,6 +1975,41 @@ section {
   border-collapse: collapse;
   font-size: 14px;
 }
+/* Markdown tables (blog posts) inherit the .seo-table look without the class. */
+.seo-content table {
+  width: 100%; border-collapse: collapse; font-size: 14px; margin: 24px 0;
+  border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+}
+.seo-content table th {
+  font-family: var(--font-jetbrains), monospace; font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--ink-mute); text-align: left;
+  padding: 12px 16px; border-bottom: 1px solid var(--line-strong); background: rgba(255,255,255,.03);
+}
+.seo-content table td {
+  padding: 12px 16px; border-bottom: 1px solid var(--line); color: rgba(245,245,242,.7);
+}
+.seo-content table tr:last-child td { border-bottom: none; }
+
+/* ── Blog index cards ── */
+.blog-list { display: flex; flex-direction: column; gap: 20px; }
+.blog-card {
+  display: block; padding: 26px 28px; border: 1px solid var(--line); border-radius: 14px;
+  text-decoration: none; transition: border-color .2s, background .2s;
+  background: rgba(255,255,255,.02);
+}
+.blog-card:hover { border-color: var(--line-strong); background: rgba(255,255,255,.04); }
+.blog-card-meta {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-family: var(--font-jetbrains), monospace; font-size: 10.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-mute); margin-bottom: 10px;
+}
+.blog-tag {
+  border: 1px solid var(--line); border-radius: 5px; padding: 1.5px 7px;
+  color: var(--accent-warm);
+}
+.blog-card-title { font-size: 21px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+.blog-card-desc { color: var(--ink-mute); font-size: 14.5px; line-height: 1.6; margin: 0 0 12px; }
+.blog-card-more { color: var(--accent-warm); font-size: 13.5px; }
 .seo-table th {
   font-family: var(--font-jetbrains), monospace;
   font-size: 11px;

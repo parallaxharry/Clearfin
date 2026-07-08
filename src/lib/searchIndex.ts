@@ -56,6 +56,7 @@ export const PAGES: SearchPage[] = [
   { title: "Best Student Cards", group: "Guide", href: "/best-student-credit-cards-canada", keywords: ["student", "no income", "first card", "starter"] },
   { title: "Best No-Fee Cards", group: "Guide", href: "/best-no-fee-credit-cards-canada", keywords: ["no fee", "no annual fee", "free", "$0"] },
   { title: "Rewards Guide", group: "Guide", href: "/credit-card-rewards-canada-guide", keywords: ["rewards", "points", "value", "cpp", "how it works"] },
+  { title: "Blog", group: "Guide", href: "/blog", keywords: ["blog", "articles", "guides", "posts", "strategy", "tips"] },
   { title: "FAQ", group: "Page", href: "/faq", keywords: ["faq", "questions", "help", "how does"] },
   { title: "About ClearFin", group: "Page", href: "/about", keywords: ["about", "who", "company", "mission"] },
   { title: "Disclosures", group: "Page", href: "/disclosures", keywords: ["disclosure", "affiliate", "how we make money", "legal"] },

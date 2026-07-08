@@ -1,9 +1,21 @@
 import type { MetadataRoute } from "next";
 import { getAllCardIds } from "@/lib/cardDetail";
+import { getPosts } from "@/lib/blog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.clearfin.ca";
   const now = new Date();
+
+  const posts = await getPosts();
+  const blogPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    ...posts.map((p) => ({
+      url: `${baseUrl}/blog/${p.slug}`,
+      lastModified: new Date(p.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    })),
+  ];
 
   // Every card detail page (card_catalog ∪ cards.ts) — the site's richest SEO content.
   const cardIds = await getAllCardIds();
@@ -87,6 +99,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    ...blogPages,
     ...cardPages,
   ];
 }
