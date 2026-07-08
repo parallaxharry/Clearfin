@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "ClearFin is independent — not affiliated with any bank or card issuer. These disclosures cover our independence, card data sourcing, and correction request process.",
     type: "website",
     locale: "en_CA",
-    url: "https://clearfin.ca/disclosures",
+    url: "https://www.clearfin.ca/disclosures",
     siteName: "ClearFin",
   },
 };

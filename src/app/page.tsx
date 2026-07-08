@@ -1,4 +1,5 @@
 import Loader from "@/components/Loader";
+import Logo from "@/components/Logo";
 import Nav from "@/components/Nav";
 import SideRail from "@/components/SideRail";
 import PageEffects from "@/components/PageEffects";
@@ -19,7 +20,7 @@ const softwareApplicationSchema = {
   name: "ClearFin Credit Card Calculator",
   applicationCategory: "FinanceApplication",
   operatingSystem: "Web",
-  url: "https://clearfin.ca/#tool",
+  url: "https://www.clearfin.ca/#tool",
   description:
     "Compare 107 Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
   offers: {
@@ -30,7 +31,7 @@ const softwareApplicationSchema = {
   creator: {
     "@type": "Organization",
     name: "ClearFin",
-    url: "https://clearfin.ca",
+    url: "https://www.clearfin.ca",
   },
 };
 
@@ -299,6 +300,7 @@ export default async function HomePage() {
         <div className="footer-bottom">
           <div className="footer-info">© 2026 ClearFin Digital Inc · Calgary, AB</div>
           <div className="footer-links">
+            <Logo className="footer-logo footer-logo-big" priority={false} />
             <a href="/about">About</a>
             <a href="/faq">FAQ</a>
             <a href="/privacy">Privacy</a>

@@ -1,8 +1,18 @@
 import type { MetadataRoute } from "next";
+import { getAllCardIds } from "@/lib/cardDetail";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://clearfin.ca";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = "https://www.clearfin.ca";
   const now = new Date();
+
+  // Every card detail page (card_catalog ∪ cards.ts) — the site's richest SEO content.
+  const cardIds = await getAllCardIds();
+  const cardPages: MetadataRoute.Sitemap = cardIds.map((id) => ({
+    url: `${baseUrl}/credit-cards/${encodeURIComponent(id)}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
 
   return [
     {
@@ -77,5 +87,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    ...cardPages,
   ];
 }

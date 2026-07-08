@@ -152,7 +152,12 @@ img { max-width: 100%; display: block; }
 /* legacy SVG animation hooks — kept for safety but unused */
 .ring-rotate {}
 .pulse-dot {}
-.logo-word { font-size: 20px; letter-spacing: -.02em; display: flex; align-items: baseline; }
+.logo-word {
+  font-size: 20px; letter-spacing: -.02em; display: flex; align-items: baseline;
+  /* Pin the wordmark typography so the lockup renders identically in any
+     context (e.g. footers that set a mono font on their link rows). */
+  font-family: var(--font-archivo), sans-serif; text-transform: none;
+}
 .logo-word .clear { font-weight: 500; color: var(--ink); }
 .logo-word .fin {
   font-family: var(--font-fraunces), serif; font-style: italic; font-weight: 400;
@@ -879,6 +884,17 @@ section {
   display: flex; justify-content: space-between; align-items: center; width: 100%;
   flex-wrap: wrap; gap: 16px;
 }
+/* Footer variant of the brand lockup: smaller, calm (no glow loop / pulse). */
+.footer-logo .logo-mark { width: 32px; height: 32px; border-radius: 8px; animation: none; }
+.footer-logo .logo-mark img { border-radius: 8px; }
+.footer-logo .logo-word { font-size: 17px; }
+.footer-logo .logo-word::after { animation: none; }
+/* Home footer: full-size lockup inline in the link row, just left of About. */
+.footer-links { align-items: center; }
+.footer-links .footer-logo-big { margin-right: 12px; }
+.footer-logo-big .logo-mark { width: 44px; height: 44px; border-radius: 10px; }
+.footer-logo-big .logo-mark img { border-radius: 10px; }
+.footer-logo-big .logo-word { font-size: 21px; }
 .footer-info { font-family: var(--font-jetbrains), monospace; font-size: 10px; letter-spacing: .15em; color: var(--ink-mute); }
 .footer-links { display: flex; gap: 24px; font-family: var(--font-jetbrains), monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); }
 .footer-links a,
@@ -2080,6 +2096,14 @@ section {
 .seo-footer a:hover {
   color: var(--ink);
 }
+.seo-footer-inner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 18px; width: 100%;
+}
+.seo-footer-brand { display: flex; flex-direction: column; gap: 10px; }
+.seo-footer-tagline { margin: 0; }
+.seo-footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
+.seo-footer-copy { width: 100%; opacity: .8; margin: 0; }
 
 /* RELATED PAGES / INTERNAL LINKS */
 .seo-related {

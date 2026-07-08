@@ -27,7 +27,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://clearfin.ca"),
+  metadataBase: new URL("https://www.clearfin.ca"),
   title: "ClearFin — Every swipe should hit maximum cashback.",
   description:
     "ClearFin finds your best credit card for every purchase. Maximize rewards on every transaction. Built for Canada.",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
       "ClearFin finds your best credit card for every purchase. Built for Canada.",
     type: "website",
     locale: "en_CA",
-    url: "https://clearfin.ca",
+    url: "https://www.clearfin.ca",
     siteName: "ClearFin",
     images: [
       {
@@ -80,8 +80,8 @@ const organizationSchema = {
   "@type": "Organization",
   name: "ClearFin",
   alternateName: "ClearFin Digital Inc.",
-  url: "https://clearfin.ca",
-  logo: "https://clearfin.ca/logo.png",
+  url: "https://www.clearfin.ca",
+  logo: "https://www.clearfin.ca/logo.png",
   contactPoint: {
     "@type": "ContactPoint",
     email: "info@clearfin.ca",
@@ -100,7 +100,7 @@ const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "ClearFin",
-  url: "https://clearfin.ca",
+  url: "https://www.clearfin.ca",
 };
 
 export default async function RootLayout({

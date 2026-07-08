@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://clearfin.ca/sitemap.xml",
+    sitemap: "https://www.clearfin.ca/sitemap.xml",
   };
 }

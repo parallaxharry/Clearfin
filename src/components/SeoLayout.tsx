@@ -76,10 +76,7 @@ export default function SeoLayout({
       <footer className="seo-footer">
         <div className="seo-footer-inner">
           <div className="seo-footer-brand">
-            <Link href="/" className="seo-footer-logo">
-              <span className="clear">Clear</span>
-              <span className="fin">Fin</span>
-            </Link>
+            <Logo className="footer-logo" priority={false} />
             <p className="seo-footer-tagline">
               Smarter credit card recommendations, powered by your real spending.
             </p>

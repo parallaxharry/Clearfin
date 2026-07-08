@@ -420,10 +420,7 @@ export default async function CardPage({
       {/* ── Footer (shared with SEO pages) ── */}
       <footer className="seo-footer">
         <div className="seo-footer-inner">
-          <Link href="/" className="seo-footer-logo">
-            <span className="clear">Clear</span>
-            <span className="fin">Fin</span>
-          </Link>
+          <Logo className="footer-logo" priority={false} />
           <div className="seo-footer-links">
             <Link href="/">Home</Link>
             <Link href="/#tool">Calculator</Link>

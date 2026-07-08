@@ -10,9 +10,12 @@ import Link from "next/link";
 export default function Logo({
   href = "/",
   className,
+  priority = true,
 }: {
   href?: string;
   className?: string;
+  /** Pass false below the fold (footers) so the image isn't preloaded. */
+  priority?: boolean;
 }) {
   return (
     <Link
@@ -21,7 +24,7 @@ export default function Logo({
       aria-label="ClearFin home"
     >
       <div className="logo-mark">
-        <Image src="/logo.png" alt="ClearFin" width={40} height={40} priority />
+        <Image src="/logo.png" alt="ClearFin" width={40} height={40} priority={priority} />
       </div>
       <div className="logo-word">
         <span className="clear">Clear</span>

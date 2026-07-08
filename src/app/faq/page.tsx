@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "Answers to common questions about ClearFin — how the credit card calculator works, which cards are tracked, data privacy, launch timing, and more.",
     type: "website",
     locale: "en_CA",
-    url: "https://clearfin.ca/faq",
+    url: "https://www.clearfin.ca/faq",
     siteName: "ClearFin",
   },
 };

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Best Credit Cards in Canada 2026 — Expert Picks | ClearFin",
     description: "Compare the best Canadian credit cards for 2026.",
-    url: "https://clearfin.ca/best-credit-cards-canada",
+    url: "https://www.clearfin.ca/best-credit-cards-canada",
     siteName: "ClearFin",
     type: "article",
     locale: "en_CA",
@@ -54,11 +54,11 @@ export default function BestCreditCardsCanadaPage() {
     headline: "Best Credit Cards in Canada for 2026",
     description:
       "Compare the best Canadian credit cards for 2026. Expert picks for cashback, travel, groceries, and more.",
-    author: { "@type": "Organization", name: "ClearFin", url: "https://clearfin.ca" },
-    publisher: { "@type": "Organization", name: "ClearFin", url: "https://clearfin.ca" },
+    author: { "@type": "Organization", name: "ClearFin", url: "https://www.clearfin.ca" },
+    publisher: { "@type": "Organization", name: "ClearFin", url: "https://www.clearfin.ca" },
     datePublished: "2026-01-15",
     dateModified: "2026-05-01",
-    mainEntityOfPage: "https://clearfin.ca/best-credit-cards-canada",
+    mainEntityOfPage: "https://www.clearfin.ca/best-credit-cards-canada",
   };
 
   const faqJsonLd = {

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "ClearFin was built by Canadians who got tired of missing payments and leaving rewards unclaimed. Meet the team making credit cards simple.",
     type: "website",
     locale: "en_CA",
-    url: "https://clearfin.ca/about",
+    url: "https://www.clearfin.ca/about",
     siteName: "ClearFin",
   },
 };
@@ -40,13 +40,13 @@ const team = [
 const aboutSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  url: "https://clearfin.ca/about",
+  url: "https://www.clearfin.ca/about",
   mainEntity: {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "ClearFin",
     alternateName: "ClearFin Digital Inc.",
-    url: "https://clearfin.ca",
+    url: "https://www.clearfin.ca",
     foundingLocation: {
       "@type": "Place",
       name: "Calgary, Alberta, Canada",
