@@ -3,13 +3,16 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How Credit Card Rewards Work in Canada — Complete Guide | ClearFin",
+  title: "Credit Card Points Comparison Canada: Maximize Rewards | ClearFin",
   description:
     "Learn how credit card rewards programs work in Canada. Understand points, cashback, miles, and how to maximize every dollar you spend.",
   keywords: [
     "credit card rewards Canada",
+    "how to maximize credit card rewards Canada",
+    "credit card points comparison Canada",
+    "best credit card combination Canada",
+    "cash back vs travel points Canada",
     "how credit card points work",
-    "maximize credit card rewards",
     "credit card rewards guide Canada",
   ],
   alternates: {

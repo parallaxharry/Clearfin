@@ -4,13 +4,16 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Credit Cards for Groceries in Canada 2026 | ClearFin",
+  title: "Best Credit Card for Groceries, Walmart & Shoppers Drug Mart | ClearFin",
   description:
-    "Earn up to 6x points on groceries with these top Canadian credit cards. Compare grocery rewards rates across all major issuers.",
+    "A 2026 Canadian guide to the highest earning grocery credit cards, comparing Scotia Gold Amex, Cobalt, CIBC Dividend, BMO Eclipse, and PC World Elite.",
   keywords: [
+    "best credit card for groceries Canada",
+    "best grocery rewards credit card Canada",
     "best grocery credit cards Canada",
-    "credit cards for groceries",
     "highest grocery rewards card Canada",
+    "best credit card for Walmart Canada",
+    "best credit card for Shoppers Drug Mart",
   ],
   alternates: {
     canonical: "/best-grocery-credit-cards-canada",

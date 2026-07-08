@@ -28,15 +28,18 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clearfin.ca"),
-  title: "ClearFin — Every swipe should hit maximum cashback.",
+  title: "Compare Credit Cards in Canada, Rewards & Cashback Calculator | ClearFin",
   description:
-    "ClearFin finds your best credit card for every purchase. Maximize rewards on every transaction. Built for Canada.",
+    "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
   keywords: [
-    "credit card optimizer Canada",
-    "best credit card rewards Canada",
-    "cashback maximizer",
-    "Canadian credit cards",
-    "credit card comparison Canada",
+    "compare credit cards in Canada",
+    "Canadian credit card comparison",
+    "compare Canadian credit card rewards",
+    "best credit card based on my spending Canada",
+    "credit card rewards calculator Canada",
+    "cash back calculator Canada",
+    "which credit card should I use Canada",
+    "credit card rewards optimizer Canada",
     "best credit cards Canada 2026",
     "best cashback credit cards Canada",
     "best travel credit cards Canada",
@@ -49,9 +52,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "ClearFin — Every swipe should hit maximum cashback.",
+    title: "Compare Credit Cards in Canada, Rewards & Cashback Calculator | ClearFin",
     description:
-      "ClearFin finds your best credit card for every purchase. Built for Canada.",
+      "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
     type: "website",
     locale: "en_CA",
     url: "https://www.clearfin.ca",
@@ -67,9 +70,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "ClearFin — Every swipe should hit maximum cashback.",
+    title: "Compare Credit Cards in Canada, Rewards & Cashback Calculator | ClearFin",
     description:
-      "ClearFin finds your best credit card for every purchase. Built for Canada.",
+      "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
     images: ["/logo.png"],
   },
   robots: { index: true, follow: true },

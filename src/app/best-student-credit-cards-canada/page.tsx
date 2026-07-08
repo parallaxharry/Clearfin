@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     "Compare the best credit cards for Canadian students. Build credit, earn rewards, and pay no annual fee. Expert picks for university and college students.",
   keywords: [
     "best student credit cards Canada",
+    "best credit card for students Canada",
     "student credit cards Canada 2026",
     "credit cards for students",
     "first credit card Canada",

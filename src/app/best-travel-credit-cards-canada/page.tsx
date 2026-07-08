@@ -4,13 +4,16 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Travel Credit Cards in Canada 2026 | ClearFin",
+  title: "Best Travel Credit Cards Canada 2026: Aeroplan & Airline Rewards | ClearFin",
   description:
     "Compare top travel rewards credit cards in Canada. Earn Aeroplan, Avion, and Scene+ points. Expert picks for frequent flyers and occasional travellers.",
   keywords: [
+    "best travel credit cards Canada 2026",
     "best travel credit cards Canada",
-    "travel rewards cards Canada",
-    "Aeroplan credit cards",
+    "travel rewards credit cards Canada",
+    "best Aeroplan credit cards Canada",
+    "best airline credit cards Canada",
+    "best credit card for international travel Canada",
   ],
   alternates: {
     canonical: "/best-travel-credit-cards-canada",

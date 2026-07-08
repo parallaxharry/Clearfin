@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Best No Annual Fee Credit Cards in Canada 2026 | ClearFin",
   description:
-    "Top no-fee credit cards in Canada that still earn meaningful rewards. Compare cashback, points, and perks with zero annual cost.",
+    "A Canadian guide to no fee credit cards for 2026, comparing Tangerine, Amex SimplyCash, PC World Elite, CIBC Dividend, and BMO CashBack side by side.",
   keywords: [
     "best no fee credit cards Canada",
     "no annual fee credit cards Canada",

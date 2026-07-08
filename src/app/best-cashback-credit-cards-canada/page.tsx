@@ -4,13 +4,17 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Cashback Credit Cards in Canada 2026 | ClearFin",
+  title: "Best Cash Back Credit Cards Canada for Gas, Restaurants & Bills | ClearFin",
   description:
-    "Find the highest cashback credit cards in Canada. Compare flat-rate and category-based cashback cards with real return calculations.",
+    "Find the best cash back credit cards in Canada — including the top cards for gas, restaurants, and recurring bills. Compare flat-rate and category cashback with real return calculations.",
   keywords: [
+    "best cash back credit cards Canada",
     "best cashback credit cards Canada",
     "highest cashback card Canada",
     "cash back credit cards Canada 2026",
+    "best credit card for gas Canada",
+    "best credit card for restaurants Canada",
+    "best credit card for recurring bills Canada",
   ],
   alternates: {
     canonical: "/best-cashback-credit-cards-canada",

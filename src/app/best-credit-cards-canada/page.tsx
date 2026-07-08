@@ -4,18 +4,24 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Credit Cards in Canada 2026 — Expert Picks | ClearFin",
+  title: "Best Credit Cards in Canada 2026: Rewards, Bonuses & Spending | ClearFin",
   description:
     "Compare the best Canadian credit cards for 2026. Expert picks for cashback, travel, groceries, and more. Updated monthly with real reward rates.",
   keywords: [
     "best credit cards Canada",
-    "best credit cards Canada 2026",
+    "best credit cards in Canada 2026",
     "top credit cards Canada",
-    "Canadian credit cards comparison",
+    "best rewards credit cards Canada",
+    "credit card rewards comparison Canada",
+    "best credit card sign-up bonus Canada",
+    "best credit card for online shopping Canada",
+    "best credit card for everyday spending Canada",
+    "best credit card for young professionals Canada",
+    "best credit card for Amazon Canada",
   ],
   alternates: { canonical: "/best-credit-cards-canada" },
   openGraph: {
-    title: "Best Credit Cards in Canada 2026 — Expert Picks | ClearFin",
+    title: "Best Credit Cards in Canada 2026: Rewards, Bonuses & Spending | ClearFin",
     description: "Compare the best Canadian credit cards for 2026.",
     url: "https://www.clearfin.ca/best-credit-cards-canada",
     siteName: "ClearFin",
