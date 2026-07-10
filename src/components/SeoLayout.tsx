@@ -25,7 +25,7 @@ export default function SeoLayout({
 
         <div className="seo-nav-right">
           <SearchTrigger className="nav-search" />
-          <Link href="/#waitlist" className="seo-nav-cta">
+          <Link href="/early-access" className="seo-nav-cta">
             Get Early Access
           </Link>
         </div>
@@ -66,7 +66,7 @@ export default function SeoLayout({
           <p>
             Match your spending to the card that rewards you most.
           </p>
-          <Link href="/#tool" className="seo-cta-btn">
+          <Link href="/credit-card-calculator-canada" className="seo-cta-btn">
             Try the Calculator →
           </Link>
         </section>
@@ -85,8 +85,8 @@ export default function SeoLayout({
           <div className="seo-footer-links">
             <Link href="/">Home</Link>
             <Link href="/blog">Blog</Link>
-            <Link href="/#tool">Calculator</Link>
-            <Link href="/#waitlist">Waitlist</Link>
+            <Link href="/credit-card-calculator-canada">Calculator</Link>
+            <Link href="/early-access">Waitlist</Link>
           </div>
 
           <p className="seo-footer-copy">

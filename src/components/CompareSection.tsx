@@ -333,15 +333,15 @@ export default function CompareSection() {
 
   return (
     <section id="compare">
-      <div className="section-num">04 / Compare Cards</div>
+      <div className="section-num">Compare Cards</div>
       <div className="cmp-wrap">
 
         {/* Header */}
         <div className="cmp-header">
           <div className="cmp-eyebrow">2 cards · Your spend profile</div>
-          <h2 className="cmp-title">
+          <h1 className="cmp-title">
             See the <span className="ital">difference</span><br />side by side.
-          </h2>
+          </h1>
           <p className="cmp-sub">
             Pick any two Canadian cards. We&apos;ll show exactly how each one performs
             against your spending — category by category, fee included.

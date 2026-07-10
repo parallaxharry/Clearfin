@@ -70,9 +70,11 @@ const PROFILE_STEPS = [
 ];
 const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 
-export default function InteractiveTool() {
+// gateOnly: home-page variant — shows just the locked gate; the start button
+// navigates to the calculator page instead of starting the questions in place.
+export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boolean }) {
   const { spend, setSpend: onSpendChange } = useSpend();
-  const [toolState, setToolState] = useState<ToolState>("gate");
+  const [toolState, setToolState] = useState<ToolState>(gateOnly ? "gate" : "step");
   const [currentStep, setCurrentStep] = useState(0);
   const [stepValue, setStepValue] = useState(STEPS[0].defaultVal);
   const [income, setIncome] = useState(60000);
@@ -180,7 +182,7 @@ export default function InteractiveTool() {
   return (
     <>
     <section id="tool">
-      <div className="section-num">02 / Calculator</div>
+      <div className="section-num">{gateOnly ? "02 / Calculator" : "Calculator"}</div>
       <div className="tool-wrap">
         <div className={`tool-stage${toolState !== "gate" ? " open" : ""}`}>
 
@@ -208,14 +210,20 @@ export default function InteractiveTool() {
                   </div>
                 </div>
               </div>
-              <button className="gate-btn" onClick={() => {
-                setToolState("step");
-                setTimeout(() => {
-                  document.getElementById("tool")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }, 100);
-              }}>
-                <span className="gate-btn-text">Start in 30 seconds →</span>
-              </button>
+              {gateOnly ? (
+                <Link href="/credit-card-calculator-canada" className="gate-btn">
+                  <span className="gate-btn-text">Start in 30 seconds →</span>
+                </Link>
+              ) : (
+                <button className="gate-btn" onClick={() => {
+                  setToolState("step");
+                  setTimeout(() => {
+                    document.getElementById("tool")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 100);
+                }}>
+                  <span className="gate-btn-text">Start in 30 seconds →</span>
+                </button>
+              )}
               <div className="gate-foot">
                 <span>7 questions</span>
                 <span>No signup</span>
@@ -432,7 +440,7 @@ export default function InteractiveTool() {
 
               {/* CTA row */}
               <div className="result-cta-row">
-                <a href="#waitlist" className="btn-primary">
+                <a href="/early-access" className="btn-primary">
                   <span>Get Early Access — It&apos;s Free</span>
                   <span className="btn-arrow">→</span>
                 </a>
@@ -452,10 +460,12 @@ export default function InteractiveTool() {
         </div>
       </div>
 
-      <div className="scroll-hint">
-        <span>Scroll · See cards</span>
-        <span className="scroll-hint-line" />
-      </div>
+      {gateOnly && (
+        <div className="scroll-hint">
+          <span>Scroll · See cards</span>
+          <span className="scroll-hint-line" />
+        </div>
+      )}
       <div className="section-divider-bottom" />
     </section>
 

@@ -51,7 +51,7 @@ export default function SearchPalette({
   const [active, setActive] = useState(0);
   const [rich, setRich] = useState<RichSearchCard[] | null>(richIndexCache);
   // Cards tagged for comparison (max 2). Only cards.ts cards are comparable —
-  // the home compare section's math needs their rates.
+  // the compare page's math needs their rates.
   const [compare, setCompare] = useState<{ id: string; name: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -110,8 +110,8 @@ export default function SearchPalette({
     if (compare.length !== 2) return;
     const ids = compare.map((c) => c.id);
     onClose();
-    router.push(`/?compare=${ids.join(",")}#compare`);
-    // Same-page case: the home compare section is already mounted and listens for this.
+    router.push(`/compare-credit-cards-canada?compare=${ids.join(",")}`);
+    // Same-page case: the compare page is already mounted and listens for this.
     window.dispatchEvent(new CustomEvent("clearfin:compare", { detail: { ids } }));
   };
 
