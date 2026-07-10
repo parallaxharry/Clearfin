@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Logo from "@/components/Logo";
-import SearchTrigger from "@/components/SearchTrigger";
+import Nav from "@/components/Nav";
+import SiteFooter from "@/components/SiteFooter";
 
 interface SeoLayoutProps {
   title: string;
@@ -19,17 +19,8 @@ export default function SeoLayout({
 }: SeoLayoutProps) {
   return (
     <div className="seo-page">
-      {/* ── Nav ── */}
-      <header className="seo-nav">
-        <Logo />
-
-        <div className="seo-nav-right">
-          <SearchTrigger className="nav-search" />
-          <Link href="/early-access" className="seo-nav-cta">
-            Get Early Access
-          </Link>
-        </div>
-      </header>
+      {/* ── Nav (shared site-wide) ── */}
+      <Nav />
 
       <main className="seo-main">
         {/* ── Breadcrumb ── */}
@@ -72,28 +63,8 @@ export default function SeoLayout({
         </section>
       </main>
 
-      {/* ── Footer ── */}
-      <footer className="seo-footer">
-        <div className="seo-footer-inner">
-          <div className="seo-footer-brand">
-            <Logo className="footer-logo" priority={false} />
-            <p className="seo-footer-tagline">
-              Smarter credit card recommendations, powered by your real spending.
-            </p>
-          </div>
-
-          <div className="seo-footer-links">
-            <Link href="/">Home</Link>
-            <Link href="/blog">Blog</Link>
-            <Link href="/credit-card-calculator-canada">Calculator</Link>
-            <Link href="/early-access">Waitlist</Link>
-          </div>
-
-          <p className="seo-footer-copy">
-            &copy; {new Date().getFullYear()} ClearFin. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      {/* ── Footer (shared site-wide) ── */}
+      <SiteFooter />
     </div>
   );
 }

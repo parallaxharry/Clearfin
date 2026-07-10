@@ -920,7 +920,8 @@ section {
     radial-gradient(circle at bottom right, rgba(231,217,183,.12), transparent 34%),
     var(--bg);
   color: var(--ink);
-  padding: 42px 40px 80px;
+  /* Top clears the fixed site Nav (replaced the old inline .privacy-logo). */
+  padding: 130px 40px 80px;
 }
 .privacy-shell {
   width: min(100%, 980px);
@@ -1058,7 +1059,7 @@ section {
 }
 
 @media (max-width: 700px) {
-  .privacy-page { padding: 30px 22px 64px; }
+  .privacy-page { padding: 100px 22px 64px; }
   .privacy-back, .privacy-logo { margin-bottom: 62px; }
   .privacy-hero { padding-bottom: 36px; }
   .privacy-hero h1 { font-size: clamp(52px, 17vw, 76px); }
@@ -1910,20 +1911,18 @@ section {
 }
 .seo-card-box-img {
   margin: 0 0 20px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
   aspect-ratio: 1.6 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 .seo-card-box-img img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  padding: 16px;
+  border-radius: 12px;
   transition: transform 0.4s var(--ease-out);
 }
 .seo-card-box:hover .seo-card-box-img img { transform: scale(1.04); }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Logo from "@/components/Logo";
+import Nav from "@/components/Nav";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "FAQ | ClearFin",
@@ -97,14 +98,15 @@ const faqSchema = {
 
 export default function FaqPage() {
   return (
+    <>
     <main className="privacy-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="grain" />
+      <Nav />
       <div className="privacy-shell">
-        <Logo className="privacy-logo" />
 
         <header className="privacy-hero">
           <div className="privacy-kicker">ClearFin Digital Inc.</div>
@@ -128,5 +130,7 @@ export default function FaqPage() {
         </div>
       </div>
     </main>
+      <SiteFooter />
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Logo from "@/components/Logo";
+import Nav from "@/components/Nav";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Disclosures | ClearFin",
@@ -44,10 +45,11 @@ const disclosureSections = [
 
 export default function DisclosuresPage() {
   return (
+    <>
     <main className="privacy-page">
       <div className="grain" />
+      <Nav />
       <div className="privacy-shell">
-        <Logo className="privacy-logo" />
 
         <header className="privacy-hero">
           <div className="privacy-kicker">ClearFin Digital Inc.</div>
@@ -77,5 +79,7 @@ export default function DisclosuresPage() {
         </div>
       </div>
     </main>
+      <SiteFooter />
+    </>
   );
 }
