@@ -65,7 +65,9 @@ export const PAGES: SearchPage[] = [
   { title: "Compare Cards", group: "Tool", href: "/#compare", keywords: ["compare", "comparison", "side by side", "versus", "vs"] },
 ];
 
-const MAX_CARDS = 8;
+// High enough that a full-issuer query ("scotia", "td") lists every card —
+// Scotiabank is the largest issuer at 13 cards. The results pane scrolls.
+const MAX_CARDS = 14;
 
 // ---------- Attribute search (rich index) ----------
 
