@@ -1493,7 +1493,10 @@ section {
   animation: sheen 4s ease-in-out infinite;
 }
 @media (max-width: 700px) {
-  .card-modal { grid-template-columns: 1fr; }
+  /* Single scroll context: the modal scrolls as a whole so the Apply CTA and
+     disclaimer below the fold stay reachable on short phone viewports. */
+  .card-modal { grid-template-columns: 1fr; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .card-modal-left { overflow-y: visible; }
   .card-modal-right {
     display: flex; padding: 0 24px 32px;
     background: none; gap: 16px;
