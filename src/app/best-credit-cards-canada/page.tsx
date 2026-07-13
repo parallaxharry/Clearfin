@@ -1,8 +1,12 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
 import SeoCardActions from "@/components/SeoCardActions";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import Link from "next/link";
 import type { Metadata } from "next";
+
+// ISR: Supabase card_catalog edits (e.g. affiliate apply links) go live within ~5 min.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Best Credit Cards in Canada 2026: Rewards, Bonuses & Spending | ClearFin",
@@ -188,6 +192,8 @@ export default function BestCreditCardsCanadaPage() {
             <SeoCardActions name="Tangerine Money-Back Mastercard" />
           </div>
         </div>
+
+        <AffiliateDisclosure />
 
         {/* ────────────────────────────────────────────── */}
         {/* METHODOLOGY                                    */}

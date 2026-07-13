@@ -1,8 +1,12 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
 import SeoCardActions from "@/components/SeoCardActions";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import Link from "next/link";
 import type { Metadata } from "next";
+
+// ISR: Supabase card_catalog edits (e.g. affiliate apply links) go live within ~5 min.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Best Cash Back Credit Cards Canada for Gas, Restaurants & Bills | ClearFin",
@@ -131,6 +135,8 @@ export default function BestCashbackCreditCardsCanada() {
           <SeoCardActions name="SimplyCash Card from American Express" />
         </div>
       </div>
+
+      <AffiliateDisclosure />
 
       {/* ── Comparison Table ── */}
       <h2>Cashback Card Comparison</h2>

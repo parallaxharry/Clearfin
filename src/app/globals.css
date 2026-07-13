@@ -1964,6 +1964,24 @@ section {
   font-weight: 500;
   margin-top: 12px;
 }
+.seo-content .seo-affiliate-note {
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent-warm);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 0 0 40px;
+}
+.seo-content .seo-affiliate-note p {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  color: rgba(245, 245, 242, 0.62);
+  margin: 0 0 10px;
+}
+.seo-content .seo-affiliate-note p:last-child {
+  margin-bottom: 0;
+}
 .seo-content .seo-card-actions {
   display: flex;
   flex-direction: column;
