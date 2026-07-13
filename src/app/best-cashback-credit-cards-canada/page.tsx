@@ -1,5 +1,6 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
+import SeoCardActions from "@/components/SeoCardActions";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -57,6 +58,7 @@ export default function BestCashbackCreditCardsCanada() {
             Best no-fee cashback card — pick grocery, gas, and recurring bills
             for up to $600+/year back
           </div>
+          <SeoCardActions name="Tangerine Money-Back Credit Card" />
         </div>
 
         {/* Card 2 */}
@@ -73,6 +75,7 @@ export default function BestCashbackCreditCardsCanada() {
             Highest grocery + gas rate among major bank cards — easily covers
             the annual fee if you spend $400+/month on those categories
           </div>
+          <SeoCardActions name="CIBC Dividend Visa Infinite" />
         </div>
 
         {/* Card 3 */}
@@ -91,6 +94,7 @@ export default function BestCashbackCreditCardsCanada() {
             Best for families with high grocery and subscription spending —
             Netflix, Spotify, and insurance premiums all earn 4%
           </div>
+          <SeoCardActions name="Scotiabank Momentum Visa Infinite" />
         </div>
 
         {/* Card 4 */}
@@ -107,6 +111,7 @@ export default function BestCashbackCreditCardsCanada() {
             Strong grocery rate plus premium World Elite perks like Mastercard
             Travel Pass lounge access
           </div>
+          <SeoCardActions name="BMO CashBack World Elite Mastercard" />
         </div>
 
         {/* Card 5 */}
@@ -123,6 +128,7 @@ export default function BestCashbackCreditCardsCanada() {
             Simplest cashback card in Canada — no categories to track, no caps
             to worry about on moderate spending
           </div>
+          <SeoCardActions name="SimplyCash Card from American Express" />
         </div>
       </div>
 

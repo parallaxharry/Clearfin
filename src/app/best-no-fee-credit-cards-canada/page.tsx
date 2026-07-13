@@ -1,5 +1,6 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
+import SeoCardActions from "@/components/SeoCardActions";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -53,6 +54,7 @@ export default function BestNoFeeCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Most flexible no-fee card — you pick your own bonus categories
           </div>
+          <SeoCardActions name="Tangerine Money-Back Credit Card" />
         </div>
 
         {/* Card 2 */}
@@ -69,6 +71,7 @@ export default function BestNoFeeCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Highest flat-rate cashback among no-fee cards
           </div>
+          <SeoCardActions name="SimplyCash Card from American Express" />
         </div>
 
         {/* Card 3 */}
@@ -85,6 +88,7 @@ export default function BestNoFeeCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Unbeatable for Loblaws and Shoppers Drug Mart shoppers
           </div>
+          <SeoCardActions name="PC Financial World Elite Mastercard" />
         </div>
 
         {/* Card 4 */}
@@ -101,6 +105,7 @@ export default function BestNoFeeCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Solid all-around cashback with no earning caps on base rate
           </div>
+          <SeoCardActions name="CIBC Dividend Visa Card" />
         </div>
 
         {/* Card 5 */}
@@ -117,6 +122,7 @@ export default function BestNoFeeCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Easiest to qualify for — great first credit card
           </div>
+          <SeoCardActions name="BMO CashBack Mastercard" />
         </div>
       </div>
 

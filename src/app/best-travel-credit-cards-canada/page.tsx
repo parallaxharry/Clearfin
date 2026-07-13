@@ -1,5 +1,6 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
+import SeoCardActions from "@/components/SeoCardActions";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -57,6 +58,7 @@ export default function BestTravelCreditCardsCanada() {
             Best Aeroplan earner for everyday spending — the free checked bag
             alone saves $70+ per round trip
           </div>
+          <SeoCardActions name="TD Aeroplan Visa Infinite" />
         </div>
 
         {/* Card 2 */}
@@ -76,6 +78,7 @@ export default function BestTravelCreditCardsCanada() {
             Best flexible travel card — points transfer 1:1 to Aeroplan,
             Marriott, Hilton, and British Airways for outsized value
           </div>
+          <SeoCardActions name="American Express Cobalt Card" />
         </div>
 
         {/* Card 3 */}
@@ -93,6 +96,7 @@ export default function BestTravelCreditCardsCanada() {
             Most flexible redemption — transfer to British Airways, WestJet,
             Cathay Pacific, or book any travel through Avion portal
           </div>
+          <SeoCardActions name="RBC Avion Visa Infinite" />
         </div>
 
         {/* Card 4 */}
@@ -112,6 +116,7 @@ export default function BestTravelCreditCardsCanada() {
             Best no-FX-fee card in Canada — saves 2.5% on every purchase
             abroad, which adds up fast on international trips
           </div>
+          <SeoCardActions name="Scotiabank Passport Visa Infinite" />
         </div>
 
         {/* Card 5 */}
@@ -129,6 +134,7 @@ export default function BestTravelCreditCardsCanada() {
             Best for occasional travellers — flexible Aventura portal lets you
             book any flight with no blackout dates
           </div>
+          <SeoCardActions name="CIBC Aventura Visa Infinite" />
         </div>
       </div>
 

@@ -1964,6 +1964,60 @@ section {
   font-weight: 500;
   margin-top: 12px;
 }
+.seo-content .seo-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+.seo-content .seo-card-apply {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-bottom: 0;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #000;
+  background: var(--accent-warm);
+  padding: 12px 20px;
+  border-radius: 2px;
+  transition: background 0.2s, color 0.2s;
+}
+.seo-content .seo-card-apply:hover {
+  background: var(--ink);
+  color: #000;
+}
+.seo-content .seo-card-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  padding: 11px 20px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.seo-content .seo-card-view::after {
+  content: "→";
+  opacity: 0.85;
+  transition: transform 0.2s;
+}
+.seo-content .seo-card-view:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--ink);
+}
+.seo-content .seo-card-view:hover::after {
+  transform: translateX(3px);
+}
 
 /* COMPARISON TABLE */
 .seo-table-wrap {

@@ -1,5 +1,6 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
+import SeoCardActions from "@/components/SeoCardActions";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -55,6 +56,7 @@ export default function BestGroceryCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Highest grocery multiplier of any Canadian credit card
           </div>
+          <SeoCardActions name="Scotiabank Gold American Express" />
         </div>
 
         {/* Card 2 */}
@@ -71,6 +73,7 @@ export default function BestGroceryCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Best all-around card for food spending (groceries + restaurants)
           </div>
+          <SeoCardActions name="American Express Cobalt Card" />
         </div>
 
         {/* Card 3 */}
@@ -86,6 +89,7 @@ export default function BestGroceryCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Best pure cashback option for groceries
           </div>
+          <SeoCardActions name="CIBC Dividend Visa Infinite" />
         </div>
 
         {/* Card 4 */}
@@ -101,6 +105,7 @@ export default function BestGroceryCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Strong for BMO customers who consolidate banking and credit
           </div>
+          <SeoCardActions name="BMO Eclipse Visa Infinite" />
         </div>
 
         {/* Card 5 */}
@@ -116,6 +121,7 @@ export default function BestGroceryCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Best no-fee grocery card if you shop at Loblaws banner stores
           </div>
+          <SeoCardActions name="PC Financial World Elite Mastercard" />
         </div>
       </div>
 

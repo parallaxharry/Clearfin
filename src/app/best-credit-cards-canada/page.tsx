@@ -1,5 +1,6 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
+import SeoCardActions from "@/components/SeoCardActions";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -128,6 +129,7 @@ export default function BestCreditCardsCanadaPage() {
               1:1 to Aeroplan, making this card a dual-purpose powerhouse for
               both everyday cashback and travel redemptions.
             </p>
+            <SeoCardActions name="Amex Cobalt" />
           </div>
 
           <div className="seo-card-box">
@@ -141,6 +143,7 @@ export default function BestCreditCardsCanadaPage() {
               redeem at roughly 1 cent each, giving you an effective 6% grocery
               rate that no other card matches.
             </p>
+            <SeoCardActions name="Scotia Gold Amex" />
           </div>
 
           <div className="seo-card-box">
@@ -154,6 +157,7 @@ export default function BestCreditCardsCanadaPage() {
               yearly pass, and first-checked-bag-free on Air Canada. Ideal if you
               fly domestically two or more times per year.
             </p>
+            <SeoCardActions name="TD Aeroplan Visa Infinite" />
           </div>
 
           <div className="seo-card-box">
@@ -167,6 +171,7 @@ export default function BestCreditCardsCanadaPage() {
               no redemption hoops. This is the simplest high-return card for
               Canadians who want cash, not points.
             </p>
+            <SeoCardActions name="CIBC Dividend Visa Infinite" />
           </div>
 
           <div className="seo-card-box">
@@ -180,6 +185,7 @@ export default function BestCreditCardsCanadaPage() {
               anyone who wants solid rewards without paying for the privilege.
               Pair it with a Tangerine savings account to unlock a bonus category.
             </p>
+            <SeoCardActions name="Tangerine Money-Back Mastercard" />
           </div>
         </div>
 

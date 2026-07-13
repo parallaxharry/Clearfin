@@ -1,5 +1,6 @@
 import SeoLayout from "@/components/SeoLayout";
 import SeoCardImage from "@/components/SeoCardImage";
+import SeoCardActions from "@/components/SeoCardActions";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -52,6 +53,7 @@ export default function BestStudentCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Best intro grocery rate for students
           </div>
+          <SeoCardActions name="BMO CashBack Mastercard" />
         </div>
 
         <div className="seo-card-box">
@@ -66,6 +68,7 @@ export default function BestStudentCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Best customizable cashback categories
           </div>
+          <SeoCardActions name="Tangerine Money-Back Credit Card" />
         </div>
 
         <div className="seo-card-box">
@@ -80,6 +83,7 @@ export default function BestStudentCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Easiest approval for first-time applicants
           </div>
+          <SeoCardActions name="CIBC Dividend Visa Card for Students" />
         </div>
 
         <div className="seo-card-box">
@@ -94,6 +98,7 @@ export default function BestStudentCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Best for entertainment and lifestyle rewards
           </div>
+          <SeoCardActions name="Scotiabank Scene+ Visa Card" />
         </div>
 
         <div className="seo-card-box">
@@ -108,6 +113,7 @@ export default function BestStudentCreditCardsCanada() {
           <div className="seo-card-box-highlight">
             Best ongoing grocery earn rate
           </div>
+          <SeoCardActions name="RBC Cash Back Mastercard" />
         </div>
       </div>
 
