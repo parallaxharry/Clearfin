@@ -49,6 +49,7 @@ export interface SearchResult {
 
 // Static manifest of non-card destinations.
 export const PAGES: SearchPage[] = [
+  { title: "All Credit Cards", group: "Page", href: "/credit-cards", keywords: ["all", "cards", "list", "browse", "every", "directory", "issuer"] },
   { title: "Best Credit Cards in Canada", group: "Guide", href: "/best-credit-cards-canada", keywords: ["best", "top", "overall", "ranking", "2026"] },
   { title: "Best Cashback Cards", group: "Guide", href: "/best-cashback-credit-cards-canada", keywords: ["cashback", "cash back", "money back"] },
   { title: "Best Travel Cards", group: "Guide", href: "/best-travel-credit-cards-canada", keywords: ["travel", "points", "aeroplan", "miles", "flights"] },

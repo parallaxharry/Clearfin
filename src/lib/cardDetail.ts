@@ -272,6 +272,39 @@ export const getSearchCards = cache(async (): Promise<SearchCard[]> => {
   });
 });
 
+/** All cards in Supabase table order (by sort_order) — the source order used by
+ *  the /credit-cards index so the list mirrors the catalog and clusters issuers.
+ *  Alias-aware ids so links resolve via the detail route. Falls back to cards.ts
+ *  order when Supabase is unavailable. Cached per-request. */
+export const getCatalogOrderedCards = cache(async (): Promise<SearchCard[]> => {
+  const fallback = (): SearchCard[] =>
+    CARDS.map((c) => ({ id: c.id, name: c.name, issuer: c.issuer, img: c.img }));
+
+  const supabase = readClient();
+  if (!supabase) return fallback();
+
+  const { data, error } = await supabase
+    .from("card_catalog")
+    .select("id,name,issuer,img,sort_order")
+    .order("sort_order", { ascending: true });
+  if (error || !data) {
+    if (error) console.error("getCatalogOrderedCards error:", error.message);
+    return fallback();
+  }
+
+  const staticIdByCatalogId = new Map(
+    Object.entries(ID_ALIASES).map(([staticId, realId]) => [realId, staticId])
+  );
+  return (data as Array<{ id: string; name: string | null; issuer: string | null; img: string | null }>).map(
+    (r) => ({
+      id: staticIdByCatalogId.get(r.id) ?? r.id,
+      name: r.name ?? r.id,
+      issuer: r.issuer ?? "",
+      img: r.img ?? "",
+    })
+  );
+});
+
 /**
  * Rich search index for /api/search-index: the union of card_catalog and
  * cards.ts, with the catalog's benefits/rewards/pros text made searchable.

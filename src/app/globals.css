@@ -287,7 +287,8 @@ section {
   text-shadow: 0 16px 40px rgba(0,0,0,.75);
 }
 .hero-sub b { color: var(--ink); font-weight: 400; }
-.hero-cta-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.hero-cta-row { display: flex; flex-direction: column; align-items: stretch; gap: 14px; width: fit-content; }
+.hero-cta-row .btn-primary { justify-content: center; }
 .btn-primary {
   font-family: var(--font-jetbrains), monospace; font-size: 11px; letter-spacing: .2em;
   text-transform: uppercase; padding: 18px 28px; background: var(--ink); color: #000;
@@ -2893,6 +2894,58 @@ section {
 .cardpg .seo-footer-logo { font-size: 18px; display: flex; align-items: baseline; }
 .cardpg .seo-footer-links { display: flex; gap: 22px; }
 .cardpg .seo-footer-copy { width: 100%; text-align: left; opacity: .7; }
+
+/* ─────────────────────────────────────────────
+   ALL CARDS INDEX (/credit-cards)
+───────────────────────────────────────────── */
+.cardsidx-main { max-width: 1100px; margin: 0 auto; padding-bottom: 80px; }
+.cardsidx-head { margin-bottom: 28px; }
+.cardsidx-title {
+  font-family: var(--font-fraunces), serif; font-weight: 400;
+  font-size: clamp(34px, 6vw, 52px); line-height: 1.05; color: var(--ink);
+}
+.cardsidx-lede { margin-top: 14px; font-size: 16px; line-height: 1.6; color: var(--ink-mute); max-width: 60ch; }
+.cardsidx-count {
+  margin-top: 12px; font-family: var(--font-jetbrains), monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-warm);
+}
+
+/* Single-column list: one card per line, picture left → name. Rows sit flush
+   with thin dividers so the list reads as one continuous run (no gaps). */
+.cardsidx-list { list-style: none; margin: 20px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.cardsidx-item {
+  display: flex; align-items: center; gap: 18px;
+  padding: 10px 12px; border-bottom: 1px solid var(--line);
+  text-decoration: none; transition: background .18s;
+}
+.cardsidx-item:hover { background: rgba(255,255,255,.03); }
+/* Thumbnail sized to render the card art at the same scale as the Top Picks
+   ("Best card for every category") images on the home page: a 283×160 box with
+   the art contained inside 16px padding. */
+.cardsidx-thumb {
+  position: relative; flex-shrink: 0; width: 283px; height: 160px;
+  background: rgba(0,0,0,.4); border-radius: 12px;
+}
+.cardsidx-thumb img { object-fit: contain; padding: 16px; transition: transform .25s var(--ease-out); }
+.cardsidx-item:hover .cardsidx-thumb img { transform: scale(1.05); }
+.cardsidx-name {
+  flex: 1; min-width: 0; font-size: 16px; font-weight: 500; color: var(--ink); line-height: 1.3;
+}
+.cardsidx-item:hover .cardsidx-name { color: var(--accent-warm); }
+.cardsidx-arrow {
+  flex-shrink: 0; color: var(--ink-mute); opacity: 0;
+  transition: opacity .18s, transform .18s; transform: translateX(-4px);
+}
+.cardsidx-item:hover .cardsidx-arrow { opacity: .8; transform: translateX(0); color: var(--accent-warm); }
+.cardsidx-disclosure { margin-top: 48px; }
+
+@media (max-width: 600px) {
+  .cardsidx-item { gap: 14px; padding: 10px 8px; }
+  .cardsidx-thumb { width: 150px; height: 96px; }
+  .cardsidx-thumb img { padding: 10px; }
+  .cardsidx-name { font-size: 15px; }
+  .cardsidx-arrow { display: none; }
+}
 
 /* ── Responsive ── */
 @media (max-width: 860px) {

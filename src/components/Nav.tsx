@@ -27,7 +27,7 @@ export default function Nav() {
 
       <nav className="nav-links">
         <a href="/credit-card-calculator-canada">Calculator</a>
-        <a href="/#showcase">Cards</a>
+        <a href="/credit-cards">Cards</a>
         <a href="/compare-credit-cards-canada">Compare</a>
         <a href="/credit-card-rewards-canada-guide">Rewards Guide</a>
         <a href="/early-access">Waitlist</a>

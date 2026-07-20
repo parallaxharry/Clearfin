@@ -65,8 +65,9 @@ export default async function HomePage() {
                 <span>Open the Calculator</span>
                 <span className="btn-arrow">-&gt;</span>
               </a>
-              <a href="#showcase" className="btn-secondary">
-                See top cards <span className="btn-arrow">-&gt;</span>
+              <a href="/credit-cards" className="btn-primary">
+                <span>View all cards</span>
+                <span className="btn-arrow">-&gt;</span>
               </a>
             </div>
             <div className="hero-stats reveal">
