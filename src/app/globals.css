@@ -912,6 +912,19 @@ section {
   text-transform: uppercase;
   color: rgba(245,245,242,.48);
 }
+@media (max-width: 600px) {
+  .footer {
+    padding: 32px 20px;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 16px 20px;
+  }
+  .footer-links .footer-logo-big {
+    flex-basis: 100%;
+    margin: 0 0 4px;
+  }
+}
 
 /* Privacy */
 .privacy-page {
@@ -1898,6 +1911,30 @@ section {
   margin: 32px 0;
   color: var(--ink-mute);
   font-style: italic;
+}
+
+.seo-article-figure {
+  margin: 36px 0;
+  text-align: center;
+}
+.seo-article-figure img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 720px);
+  max-height: 440px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.seo-article-figure figcaption {
+  margin-top: 18px;
+}
+.seo-content .seo-article-image-cta {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  line-height: 1.5;
+  text-align: center;
 }
 
 /* CARD HIGHLIGHT BOXES */

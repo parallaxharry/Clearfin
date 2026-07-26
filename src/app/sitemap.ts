@@ -40,6 +40,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/best-credit-card-for-everyday-spending-in-canada-2026-picks`,
+      lastModified: new Date("2026-07-25"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/credit-card-calculator-canada`,
       lastModified: now,
       changeFrequency: "weekly",

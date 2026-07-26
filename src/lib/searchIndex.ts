@@ -51,6 +51,7 @@ export interface SearchResult {
 export const PAGES: SearchPage[] = [
   { title: "All Credit Cards", group: "Page", href: "/credit-cards", keywords: ["all", "cards", "list", "browse", "every", "directory", "issuer"] },
   { title: "Best Credit Cards in Canada", group: "Guide", href: "/best-credit-cards-canada", keywords: ["best", "top", "overall", "ranking", "2026"] },
+  { title: "Best Credit Cards for Everyday Spending", group: "Guide", href: "/best-credit-card-for-everyday-spending-in-canada-2026-picks", keywords: ["everyday", "daily spending", "groceries", "dining", "bills", "cash back", "2026"] },
   { title: "Best Cashback Cards", group: "Guide", href: "/best-cashback-credit-cards-canada", keywords: ["cashback", "cash back", "money back"] },
   { title: "Best Travel Cards", group: "Guide", href: "/best-travel-credit-cards-canada", keywords: ["travel", "points", "aeroplan", "miles", "flights"] },
   { title: "Best Grocery Cards", group: "Guide", href: "/best-grocery-credit-cards-canada", keywords: ["grocery", "groceries", "supermarket", "food"] },
