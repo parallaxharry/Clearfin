@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Archivo, Fraunces, JetBrains_Mono } from "next/font/google";
+import AnalyticsConsent from "@/components/AnalyticsConsent";
 import { SearchProvider } from "@/context/SearchContext";
 import { getSearchCards } from "@/lib/cardDetail";
 import "./globals.css";
+
+const GOOGLE_ANALYTICS_ID = "G-SP0554X7Y2";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -116,6 +120,30 @@ export default async function RootLayout({
       className={`${archivo.variable} ${fraunces.variable} ${jetbrains.variable}`}
     >
       <body>
+        <Script id="clearfin-consent-default" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+            var clearfinConsent = window.localStorage.getItem("clearfin-analytics-consent");
+            gtag("consent", "default", {
+              analytics_storage: clearfinConsent === "granted" ? "granted" : "denied",
+              wait_for_update: 500
+            });
+          `}
+        </Script>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="clearfin-google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function(){dataLayer.push(arguments);}
+            window.gtag("js", new Date());
+            window.gtag("config", "${GOOGLE_ANALYTICS_ID}");
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -125,6 +153,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <SearchProvider cards={searchCards}>{children}</SearchProvider>
+        <AnalyticsConsent />
       </body>
     </html>
   );

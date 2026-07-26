@@ -1,362 +1,294 @@
-import SeoLayout from "@/components/SeoLayout";
-import SeoCardImage from "@/components/SeoCardImage";
-import SeoCardActions from "@/components/SeoCardActions";
-import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import Link from "next/link";
 import type { Metadata } from "next";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import SeoCardActions from "@/components/SeoCardActions";
+import SeoCardImage from "@/components/SeoCardImage";
+import SeoLayout from "@/components/SeoLayout";
 
-// ISR: Supabase card_catalog edits (e.g. affiliate apply links) go live within ~5 min.
 export const revalidate = 300;
 
+const pageUrl = "https://www.clearfin.ca/best-grocery-credit-cards-canada";
+const pageTitle = "Best Grocery Credit Cards in Canada for 2026";
+const pageDescription =
+  "Compare Canadian grocery credit cards by store acceptance, earn rate, annual fee and spending limits. Find a card that fits where your household shops.";
+
 export const metadata: Metadata = {
-  title: "Best Credit Card for Groceries, Walmart & Shoppers Drug Mart | ClearFin",
-  description:
-    "A 2026 Canadian guide to the highest earning grocery credit cards, comparing Scotia Gold Amex, Cobalt, CIBC Dividend, BMO Eclipse, and PC World Elite.",
+  title: "Best Grocery Credit Cards Canada 2026 | ClearFin",
+  description: pageDescription,
   keywords: [
+    "best grocery credit card Canada",
     "best credit card for groceries Canada",
-    "best grocery rewards credit card Canada",
-    "best grocery credit cards Canada",
-    "highest grocery rewards card Canada",
-    "best credit card for Walmart Canada",
-    "best credit card for Shoppers Drug Mart",
+    "grocery rewards credit cards Canada",
+    "cash back groceries Canada",
   ],
-  alternates: {
-    canonical: "/best-grocery-credit-cards-canada",
+  alternates: { canonical: pageUrl },
+  openGraph: {
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    type: "article",
+    locale: "en_CA",
+    siteName: "ClearFin",
   },
 };
 
+const cards = [
+  {
+    name: "Scotiabank Gold American Express",
+    issuer: "Scotiabank",
+    label: "For Scene+ grocery partners",
+    detail:
+      "6 Scene+ points per dollar at participating Sobeys-family grocers, 5 points at other eligible grocery stores and on eligible dining, and a $120 annual fee.",
+    take:
+      "The strongest rate depends on where you shop, and American Express acceptance should be checked before applying.",
+  },
+  {
+    name: "American Express Cobalt Card",
+    issuer: "American Express",
+    label: "For food spending",
+    detail:
+      "5 Membership Rewards points per dollar on eligible eats and drinks in Canada, including qualifying grocery stores, up to the published monthly limit.",
+    take:
+      "Useful when food is a major category and you can get enough value from the points to cover the $15.99 monthly fee.",
+  },
+  {
+    name: "CIBC Dividend Visa Infinite",
+    issuer: "CIBC",
+    label: "For cash back on groceries and gas",
+    detail:
+      "4% cash back on eligible groceries, gas and EV charging; 2% on several practical categories; 1% on other purchases; $120 annual fee.",
+    take:
+      "A clearer fit for someone who prefers cash back and wants Visa acceptance.",
+  },
+  {
+    name: "BMO Eclipse Visa Infinite",
+    issuer: "BMO",
+    label: "For several everyday categories",
+    detail:
+      "5 BMO Rewards points per dollar on eligible groceries, dining, gas and transit; 1 point per dollar on other purchases; $120 annual fee.",
+    take:
+      "Five points are not the same as 5% cash back, so compare the redemption value you will actually use.",
+  },
+  {
+    name: "PC Financial World Elite Mastercard",
+    issuer: "PC Financial",
+    label: "For participating Loblaw-banner stores",
+    detail:
+      "3% back in PC Optimum points at participating grocery stores and no annual fee, subject to eligibility and approval requirements.",
+    take:
+      "A store-specific choice: it can work well inside the PC Optimum ecosystem and much less well outside it.",
+  },
+];
+
 export default function BestGroceryCreditCardsCanada() {
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    headline: pageTitle,
+    description: pageDescription,
+    author: { "@type": "Organization", name: "ClearFin" },
+    publisher: {
+      "@type": "Organization",
+      name: "ClearFin",
+      url: "https://www.clearfin.ca",
+    },
+    datePublished: "2026-05-01",
+    dateModified: "2026-07-26",
+  };
+
   return (
-    <SeoLayout
-      title="Best Credit Cards for Groceries in Canada"
-      subtitle="The average Canadian household spends $12,667 on groceries per year. With the right card, that's over $600 in annual rewards — or $50 off your bill every month."
-      breadcrumb={[
-        { label: "Home", href: "/" },
-        { label: "Credit Cards", href: "/#tool" },
-        { label: "Best for Groceries", href: "/best-grocery-credit-cards-canada" },
-      ]}
-      lastUpdated="May 2026"
-    >
-      {/* ── Top 5 Grocery Cards ── */}
-      <h2>Top 5 Credit Cards for Groceries in Canada (2026)</h2>
-      <p>
-        We ranked these cards based on grocery earn rate, annual fee, and overall
-        value for a household spending roughly $1,000 per month on groceries.
-        Every card on this list has been verified for its current rewards
-        structure as of May 2026.
-      </p>
-
-      <div className="seo-card-grid">
-        {/* Card 1 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#1</div>
-          <SeoCardImage name="Scotiabank Gold American Express" />
-          <div className="seo-card-box-name">Scotiabank Gold American Express</div>
-          <div className="seo-card-box-issuer">Scotiabank</div>
-          <div className="seo-card-box-detail">
-            6x Scene+ points per dollar on groceries. $120 annual fee.
-            Welcome bonus worth up to $350 in the first year.
-          </div>
-          <div className="seo-card-box-highlight">
-            Highest grocery multiplier of any Canadian credit card
-          </div>
-          <SeoCardActions name="Scotiabank Gold American Express" />
-        </div>
-
-        {/* Card 2 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#2</div>
-          <SeoCardImage name="American Express Cobalt Card" />
-          <div className="seo-card-box-name">American Express Cobalt Card</div>
-          <div className="seo-card-box-issuer">American Express</div>
-          <div className="seo-card-box-detail">
-            5x Membership Rewards points per dollar on groceries and dining.
-            $13.05/month ($156.60/yr). Flexible point transfers to Aeroplan and
-            other partners.
-          </div>
-          <div className="seo-card-box-highlight">
-            Best all-around card for food spending (groceries + restaurants)
-          </div>
-          <SeoCardActions name="American Express Cobalt Card" />
-        </div>
-
-        {/* Card 3 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#3</div>
-          <SeoCardImage name="CIBC Dividend Visa Infinite" />
-          <div className="seo-card-box-name">CIBC Dividend Visa Infinite</div>
-          <div className="seo-card-box-issuer">CIBC</div>
-          <div className="seo-card-box-detail">
-            4% cash back on groceries. $99 annual fee. 2% on gas, transit,
-            and Tim Hortons. Simple cashback — no points to manage.
-          </div>
-          <div className="seo-card-box-highlight">
-            Best pure cashback option for groceries
-          </div>
-          <SeoCardActions name="CIBC Dividend Visa Infinite" />
-        </div>
-
-        {/* Card 4 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#4</div>
-          <SeoCardImage name="BMO Eclipse Visa Infinite" />
-          <div className="seo-card-box-name">BMO Eclipse Visa Infinite</div>
-          <div className="seo-card-box-issuer">BMO</div>
-          <div className="seo-card-box-detail">
-            5x BMO Rewards points per dollar on groceries. $150 annual fee.
-            Points can be redeemed for travel at 0.7 cents each.
-          </div>
-          <div className="seo-card-box-highlight">
-            Strong for BMO customers who consolidate banking and credit
-          </div>
-          <SeoCardActions name="BMO Eclipse Visa Infinite" />
-        </div>
-
-        {/* Card 5 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#5</div>
-          <SeoCardImage name="PC Financial World Elite Mastercard" />
-          <div className="seo-card-box-name">PC Financial World Elite Mastercard</div>
-          <div className="seo-card-box-issuer">President&apos;s Choice Financial</div>
-          <div className="seo-card-box-detail">
-            30 PC Optimum points per dollar at Loblaws, Shoppers Drug Mart,
-            and Esso. No annual fee. Redeemable for free groceries.
-          </div>
-          <div className="seo-card-box-highlight">
-            Best no-fee grocery card if you shop at Loblaws banner stores
-          </div>
-          <SeoCardActions name="PC Financial World Elite Mastercard" />
-        </div>
-      </div>
-
-      <AffiliateDisclosure />
-
-      {/* ── Comparison Table ── */}
-      <h2>Grocery Credit Card Comparison</h2>
-      <p>
-        Here is how these five cards stack up side by side when you spend
-        $12,000 per year on groceries.
-      </p>
-
-      <div className="seo-table-wrap">
-        <table className="seo-table">
-          <thead>
-            <tr>
-              <th>Card</th>
-              <th>Annual Fee</th>
-              <th>Grocery Rate</th>
-              <th>Annual Return on $12K</th>
-              <th>Best For</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Scotia Gold Amex</td>
-              <td>$120</td>
-              <td>6x Scene+</td>
-              <td>~$600</td>
-              <td>Maximum grocery rewards</td>
-            </tr>
-            <tr>
-              <td>Amex Cobalt</td>
-              <td>$156.60</td>
-              <td>5x MR</td>
-              <td>~$500</td>
-              <td>Groceries + dining combined</td>
-            </tr>
-            <tr>
-              <td>CIBC Dividend Visa Infinite</td>
-              <td>$99</td>
-              <td>4% cashback</td>
-              <td>$480</td>
-              <td>Simple cashback, no points hassle</td>
-            </tr>
-            <tr>
-              <td>BMO Eclipse Visa Infinite</td>
-              <td>$150</td>
-              <td>5x BMO Rewards</td>
-              <td>~$420</td>
-              <td>BMO banking customers</td>
-            </tr>
-            <tr>
-              <td>PC World Elite MC</td>
-              <td>$0</td>
-              <td>30 pts/$1 at Loblaws</td>
-              <td>~$360*</td>
-              <td>Loblaws shoppers who want no fee</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p>
-        *PC Optimum points value varies. Estimated at 1 cent per point
-        redeemed during bonus redemption events; standard redemption yields
-        closer to 0.7 cents per point.
-      </p>
-
-      {/* ── Merchant Category Codes ── */}
-      <h2>Which Stores Count as &ldquo;Grocery&rdquo;?</h2>
-      <p>
-        This is the single biggest surprise for most cardholders. Credit card
-        grocery rewards are triggered by the merchant category code (MCC) a
-        store is assigned, not by what you actually buy. A dedicated grocery
-        store like Loblaws, Metro, or Sobeys will almost always code as MCC
-        5411 (Grocery Stores, Supermarkets). But big-box retailers are
-        different.
-      </p>
-      <p>
-        Walmart typically codes as MCC 5311 (Department Stores), which means
-        your grocery purchases there will not earn the elevated grocery rate on
-        most cards. The same applies to Costco — it usually codes as MCC 5300
-        (Wholesale Clubs). Even Shoppers Drug Mart codes as a pharmacy (MCC
-        5912), not a grocery store, despite selling food.
-      </p>
-      <p>
-        If maximizing grocery rewards matters to you, shop at stores that code
-        as grocery: Loblaws, No Frills, Real Canadian Superstore, Metro,
-        Sobeys, Safeway, FreshCo, Food Basics, and most independent grocers.
-      </p>
-
-      {/* ── Amex Acceptance ── */}
-      <h2>Amex Acceptance at Canadian Grocery Stores</h2>
-      <p>
-        Two of our top five picks are American Express cards, so acceptance
-        matters. The good news: Amex acceptance at Canadian grocery chains has
-        improved significantly. Loblaws banner stores (Loblaws, No Frills,
-        Real Canadian Superstore, Valu-mart, Zehrs, Your Independent Grocer)
-        all accept Amex. So do Sobeys, Safeway, FreshCo, Farm Boy, and
-        Whole Foods.
-      </p>
-      <p>
-        Metro and Food Basics do not accept American Express. Neither do some
-        smaller independent grocers or discount stores. If your primary grocery
-        store does not take Amex, the CIBC Dividend Visa Infinite or the PC
-        World Elite Mastercard will be a better pick.
-      </p>
-      <p>
-        A practical strategy: carry an Amex as your primary grocery card and
-        keep a Visa or Mastercard as a backup for the stores that don&apos;t
-        accept it.
-      </p>
-
-      {/* ── Stacking Strategies ── */}
-      <h2>Stacking Strategies: Loyalty Programs + Credit Card Rewards</h2>
-      <p>
-        You can earn rewards twice on the same purchase by combining a credit
-        card with a store loyalty program. These are not mutually exclusive —
-        you scan your loyalty card and pay with your credit card.
-      </p>
-      <h3>PC Optimum + Credit Card</h3>
-      <p>
-        Scan your PC Optimum card at any Loblaws banner store, then pay with
-        the Scotia Gold Amex. You earn both your PC Optimum points (from
-        personalized offers and base points) and 6x Scene+ points on the
-        credit card. Over a year of $12,000 in grocery spending, this can yield
-        over $800 in combined rewards.
-      </p>
-      <h3>Scene+ at Sobeys + Credit Card</h3>
-      <p>
-        Sobeys and FreshCo participate in Scene+. You can scan your Scene+
-        card at checkout and pay with any credit card. If you pay with the
-        Scotia Gold Amex, you double-dip on Scene+ — earning points from both
-        the loyalty program and the credit card.
-      </p>
-      <h3>Flipp and Digital Coupons</h3>
-      <p>
-        Before shopping, check Flipp or your grocery store&apos;s app for
-        digital coupons. Load them to your loyalty card. The savings stack on
-        top of both your loyalty points and your credit card rewards, creating
-        three layers of value on a single trip.
-      </p>
-
-      {/* ── ClearFin Tip ── */}
-      <div className="seo-tip">
-        <div className="seo-tip-label">ClearFin Tip</div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <SeoLayout
+        title={pageTitle}
+        subtitle="The grocery card with the biggest number is not always the best one—your store, card network and spending limit decide what you really earn."
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Credit Cards", href: "/credit-cards" },
+          { label: "Best Grocery Cards", href: pageUrl },
+        ]}
+        lastUpdated="July 26, 2026"
+      >
         <p>
-          Not sure how your grocery store codes? Check your credit card
-          statement after a purchase — if the elevated grocery rate applied,
-          you will see the bonus points or cashback. If it coded as
-          &ldquo;department store&rdquo; or &ldquo;wholesale club,&rdquo; you
-          earned the base rate instead. ClearFin&apos;s calculator can match
-          your actual spending categories to the card that earns you the most.
+          Grocery rewards are unusually dependent on the details. Some cards
+          pay their best rate only at a group of partner stores. Some warehouse
+          clubs may be coded differently from a normal supermarket. American
+          Express can be rewarding where it is accepted, but it should not be
+          assumed to work at every checkout.
         </p>
-      </div>
+        <p>
+          We reviewed these cards by asking a practical question: who is each
+          card actually for? Rates and fees were checked on issuer pages on July
+          26, 2026. Temporary welcome offers are not the reason a card appears
+          here.
+        </p>
 
-      {/* ── FAQ ── */}
-      <h2>Frequently Asked Questions</h2>
-      <div className="seo-faq">
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">Does Costco count as grocery for credit card rewards?</div>
-          <div className="seo-faq-a">
-            No. Costco typically uses MCC 5300 (Wholesale Clubs), which most
-            credit cards do not classify as grocery. Your purchases there will
-            earn the base rate, not the grocery bonus. Additionally, Costco
-            Canada only accepts Mastercard, so Amex cards cannot be used there
-            at all.
-          </div>
+        <h2>Five grocery cards worth putting on your shortlist</h2>
+        <div className="seo-card-grid">
+          {cards.map((card) => (
+            <div className="seo-card-box" key={card.name}>
+              <div className="seo-card-box-rank">{card.label}</div>
+              <SeoCardImage name={card.name} />
+              <div className="seo-card-box-name">{card.name}</div>
+              <div className="seo-card-box-issuer">{card.issuer}</div>
+              <div className="seo-card-box-detail">{card.detail}</div>
+              <div className="seo-card-box-highlight">{card.take}</div>
+              <SeoCardActions name={card.name} />
+            </div>
+          ))}
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">Does Walmart count as grocery?</div>
-          <div className="seo-faq-a">
-            Generally no. Walmart Canada stores code as MCC 5311 (Department
-            Stores), so grocery purchases at Walmart earn the base rate on
-            most credit cards. Walmart Supercentres do not have a separate
-            grocery MCC — the entire store uses one code.
-          </div>
+        <AffiliateDisclosure />
+
+        <h2>Quick comparison</h2>
+        <div className="seo-table-wrap">
+          <table className="seo-table">
+            <thead>
+              <tr>
+                <th>Card</th>
+                <th>Fee</th>
+                <th>Grocery strength</th>
+                <th>Main trade-off</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Scotiabank Gold Amex</td>
+                <td>$120/year</td>
+                <td>6x at participating Scene+ grocers; 5x other eligible grocery</td>
+                <td>Store and Amex acceptance</td>
+              </tr>
+              <tr>
+                <td>American Express Cobalt</td>
+                <td>$15.99/month</td>
+                <td>5x on eligible Canadian eats and drinks</td>
+                <td>Monthly cap and point valuation</td>
+              </tr>
+              <tr>
+                <td>CIBC Dividend Visa Infinite</td>
+                <td>$120/year</td>
+                <td>4% on eligible grocery purchases</td>
+                <td>Income requirement and category limits</td>
+              </tr>
+              <tr>
+                <td>BMO Eclipse Visa Infinite</td>
+                <td>$120/year</td>
+                <td>5 BMO Rewards points per dollar</td>
+                <td>Point value depends on redemption</td>
+              </tr>
+              <tr>
+                <td>PC Financial World Elite</td>
+                <td>$0</td>
+                <td>3% in points at participating grocery stores</td>
+                <td>Works best inside one store ecosystem</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">What is the best no-fee credit card for groceries?</div>
-          <div className="seo-faq-a">
-            The PC Financial World Elite Mastercard is the best no-fee option
-            for Loblaws shoppers, earning 30 PC Optimum points per dollar.
-            If you shop at a variety of grocery stores, the Tangerine
-            Money-Back Card with groceries as one of your 2% categories is
-            a strong alternative.
-          </div>
-        </div>
+        <h2>Choose the store before the card</h2>
+        <p>
+          Write down the two stores where you buy most of your groceries. Then
+          confirm which card network each store accepts and whether the issuer
+          treats the merchant as a grocery store. This step can eliminate an
+          otherwise impressive card immediately.
+        </p>
+        <p>
+          A Scotiabank Gold Amex is especially interesting at participating
+          Sobeys-family stores. A PC Financial card is built around
+          participating Loblaw-banner stores and PC Optimum redemptions. If
+          neither group reflects your routine, a broader grocery cash back card
+          may be easier to use.
+        </p>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Can I earn grocery rewards on Instacart or grocery delivery?
-          </div>
-          <div className="seo-faq-a">
-            It depends on how the delivery service processes the charge.
-            Instacart itself codes as MCC 5411 (Grocery) in most cases, so
-            you may earn grocery rewards. However, some smaller delivery
-            services may code differently. Check your statement to confirm.
-          </div>
-        </div>
-      </div>
+        <h2>Points and percentages are not interchangeable</h2>
+        <p>
+          Five points per dollar does not automatically mean 5% back. With
+          cash back, the percentage is direct. With points, the result depends
+          on the program and redemption you choose. Compare the dollar value of
+          a realistic redemption, not an optimistic “up to” estimate.
+        </p>
 
-      {/* ── Related Guides ── */}
-      <div className="seo-related">
-        <h3>Related Guides</h3>
-        <div className="seo-related-grid">
-          <Link
-            href="/best-no-fee-credit-cards-canada"
-            className="seo-related-link"
+        <h2>Check the spending cap</h2>
+        <p>
+          Grocery bonus rates often have monthly or annual limits. The Amex
+          Cobalt food rate, for example, has a monthly purchase limit. Other
+          cards apply their accelerated rate only to a set amount of annual
+          category spending. If your household spends beyond the cap, include
+          the lower rate in the rest of your calculation.
+        </p>
+
+        <h2>Do you need a backup card?</h2>
+        <p>
+          A high-earning American Express card can still be a good choice even
+          when it is not accepted everywhere. The practical solution is often a
+          no-fee Visa or Mastercard backup. Our guide to the{" "}
+          <Link href="/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards">
+            best credit card combinations in Canada
+          </Link>{" "}
+          explains how to give each card a separate job without overcomplicating
+          your wallet.
+        </p>
+
+        <h2>Our bottom line</h2>
+        <p>
+          For a Scene+ grocery shopper, Scotiabank Gold may be the first card to
+          calculate. For broader food spending, Cobalt deserves a look. For
+          direct cash back and Visa acceptance, CIBC Dividend is easier to
+          value. BMO Eclipse covers several everyday categories, while PC
+          Financial World Elite is a focused no-fee option for participating
+          grocery stores. The best choice starts with your receipt, not the ad.
+        </p>
+
+        <h2>Official sources</h2>
+        <p>
+          Current details were checked on official pages from{" "}
+          <a
+            href="https://www.scotiabank.com/ca/en/personal/credit-cards/rewards.html"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best No-Fee Credit Cards in Canada
-            <span>Great rewards without paying an annual fee</span>
-          </Link>
-          <Link
-            href="/best-cashback-credit-cards-canada"
-            className="seo-related-link"
+            Scotiabank
+          </a>
+          ,{" "}
+          <a
+            href="https://www.americanexpress.com/ca/en/benefits/cobalt-card/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best Cashback Credit Cards in Canada
-            <span>Straightforward cash back on every purchase</span>
-          </Link>
-          <Link
-            href="/best-travel-credit-cards-canada"
-            className="seo-related-link"
+            American Express
+          </a>
+          ,{" "}
+          <a
+            href="https://www.cibc.com/en/personal-banking/credit-cards/cash-back-cards.html"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best Travel Credit Cards in Canada
-            <span>Turn everyday spending into flights and hotels</span>
-          </Link>
-        </div>
-      </div>
-    </SeoLayout>
+            CIBC
+          </a>
+          ,{" "}
+          <a
+            href="https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-visa-infinite/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            BMO
+          </a>
+          , and{" "}
+          <a
+            href="https://www.pcfinancial.ca/en/credit-cards/world-elite/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PC Financial
+          </a>
+          .
+        </p>
+      </SeoLayout>
+    </>
   );
 }

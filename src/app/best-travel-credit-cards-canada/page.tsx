@@ -1,435 +1,308 @@
-import SeoLayout from "@/components/SeoLayout";
-import SeoCardImage from "@/components/SeoCardImage";
-import SeoCardActions from "@/components/SeoCardActions";
-import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import Link from "next/link";
 import type { Metadata } from "next";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import SeoCardActions from "@/components/SeoCardActions";
+import SeoCardImage from "@/components/SeoCardImage";
+import SeoLayout from "@/components/SeoLayout";
 
-// ISR: Supabase card_catalog edits (e.g. affiliate apply links) go live within ~5 min.
 export const revalidate = 300;
 
+const pageUrl = "https://www.clearfin.ca/best-travel-credit-cards-canada";
+const pageTitle = "Best Travel Credit Cards in Canada for 2026";
+const pageDescription =
+  "Compare Canadian travel credit cards for Aeroplan, flexible points, no foreign transaction fees and practical airport benefits.";
+
 export const metadata: Metadata = {
-  title: "Best Travel Credit Cards Canada 2026: Aeroplan & Airline Rewards | ClearFin",
-  description:
-    "Compare top travel rewards credit cards in Canada. Earn Aeroplan, Avion, and Scene+ points. Expert picks for frequent flyers and occasional travellers.",
+  title: "Best Travel Credit Cards Canada 2026 | ClearFin",
+  description: pageDescription,
   keywords: [
-    "best travel credit cards Canada 2026",
     "best travel credit cards Canada",
     "travel rewards credit cards Canada",
-    "best Aeroplan credit cards Canada",
-    "best airline credit cards Canada",
-    "best credit card for international travel Canada",
+    "best Aeroplan credit card Canada",
+    "no foreign transaction fee credit card Canada",
   ],
-  alternates: {
-    canonical: "/best-travel-credit-cards-canada",
+  alternates: { canonical: pageUrl },
+  openGraph: {
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    type: "article",
+    locale: "en_CA",
+    siteName: "ClearFin",
   },
 };
 
+const cards = [
+  {
+    name: "TD Aeroplan Visa Infinite",
+    issuer: "TD Bank",
+    label: "For regular Air Canada travellers",
+    detail:
+      "1.5 Aeroplan points per dollar on eligible gas, EV charging, groceries and direct Air Canada purchases; 1 point elsewhere; $139 annual fee.",
+    take:
+      "The checked-bag and Aeroplan benefits matter most when you actually fly with Air Canada.",
+  },
+  {
+    name: "RBC Avion Visa Infinite",
+    issuer: "RBC",
+    label: "For flexible travel redemptions",
+    detail:
+      "1 Avion point per dollar on purchases, plus 25% more on eligible travel purchases; $120 annual fee.",
+    take:
+      "A useful option for someone who values airline choice and transfer options more than category bonuses.",
+  },
+  {
+    name: "Scotiabank Passport Visa Infinite",
+    issuer: "Scotiabank",
+    label: "For foreign-currency spending",
+    detail:
+      "No foreign transaction fee, Scene+ rewards on eligible purchases and a $150 annual fee.",
+    take:
+      "The foreign-exchange saving becomes meaningful only when you spend enough outside Canadian dollars.",
+  },
+  {
+    name: "CIBC Aventura Visa Infinite",
+    issuer: "CIBC",
+    label: "For lounge visits and flexible Aventura travel",
+    detail:
+      "2 Aventura points per dollar on CIBC Rewards Centre travel, 1.5 points on eligible gas, EV charging, groceries and drug stores, and a $139 annual fee.",
+    take:
+      "Its included lounge visits and NEXUS rebate are useful only when they match your travel plans.",
+  },
+  {
+    name: "American Express Cobalt Card",
+    issuer: "American Express",
+    label: "For earning travel points through food spending",
+    detail:
+      "5 Membership Rewards points per dollar on eligible Canadian eats and drinks, subject to a monthly limit; $15.99 monthly fee.",
+    take:
+      "It is an everyday earning card first. It suits travellers who know how they want to redeem or transfer Membership Rewards points.",
+  },
+];
+
 export default function BestTravelCreditCardsCanada() {
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    headline: pageTitle,
+    description: pageDescription,
+    author: { "@type": "Organization", name: "ClearFin" },
+    publisher: {
+      "@type": "Organization",
+      name: "ClearFin",
+      url: "https://www.clearfin.ca",
+    },
+    datePublished: "2026-05-01",
+    dateModified: "2026-07-26",
+  };
+
   return (
-    <SeoLayout
-      title="Best Travel Credit Cards in Canada for 2026"
-      subtitle="Whether you fly weekly or take one big trip a year, the right travel card can save you hundreds. Here are Canada's best travel rewards cards ranked by real redemption value."
-      breadcrumb={[
-        { label: "Home", href: "/" },
-        { label: "Credit Cards", href: "/#tool" },
-        { label: "Best Travel", href: "/best-travel-credit-cards-canada" },
-      ]}
-      lastUpdated="May 2026"
-    >
-      {/* ── Top 5 Travel Cards ── */}
-      <h2>Top 5 Travel Credit Cards in Canada</h2>
-      <p>
-        We evaluated these cards on earn rate, redemption value, travel perks
-        (lounge access, insurance, no foreign transaction fees), and annual fee
-        relative to the rewards delivered. Rankings reflect value for a
-        Canadian spending roughly $3,000/month across typical categories.
-      </p>
-
-      <div className="seo-card-grid">
-        {/* Card 1 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#1</div>
-          <SeoCardImage name="TD Aeroplan Visa Infinite" />
-          <div className="seo-card-box-name">TD Aeroplan Visa Infinite</div>
-          <div className="seo-card-box-issuer">TD Bank</div>
-          <div className="seo-card-box-detail">
-            1.5x Aeroplan points on gas, grocery &amp; Air Canada &bull; 1x on
-            everything else &bull; $139/year &bull; First checked bag free on
-            Air Canada
-          </div>
-          <div className="seo-card-box-highlight">
-            Best Aeroplan earner for everyday spending — the free checked bag
-            alone saves $70+ per round trip
-          </div>
-          <SeoCardActions name="TD Aeroplan Visa Infinite" />
-        </div>
-
-        {/* Card 2 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#2</div>
-          <SeoCardImage name="American Express Cobalt Card" />
-          <div className="seo-card-box-name">
-            American Express Cobalt Card
-          </div>
-          <div className="seo-card-box-issuer">American Express</div>
-          <div className="seo-card-box-detail">
-            5x points on dining &amp; groceries &bull; 3x on streaming &bull;
-            2x on transit &amp; gas &bull; 1x on everything else &bull;
-            $156.60/year ($13.05/month)
-          </div>
-          <div className="seo-card-box-highlight">
-            Best flexible travel card — points transfer 1:1 to Aeroplan,
-            Marriott, Hilton, and British Airways for outsized value
-          </div>
-          <SeoCardActions name="American Express Cobalt Card" />
-        </div>
-
-        {/* Card 3 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#3</div>
-          <SeoCardImage name="RBC Avion Visa Infinite" />
-          <div className="seo-card-box-name">RBC Avion Visa Infinite</div>
-          <div className="seo-card-box-issuer">RBC</div>
-          <div className="seo-card-box-detail">
-            1x Avion point per $1 everywhere &bull; Transfer to 15+ airline
-            partners &bull; $120/year &bull; Includes travel and medical
-            insurance
-          </div>
-          <div className="seo-card-box-highlight">
-            Most flexible redemption — transfer to British Airways, WestJet,
-            Cathay Pacific, or book any travel through Avion portal
-          </div>
-          <SeoCardActions name="RBC Avion Visa Infinite" />
-        </div>
-
-        {/* Card 4 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#4</div>
-          <SeoCardImage name="Scotiabank Passport Visa Infinite" />
-          <div className="seo-card-box-name">
-            Scotiabank Passport Visa Infinite
-          </div>
-          <div className="seo-card-box-issuer">Scotiabank</div>
-          <div className="seo-card-box-detail">
-            3x Scene+ points on dining, entertainment &amp; transit &bull; 2x
-            on grocery &amp; recurring &bull; 1x on everything else &bull;
-            $150/year &bull; No foreign transaction fees
-          </div>
-          <div className="seo-card-box-highlight">
-            Best no-FX-fee card in Canada — saves 2.5% on every purchase
-            abroad, which adds up fast on international trips
-          </div>
-          <SeoCardActions name="Scotiabank Passport Visa Infinite" />
-        </div>
-
-        {/* Card 5 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#5</div>
-          <SeoCardImage name="CIBC Aventura Visa Infinite" />
-          <div className="seo-card-box-name">CIBC Aventura Visa Infinite</div>
-          <div className="seo-card-box-issuer">CIBC</div>
-          <div className="seo-card-box-detail">
-            2x Aventura points on gas, grocery, drug stores &bull; 1x on
-            everything else &bull; $139/year &bull; Includes NEXUS application
-            fee rebate
-          </div>
-          <div className="seo-card-box-highlight">
-            Best for occasional travellers — flexible Aventura portal lets you
-            book any flight with no blackout dates
-          </div>
-          <SeoCardActions name="CIBC Aventura Visa Infinite" />
-        </div>
-      </div>
-
-      <AffiliateDisclosure />
-
-      {/* ── Comparison Table ── */}
-      <h2>Travel Card Comparison</h2>
-      <p>
-        The details that matter most when choosing a travel card, all in one
-        place. Foreign transaction fees and lounge access can swing the value
-        by hundreds of dollars for frequent international travellers.
-      </p>
-
-      <div className="seo-table-wrap">
-        <table className="seo-table">
-          <thead>
-            <tr>
-              <th>Card</th>
-              <th>Fee</th>
-              <th>Earn Rate</th>
-              <th>FX Fee</th>
-              <th>Lounge Access</th>
-              <th>Best For</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>TD Aeroplan Visa Infinite</td>
-              <td>$139/yr</td>
-              <td>1.5x grocery/gas, 1x other</td>
-              <td>2.5%</td>
-              <td>Maple Leaf (with pass)</td>
-              <td>Aeroplan collectors</td>
-            </tr>
-            <tr>
-              <td>Amex Cobalt</td>
-              <td>$156.60/yr</td>
-              <td>5x dining/grocery, 2x transit</td>
-              <td>2.5%</td>
-              <td>None included</td>
-              <td>Foodies &amp; flexible travellers</td>
-            </tr>
-            <tr>
-              <td>RBC Avion Visa Infinite</td>
-              <td>$120/yr</td>
-              <td>1x everywhere</td>
-              <td>2.5%</td>
-              <td>None included</td>
-              <td>Multi-airline flexibility</td>
-            </tr>
-            <tr>
-              <td>Scotia Passport Visa Infinite</td>
-              <td>$150/yr</td>
-              <td>3x dining/transit, 2x grocery</td>
-              <td>0%</td>
-              <td>6 Priority Pass visits</td>
-              <td>International travellers</td>
-            </tr>
-            <tr>
-              <td>CIBC Aventura Visa Infinite</td>
-              <td>$139/yr</td>
-              <td>2x grocery/gas, 1x other</td>
-              <td>2.5%</td>
-              <td>Maple Leaf (via Aventura)</td>
-              <td>Occasional travellers</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* ── Points Programs Overview ── */}
-      <h2>Points Programs: Aeroplan vs. Avion vs. Scene+</h2>
-      <p>
-        Not all travel points are created equal. The value you get depends on
-        how you redeem them and which program you are using.
-      </p>
-
-      <h3>Aeroplan (Air Canada / TD)</h3>
-      <p>
-        Aeroplan is Canada&apos;s largest loyalty program with access to Star
-        Alliance&apos;s 26 member airlines. Points are worth roughly 1.5 to 2.5
-        cents each when redeemed for flights, making it the highest-value
-        program for frequent flyers. Dynamic pricing means availability
-        varies, but the sweet spots — like 25,000 points for a short-haul
-        flight — deliver exceptional value.
-      </p>
-
-      <h3>Avion (RBC)</h3>
-      <p>
-        Avion points transfer to 15+ airline programs including British
-        Airways, WestJet, Cathay Pacific, and American Airlines. The
-        flexibility to move points to whichever program has the best
-        availability makes Avion strong for travellers who don&apos;t fly one
-        airline exclusively. Points are worth approximately 1.2 to 2.0 cents
-        each depending on the redemption route.
-      </p>
-
-      <h3>Scene+ (Scotiabank)</h3>
-      <p>
-        Scene+ points can be redeemed through the Scotia Rewards travel portal
-        at roughly 1.0 to 1.5 cents per point. While the per-point value is
-        lower than Aeroplan, the no-FX-fee benefit on the Passport card and
-        the ability to redeem for any travel booking (not just specific
-        airlines) makes Scene+ practical for occasional travellers who want
-        straightforward redemptions.
-      </p>
-
-      {/* ── Foreign Transaction Fees ── */}
-      <h2>Foreign Transaction Fees: The Hidden Travel Cost</h2>
-      <p>
-        Most Canadian credit cards charge a 2.5% foreign transaction (FX) fee
-        on purchases made in a non-Canadian currency. This applies to
-        everything — hotel bookings, restaurant meals, Uber rides, and online
-        purchases from international retailers.
-      </p>
-      <p>
-        For a two-week international trip where you spend $4,000 CAD
-        equivalent, that 2.5% fee adds $100 in hidden costs. Over a year of
-        international spending, FX fees can easily exceed what you earn in
-        rewards.
-      </p>
-      <p>
-        The Scotiabank Passport Visa Infinite is one of the few premium travel
-        cards in Canada that charges no foreign transaction fee at all. If you
-        travel internationally more than once a year or regularly buy from
-        US-based online retailers, the FX savings alone can justify the $150
-        annual fee.
-      </p>
-
-      {/* ── Travel Insurance Comparison ── */}
-      <h2>Travel Insurance Coverage</h2>
-      <p>
-        Premium travel credit cards include insurance that can replace or
-        supplement standalone travel insurance policies. Here is what the top
-        cards offer.
-      </p>
-
-      <div className="seo-table-wrap">
-        <table className="seo-table">
-          <thead>
-            <tr>
-              <th>Coverage</th>
-              <th>TD Aeroplan VI</th>
-              <th>Amex Cobalt</th>
-              <th>RBC Avion VI</th>
-              <th>Scotia Passport VI</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Trip Cancellation</td>
-              <td>$1,500</td>
-              <td>$1,000</td>
-              <td>$2,500</td>
-              <td>$2,000</td>
-            </tr>
-            <tr>
-              <td>Trip Interruption</td>
-              <td>$3,000</td>
-              <td>$2,000</td>
-              <td>$5,000</td>
-              <td>$5,000</td>
-            </tr>
-            <tr>
-              <td>Emergency Medical</td>
-              <td>$500,000 (15 days)</td>
-              <td>Not included</td>
-              <td>$5M (15 days)</td>
-              <td>$2M (21 days)</td>
-            </tr>
-            <tr>
-              <td>Lost/Delayed Baggage</td>
-              <td>$1,000</td>
-              <td>$500</td>
-              <td>$1,000</td>
-              <td>$1,000</td>
-            </tr>
-            <tr>
-              <td>Flight Delay</td>
-              <td>$500 (4+ hrs)</td>
-              <td>Not included</td>
-              <td>$500 (4+ hrs)</td>
-              <td>$500 (4+ hrs)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p>
-        The RBC Avion Visa Infinite stands out for emergency medical coverage
-        at $5 million — far above most competitors. The Scotiabank Passport
-        offers the longest trip coverage window at 21 days, making it better
-        for extended vacations. The Amex Cobalt is weaker on insurance but
-        compensates with its market-leading earn rate on dining and groceries.
-      </p>
-
-      {/* ── ClearFin Tip ── */}
-      <div className="seo-tip">
-        <div className="seo-tip-label">ClearFin Tip</div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <SeoLayout
+        title={pageTitle}
+        subtitle="A travel card should fit the airline you use, the way you redeem points and the benefits you would otherwise pay for."
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Credit Cards", href: "/credit-cards" },
+          { label: "Best Travel Cards", href: pageUrl },
+        ]}
+        lastUpdated="July 26, 2026"
+      >
         <p>
-          Travel cards look great on paper, but the real value depends on how
-          you actually spend. A card earning 5x on dining is only valuable if
-          you spend significantly on restaurants. Use the ClearFin calculator
-          to input your real monthly spending and see which travel card
-          delivers the highest annual value after fees — you might be
-          surprised which card comes out on top for your spending pattern.
+          Travel credit cards are difficult to rank honestly because two people
+          can redeem the same number of points for very different value. One
+          traveller wants an Air Canada checked bag. Another wants to book any
+          airline. Someone else spends enough in foreign currencies that
+          avoiding the usual foreign transaction fee matters more than airport
+          perks.
         </p>
-      </div>
+        <p>
+          We grouped these cards by the job they do best. Ongoing fees and earn
+          rates were checked against official issuer pages on July 26, 2026.
+          Welcome offers can change quickly, so they are not the foundation of
+          this comparison.
+        </p>
 
-      {/* ── FAQ ── */}
-      <h2>Frequently Asked Questions</h2>
-
-      <div className="seo-faq">
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            What is the best travel credit card in Canada for 2026?
-          </div>
-          <div className="seo-faq-a">
-            For most Canadians, the Amex Cobalt offers the best overall value
-            thanks to its 5x earn rate on dining and groceries and 1:1 transfer
-            to Aeroplan. However, the TD Aeroplan Visa Infinite is better if
-            you fly Air Canada frequently, and the Scotia Passport wins for
-            international travellers who want to avoid foreign transaction fees.
-          </div>
+        <h2>Five travel cards worth comparing</h2>
+        <div className="seo-card-grid">
+          {cards.map((card) => (
+            <div className="seo-card-box" key={card.name}>
+              <div className="seo-card-box-rank">{card.label}</div>
+              <SeoCardImage name={card.name} />
+              <div className="seo-card-box-name">{card.name}</div>
+              <div className="seo-card-box-issuer">{card.issuer}</div>
+              <div className="seo-card-box-detail">{card.detail}</div>
+              <div className="seo-card-box-highlight">{card.take}</div>
+              <SeoCardActions name={card.name} />
+            </div>
+          ))}
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Are travel rewards worth more than cashback?
-          </div>
-          <div className="seo-faq-a">
-            They can be. Aeroplan points redeemed for flights are typically
-            worth 1.8 to 2.5 cents each, while cashback is always worth
-            exactly 1 cent per cent. A card earning 5x points on dining is
-            effectively returning 9%–12% back when those points are redeemed
-            for flights. The catch is that if you redeem points for gift cards
-            or merchandise, their value drops below cashback.
-          </div>
+        <AffiliateDisclosure />
+
+        <h2>Quick comparison</h2>
+        <div className="seo-table-wrap">
+          <table className="seo-table">
+            <thead>
+              <tr>
+                <th>Card</th>
+                <th>Annual cost</th>
+                <th>Best reason to consider it</th>
+                <th>Question to ask yourself</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TD Aeroplan Visa Infinite</td>
+                <td>$139</td>
+                <td>Aeroplan earning and Air Canada benefits</td>
+                <td>How often do I fly Air Canada?</td>
+              </tr>
+              <tr>
+                <td>RBC Avion Visa Infinite</td>
+                <td>$120</td>
+                <td>Flexible travel booking and transfer options</td>
+                <td>Will I use Avion&apos;s stronger travel redemptions?</td>
+              </tr>
+              <tr>
+                <td>Scotia Passport Visa Infinite</td>
+                <td>$150</td>
+                <td>No foreign transaction fee</td>
+                <td>How much do I spend in foreign currencies?</td>
+              </tr>
+              <tr>
+                <td>CIBC Aventura Visa Infinite</td>
+                <td>$139</td>
+                <td>Lounge visits, NEXUS rebate and flexible travel</td>
+                <td>Will I use those benefits this year?</td>
+              </tr>
+              <tr>
+                <td>American Express Cobalt</td>
+                <td>$15.99/month</td>
+                <td>Building travel points through eligible food spending</td>
+                <td>Can I use the points well and shop where Amex is accepted?</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Which Canadian credit card has no foreign transaction fees?
-          </div>
-          <div className="seo-faq-a">
-            The Scotiabank Passport Visa Infinite is the most popular no-FX-fee
-            travel card in Canada, charging 0% on foreign currency purchases.
-            The Brim Financial Mastercard and HSBC World Elite Mastercard also
-            offer no FX fees, though with different rewards structures. Most
-            major bank cards charge 2.5%.
-          </div>
-        </div>
+        <h2>Start with the trip you are likely to take</h2>
+        <p>
+          A useful comparison begins with a realistic trip, not a dream
+          redemption. If most of your travel is a domestic Air Canada flight,
+          Aeroplan benefits may be easy to value. If you choose airlines based
+          on price, a flexible rewards program may fit better. If you travel
+          internationally but pay cash for flights, foreign transaction fees
+          may be the biggest cost to solve.
+        </p>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Is it worth paying $150+ for a travel credit card?
-          </div>
-          <div className="seo-faq-a">
-            For households spending $3,000+/month, premium travel cards
-            typically return $500–$1,200 per year in rewards value. Even after
-            subtracting a $150 annual fee, you come out well ahead of no-fee
-            alternatives. The included travel insurance (worth $50–$150 per
-            trip) and lounge access add even more value for frequent
-            travellers. If you take fewer than two trips per year and spend
-            under $2,000/month, a no-fee cashback card may be a better fit.
-          </div>
-        </div>
-      </div>
+        <h2>Put a dollar value on benefits carefully</h2>
+        <p>
+          A lounge pass is not worth the retail price to you if you would never
+          buy one. The same is true for a NEXUS rebate, travel insurance or a
+          checked bag. Give each benefit the amount you would personally have
+          paid, then subtract the annual fee. This makes premium cards look less
+          exciting on paper, but much more honest.
+        </p>
 
-      {/* ── Related Guides ── */}
-      <div className="seo-related">
-        <h3>Related Guides</h3>
-        <div className="seo-related-grid">
-          <Link
-            href="/best-cashback-credit-cards-canada"
-            className="seo-related-link"
+        <h2>Understand how you will redeem the points</h2>
+        <p>
+          Aeroplan, Avion, Aventura, Scene+ and Membership Rewards do not have
+          one permanent value for every redemption. Flight availability,
+          transfer ratios, route, taxes and the way you book can all affect the
+          result. Before applying, find one or two redemptions you would
+          genuinely use and calculate the value from those.
+        </p>
+        <p>
+          Our{" "}
+          <Link href="/credit-card-rewards-canada-guide">
+            Canadian credit card rewards guide
+          </Link>{" "}
+          explains how to compare cash back and points without assuming an
+          optimistic cents-per-point value.
+        </p>
+
+        <h2>Check insurance before relying on it</h2>
+        <p>
+          Insurance coverage varies by card and can change. Age limits,
+          trip-length limits, exclusions and the portion of the booking that
+          must be charged to the card all matter. Read the current certificate
+          of insurance before treating a card as a replacement for separate
+          coverage.
+        </p>
+
+        <h2>When a two-card setup is easier</h2>
+        <p>
+          A travel card does not need to handle every purchase. You might keep
+          it for airline benefits and pair it with a no-fee cash back card for a
+          category where it earns slowly. See our{" "}
+          <Link href="/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards">
+            guide to two-card combinations
+          </Link>{" "}
+          for a simple way to divide the jobs.
+        </p>
+
+        <h2>Our bottom line</h2>
+        <p>
+          TD Aeroplan is the airline-focused choice. RBC Avion offers flexible
+          travel rewards. Scotia Passport focuses on foreign-currency savings.
+          CIBC Aventura combines flexible travel with specific airport
+          benefits. Cobalt can build travel points quickly from eligible food
+          spending, but it is not automatically the best card for travel
+          purchases themselves. Choose the card whose benefits match a trip you
+          will actually take.
+        </p>
+
+        <h2>Official sources</h2>
+        <p>
+          Product details were checked on the official pages from{" "}
+          <a
+            href="https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/aeroplan-visa-infinite-card"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best Cashback Credit Cards in Canada
-            <span>
-              Compare flat-rate and category-based cashback cards for maximum
-              returns
-            </span>
-          </Link>
-          <Link href="/#tool" className="seo-related-link">
-            Credit Card Calculator
-            <span>
-              Enter your spending and see which card returns the most
-            </span>
-          </Link>
-        </div>
-      </div>
-    </SeoLayout>
+            TD
+          </a>
+          ,{" "}
+          <a
+            href="https://www.rbcroyalbank.com/credit-cards/travel/rbc-avion-visa-infinite.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            RBC
+          </a>
+          ,{" "}
+          <a
+            href="https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Scotiabank
+          </a>
+          ,{" "}
+          <a
+            href="https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aventura-visa-infinite-card.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CIBC
+          </a>
+          , and{" "}
+          <a
+            href="https://www.americanexpress.com/ca/en/benefits/cobalt-card/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            American Express
+          </a>
+          .
+        </p>
+      </SeoLayout>
+    </>
   );
 }

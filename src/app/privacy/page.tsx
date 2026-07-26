@@ -26,14 +26,14 @@ const privacySections = [
     body: [
       "Contact details you choose to share, such as your name and email address when you join the waitlist, request early access, or book a card strategy call.",
       "Card comparison inputs you provide, such as spending categories, estimated monthly spend, preferred issuers, and reward preferences.",
-      "Website usage information, including basic analytics, card click activity, browser type, device information, and pages visited, so we can improve the product and understand which comparisons are useful.",
-      "Credit card statement files you choose to upload, including related metadata such as file name, file type, file size, upload status, and the email address connected to the upload.",
+      "If you accept analytics cookies, Google Analytics may collect website usage information such as pages visited, approximate location, browser type, device information, and interactions with the site.",
+      "Card application click activity, such as which card or issuer link was selected, so we can measure whether our comparisons are useful and administer affiliate relationships.",
     ],
   },
   {
     title: "How We Use Information",
     body: [
-      "To operate the website, waitlist, calculator, statement upload, and card comparison features.",
+      "To operate the website, waitlist, calculator, search, and card comparison features.",
       "To personalize educational card recommendations based on your stated shopping habits and spending categories.",
       "To respond to your requests, send product updates, and manage early access communications.",
       "To measure website performance, prevent misuse, debug errors, and improve ClearFin.",
@@ -42,9 +42,9 @@ const privacySections = [
   {
     title: "Where Information Is Stored",
     body: [
-      "Waitlist emails, card click activity, and statement upload records are stored in ClearFin's Supabase-hosted database.",
-      "Uploaded statement files are stored in a private Supabase Storage bucket named statement_uploads. The website does not expose public file download links.",
-      "Access to stored emails, upload records, and statement files is restricted to ClearFin's authorized Supabase access and server-side systems.",
+      "Waitlist emails and card click activity may be stored in ClearFin's Supabase-hosted database.",
+      "Google processes analytics information on our behalf when you accept analytics cookies. Google's handling of that information is governed by its own privacy terms.",
+      "Access to ClearFin's stored records is limited to authorized systems and people who need it to operate the service.",
     ],
   },
   {
@@ -61,14 +61,15 @@ const privacySections = [
       "You can ask to access, correct, or delete personal information we hold about you, subject to legal and operational requirements.",
       "You can unsubscribe from non-essential emails using the link in those messages or by contacting us directly.",
       "You can choose not to provide optional calculator inputs, but some comparison features may be less useful without them.",
+      "You can accept or decline Google Analytics from the cookie notice. To change a saved choice later, clear ClearFin's site data in your browser and reload the website.",
     ],
   },
   {
     title: "Security And Retention",
     body: [
       "We use reasonable administrative, technical, and organizational safeguards designed to protect personal information.",
-      "Uploaded statement files are stored in private storage and are not intended to be publicly accessible through the website.",
-      "No website, email, storage system, or internet transmission is completely secure, so please avoid uploading information unless it is needed for the feature you are using.",
+      "ClearFin's current website does not ask you to upload credit card statements or provide full credit card numbers.",
+      "No website, email, storage system, or internet transmission is completely secure, so please do not send sensitive financial information through website forms or email.",
       "We keep personal information only as long as reasonably necessary for the purposes described in this statement, unless a longer period is required or permitted by law.",
     ],
   },
@@ -92,7 +93,7 @@ export default function PrivacyPage() {
             personal information when you use our website, waitlist, calculator, and
             early access features.
           </p>
-          <div className="privacy-updated">Last updated: May 2026</div>
+          <div className="privacy-updated">Last updated: July 26, 2026</div>
         </header>
 
         <section className="privacy-notice">
@@ -113,6 +114,26 @@ export default function PrivacyPage() {
               </ul>
             </section>
           ))}
+
+          <section className="privacy-section">
+            <h2>Google Analytics</h2>
+            <p>
+              ClearFin uses Google Analytics only according to the choice saved
+              in your browser. When analytics storage is declined, ClearFin
+              tells Google that analytics storage is denied. When it is
+              accepted, Google Analytics can use cookies and similar
+              technologies to help us understand site traffic and page use.
+              Learn more in{" "}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Google&apos;s privacy policy
+              </a>
+              .
+            </p>
+          </section>
 
           <section className="privacy-section">
             <h2>Canadian Privacy Rights</h2>

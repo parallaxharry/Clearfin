@@ -1,372 +1,293 @@
-import SeoLayout from "@/components/SeoLayout";
-import SeoCardImage from "@/components/SeoCardImage";
-import SeoCardActions from "@/components/SeoCardActions";
-import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import Link from "next/link";
 import type { Metadata } from "next";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import SeoCardActions from "@/components/SeoCardActions";
+import SeoCardImage from "@/components/SeoCardImage";
+import SeoLayout from "@/components/SeoLayout";
 
-// ISR: Supabase card_catalog edits (e.g. affiliate apply links) go live within ~5 min.
 export const revalidate = 300;
 
+const pageUrl = "https://www.clearfin.ca/best-cashback-credit-cards-canada";
+const pageTitle = "Best Cashback Credit Cards in Canada for 2026";
+const pageDescription =
+  "Compare Canadian cash back credit cards for groceries, gas, recurring bills and everyday purchases, with annual fees and spending caps explained.";
+
 export const metadata: Metadata = {
-  title: "Best Cash Back Credit Cards Canada for Gas, Restaurants & Bills | ClearFin",
-  description:
-    "Find the best cash back credit cards in Canada — including the top cards for gas, restaurants, and recurring bills. Compare flat-rate and category cashback with real return calculations.",
+  title: "Best Cash Back Credit Cards Canada 2026 | ClearFin",
+  description: pageDescription,
   keywords: [
     "best cash back credit cards Canada",
     "best cashback credit cards Canada",
-    "highest cashback card Canada",
     "cash back credit cards Canada 2026",
-    "best credit card for gas Canada",
-    "best credit card for restaurants Canada",
-    "best credit card for recurring bills Canada",
+    "best credit card for groceries and gas Canada",
   ],
-  alternates: {
-    canonical: "/best-cashback-credit-cards-canada",
+  alternates: { canonical: pageUrl },
+  openGraph: {
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    type: "article",
+    locale: "en_CA",
+    siteName: "ClearFin",
   },
 };
 
+const cards = [
+  {
+    name: "Tangerine Money-Back Credit Card",
+    issuer: "Tangerine",
+    label: "Flexible no-fee option",
+    detail:
+      "2% cash back in two selected categories, or three when rewards are deposited to a Tangerine Savings Account; 0.5% on other purchases; $0 annual fee.",
+    take:
+      "A sensible pick if your largest spending categories can be covered by Tangerine's category list.",
+  },
+  {
+    name: "CIBC Dividend Visa Infinite",
+    issuer: "CIBC",
+    label: "Strong for groceries and driving",
+    detail:
+      "4% on eligible groceries, gas and EV charging; 2% on eligible transit, dining, recurring payments and CIBC by Expedia travel; 1% on other purchases; $120 annual fee.",
+    take:
+      "Worth a closer look when groceries and fuel are large, predictable parts of the household budget.",
+  },
+  {
+    name: "Scotiabank Momentum Visa Infinite",
+    issuer: "Scotiabank",
+    label: "Strong for groceries and recurring bills",
+    detail:
+      "4% on eligible groceries and recurring bill payments; 2% on eligible gas, EV charging and daily transit; 1% on other purchases; $120 annual fee.",
+    take:
+      "The recurring-bill category can be useful, but merchant coding and annual spending limits still matter.",
+  },
+  {
+    name: "BMO CashBack World Elite Mastercard",
+    issuer: "BMO",
+    label: "Several everyday bonus categories",
+    detail:
+      "5% on eligible groceries, 4% on transit, 3% on gas and EV charging, 2% on recurring bills and 1% on other purchases; $120 annual fee.",
+    take:
+      "The headline rates are attractive, but check each category's monthly cap before estimating your return.",
+  },
+  {
+    name: "SimplyCash Card from American Express",
+    issuer: "American Express",
+    label: "Simple no-fee Amex",
+    detail:
+      "2% on eligible Canadian gas and grocery purchases, with a grocery limit, and 1.25% on other eligible purchases; no annual fee.",
+    take:
+      "A straightforward card for someone who wants a useful base rate and shops where American Express is accepted.",
+  },
+];
+
 export default function BestCashbackCreditCardsCanada() {
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    headline: pageTitle,
+    description: pageDescription,
+    author: { "@type": "Organization", name: "ClearFin" },
+    publisher: {
+      "@type": "Organization",
+      name: "ClearFin",
+      url: "https://www.clearfin.ca",
+    },
+    datePublished: "2026-05-01",
+    dateModified: "2026-07-26",
+  };
+
   return (
-    <SeoLayout
-      title="Best Cashback Credit Cards in Canada for 2026"
-      subtitle="Cashback is the simplest reward currency — a dollar back is always worth a dollar. Here are the cards that put the most cash back in your pocket."
-      breadcrumb={[
-        { label: "Home", href: "/" },
-        { label: "Credit Cards", href: "/#tool" },
-        { label: "Best Cashback", href: "/best-cashback-credit-cards-canada" },
-      ]}
-      lastUpdated="May 2026"
-    >
-      {/* ── Top 5 Cashback Cards ── */}
-      <h2>Top 5 Cashback Credit Cards in Canada</h2>
-      <p>
-        We ranked these cards by total cash back on a typical Canadian spending
-        profile: $800/month groceries, $300/month gas, $200/month dining, and
-        $700/month on everything else. Annual fees are factored in so you see
-        the real net return.
-      </p>
-
-      <div className="seo-card-grid">
-        {/* Card 1 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#1</div>
-          <SeoCardImage name="Tangerine Money-Back Credit Card" />
-          <div className="seo-card-box-name">Tangerine Money-Back Credit Card</div>
-          <div className="seo-card-box-issuer">Tangerine (Scotiabank)</div>
-          <div className="seo-card-box-detail">
-            2% cashback on up to 3 categories of your choice &bull; 0.50% on
-            everything else &bull; No annual fee
-          </div>
-          <div className="seo-card-box-highlight">
-            Best no-fee cashback card — pick grocery, gas, and recurring bills
-            for up to $600+/year back
-          </div>
-          <SeoCardActions name="Tangerine Money-Back Credit Card" />
-        </div>
-
-        {/* Card 2 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#2</div>
-          <SeoCardImage name="CIBC Dividend Visa Infinite" />
-          <div className="seo-card-box-name">CIBC Dividend Visa Infinite</div>
-          <div className="seo-card-box-issuer">CIBC</div>
-          <div className="seo-card-box-detail">
-            4% cashback on gas &amp; grocery &bull; 2% on dining &amp;
-            recurring bills &bull; 1% on everything else &bull; $99/year
-          </div>
-          <div className="seo-card-box-highlight">
-            Highest grocery + gas rate among major bank cards — easily covers
-            the annual fee if you spend $400+/month on those categories
-          </div>
-          <SeoCardActions name="CIBC Dividend Visa Infinite" />
-        </div>
-
-        {/* Card 3 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#3</div>
-          <SeoCardImage name="Scotiabank Momentum Visa Infinite" />
-          <div className="seo-card-box-name">
-            Scotiabank Momentum Visa Infinite
-          </div>
-          <div className="seo-card-box-issuer">Scotiabank</div>
-          <div className="seo-card-box-detail">
-            4% cashback on grocery &amp; recurring bills &bull; 2% on gas &amp;
-            daily transit &bull; 1% on everything else &bull; $120/year
-          </div>
-          <div className="seo-card-box-highlight">
-            Best for families with high grocery and subscription spending —
-            Netflix, Spotify, and insurance premiums all earn 4%
-          </div>
-          <SeoCardActions name="Scotiabank Momentum Visa Infinite" />
-        </div>
-
-        {/* Card 4 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#4</div>
-          <SeoCardImage name="BMO CashBack World Elite Mastercard" />
-          <div className="seo-card-box-name">BMO CashBack World Elite Mastercard</div>
-          <div className="seo-card-box-issuer">BMO</div>
-          <div className="seo-card-box-detail">
-            3% cashback on grocery &bull; 1% on everything else &bull;
-            $120/year &bull; Includes purchase protection and extended warranty
-          </div>
-          <div className="seo-card-box-highlight">
-            Strong grocery rate plus premium World Elite perks like Mastercard
-            Travel Pass lounge access
-          </div>
-          <SeoCardActions name="BMO CashBack World Elite Mastercard" />
-        </div>
-
-        {/* Card 5 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#5</div>
-          <SeoCardImage name="SimplyCash Card from American Express" />
-          <div className="seo-card-box-name">SimplyCash Card from American Express</div>
-          <div className="seo-card-box-issuer">American Express</div>
-          <div className="seo-card-box-detail">
-            2% cashback on all purchases (first $200 in cashback each year,
-            then 1%) &bull; No annual fee
-          </div>
-          <div className="seo-card-box-highlight">
-            Simplest cashback card in Canada — no categories to track, no caps
-            to worry about on moderate spending
-          </div>
-          <SeoCardActions name="SimplyCash Card from American Express" />
-        </div>
-      </div>
-
-      <AffiliateDisclosure />
-
-      {/* ── Comparison Table ── */}
-      <h2>Cashback Card Comparison</h2>
-      <p>
-        Side-by-side look at the numbers that matter. All cashback rates shown
-        are the top published rates for each card.
-      </p>
-
-      <div className="seo-table-wrap">
-        <table className="seo-table">
-          <thead>
-            <tr>
-              <th>Card</th>
-              <th>Annual Fee</th>
-              <th>Top Cashback Rate</th>
-              <th>Base Rate</th>
-              <th>Income Requirement</th>
-              <th>Best For</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Tangerine Money-Back</td>
-              <td>$0</td>
-              <td>2% (3 categories)</td>
-              <td>0.50%</td>
-              <td>None</td>
-              <td>No-fee maximizers</td>
-            </tr>
-            <tr>
-              <td>CIBC Dividend Visa Infinite</td>
-              <td>$99</td>
-              <td>4% (gas &amp; grocery)</td>
-              <td>1%</td>
-              <td>$60,000</td>
-              <td>Drivers &amp; grocery shoppers</td>
-            </tr>
-            <tr>
-              <td>Scotia Momentum Visa Infinite</td>
-              <td>$120</td>
-              <td>4% (grocery &amp; recurring)</td>
-              <td>1%</td>
-              <td>$60,000</td>
-              <td>Families with subscriptions</td>
-            </tr>
-            <tr>
-              <td>BMO CashBack World Elite</td>
-              <td>$120</td>
-              <td>3% (grocery)</td>
-              <td>1%</td>
-              <td>$80,000</td>
-              <td>Premium perks + grocery</td>
-            </tr>
-            <tr>
-              <td>SimplyCash from Amex</td>
-              <td>$0</td>
-              <td>2% (everything)</td>
-              <td>1%</td>
-              <td>None</td>
-              <td>Simplicity seekers</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* ── Flat-Rate vs Category-Based ── */}
-      <h2>Flat-Rate vs. Category-Based Cashback</h2>
-      <p>
-        The biggest decision when picking a cashback card is whether you want a
-        flat rate on everything or higher rates in specific categories. Neither
-        approach is universally better — it depends on how concentrated your
-        spending is.
-      </p>
-
-      <h3>Flat-Rate Cards</h3>
-      <p>
-        Cards like the SimplyCash from Amex give you the same cashback
-        percentage on every purchase. The advantage is zero mental overhead: you
-        never need to check which card to pull out. The downside is the rate is
-        typically capped at 1.5%–2%, which underperforms category cards for
-        heavy grocery or gas spenders.
-      </p>
-
-      <h3>Category-Based Cards</h3>
-      <p>
-        Cards like the CIBC Dividend Visa Infinite offer 4% in specific
-        categories but drop to 1% on everything else. If groceries and gas make
-        up a large portion of your spending, category cards can return $200–$400
-        more per year than a flat-rate card. The trade-off is complexity — you
-        may want a secondary card for non-bonus spending.
-      </p>
-
-      <h3>The Two-Card Strategy</h3>
-      <p>
-        Many savvy Canadians pair a category card (for groceries and gas) with a
-        flat-rate card (for everything else). For example, the CIBC Dividend
-        Visa Infinite for groceries and gas plus the Tangerine Money-Back set to
-        dining, drug stores, and entertainment covers virtually all spending at
-        2%–4%. This approach typically nets $700–$900 per year on average
-        household spending.
-      </p>
-
-      {/* ── How to Maximize Cashback ── */}
-      <h2>How to Maximize Your Cashback</h2>
-      <p>
-        Earning cashback is straightforward, but a few strategies can
-        meaningfully increase your annual return.
-      </p>
-
-      <h3>1. Route All Fixed Bills to Your Top Card</h3>
-      <p>
-        Insurance premiums, phone bills, internet, and streaming subscriptions
-        add up to $300–$500/month for most households. Cards like the Scotia
-        Momentum Visa Infinite treat these as recurring bills at 4%. That
-        alone is $144–$240/year in cashback from spending you cannot avoid.
-      </p>
-
-      <h3>2. Buy Gift Cards Strategically</h3>
-      <p>
-        If your grocery card earns 4% at supermarkets, buying gift cards for
-        restaurants, gas stations, or retailers at the grocery store checkout
-        effectively earns 4% on those purchases too. Check your card&apos;s terms —
-        most issuers allow this as long as the merchant codes as a grocery store.
-      </p>
-
-      <h3>3. Pay the Annual Fee When It Makes Sense</h3>
-      <p>
-        A $120 annual fee sounds steep, but if a fee card earns you $600/year
-        versus $350 from a no-fee card, you are still $130 ahead. Calculate
-        your expected return using ClearFin&apos;s calculator before dismissing
-        fee cards.
-      </p>
-
-      <h3>4. Always Pay Your Balance in Full</h3>
-      <p>
-        Credit card interest in Canada typically runs 20.99%–22.99%. Carrying a
-        $1,000 balance for a month costs roughly $18 in interest — wiping out
-        months of cashback earnings. Cashback only works as a strategy if you
-        pay in full every month.
-      </p>
-
-      {/* ── ClearFin Tip ── */}
-      <div className="seo-tip">
-        <div className="seo-tip-label">ClearFin Tip</div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <SeoLayout
+        title={pageTitle}
+        subtitle="Cash back is easy to value, but the best card still depends on where you spend and how much of an annual fee you can recover."
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Credit Cards", href: "/credit-cards" },
+          { label: "Best Cashback", href: pageUrl },
+        ]}
+        lastUpdated="July 26, 2026"
+      >
         <p>
-          Not sure which cashback card matches your spending? Use the ClearFin
-          calculator to enter your actual monthly grocery, gas, dining, and
-          general spending. We&apos;ll show you exactly how much each card returns
-          per year — including the annual fee — so you can pick with confidence.
+          Cash back is the least mysterious credit card reward: one dollar of
+          cash back is one dollar. The complicated part is everything around
+          it. The biggest earn rate may apply only to one category, only up to a
+          spending limit, and only when the merchant is coded the way the issuer
+          expects.
         </p>
-      </div>
+        <p>
+          So this is not a universal ranking. These are five useful starting
+          points for different types of Canadian spending. We checked the
+          ongoing earn rates and annual fees on issuer pages on July 26, 2026.
+          Welcome offers change often and are not used to decide the order.
+        </p>
 
-      {/* ── FAQ ── */}
-      <h2>Frequently Asked Questions</h2>
-
-      <div className="seo-faq">
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            What is the highest cashback credit card in Canada?
-          </div>
-          <div className="seo-faq-a">
-            The CIBC Dividend Visa Infinite and Scotiabank Momentum Visa
-            Infinite both offer 4% cashback in their top categories (grocery and
-            gas or grocery and recurring bills). For a no-fee option, the
-            Tangerine Money-Back offers 2% on three categories of your choice.
-          </div>
+        <h2>Five cash back cards worth comparing</h2>
+        <div className="seo-card-grid">
+          {cards.map((card) => (
+            <div className="seo-card-box" key={card.name}>
+              <div className="seo-card-box-rank">{card.label}</div>
+              <SeoCardImage name={card.name} />
+              <div className="seo-card-box-name">{card.name}</div>
+              <div className="seo-card-box-issuer">{card.issuer}</div>
+              <div className="seo-card-box-detail">{card.detail}</div>
+              <div className="seo-card-box-highlight">{card.take}</div>
+              <SeoCardActions name={card.name} />
+            </div>
+          ))}
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Is cashback better than travel rewards?
-          </div>
-          <div className="seo-faq-a">
-            It depends on how you redeem. Cashback is worth exactly face value —
-            $100 in cashback is always $100. Travel points can be worth more
-            (1.5 to 3 cents per point on flights) or less (under 1 cent on
-            merchandise). If you travel frequently and redeem strategically,
-            points often win. If you prefer simplicity or rarely travel,
-            cashback is the safer bet.
-          </div>
+        <AffiliateDisclosure />
+
+        <h2>Quick comparison</h2>
+        <div className="seo-table-wrap">
+          <table className="seo-table">
+            <thead>
+              <tr>
+                <th>Card</th>
+                <th>Annual fee</th>
+                <th>Useful when...</th>
+                <th>Watch for...</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tangerine Money-Back</td>
+                <td>$0</td>
+                <td>You want to choose your own bonus categories</td>
+                <td>Only 0.5% outside selected categories</td>
+              </tr>
+              <tr>
+                <td>CIBC Dividend Visa Infinite</td>
+                <td>$120</td>
+                <td>Groceries and gas or EV charging are major expenses</td>
+                <td>Income requirement and category limits</td>
+              </tr>
+              <tr>
+                <td>Scotia Momentum Visa Infinite</td>
+                <td>$120</td>
+                <td>You have large grocery and recurring-bill spending</td>
+                <td>Accelerated rates have annual limits</td>
+              </tr>
+              <tr>
+                <td>BMO CashBack World Elite</td>
+                <td>$120</td>
+                <td>You spend across groceries, transit, gas and bills</td>
+                <td>Monthly category caps can change the result</td>
+              </tr>
+              <tr>
+                <td>SimplyCash from Amex</td>
+                <td>$0</td>
+                <td>You value a 1.25% base rate with gas and grocery bonuses</td>
+                <td>Amex acceptance and the grocery limit</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Do cashback cards charge annual fees?
-          </div>
-          <div className="seo-faq-a">
-            Some do and some don&apos;t. No-fee cards like the Tangerine Money-Back
-            and SimplyCash from Amex offer solid returns without a fee.
-            Premium cashback cards with 3%–4% rates typically charge $99–$120
-            per year, but the higher earn rates usually more than offset the cost
-            for households spending $2,000+/month.
-          </div>
-        </div>
+        <h2>How to choose without guessing</h2>
+        <h3>Start with the categories on your real statements</h3>
+        <p>
+          Add up three ordinary months of groceries, gas, transit, dining,
+          recurring bills and everything else. Do not use a month with a major
+          vacation or renovation unless that is typical for you. A category
+          card only helps when your spending repeatedly lands in its strongest
+          categories.
+        </p>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Can I have more than one cashback card?
-          </div>
-          <div className="seo-faq-a">
-            Absolutely. Many Canadians use two or three cards to maximize
-            returns across different spending categories. There is no rule
-            against holding multiple cashback cards from different issuers, and
-            doing so is one of the most effective ways to push your total
-            cashback above $800/year.
-          </div>
-        </div>
-      </div>
+        <h3>Check the cap, not only the percentage</h3>
+        <p>
+          BMO and several other issuers place monthly or annual limits on their
+          highest rates. After the limit, the card earns a lower rate. That does
+          not make the card bad; it means the headline percentage is not the
+          whole calculation.
+        </p>
 
-      {/* ── Related Guides ── */}
-      <div className="seo-related">
-        <h3>Related Guides</h3>
-        <div className="seo-related-grid">
-          <Link
-            href="/best-travel-credit-cards-canada"
-            className="seo-related-link"
+        <h3>Make the annual fee earn its place</h3>
+        <p>
+          Compare a fee card with a realistic no-fee alternative. If a $120
+          card earns only $70 more for your spending, the no-fee card leaves you
+          ahead. Count insurance or other benefits only when you would have paid
+          for an equivalent benefit yourself.
+        </p>
+
+        <h3>Do not carry interest for rewards</h3>
+        <p>
+          Rewards are valuable only when the account is managed well. Interest
+          on a carried balance can quickly exceed the cash back earned. If you
+          expect to carry a balance, compare low-interest cards before rewards
+          cards.
+        </p>
+
+        <h2>A simple example</h2>
+        <p>
+          Suppose most of your monthly card spending is groceries and
+          pre-authorized bills. Scotia Momentum may deserve a calculation
+          because both categories earn its top published rate. If your spending
+          is lighter and spread across restaurants, transit and home
+          improvement, Tangerine&apos;s selectable categories may be easier to
+          justify because there is no annual fee. The right answer comes from
+          the spending pattern, not the louder advertisement.
+        </p>
+        <p>
+          Try the{" "}
+          <Link href="/credit-card-calculator-canada">
+            ClearFin cash back calculator
+          </Link>{" "}
+          with your own numbers, then confirm the current offer, category
+          definitions and limits on the issuer&apos;s website before applying.
+        </p>
+
+        <h2>Official sources</h2>
+        <p>
+          We checked the current product information on the official pages for{" "}
+          <a
+            href="https://www.tangerine.ca/en/personal/spend/credit-cards/money-back-credit-card"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best Travel Credit Cards in Canada
-            <span>
-              Compare Aeroplan, Avion, and Scene+ cards for maximum travel value
-            </span>
-          </Link>
-          <Link href="/#tool" className="seo-related-link">
-            Credit Card Calculator
-            <span>
-              Enter your spending and see which card returns the most
-            </span>
-          </Link>
-        </div>
-      </div>
-    </SeoLayout>
+            Tangerine
+          </a>
+          ,{" "}
+          <a
+            href="https://www.cibc.com/en/personal-banking/credit-cards/cash-back-cards.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CIBC
+          </a>
+          ,{" "}
+          <a
+            href="https://www.scotiabank.com/ca/en/personal/loans-lines/help-me-choose-payments/momentum-visa-infinite.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Scotiabank
+          </a>
+          ,{" "}
+          <a
+            href="https://www.bmo.com/en-ca/main/personal/credit-cards/what-are-credit-card-fees/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            BMO
+          </a>
+          , and{" "}
+          <a
+            href="https://www.americanexpress.com/en-ca/credit-cards/simply-cash/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            American Express
+          </a>
+          .
+        </p>
+      </SeoLayout>
+    </>
   );
 }
