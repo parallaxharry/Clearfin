@@ -1,387 +1,287 @@
-import SeoLayout from "@/components/SeoLayout";
-import SeoCardImage from "@/components/SeoCardImage";
-import SeoCardActions from "@/components/SeoCardActions";
-import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import Link from "next/link";
 import type { Metadata } from "next";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import SeoCardActions from "@/components/SeoCardActions";
+import SeoCardImage from "@/components/SeoCardImage";
+import SeoLayout from "@/components/SeoLayout";
 
-// ISR: Supabase card_catalog edits (e.g. affiliate apply links) go live within ~5 min.
 export const revalidate = 300;
 
+const pageUrl = "https://www.clearfin.ca/best-no-fee-credit-cards-canada";
+const pageTitle = "Best No Annual Fee Credit Cards in Canada for 2026";
+const pageDescription =
+  "Compare Canadian no-annual-fee credit cards for flexible cash back, groceries and everyday spending, with the important trade-offs explained.";
+
 export const metadata: Metadata = {
-  title: "Best No Annual Fee Credit Cards in Canada 2026 | ClearFin",
-  description:
-    "A Canadian guide to no fee credit cards for 2026, comparing Tangerine, Amex SimplyCash, PC World Elite, CIBC Dividend, and BMO CashBack side by side.",
+  title: "Best No Annual Fee Credit Cards Canada 2026 | ClearFin",
+  description: pageDescription,
   keywords: [
-    "best no fee credit cards Canada",
-    "no annual fee credit cards Canada",
-    "free credit cards Canada",
+    "best no annual fee credit cards Canada",
+    "no fee credit cards Canada",
+    "best free credit card Canada",
+    "no annual fee cash back card Canada",
   ],
-  alternates: {
-    canonical: "/best-no-fee-credit-cards-canada",
+  alternates: { canonical: pageUrl },
+  openGraph: {
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    type: "article",
+    locale: "en_CA",
+    siteName: "ClearFin",
   },
 };
 
+const cards = [
+  {
+    name: "Tangerine Money-Back Credit Card",
+    issuer: "Tangerine",
+    label: "Pick your own categories",
+    detail:
+      "2% cash back in two selected categories, or three with rewards deposited to a Tangerine Savings Account; 0.5% on other purchases.",
+    take:
+      "A good fit when two or three categories make up a large share of your spending.",
+  },
+  {
+    name: "SimplyCash Card from American Express",
+    issuer: "American Express",
+    label: "Useful base rate",
+    detail:
+      "2% cash back on eligible Canadian gas and grocery purchases, with a grocery limit, and 1.25% on other eligible purchases.",
+    take:
+      "Simple to understand, provided American Express is accepted at the places you use most.",
+  },
+  {
+    name: "PC Financial World Elite Mastercard",
+    issuer: "PC Financial",
+    label: "For the PC Optimum ecosystem",
+    detail:
+      "3% back in PC Optimum points at participating grocery stores, 4.5% at Shoppers Drug Mart and Pharmaprix, and no annual fee.",
+    take:
+      "Can be rewarding for loyal shoppers, but the World Elite version has income and approval requirements.",
+  },
+  {
+    name: "CIBC Dividend Visa Card",
+    issuer: "CIBC",
+    label: "Basic grocery cash back",
+    detail:
+      "2% on eligible groceries; 1% on eligible gas, EV charging, transit, dining, recurring payments and CIBC by Expedia travel; 0.5% elsewhere.",
+    take:
+      "A conventional no-fee Visa for someone who wants cash back without managing selectable categories.",
+  },
+  {
+    name: "BMO CashBack Mastercard",
+    issuer: "BMO",
+    label: "Grocery-focused no-fee card",
+    detail:
+      "3% on eligible groceries, 1% on eligible recurring bill payments and 0.5% on other purchases, subject to category limits.",
+    take:
+      "The grocery rate is useful, but the monthly cap should be part of your calculation.",
+  },
+];
+
 export default function BestNoFeeCreditCardsCanada() {
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    headline: pageTitle,
+    description: pageDescription,
+    author: { "@type": "Organization", name: "ClearFin" },
+    publisher: {
+      "@type": "Organization",
+      name: "ClearFin",
+      url: "https://www.clearfin.ca",
+    },
+    datePublished: "2026-05-01",
+    dateModified: "2026-07-26",
+  };
+
   return (
-    <SeoLayout
-      title="Best No Annual Fee Credit Cards in Canada"
-      subtitle="You don't need to pay $120+ per year to earn solid rewards. These no-fee cards prove that great value and zero cost aren't mutually exclusive."
-      breadcrumb={[
-        { label: "Home", href: "/" },
-        { label: "Credit Cards", href: "/#tool" },
-        { label: "Best No Fee", href: "/best-no-fee-credit-cards-canada" },
-      ]}
-      lastUpdated="May 2026"
-    >
-      {/* ── Top 5 No-Fee Cards ── */}
-      <h2>Top 5 No Annual Fee Credit Cards in Canada (2026)</h2>
-      <p>
-        We evaluated every major no-fee credit card in Canada and ranked them
-        by overall rewards value, category flexibility, and practical benefits.
-        These five cards deliver genuine value without costing you a cent in
-        annual fees.
-      </p>
-
-      <div className="seo-card-grid">
-        {/* Card 1 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#1</div>
-          <SeoCardImage name="Tangerine Money-Back Credit Card" />
-          <div className="seo-card-box-name">Tangerine Money-Back Credit Card</div>
-          <div className="seo-card-box-issuer">Tangerine (Scotiabank)</div>
-          <div className="seo-card-box-detail">
-            2% cash back on 2 categories of your choice (3 categories with a
-            Tangerine Savings Account). 0.50% on everything else. No annual
-            fee. World Mastercard benefits.
-          </div>
-          <div className="seo-card-box-highlight">
-            Most flexible no-fee card — you pick your own bonus categories
-          </div>
-          <SeoCardActions name="Tangerine Money-Back Credit Card" />
-        </div>
-
-        {/* Card 2 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#2</div>
-          <SeoCardImage name="SimplyCash Card from American Express" />
-          <div className="seo-card-box-name">SimplyCash Card from American Express</div>
-          <div className="seo-card-box-issuer">American Express</div>
-          <div className="seo-card-box-detail">
-            1.25% cash back on all purchases. 2% on select categories
-            including gas and grocery (on first $300/month). No annual fee.
-            Amex Offers for additional statement credits.
-          </div>
-          <div className="seo-card-box-highlight">
-            Highest flat-rate cashback among no-fee cards
-          </div>
-          <SeoCardActions name="SimplyCash Card from American Express" />
-        </div>
-
-        {/* Card 3 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#3</div>
-          <SeoCardImage name="PC Financial World Elite Mastercard" />
-          <div className="seo-card-box-name">PC Financial World Elite Mastercard</div>
-          <div className="seo-card-box-issuer">President&apos;s Choice Financial</div>
-          <div className="seo-card-box-detail">
-            30 PC Optimum points per dollar at Loblaws, Shoppers Drug Mart,
-            and Esso. 10 points per dollar everywhere else. No annual fee.
-            Points redeemable for free groceries.
-          </div>
-          <div className="seo-card-box-highlight">
-            Unbeatable for Loblaws and Shoppers Drug Mart shoppers
-          </div>
-          <SeoCardActions name="PC Financial World Elite Mastercard" />
-        </div>
-
-        {/* Card 4 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#4</div>
-          <SeoCardImage name="CIBC Dividend Visa Card" />
-          <div className="seo-card-box-name">CIBC Dividend Visa Card</div>
-          <div className="seo-card-box-issuer">CIBC</div>
-          <div className="seo-card-box-detail">
-            1% cash back on most purchases. Up to 2% on groceries and gas
-            (on first $500/month per category). No annual fee. Contactless
-            and mobile wallet compatible.
-          </div>
-          <div className="seo-card-box-highlight">
-            Solid all-around cashback with no earning caps on base rate
-          </div>
-          <SeoCardActions name="CIBC Dividend Visa Card" />
-        </div>
-
-        {/* Card 5 */}
-        <div className="seo-card-box">
-          <div className="seo-card-box-rank">#5</div>
-          <SeoCardImage name="BMO CashBack Mastercard" />
-          <div className="seo-card-box-name">BMO CashBack Mastercard</div>
-          <div className="seo-card-box-issuer">BMO</div>
-          <div className="seo-card-box-detail">
-            3% cash back on groceries for the first 3 months, then 0.5%.
-            1% on recurring bills. 0.5% on all other purchases. No annual
-            fee. Low income requirement ($15K).
-          </div>
-          <div className="seo-card-box-highlight">
-            Easiest to qualify for — great first credit card
-          </div>
-          <SeoCardActions name="BMO CashBack Mastercard" />
-        </div>
-      </div>
-
-      <AffiliateDisclosure />
-
-      {/* ── Comparison Table ── */}
-      <h2>No-Fee Credit Card Comparison</h2>
-      <p>
-        Here is a side-by-side look at what each no-fee card earns on $25,000
-        in annual spending, split across common categories.
-      </p>
-
-      <div className="seo-table-wrap">
-        <table className="seo-table">
-          <thead>
-            <tr>
-              <th>Card</th>
-              <th>Annual Fee</th>
-              <th>Best Rate</th>
-              <th>Base Rate</th>
-              <th>Est. Annual Return on $25K</th>
-              <th>Best For</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Tangerine Money-Back</td>
-              <td>$0</td>
-              <td>2% (your categories)</td>
-              <td>0.50%</td>
-              <td>$250–$375</td>
-              <td>Flexible category spenders</td>
-            </tr>
-            <tr>
-              <td>SimplyCash from Amex</td>
-              <td>$0</td>
-              <td>2% (gas/grocery)</td>
-              <td>1.25%</td>
-              <td>$312–$350</td>
-              <td>Flat-rate simplicity</td>
-            </tr>
-            <tr>
-              <td>PC World Elite MC</td>
-              <td>$0</td>
-              <td>30 pts/$1 at Loblaws</td>
-              <td>10 pts/$1</td>
-              <td>$250–$400*</td>
-              <td>Loblaws / Shoppers shoppers</td>
-            </tr>
-            <tr>
-              <td>CIBC Dividend Visa</td>
-              <td>$0</td>
-              <td>2% (grocery/gas)</td>
-              <td>1%</td>
-              <td>$250–$300</td>
-              <td>CIBC banking customers</td>
-            </tr>
-            <tr>
-              <td>BMO CashBack MC</td>
-              <td>$0</td>
-              <td>3% (intro grocery)</td>
-              <td>0.5%</td>
-              <td>$125–$175</td>
-              <td>First credit card / building credit</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p>
-        *PC Optimum points value depends on how you redeem. Bonus redemption
-        events can push the effective value above 1.5 cents per point.
-      </p>
-
-      {/* ── Break-Even Analysis ── */}
-      <h2>When Does a Fee Card Pay for Itself?</h2>
-      <p>
-        The most common question people ask when choosing between a free card
-        and a fee card: at what point does the fee card earn enough extra
-        rewards to justify its cost? Here is the math.
-      </p>
-      <p>
-        Take the CIBC Dividend Visa Infinite ($99/yr, 4% grocery cashback)
-        versus the CIBC Dividend Visa ($0, 2% grocery). The fee card earns an
-        extra 2% on groceries. To break even on the $99 fee, you need to spend
-        $99 / 0.02 = $4,950 per year on groceries. That works out to about
-        $413 per month.
-      </p>
-      <p>
-        For the Scotia Gold Amex ($120/yr, 6x grocery) versus the Tangerine
-        Money-Back ($0, 2% grocery), the gap is roughly 4% in value. Break
-        even: $120 / 0.04 = $3,000 per year, or $250 per month. Most
-        households spend well above that on groceries, making the fee card
-        worth it.
-      </p>
-      <p>
-        If your monthly grocery spend is under $300, a no-fee card is likely
-        the better deal. Above $400 per month, a fee card almost always wins
-        on net rewards.
-      </p>
-
-      {/* ── Secondary Card Strategy ── */}
-      <h2>No-Fee Cards as Secondary Cards</h2>
-      <p>
-        Even if you carry a premium fee card as your primary, a no-fee card
-        is valuable as a backup or category filler. Common pairings:
-      </p>
-      <h3>Amex + Visa/Mastercard Backup</h3>
-      <p>
-        If your primary card is an Amex (like the Cobalt), keep a Tangerine
-        Money-Back or PC World Elite as your backup for merchants that
-        don&apos;t accept American Express. This way you still earn elevated
-        rewards even when Amex isn&apos;t an option.
-      </p>
-      <h3>Travel Card + Cashback Everyday Card</h3>
-      <p>
-        Pair a travel rewards card (for flights and hotels) with a no-fee
-        cashback card (for day-to-day purchases). The travel card handles big
-        redemptions; the cashback card handles small daily spending where
-        earning transferable points doesn&apos;t move the needle.
-      </p>
-      <h3>Category Gap Filler</h3>
-      <p>
-        Some fee cards have blind spots — for example, a card that earns 5x on
-        dining but only 1x on gas. Add a Tangerine Money-Back with gas as a
-        2% category to fill that gap at zero cost.
-      </p>
-
-      {/* ── Building Credit ── */}
-      <h2>Building Credit with No-Fee Cards</h2>
-      <p>
-        No-fee credit cards are the best starting point for building a credit
-        history in Canada. Here is why they work well for newcomers, students,
-        and anyone repairing their credit.
-      </p>
-      <h3>No Risk, Ongoing History</h3>
-      <p>
-        Because there is no annual fee, you can keep the card open
-        indefinitely. Length of credit history is a major factor in your credit
-        score. Opening a no-fee card now and keeping it active gives you years
-        of positive history, even if you later move to a premium card.
-      </p>
-      <h3>Low Barriers to Entry</h3>
-      <p>
-        Cards like the BMO CashBack Mastercard require only $15,000 in
-        personal income. The Tangerine Money-Back has no hard minimum income
-        requirement. These cards are accessible to students, new graduates,
-        and newcomers to Canada who may not yet qualify for premium products.
-      </p>
-      <h3>Secured Card Upgrade Path</h3>
-      <p>
-        If you cannot qualify for any unsecured card, start with a secured
-        credit card (which requires a deposit). After 6 to 12 months of
-        responsible use, most issuers will upgrade you to an unsecured no-fee
-        card and return your deposit. From there, you can build toward
-        premium cards.
-      </p>
-
-      {/* ── ClearFin Tip ── */}
-      <div className="seo-tip">
-        <div className="seo-tip-label">ClearFin Tip</div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <SeoLayout
+        title={pageTitle}
+        subtitle="A no-fee card is easy to keep, but the right one still needs to match your stores, categories and preferred reward type."
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Credit Cards", href: "/credit-cards" },
+          { label: "Best No-Fee Cards", href: pageUrl },
+        ]}
+        lastUpdated="July 26, 2026"
+      >
         <p>
-          Don&apos;t close your oldest no-fee card when you upgrade to a
-          premium card. Your credit score benefits from a longer average
-          account age and a higher total credit limit. Keep the no-fee card
-          open with a small recurring charge (like a streaming subscription)
-          and set it to autopay. This costs you nothing and strengthens your
-          credit profile. Use ClearFin&apos;s calculator to see exactly how
-          much a fee card would earn over your current no-fee setup.
+          No annual fee does not mean no trade-offs. A no-fee card may have a
+          lower base rate, a spending cap on its best category, fewer insurance
+          benefits, or rewards tied to a specific group of stores. The upside is
+          simple: you do not have to earn back a fee before the card creates
+          value.
         </p>
-      </div>
+        <p>
+          These five cards cover different needs rather than pretending one card
+          suits everybody. We checked the ongoing earn rates on official issuer
+          pages on July 26, 2026 and left short-lived welcome bonuses out of the
+          comparison.
+        </p>
 
-      {/* ── FAQ ── */}
-      <h2>Frequently Asked Questions</h2>
-      <div className="seo-faq">
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Are no-fee credit cards worth it compared to fee cards?
-          </div>
-          <div className="seo-faq-a">
-            For many Canadians, yes. If your annual spending is under $20,000
-            across all categories, a no-fee card often delivers comparable
-            net value to a fee card because you are not losing $99 to $150 in
-            annual fees. The break-even point depends on your spending
-            patterns — use our calculator to compare.
-          </div>
+        <h2>Five no-fee cards worth comparing</h2>
+        <div className="seo-card-grid">
+          {cards.map((card) => (
+            <div className="seo-card-box" key={card.name}>
+              <div className="seo-card-box-rank">{card.label}</div>
+              <SeoCardImage name={card.name} />
+              <div className="seo-card-box-name">{card.name}</div>
+              <div className="seo-card-box-issuer">{card.issuer}</div>
+              <div className="seo-card-box-detail">{card.detail}</div>
+              <div className="seo-card-box-highlight">{card.take}</div>
+              <SeoCardActions name={card.name} />
+            </div>
+          ))}
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Can I get a no-fee credit card with bad credit?
-          </div>
-          <div className="seo-faq-a">
-            Some no-fee cards have low credit score requirements. The BMO
-            CashBack Mastercard and certain store cards (like Canadian Tire
-            Triangle Mastercard) are more accessible. If your credit score is
-            below 600, consider starting with a secured credit card, which
-            requires a refundable deposit but helps you rebuild your score.
-          </div>
+        <AffiliateDisclosure />
+
+        <h2>Quick comparison</h2>
+        <div className="seo-table-wrap">
+          <table className="seo-table">
+            <thead>
+              <tr>
+                <th>Card</th>
+                <th>Best use</th>
+                <th>What to check</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tangerine Money-Back</td>
+                <td>Two or three chosen categories</td>
+                <td>Only 0.5% outside those categories</td>
+              </tr>
+              <tr>
+                <td>SimplyCash from Amex</td>
+                <td>Gas, groceries and a 1.25% base rate</td>
+                <td>Amex acceptance and grocery limit</td>
+              </tr>
+              <tr>
+                <td>PC Financial World Elite</td>
+                <td>Participating PC Optimum stores</td>
+                <td>Income eligibility and where points can be redeemed</td>
+              </tr>
+              <tr>
+                <td>CIBC Dividend Visa</td>
+                <td>Basic cash back with grocery emphasis</td>
+                <td>Category and total spending limits</td>
+              </tr>
+              <tr>
+                <td>BMO CashBack Mastercard</td>
+                <td>Groceries and recurring bills</td>
+                <td>Monthly bonus-category caps</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            Do no-fee credit cards have hidden fees?
-          </div>
-          <div className="seo-faq-a">
-            No-fee means no annual fee, but other standard fees still apply:
-            foreign transaction fees (typically 2.5%), cash advance fees,
-            and interest on unpaid balances. Always pay your balance in full
-            each month to avoid interest charges. The Tangerine Money-Back
-            and some other no-fee cards still charge 2.5% on foreign currency
-            purchases.
-          </div>
-        </div>
+        <h2>Who benefits most from a no-fee card?</h2>
+        <p>
+          A no-fee card is often a strong first card, a long-term backup, or a
+          sensible choice for lighter spending. It can also protect a long
+          account history from an annual-fee decision: you are less likely to
+          cancel a card simply because the yearly cost no longer makes sense.
+        </p>
+        <p>
+          That does not mean a no-fee card is always cheaper. A household with
+          high grocery and recurring-bill spending may earn enough additional
+          cash back on a fee card to finish ahead. Use the{" "}
+          <Link href="/credit-card-calculator-canada">
+            ClearFin calculator
+          </Link>{" "}
+          to compare the extra rewards after the fee.
+        </p>
 
-        <div className="seo-faq-item">
-          <div className="seo-faq-q">
-            What is the best no-fee card for students in Canada?
-          </div>
-          <div className="seo-faq-a">
-            The Tangerine Money-Back Credit Card is the best no-fee option
-            for students because it has no minimum income requirement and
-            lets you pick your own 2% bonus categories. The BMO CashBack
-            Mastercard is another strong choice with its low $15,000 income
-            requirement and introductory 3% grocery rate.
-          </div>
-        </div>
-      </div>
+        <h2>Flexible rewards or store rewards?</h2>
+        <p>
+          Tangerine is flexible because you can select categories and receive
+          cash back. PC Financial is more focused: it makes the most sense for
+          someone who shops at participating stores and already uses PC
+          Optimum. Neither structure is automatically better. One follows your
+          spending categories; the other follows your preferred retailers.
+        </p>
 
-      {/* ── Related Guides ── */}
-      <div className="seo-related">
-        <h3>Related Guides</h3>
-        <div className="seo-related-grid">
-          <Link
-            href="/best-grocery-credit-cards-canada"
-            className="seo-related-link"
+        <h2>Read the cap before trusting the top rate</h2>
+        <p>
+          BMO CashBack earns 3% on eligible grocery purchases, but its
+          accelerated category has a monthly spending limit. SimplyCash has an
+          annual grocery limit on its 2% rate. CIBC also sets limits in its cash
+          back terms. For an accurate estimate, apply the bonus rate only up to
+          the cap and the base rate after it.
+        </p>
+
+        <h2>No annual fee does not mean no interest</h2>
+        <p>
+          These are rewards cards, not low-interest borrowing tools. If you
+          carry a balance, purchase interest can erase the rewards quickly.
+          Paying on time and in full matters more than earning an extra
+          percentage point.
+        </p>
+
+        <h2>Our bottom line</h2>
+        <p>
+          Tangerine is the flexible choice. SimplyCash offers a useful base
+          cash back rate where Amex is accepted. PC Financial World Elite is for
+          committed PC Optimum shoppers who meet its requirements. CIBC
+          Dividend and BMO CashBack are familiar Visa and Mastercard choices
+          with grocery emphasis. Pick the structure you will actually remember
+          at the checkout.
+        </p>
+
+        <h2>Official sources</h2>
+        <p>
+          Product details were checked on the official pages for{" "}
+          <a
+            href="https://www.tangerine.ca/en/personal/spend/credit-cards/money-back-credit-card"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best Grocery Credit Cards in Canada
-            <span>Maximize rewards on your biggest recurring expense</span>
-          </Link>
-          <Link
-            href="/best-cashback-credit-cards-canada"
-            className="seo-related-link"
+            Tangerine
+          </a>
+          ,{" "}
+          <a
+            href="https://www.americanexpress.com/en-ca/credit-cards/simply-cash/"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best Cashback Credit Cards in Canada
-            <span>Including fee and no-fee options compared</span>
-          </Link>
-          <Link
-            href="/best-travel-credit-cards-canada"
-            className="seo-related-link"
+            American Express
+          </a>
+          ,{" "}
+          <a
+            href="https://www.pcfinancial.ca/en/credit-cards/world-elite/"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Best Travel Credit Cards in Canada
-            <span>When points beat cashback for flights and hotels</span>
-          </Link>
-        </div>
-      </div>
-    </SeoLayout>
+            PC Financial
+          </a>
+          ,{" "}
+          <a
+            href="https://www.cibc.com/en/personal-banking/credit-cards/cash-back-cards.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CIBC
+          </a>
+          , and{" "}
+          <a
+            href="https://www.bmo.com/en-ca/main/personal/credit-cards/choosing-a-no-annual-fee-card/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            BMO
+          </a>
+          .
+        </p>
+      </SeoLayout>
+    </>
   );
 }

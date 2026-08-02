@@ -1,4 +1,5 @@
 import Loader from "@/components/Loader";
+import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import Nav from "@/components/Nav";
 import SideRail from "@/components/SideRail";
@@ -65,10 +66,10 @@ export default async function HomePage() {
                 <span>Open the Calculator</span>
                 <span className="btn-arrow">-&gt;</span>
               </a>
-              <a href="/credit-cards" className="btn-primary">
+              <Link href="/credit-cards" className="btn-primary">
                 <span>View all cards</span>
                 <span className="btn-arrow">-&gt;</span>
-              </a>
+              </Link>
             </div>
             <div className="hero-stats reveal">
               <div>
@@ -94,15 +95,64 @@ export default async function HomePage() {
         <div className="section-divider-bottom" />
       </section>
 
+      <section className="home-seo-intro" aria-labelledby="home-seo-intro-title">
+        <div className="home-seo-intro-inner">
+          <div className="section-num">02 / How ClearFin Helps</div>
+          <h2 id="home-seo-intro-title">
+            Compare Canadian credit cards around the way you actually spend
+          </h2>
+          <p>
+            Credit card rewards look simple until you try to compare them.
+            Grocery rates can depend on the store, travel points can change
+            value depending on how you redeem them, and a large welcome offer
+            does not always make up for an annual fee. ClearFin brings those
+            details into one place so you can make a calmer, more practical
+            choice.
+          </p>
+          <p>
+            Start with our{" "}
+            <Link href="/credit-card-calculator-canada">
+              Canadian credit card calculator
+            </Link>{" "}
+            and enter the categories that matter in your household. We use that
+            spending mix to estimate which cards may return more value after
+            the annual fee. You can then open the card details, compare
+            alternatives side by side, and check the issuer&apos;s current
+            terms before applying.
+          </p>
+          <p>
+            ClearFin is most useful when your spending is uneven. Maybe
+            groceries and recurring bills are the big categories, or perhaps
+            dining and travel matter more. Instead of assuming the same card is
+            best for everyone, the comparison follows your numbers. You can
+            also browse our guides to understand{" "}
+            <Link href="/best-cashback-credit-cards-canada">cash back</Link>,{" "}
+            <Link href="/best-travel-credit-cards-canada">travel rewards</Link>,
+            and{" "}
+            <Link href="/best-no-fee-credit-cards-canada">
+              no-annual-fee cards
+            </Link>{" "}
+            in plain language.
+          </p>
+          <p>
+            ClearFin is not a bank or digital wallet, and it does not move your
+            money. It is an independent comparison and education tool. The goal
+            is straightforward: help you understand the trade-offs, choose a
+            card that fits your real routine, and avoid paying for benefits you
+            are unlikely to use.
+          </p>
+        </div>
+      </section>
+
       <SpendProvider>
         <CatalogProvider map={catalog}>
           {/* ══════════════════════════════════════
-              02 INTERACTIVE TOOL
+              03 INTERACTIVE TOOL
           ══════════════════════════════════════ */}
           <InteractiveTool gateOnly />
 
           {/* ══════════════════════════════════════
-              03 TOP PICKS BY CATEGORY
+              04 TOP PICKS BY CATEGORY
           ══════════════════════════════════════ */}
           <TopPicks />
         </CatalogProvider>

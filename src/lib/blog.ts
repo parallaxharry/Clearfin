@@ -200,7 +200,11 @@ For people who prefer simplicity, a cash back setup may be better. For people wh
 /** All published posts, newest first. Table rows win; fallback keeps the blog alive without them. */
 export const getPosts = cache(async (): Promise<BlogPost[]> => {
   const supabase = readClient();
-  if (!supabase) return FALLBACK_POSTS;
+  if (!supabase) {
+    return FALLBACK_POSTS.filter(
+      (post) => post.slug !== "best-credit-card-combination-canada",
+    );
+  }
 
   const { data, error } = await supabase
     .from("blog_posts")
@@ -210,9 +214,13 @@ export const getPosts = cache(async (): Promise<BlogPost[]> => {
 
   if (error || !data || data.length === 0) {
     if (error) console.error("getPosts blog_posts error:", error.message);
-    return FALLBACK_POSTS;
+    return FALLBACK_POSTS.filter(
+      (post) => post.slug !== "best-credit-card-combination-canada",
+    );
   }
-  return (data as BlogPostRow[]).map(fromRow);
+  return (data as BlogPostRow[])
+    .map(fromRow)
+    .filter((post) => post.slug !== "best-credit-card-combination-canada");
 });
 
 export const getPost = cache(async (slug: string): Promise<BlogPost | null> => {

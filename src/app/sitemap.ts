@@ -5,6 +5,7 @@ import { getPosts } from "@/lib/blog";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.clearfin.ca";
   const now = new Date();
+  const seoRefresh = new Date("2026-07-26");
 
   const posts = await getPosts();
   const blogPages: MetadataRoute.Sitemap = [
@@ -46,6 +47,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     },
     {
+      url: `${baseUrl}/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards`,
+      lastModified: seoRefresh,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/credit-card-calculator-canada`,
       lastModified: now,
       changeFrequency: "weekly",
@@ -65,25 +72,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/best-cashback-credit-cards-canada`,
-      lastModified: now,
+      lastModified: seoRefresh,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/best-travel-credit-cards-canada`,
-      lastModified: now,
+      lastModified: seoRefresh,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/best-grocery-credit-cards-canada`,
-      lastModified: now,
+      lastModified: seoRefresh,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/best-no-fee-credit-cards-canada`,
-      lastModified: now,
+      lastModified: seoRefresh,
       changeFrequency: "monthly",
       priority: 0.8,
     },
@@ -95,7 +102,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/credit-card-rewards-canada-guide`,
-      lastModified: now,
+      lastModified: seoRefresh,
       changeFrequency: "monthly",
       priority: 0.85,
     },
