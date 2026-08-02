@@ -1,22 +1,24 @@
-import SeoLayout from "@/components/SeoLayout";
-import SeoCardImage from "@/components/SeoCardImage";
-import SeoCardActions from "@/components/SeoCardActions";
-import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import Link from "next/link";
 import type { Metadata } from "next";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import SeoCardActions from "@/components/SeoCardActions";
+import SeoCardImage from "@/components/SeoCardImage";
+import SeoLayout from "@/components/SeoLayout";
 
-// ISR: Supabase card_catalog edits (e.g. affiliate apply links) go live within ~5 min.
+// ISR: Supabase card_catalog edits (for example, affiliate links) go live within ~5 min.
 export const revalidate = 300;
 
+const pageUrl = "https://www.clearfin.ca/best-credit-cards-canada";
+const pageTitle = "Best Credit Cards in Canada for 2026";
+const pageDescription =
+  "Compare useful Canadian credit cards for food, cash back, travel and everyday spending, with current annual fees and important trade-offs explained.";
+
 export const metadata: Metadata = {
-  title: "Best Credit Cards in Canada 2026: Rewards, Bonuses & Spending | ClearFin",
-  description:
-    "Compare the best Canadian credit cards for 2026. Expert picks for cashback, travel, groceries, and more. Updated monthly with real reward rates.",
+  title: "Best Credit Cards in Canada 2026 | ClearFin",
+  description: pageDescription,
   keywords: [
     "best credit cards Canada",
     "best credit cards in Canada 2026",
-    "top credit cards Canada",
-    "best rewards credit cards Canada",
     "credit card rewards comparison Canada",
     "best credit card sign-up bonus Canada",
     "best credit card for online shopping Canada",
@@ -24,52 +26,104 @@ export const metadata: Metadata = {
     "best credit card for young professionals Canada",
     "best credit card for Amazon Canada",
   ],
-  alternates: { canonical: "/best-credit-cards-canada" },
+  alternates: { canonical: pageUrl },
   openGraph: {
-    title: "Best Credit Cards in Canada 2026: Rewards, Bonuses & Spending | ClearFin",
-    description: "Compare the best Canadian credit cards for 2026.",
-    url: "https://www.clearfin.ca/best-credit-cards-canada",
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
     siteName: "ClearFin",
     type: "article",
     locale: "en_CA",
   },
 };
 
+const cards = [
+  {
+    name: "American Express Cobalt Card",
+    issuer: "American Express",
+    label: "A food-first points card",
+    detail:
+      "5 Membership Rewards points per dollar on eligible Canadian eats and drinks, up to $2,500 in purchases each month; 3 points on eligible streaming, 2 on eligible gas and transit, and 1 on other eligible purchases. The fee is $15.99 per month.",
+    take:
+      "Worth considering when food is a large category and the places you use accept American Express. The monthly cap and the way you redeem points both matter.",
+  },
+  {
+    name: "Scotiabank Gold American Express",
+    issuer: "Scotiabank",
+    label: "For Scene+ grocery and food spending",
+    detail:
+      "6 Scene+ points per dollar at participating Sobeys-family grocers, 5 points on other eligible groceries and dining, and a $120 annual fee.",
+    take:
+      "The strongest earn rate depends on the store. Check both the merchant list and American Express acceptance before treating the headline rate as your normal return.",
+  },
+  {
+    name: "TD Aeroplan Visa Infinite",
+    issuer: "TD Bank",
+    label: "For regular Air Canada travellers",
+    detail:
+      "1.5 Aeroplan points per dollar on eligible gas, EV charging, groceries and purchases made directly with Air Canada; 1 point on other eligible purchases; $139 annual fee.",
+    take:
+      "The Aeroplan and Air Canada benefits are more useful when you fly with the airline often enough to use them. Otherwise, a simpler cash back card may be easier to value.",
+  },
+  {
+    name: "CIBC Dividend Visa Infinite",
+    issuer: "CIBC",
+    label: "For practical cash back categories",
+    detail:
+      "4% cash back on eligible gas, EV charging and groceries; 2% on eligible transportation, dining, recurring payments and CIBC by Expedia travel; 1% on other purchases; $120 annual fee.",
+    take:
+      "A clear option when groceries and driving are large, predictable expenses and you prefer cash back to learning a points program.",
+  },
+  {
+    name: "Tangerine Money-Back Credit Card",
+    issuer: "Tangerine",
+    label: "A flexible no-fee option",
+    detail:
+      "2% cash back in two selected categories, or three when rewards are deposited to a Tangerine Savings Account; 0.5% on other purchases; $0 annual fee.",
+    take:
+      "Useful when your largest expenses fit Tangerine's category list. Spending outside the selected categories earns a much lower rate.",
+  },
+];
+
 const faqData = [
   {
     q: "What is the best credit card in Canada right now?",
-    a: "It depends on your spending. For most Canadians who spend heavily on dining and groceries, the Amex Cobalt offers the highest overall return thanks to its 5x multiplier on food and drink. If you prefer Visa or Mastercard acceptance, the CIBC Dividend Visa Infinite or Scotia Gold Amex are strong alternatives.",
+    a: "There is no single best card for every household. Start with the categories where you spend the most, subtract the annual fee, and check whether you can use the rewards and benefits without changing your normal routine.",
   },
   {
-    q: "Are no-annual-fee credit cards worth it?",
-    a: "Absolutely, especially if your monthly spending is under $2,000. Cards like the Tangerine Money-Back Mastercard offer 2% back on up to three categories with no fee at all. The break-even point where a fee card outperforms a no-fee card is typically around $1,500-$2,500 in monthly spend, depending on your category mix.",
+    q: "Are no-annual-fee credit cards worth considering?",
+    a: "Yes. A no-fee card can leave you with more net value when your spending is moderate or spread across categories that a premium card does not reward well. Compare the annual return after fees rather than assuming a paid card is automatically better.",
   },
   {
-    q: "How many credit cards should I have?",
-    a: "Most rewards-optimizers carry two to three cards: one primary card for everyday spend, a secondary card for categories the primary misses, and occasionally a no-fee card kept open for credit history length. Having more cards does not hurt your credit score as long as you pay on time and keep utilization low.",
+    q: "Should I choose a card for its welcome offer?",
+    a: "A welcome offer can improve first-year value, but the spending requirement, eligibility rules and offer itself can change. Treat it as one part of the decision and compare the card's regular earn rates and annual fee as well.",
   },
   {
-    q: "Do credit card rewards count as taxable income in Canada?",
-    a: "No. The CRA does not consider personal credit card rewards (cashback, points, or miles) as taxable income. They are treated as a rebate on purchases. However, if you earn rewards through a business credit card and redeem them for personal use, the rules can differ. Consult a tax professional for business card scenarios.",
+    q: "How many credit cards should I carry?",
+    a: "Use the fewest cards that cover your important spending categories without making bills, due dates and redemptions difficult to manage. Some people prefer one simple card, while others use a second card for a category or payment network their primary card misses.",
   },
   {
-    q: "What credit score do I need for premium credit cards in Canada?",
-    a: "Most premium credit cards (Visa Infinite, World Elite Mastercard) require a credit score of 680 or higher, along with a minimum personal income of $60,000 or household income of $100,000. Some issuers are more flexible than others. If you are building credit, start with a student or secured card and work your way up.",
+    q: "What eligibility rules should I check before applying?",
+    a: "Check the issuer's current income, residency, age and credit requirements on the application page. Approval is always the issuer's decision, and meeting a published minimum does not guarantee approval.",
   },
 ];
 
 export default function BestCreditCardsCanadaPage() {
   const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: "Best Credit Cards in Canada for 2026",
-    description:
-      "Compare the best Canadian credit cards for 2026. Expert picks for cashback, travel, groceries, and more.",
-    author: { "@type": "Organization", name: "ClearFin", url: "https://www.clearfin.ca" },
-    publisher: { "@type": "Organization", name: "ClearFin", url: "https://www.clearfin.ca" },
+    "@type": "BlogPosting",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    headline: pageTitle,
+    description: pageDescription,
+    author: { "@type": "Organization", name: "ClearFin" },
+    publisher: {
+      "@type": "Organization",
+      name: "ClearFin",
+      url: "https://www.clearfin.ca",
+    },
+    articleSection: "Credit Card Guides",
     datePublished: "2026-01-15",
-    dateModified: "2026-05-01",
-    mainEntityOfPage: "https://www.clearfin.ca/best-credit-cards-canada",
+    dateModified: "2026-08-02",
   };
 
   const faqJsonLd = {
@@ -94,404 +148,299 @@ export default function BestCreditCardsCanadaPage() {
       />
 
       <SeoLayout
-        title="Best Credit Cards in Canada for 2026"
-        subtitle="We track 107 Canadian credit cards across 17 issuers. Here are the ones actually worth carrying in your wallet — ranked by real reward rates, not marketing hype."
+        title={pageTitle}
+        subtitle="A useful card fits your spending, earns rewards you can actually use and still makes sense after the annual fee. These are practical starting points, not a universal ranking."
         breadcrumb={[
           { label: "Home", href: "/" },
-          { label: "Credit Cards", href: "/best-credit-cards-canada" },
+          { label: "Credit Cards", href: "/credit-cards" },
+          { label: "Best Credit Cards", href: "/best-credit-cards-canada" },
         ]}
-        lastUpdated="May 2026"
+        lastUpdated="August 2, 2026"
       >
-        {/* ────────────────────────────────────────────── */}
-        {/* TOP PICKS                                      */}
-        {/* ────────────────────────────────────────────── */}
-        <h2>Our Top Picks for 2026</h2>
+        <h2>Five cards worth comparing for different reasons</h2>
         <p>
-          Every card below was selected by running real spend simulations across
-          twelve common Canadian spending profiles. We calculate the net annual
-          return after subtracting the fee, mapping points to their actual
-          redemption value (not the inflated figures issuers advertise), and
-          weighting category spend based on Statistics Canada household data. The
-          result is a short list of cards that genuinely earn their place in your
-          wallet.
+          A credit card can look excellent in an advertisement and still be a
+          poor fit at home. The result changes with the stores you use, the
+          amount you spend, the payment network merchants accept and whether
+          you prefer cash back or travel points. Even a valuable insurance or
+          airport benefit is worth little when you would not otherwise use it.
         </p>
         <p>
-          If you only have time to read one section, this is it. These five cards
-          cover the widest range of spending patterns and represent the best
-          risk-adjusted value available to Canadian consumers right now.
+          The cards below cover five common situations rather than pretending
+          one product wins for everyone. We checked the ongoing earn rates and
+          annual fees on issuer pages on August 2, 2026. Welcome offers are not
+          used to decide the order because they change frequently. Before
+          applying, open the issuer source and confirm the current terms for
+          your province and application.
         </p>
 
         <div className="seo-card-grid">
-          <div className="seo-card-box">
-            <SeoCardImage name="Amex Cobalt" />
-            <h3>Amex Cobalt</h3>
-            <p><strong>Best Overall</strong></p>
-            <p>
-              5x points on dining and groceries, 2x on transit and streaming, 1x
-              on everything else. The monthly fee of $13.05 ($156.60/year) is
-              easily offset if you spend $400+ per month on food. Points transfer
-              1:1 to Aeroplan, making this card a dual-purpose powerhouse for
-              both everyday cashback and travel redemptions.
-            </p>
-            <SeoCardActions name="Amex Cobalt" />
-          </div>
-
-          <div className="seo-card-box">
-            <SeoCardImage name="Scotia Gold Amex" />
-            <h3>Scotia Gold Amex</h3>
-            <p><strong>Best for Groceries</strong></p>
-            <p>
-              6x Scene+ points per dollar on groceries and dining, 3x on gas,
-              transit, and streaming. The $120 annual fee is competitive given the
-              grocery multiplier is the highest available in Canada. Scene+ points
-              redeem at roughly 1 cent each, giving you an effective 6% grocery
-              rate that no other card matches.
-            </p>
-            <SeoCardActions name="Scotia Gold Amex" />
-          </div>
-
-          <div className="seo-card-box">
-            <SeoCardImage name="TD Aeroplan Visa Infinite" />
-            <h3>TD Aeroplan Visa Infinite</h3>
-            <p><strong>Best for Travel</strong></p>
-            <p>
-              Earn Aeroplan points on every purchase with accelerated earning on
-              Air Canada flights and TD direct purchases. The $139 annual fee
-              includes comprehensive travel insurance, airport lounge access via a
-              yearly pass, and first-checked-bag-free on Air Canada. Ideal if you
-              fly domestically two or more times per year.
-            </p>
-            <SeoCardActions name="TD Aeroplan Visa Infinite" />
-          </div>
-
-          <div className="seo-card-box">
-            <SeoCardImage name="CIBC Dividend Visa Infinite" />
-            <h3>CIBC Dividend Visa Infinite</h3>
-            <p><strong>Best Cashback</strong></p>
-            <p>
-              4% cashback on gas and groceries, 2% on dining and recurring bills,
-              1% on everything else. The $99 annual fee is straightforward to
-              justify because cashback is deposited directly to your account with
-              no redemption hoops. This is the simplest high-return card for
-              Canadians who want cash, not points.
-            </p>
-            <SeoCardActions name="CIBC Dividend Visa Infinite" />
-          </div>
-
-          <div className="seo-card-box">
-            <SeoCardImage name="Tangerine Money-Back Mastercard" />
-            <h3>Tangerine Money-Back Mastercard</h3>
-            <p><strong>Best No Fee</strong></p>
-            <p>
-              Choose up to three 2% cashback categories (groceries, gas, dining,
-              drugstores, and more) with 0.5% on everything else. No annual fee.
-              No minimum income requirement. This is the best entry point for
-              anyone who wants solid rewards without paying for the privilege.
-              Pair it with a Tangerine savings account to unlock a bonus category.
-            </p>
-            <SeoCardActions name="Tangerine Money-Back Mastercard" />
-          </div>
+          {cards.map((card) => (
+            <div className="seo-card-box" key={card.name}>
+              <SeoCardImage name={card.name} />
+              <h3>{card.name}</h3>
+              <p>
+                <strong>{card.label}</strong>
+              </p>
+              <p>{card.detail}</p>
+              <p>{card.take}</p>
+              <SeoCardActions name={card.name} />
+            </div>
+          ))}
         </div>
 
         <AffiliateDisclosure />
 
-        {/* ────────────────────────────────────────────── */}
-        {/* METHODOLOGY                                    */}
-        {/* ────────────────────────────────────────────── */}
-        <h2>How We Rank Credit Cards</h2>
-        <p>
-          Most credit card comparison sites rank cards by affiliate payout, not
-          by value to the cardholder. We take a different approach. Every card in
-          our database is scored using a three-step methodology designed to
-          reflect what you actually earn after all the fine print.
-        </p>
-        <p>
-          <strong>Step 1: Net-of-fee return.</strong> We subtract the annual fee
-          from the total estimated rewards. A card that earns $600 in rewards but
-          charges $150 is worth $450 net. This is the number that matters, and it
-          is the number most comparison sites hide behind flashy multipliers.
-        </p>
-        <p>
-          <strong>Step 2: Category-weighted spend.</strong> We use Statistics
-          Canada household expenditure data to model how a typical Canadian
-          distributes spending across groceries, dining, gas, transit, bills,
-          travel, and general purchases. This prevents a card from ranking highly
-          just because it offers 10x on a category you spend $20/month in.
-        </p>
-        <p>
-          <strong>Step 3: Real multiplier mapping.</strong> Not all points are
-          worth the same. We map each loyalty currency to its actual redemption
-          value based on publicly available transfer ratios, flight/hotel pricing,
-          and cashback conversion rates. An Aeroplan point is worth roughly 1.8
-          cents when redeemed for flights; a Scene+ point is closer to 1 cent.
-          These valuations feed directly into our net return calculations.
-        </p>
-
-        {/* ────────────────────────────────────────────── */}
-        {/* COMPARISON TABLE                               */}
-        {/* ────────────────────────────────────────────── */}
-        <h2>Side-by-Side Comparison</h2>
-        <p>
-          The table below summarizes the key reward rates for our five top picks.
-          All rates reflect the effective cashback-equivalent return per dollar
-          spent, calculated using our real multiplier mapping.
-        </p>
-
+        <h2>A quick comparison before you calculate</h2>
         <div className="seo-table-wrap">
           <table className="seo-table">
             <thead>
               <tr>
                 <th>Card</th>
-                <th>Annual Fee</th>
-                <th>Grocery Rate</th>
-                <th>Dining Rate</th>
-                <th>Travel Rate</th>
-                <th>Best For</th>
+                <th>Annual fee</th>
+                <th>Useful when</th>
+                <th>Check carefully</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Amex Cobalt</td>
-                <td>$156.60</td>
-                <td>5x (9%)</td>
-                <td>5x (9%)</td>
-                <td>2x (3.6%)</td>
-                <td>Overall value</td>
+                <td>American Express Cobalt</td>
+                <td>$15.99/month</td>
+                <td>Eligible food spending is a major category</td>
+                <td>Monthly food cap, point use and Amex acceptance</td>
               </tr>
               <tr>
-                <td>Scotia Gold Amex</td>
-                <td>$120</td>
-                <td>6x (6%)</td>
-                <td>6x (6%)</td>
-                <td>1x (1%)</td>
-                <td>Groceries</td>
+                <td>Scotiabank Gold American Express</td>
+                <td>$120/year</td>
+                <td>You shop at participating Scene+ grocers</td>
+                <td>Store-specific rates and Amex acceptance</td>
               </tr>
               <tr>
                 <td>TD Aeroplan Visa Infinite</td>
-                <td>$139</td>
-                <td>1.5x (2.7%)</td>
-                <td>1.5x (2.7%)</td>
-                <td>1.5x (2.7%)</td>
-                <td>Air travel</td>
+                <td>$139/year</td>
+                <td>You regularly use Air Canada and Aeroplan</td>
+                <td>Benefit use, redemption value and eligibility</td>
               </tr>
               <tr>
                 <td>CIBC Dividend Visa Infinite</td>
-                <td>$99</td>
-                <td>4%</td>
-                <td>2%</td>
-                <td>1%</td>
-                <td>Simple cashback</td>
+                <td>$120/year</td>
+                <td>Groceries and driving are large expenses</td>
+                <td>Category limits and income requirements</td>
               </tr>
               <tr>
                 <td>Tangerine Money-Back</td>
                 <td>$0</td>
-                <td>2%</td>
-                <td>2%</td>
-                <td>0.5%</td>
-                <td>No-fee simplicity</td>
+                <td>Your spending fits two or three chosen categories</td>
+                <td>Only 0.5% outside those categories</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        {/* ────────────────────────────────────────────── */}
-        {/* BEST BY CATEGORY                               */}
-        {/* ────────────────────────────────────────────── */}
-        <h2>Best Cards by Category</h2>
+        <h2>Start with your spending, not the card name</h2>
         <p>
-          Your ideal credit card depends on where your money goes. Below, we
-          break down the top performers in each major spending category. Each
-          link leads to a dedicated guide with deeper analysis, more card
-          options, and category-specific strategies.
+          Look at a few normal months and total groceries, restaurants, gas,
+          transit, recurring bills, travel and everything else. Then compare
+          what each card would earn in those categories and subtract its annual
+          fee. Do not value a point at the best redemption someone else found;
+          use the redemption you are realistically willing to book.
+        </p>
+        <p>
+          ClearFin&apos;s{" "}
+          <Link href="/credit-card-calculator-canada">
+            Canadian credit card calculator
+          </Link>{" "}
+          applies card earn rates to the spending you enter. After that, use the{" "}
+          <Link href="/compare-credit-cards-canada">
+            side-by-side comparison tool
+          </Link>{" "}
+          to inspect the annual fee, category return and estimated net value.
+          The estimate is a starting point, so confirm merchant coding, caps and
+          issuer terms before applying.
         </p>
 
-        <h3>Best Cashback Credit Cards</h3>
+        <h2>What about sign-up bonuses?</h2>
         <p>
-          Cashback cards pay you a percentage of every purchase with no
-          redemption complexity. The best cashback cards in Canada offer 4% or
-          more on high-spend categories like groceries and gas, with at least 1%
-          on everything else. If you prefer straightforward value deposited
-          directly into your bank account, cashback is the way to go.
+          The best credit card sign-up bonus in Canada can change while a guide
+          is still being indexed. A large number is also not free value: you may
+          need to meet a spending target, keep the account open for an
+          anniversary offer or pay the annual fee before receiving every part.
+          Check the application page on the day you apply and ignore any bonus
+          that would require purchases you were not already planning.
         </p>
+
+        <h2>Online shopping, Amazon and everyday purchases</h2>
         <p>
+          For online shopping or Amazon.ca, look beyond a category headline.
+          Marketplace purchases often earn a card&apos;s general rate unless the
+          issuer identifies the merchant as an eligible bonus category. Payment
+          network acceptance, purchase protection and the base earn rate may be
+          more useful than a narrow promotion. Our guide to the{" "}
+          <Link href="/best-credit-card-for-everyday-spending-in-canada-2026-picks">
+            best credit cards for everyday spending
+          </Link>{" "}
+          compares cards around common household use rather than a single
+          retailer.
+        </p>
+
+        <h2>A practical approach for young professionals</h2>
+        <p>
+          A card marketed as premium is not automatically the best credit card
+          for a young professional in Canada. A no-fee card can make more sense
+          while spending is modest, while a travel card may be reasonable for
+          someone who flies often and would buy the included benefits anyway.
+          Leave room in the budget to pay the statement balance and keep the
+          number of cards easy to manage.
+        </p>
+
+        <h2>Choose a deeper guide for your main category</h2>
+
+        <h3>Cash back</h3>
+        <p>
+          Cash back is easy to compare because the value is stated in dollars.
+          Category limits and annual fees still matter. See the{" "}
           <Link href="/best-cashback-credit-cards-canada">
-            Read our full guide to the best cashback credit cards in Canada &rarr;
-          </Link>
+            best cash back credit cards in Canada
+          </Link>.
         </p>
 
-        <h3>Best Travel Credit Cards</h3>
+        <h3>Travel</h3>
         <p>
-          Travel cards earn points or miles that can be redeemed for flights,
-          hotels, and upgrades at a higher value than cashback. The trade-off is
-          complexity: you need to understand transfer partners, award charts, and
-          redemption sweet spots. For Canadians who fly at least twice a year,
-          the return on a good travel card significantly outpaces cashback
-          alternatives.
-        </p>
-        <p>
+          Travel cards can offer more value when you understand the program and
+          use its airline, transfer or airport benefits. Compare our{" "}
           <Link href="/best-travel-credit-cards-canada">
-            Read our full guide to the best travel credit cards in Canada &rarr;
-          </Link>
+            Canadian travel credit card guide
+          </Link>.
         </p>
 
-        <h3>Best Grocery Credit Cards</h3>
+        <h3>Groceries</h3>
         <p>
-          Groceries are the single largest discretionary spending category for
-          most Canadian households, averaging $800-$1,100 per month. A card that
-          offers 5-6% back on groceries can easily return $500+ per year on
-          grocery spend alone. We analyze which cards deliver the highest grocery
-          return and whether the annual fee is justified by your basket size.
-        </p>
-        <p>
+          Grocery rewards depend heavily on where the store sits in the
+          issuer&apos;s merchant categories. Read the{" "}
           <Link href="/best-grocery-credit-cards-canada">
-            Read our full guide to the best grocery credit cards in Canada &rarr;
-          </Link>
+            grocery credit card comparison
+          </Link>{" "}
+          before assuming every supermarket earns the same rate.
         </p>
 
-        <h3>Best No-Fee Credit Cards</h3>
+        <h3>No annual fee</h3>
         <p>
-          No-fee cards are not just for people starting out. They are the
-          rational choice for anyone whose monthly spend does not hit the
-          break-even threshold for a premium card. Several no-fee options now
-          offer 2% or more on select categories, which rivals some fee-charging
-          cards once you account for the annual cost.
-        </p>
-        <p>
+          A no-fee card can be a strong primary card or a useful backup for a
+          payment network your other card does not cover. Start with the{" "}
           <Link href="/best-no-fee-credit-cards-canada">
-            Read our full guide to the best no-fee credit cards in Canada &rarr;
-          </Link>
+            best no-annual-fee credit cards in Canada
+          </Link>.
         </p>
 
-        <h3>Best Student Credit Cards</h3>
+        <h3>Students and credit builders</h3>
         <p>
-          Student cards help you build credit history while earning modest
-          rewards. The best student cards in Canada have no annual fee, no income
-          requirement, and offer at least 1% cashback. Some also include perks
-          like free SPC memberships or bonus categories tailored to student
-          spending (dining, transit, streaming).
-        </p>
-        <p>
+          Approval requirements and responsible repayment matter more than a
+          small reward difference when you are establishing credit. Our{" "}
           <Link href="/best-student-credit-cards-canada">
-            Read our full guide to the best student credit cards in Canada &rarr;
-          </Link>
+            student credit card guide
+          </Link>{" "}
+          explains the main trade-offs.
         </p>
 
-        {/* ────────────────────────────────────────────── */}
-        {/* HOW TO CHOOSE                                  */}
-        {/* ────────────────────────────────────────────── */}
-        <h2>How to Choose the Right Credit Card</h2>
-        <p>
-          Picking a credit card is not about finding the one with the highest
-          headline reward rate. It is about matching the card to your actual
-          spending behaviour. Here are the key factors to consider before you
-          apply.
-        </p>
-
-        <h3>Know Your Spending Patterns</h3>
-        <p>
-          Before comparing cards, pull your last three months of bank or credit
-          card statements and categorize your spending. Most Canadians
-          overestimate how much they spend on dining and underestimate how much
-          goes to groceries and bills. The right card is the one that rewards the
-          categories where your money actually goes, not the ones you wish it
-          went to.
-        </p>
-
-        <h3>Annual Fee vs. Rewards</h3>
-        <p>
-          A $120 annual fee sounds steep, but if the card earns you $600 in
-          rewards versus $350 from a no-fee alternative, you are $130 ahead. The
-          real question is not whether the fee exists but whether the incremental
-          rewards exceed it. As a rule of thumb, premium cards start making sense
-          once your total monthly spend exceeds $2,000.
-        </p>
-
-        <h3>Sign-Up Bonuses</h3>
-        <p>
-          Welcome offers can be worth $200-$400 in the first year, effectively
-          wiping out the annual fee and then some. However, do not choose a card
-          solely for its sign-up bonus. The ongoing reward structure matters far
-          more over the life of the card. Treat the bonus as a tiebreaker
-          between two otherwise similar options.
-        </p>
-
-        <h3>Network Acceptance</h3>
-        <p>
-          Amex cards often have the highest reward rates, but they are not
-          accepted everywhere in Canada. Costco only takes Mastercard. Some
-          smaller merchants still refuse Amex. If you shop at merchants with
-          limited network acceptance, you may need a Visa or Mastercard as your
-          primary card and can use Amex as a secondary for restaurants and
-          grocery stores where it is accepted.
-        </p>
-
-        {/* ────────────────────────────────────────────── */}
-        {/* TIP BOX                                        */}
-        {/* ────────────────────────────────────────────── */}
         <div className="seo-tip">
-          <div className="seo-tip-label">ClearFin Tip</div>
+          <div className="seo-tip-label">ClearFin tip</div>
           <p>
-            The average Canadian leaves $847/year in rewards unclaimed by
-            carrying the wrong credit card for their spending mix. Even switching
-            from a generic 1% cashback card to a category-optimized alternative
-            can double your annual return. Use our free calculator to see exactly
-            how much you could be earning based on your real monthly spend.
+            Compare the card you are considering with one realistic no-fee
+            alternative. If the paid card does not earn back its annual fee in
+            your normal spending, the simpler card leaves you ahead.
           </p>
         </div>
 
-        {/* ────────────────────────────────────────────── */}
-        {/* FAQ                                            */}
-        {/* ────────────────────────────────────────────── */}
-        <h2>Frequently Asked Questions</h2>
+        <h2>Frequently asked questions</h2>
         <div className="seo-faq">
-          {faqData.map((item, i) => (
-            <div className="seo-faq-item" key={i}>
+          {faqData.map((item) => (
+            <div className="seo-faq-item" key={item.q}>
               <div className="seo-faq-q">{item.q}</div>
               <div className="seo-faq-a">{item.a}</div>
             </div>
           ))}
         </div>
 
-        {/* ────────────────────────────────────────────── */}
-        {/* RELATED GUIDES                                 */}
-        {/* ────────────────────────────────────────────── */}
+        <h2>Issuer sources checked</h2>
+        <p>
+          Product terms and promotions can change. We checked the following
+          issuer pages on August 2, 2026:
+        </p>
+        <ul>
+          <li>
+            <a
+              href="https://www.americanexpress.com/ca/en/benefits/cobalt-card/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              American Express Cobalt Card
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.scotiabank.com/ca/en/personal/credit-cards/rewards.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Scotiabank rewards credit cards
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/aeroplan-visa-infinite-card"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              TD Aeroplan Visa Infinite
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-infinite-card.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CIBC Dividend Visa Infinite
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.tangerine.ca/en/personal/spend/credit-cards/money-back-credit-card"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Tangerine Money-Back Credit Card
+            </a>
+          </li>
+        </ul>
+
         <div className="seo-related">
-          <h3>Related Guides</h3>
+          <h3>Related tools and guides</h3>
           <div className="seo-related-grid">
             <Link
-              href="/best-cashback-credit-cards-canada"
+              href="/credit-card-calculator-canada"
               className="seo-related-link"
             >
-              Best Cashback Credit Cards
-              <span>Top cashback cards ranked by net annual return.</span>
+              Credit Card Calculator
+              <span>Compare cards using the spending categories you enter.</span>
             </Link>
             <Link
-              href="/best-travel-credit-cards-canada"
+              href="/compare-credit-cards-canada"
               className="seo-related-link"
             >
-              Best Travel Credit Cards
-              <span>Earn flights and hotel stays faster with the right card.</span>
+              Compare Two Cards
+              <span>Review estimated annual value side by side.</span>
             </Link>
             <Link
-              href="/best-grocery-credit-cards-canada"
+              href="/credit-card-rewards-canada-guide"
               className="seo-related-link"
             >
-              Best Grocery Credit Cards
-              <span>Maximize rewards on your biggest monthly expense.</span>
+              Rewards Guide
+              <span>Understand cash back, points and redemption value.</span>
             </Link>
-            <Link
-              href="/best-no-fee-credit-cards-canada"
-              className="seo-related-link"
-            >
-              Best No-Fee Credit Cards
-              <span>Strong rewards without the annual cost.</span>
-            </Link>
-            <Link
-              href="/best-student-credit-cards-canada"
-              className="seo-related-link"
-            >
-              Best Student Credit Cards
-              <span>Build credit and earn rewards while in school.</span>
+            <Link href="/credit-cards" className="seo-related-link">
+              Browse All Cards
+              <span>Open the full Canadian card catalogue.</span>
             </Link>
           </div>
         </div>
