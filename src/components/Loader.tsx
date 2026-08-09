@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import ClearFinWordmark from "@/components/ClearFinWordmark";
 
 export default function Loader() {
   const [done, setDone] = useState(false);
@@ -13,14 +13,7 @@ export default function Loader() {
 
   return (
     <div className={`loader${done ? " done" : ""}`}>
-      <Image
-        src="/logo.png"
-        alt="ClearFin"
-        width={72}
-        height={72}
-        className="loader-mark"
-        priority
-      />
+      <ClearFinWordmark className="loader-wordmark" />
       <div className="loader-text">CLEARFIN — INITIALIZING</div>
       <div className="loader-bar" />
     </div>

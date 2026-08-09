@@ -90,24 +90,29 @@ export default function TopPicks() {
       <section id="showcase">
         <div className="section-num">03 / Top Picks</div>
         <div className="top-picks-wrap">
-          <div className="top-picks-head reveal">
-            <div className="top-picks-eyebrow">Curated - Updated continuously</div>
+          <div className="top-picks-head">
+            <div className="top-picks-eyebrow">ClearFin editor&apos;s shortlist</div>
             <h2 className="top-picks-title">
-              Best card for <span className="ital">every</span> category.
+              Six standouts. One for <span className="ital">every</span> way you spend.
             </h2>
             <p className="top-picks-disclaimer">
-              Independent comparison. ClearFin is not affiliated with banks or credit card issuers.
+              A concise starting point across Canada&apos;s most common reward priorities. Tap any
+              card to review its highlights, then use your profile for a personalized ranking.
             </p>
           </div>
 
           <div className="top-picks-grid">
-            {picks.map((card) => (
+            {picks.map((card, index) => (
               <button
                 key={card.id}
                 type="button"
-                className="pick-card reveal"
+                className="pick-card"
                 onClick={() => setSelectedCard(card)}
               >
+                <div className="pick-card-topline">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{card.category}</strong>
+                </div>
                 <div className="pick-card-img">
                   <Image
                     src={card.img}
@@ -116,7 +121,6 @@ export default function TopPicks() {
                     sizes="280px"
                     style={{ objectFit: "contain", padding: "36px 16px 14px" }}
                   />
-                  <span className="pick-cat-badge">{card.category}</span>
                 </div>
                 <div className="pick-card-body">
                   <div className="pick-card-name">{card.name}</div>
@@ -130,6 +134,16 @@ export default function TopPicks() {
               </button>
             ))}
           </div>
+          <div className="top-picks-proof">
+            <span>Independently compared</span>
+            <strong>107+ Canadian cards reviewed</strong>
+            <span>Rates and offers can change</span>
+          </div>
+          <Link href="/credit-cards" className="top-picks-all">
+            <span>Explore all Canadian credit cards</span>
+            <strong>View all 100+ cards</strong>
+            <i aria-hidden="true">→</i>
+          </Link>
         </div>
         <div className="section-divider-bottom" />
       </section>

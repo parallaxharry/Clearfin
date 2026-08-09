@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Logo from "@/components/Logo";
+import ClearFinWordmark from "@/components/ClearFinWordmark";
 
 /** The one site-wide footer: guides grid, brand row, legal links, disclaimer. */
 export default function SiteFooter() {
@@ -24,12 +24,15 @@ export default function SiteFooter() {
       <div className="footer-bottom">
         <div className="footer-info">© 2026 ClearFin Digital Inc · Calgary, AB</div>
         <div className="footer-links">
-          <Logo className="footer-logo footer-logo-big" priority={false} />
+          <Link href="/" className="footer-logo footer-logo-big" aria-label="ClearFin home">
+            <ClearFinWordmark />
+          </Link>
           <Link href="/about">About</Link>
           <Link href="/faq">FAQ</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/disclosures">Disclosures</Link>
-          <a href="mailto:info@clearfin.ca">Contact</a>
+          <Link href="/early-access">Early Access</Link>
+          <Link href="/contact">Contact</Link>
         </div>
       </div>
       <div className="footer-disclaimer">
