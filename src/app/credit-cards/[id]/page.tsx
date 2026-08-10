@@ -413,7 +413,7 @@ export default async function CardPage({
               {card.bankUrl ? (
                 <TrackedApplyLink cardId={card.id} href={card.bankUrl} issuer={card.issuer} />
               ) : null}
-              <Link href="/#tool" className="cardpg-cta-secondary">
+              <Link href="/credit-card-calculator-canada" className="cardpg-cta-secondary">
                 Calculate my rewards
               </Link>
             </div>

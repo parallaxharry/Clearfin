@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const SECTIONS = [
@@ -7,8 +8,33 @@ const SECTIONS = [
 ];
 
 export default function PageEffects() {
+  const router = useRouter();
   const [progress, setProgress] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
+
+  useEffect(() => {
+    const legacyRoutes: Record<string, string> = {
+      "#tool": "/credit-card-calculator-canada",
+      "#compare": "/compare-credit-cards-canada",
+      "#showcase": "/credit-cards",
+      "#waitlist": "/early-access",
+      "#feat-app": "/early-access",
+    };
+    const destination = legacyRoutes[window.location.hash];
+
+    if (destination) {
+      router.replace(destination);
+      return;
+    }
+
+    if (window.location.hash === "#hero") {
+      window.history.replaceState(
+        window.history.state,
+        "",
+        `${window.location.pathname}${window.location.search}`,
+      );
+    }
+  }, [router]);
 
   useEffect(() => {
     // Scroll progress + active section

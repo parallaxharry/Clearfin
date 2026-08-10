@@ -49,6 +49,7 @@ export interface SearchResult {
 
 // Static manifest of non-card destinations.
 export const PAGES: SearchPage[] = [
+  { title: "ClearFin Home", group: "Page", href: "/", keywords: ["home", "clearfin", "credit cards"] },
   { title: "All Credit Cards", group: "Page", href: "/credit-cards", keywords: ["all", "cards", "list", "browse", "every", "directory", "issuer"] },
   { title: "Best Credit Cards in Canada", group: "Guide", href: "/best-credit-cards-canada", keywords: ["best", "top", "overall", "ranking", "2026"] },
   { title: "Best Credit Cards for Everyday Spending", group: "Guide", href: "/best-credit-card-for-everyday-spending-in-canada-2026-picks", keywords: ["everyday", "daily spending", "groceries", "dining", "bills", "cash back", "2026"] },
@@ -62,6 +63,8 @@ export const PAGES: SearchPage[] = [
   { title: "Blog", group: "Guide", href: "/blog", keywords: ["blog", "articles", "guides", "posts", "strategy", "tips"] },
   { title: "FAQ", group: "Page", href: "/faq", keywords: ["faq", "questions", "help", "how does"] },
   { title: "About ClearFin", group: "Page", href: "/about", keywords: ["about", "who", "company", "mission"] },
+  { title: "Early Access", group: "Page", href: "/early-access", keywords: ["early access", "waitlist", "app", "launch"] },
+  { title: "Contact ClearFin", group: "Page", href: "/contact", keywords: ["contact", "email", "support", "correction"] },
   { title: "Disclosures", group: "Page", href: "/disclosures", keywords: ["disclosure", "affiliate", "how we make money", "legal"] },
   { title: "Privacy Policy", group: "Page", href: "/privacy", keywords: ["privacy", "data", "policy"] },
   { title: "Rewards Calculator", group: "Tool", href: "/credit-card-calculator-canada", keywords: ["calculator", "calculate", "how much", "earn", "tool"] },
@@ -272,8 +275,8 @@ export const POPULAR: { label: string; href: string }[] = [
   { label: "Best no-fee cards", href: "/best-no-fee-credit-cards-canada" },
   { label: "Best grocery cards", href: "/best-grocery-credit-cards-canada" },
   { label: "Best student cards", href: "/best-student-credit-cards-canada" },
-  { label: "Rewards calculator", href: "/#tool" },
-  { label: "Compare cards", href: "/#compare" },
+  { label: "Rewards calculator", href: "/credit-card-calculator-canada" },
+  { label: "Compare cards", href: "/compare-credit-cards-canada" },
 ];
 
 /** Group display order in the palette. */
