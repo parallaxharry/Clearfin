@@ -32,7 +32,7 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clearfin.ca"),
-  title: "Compare Credit Cards in Canada, Rewards & Cashback Calculator | ClearFin",
+  title: "Compare Credit Cards Canada: Find Your Best Card | ClearFin",
   description:
     "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
   keywords: [
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Compare Credit Cards in Canada, Rewards & Cashback Calculator | ClearFin",
+    title: "Compare Credit Cards Canada: Find Your Best Card | ClearFin",
     description:
       "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
     type: "website",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Compare Credit Cards in Canada, Rewards & Cashback Calculator | ClearFin",
+    title: "Compare Credit Cards Canada: Find Your Best Card | ClearFin",
     description:
       "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
     images: ["/logo.png"],
