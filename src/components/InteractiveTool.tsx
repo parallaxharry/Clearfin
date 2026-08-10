@@ -9,21 +9,7 @@ import {
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
-
-/* ══════════════════════════════════════════════════════════
-   LIVE TICKER — Canadians lose every minute
-══════════════════════════════════════════════════════════ */
-function useTicker(start = 1612) {
-  const [val, setVal] = useState(start);
-  useEffect(() => {
-    const t = setInterval(
-      () => setVal((v) => v + Math.random() * 4 + 1.5),
-      900
-    );
-    return () => clearInterval(t);
-  }, []);
-  return val;
-}
+import CalculatorPreview from "@/components/CalculatorPreview";
 
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -70,11 +56,9 @@ const PROFILE_STEPS = [
 ];
 const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 
-// gateOnly: home-page variant — shows just the locked gate; the start button
-// navigates to the calculator page instead of starting the questions in place.
-export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boolean }) {
+export default function InteractiveTool() {
   const { spend, setSpend: onSpendChange } = useSpend();
-  const [toolState, setToolState] = useState<ToolState>(gateOnly ? "gate" : "step");
+  const [toolState, setToolState] = useState<ToolState>("gate");
   const [currentStep, setCurrentStep] = useState(0);
   const [stepValue, setStepValue] = useState(STEPS[0].defaultVal);
   const [income, setIncome] = useState(60000);
@@ -82,12 +66,18 @@ export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boole
   const [animDir, setAnimDir] = useState<"in" | "out">("in");
   const [visible, setVisible] = useState(true);
   const [modalCard, setModalCard] = useState<(CardDef & { netValue: number }) | null>(null);
-  const ticker = useTicker();
 
   // Sync stepValue when entering a spend step (profile steps bind their own state).
   useEffect(() => {
+    // The displayed slider value must follow the newly selected spending category.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (currentStep < STEPS.length) setStepValue(spend[STEPS[currentStep].key]);
   }, [currentStep]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    document.body.style.overflow = modalCard ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [modalCard]);
 
   // Open via hero CTA
   useEffect(() => {
@@ -144,11 +134,9 @@ export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boole
 
   const openModal = (card: CardDef & { netValue: number }) => {
     setModalCard(card);
-    document.body.style.overflow = "hidden";
   };
   const closeModal = () => {
     setModalCard(null);
-    document.body.style.overflow = "";
   };
 
   /* ── Calculated values ── */
@@ -182,7 +170,7 @@ export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boole
   return (
     <>
     <section id="tool">
-      <div className="section-num">{gateOnly ? "02 / Calculator" : "Calculator"}</div>
+      <div className="section-num">02 / Calculator</div>
       <div className="tool-wrap">
         <div className={`tool-stage${toolState !== "gate" ? " open" : ""}`}>
 
@@ -191,43 +179,33 @@ export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boole
           ════════════════════════════════ */}
           {toolState === "gate" && (
             <div className="tool-gate">
-              <div className="gate-eyebrow">Live · Try it now</div>
-              <h2 className="gate-title">
-                How much are
-                <br />
-                <span className="ital">you</span> losing?
-              </h2>
-              <p className="gate-sub">
-                Answer 7 quick questions. We&apos;ll calculate your exact reward leak and
-                show you the Canadian cards you qualify for that earn you more — right now.
-              </p>
-              <div className="gate-ticker">
-                <div className="gate-ticker-pulse" />
-                <div>
-                  <div className="gate-ticker-label">Canadians lose, every minute</div>
-                  <div className="gate-ticker-value">
-                    ${ticker.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  </div>
-                </div>
-              </div>
-              {gateOnly ? (
-                <Link href="/credit-card-calculator-canada" className="gate-btn">
-                  <span className="gate-btn-text">Start in 30 seconds →</span>
-                </Link>
-              ) : (
+              <div className="gate-copy">
+                <div className="gate-eyebrow"><span>Live calculator</span> · Built for Canada</div>
+                <h2 className="gate-title">
+                  See what your spending<br />could <span className="ital">earn.</span>
+                </h2>
+                <p className="gate-sub">
+                  Tell us how you spend and we&apos;ll rank eligible Canadian cards by estimated
+                  annual rewards after fees. Your assumptions stay visible.
+                </p>
                 <button className="gate-btn" onClick={() => {
                   setToolState("step");
                   setTimeout(() => {
                     document.getElementById("tool")?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }, 100);
                 }}>
-                  <span className="gate-btn-text">Start in 30 seconds →</span>
+                  <span className="gate-btn-text">Build my card profile</span>
+                  <span className="gate-btn-arrow">→</span>
                 </button>
-              )}
-              <div className="gate-foot">
-                <span>7 questions</span>
-                <span>No signup</span>
-                <span>No card data</span>
+                <div className="gate-foot">
+                  <span>7 quick questions</span>
+                  <span>No signup</span>
+                  <span>No card numbers</span>
+                </div>
+              </div>
+
+              <div className="gate-visual" aria-hidden="true">
+                <CalculatorPreview />
               </div>
             </div>
           )}
@@ -250,7 +228,7 @@ export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boole
               </div>
 
               {/* Icon + Question */}
-              <div className="step-icon">{isSpendStep ? step.icon : profile.icon}</div>
+              <div className="step-icon">{String(currentStep + 1).padStart(2, "0")}</div>
               <h2 className="step-question">{isSpendStep ? step.question : profile.question}</h2>
               <p className="step-hint">{isSpendStep ? step.hint : profile.hint}</p>
 
@@ -440,7 +418,7 @@ export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boole
 
               {/* CTA row */}
               <div className="result-cta-row">
-                <a href="/early-access" className="btn-primary">
+                <a href="#waitlist" className="btn-primary">
                   <span>Get Early Access — It&apos;s Free</span>
                   <span className="btn-arrow">→</span>
                 </a>
@@ -460,12 +438,10 @@ export default function InteractiveTool({ gateOnly = false }: { gateOnly?: boole
         </div>
       </div>
 
-      {gateOnly && (
-        <div className="scroll-hint">
-          <span>Scroll · See cards</span>
-          <span className="scroll-hint-line" />
-        </div>
-      )}
+      <div className="scroll-hint">
+        <span>Scroll · See cards</span>
+        <span className="scroll-hint-line" />
+      </div>
       <div className="section-divider-bottom" />
     </section>
 

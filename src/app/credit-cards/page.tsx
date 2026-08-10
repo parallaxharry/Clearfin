@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getCatalogOrderedCards } from "@/lib/cardDetail";
-import type { SearchCard } from "@/lib/searchIndex";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
-
-// ISR: Supabase card_catalog edits (names, art, order, new cards) go live within ~5 min.
-export const revalidate = 300;
+import { getCatalogOrderedCards } from "@/lib/cardDetail";
 
 export const metadata: Metadata = {
   title: "All Credit Cards (2026) | ClearFin",
@@ -16,75 +12,54 @@ export const metadata: Metadata = {
   alternates: { canonical: "/credit-cards" },
 };
 
-export default async function AllCardsPage() {
-  const cards = await getCatalogOrderedCards();
+export const revalidate = 300;
 
-  // Cluster same-issuer cards together (preserving Supabase table order within
-  // each issuer), order the issuer clusters alphabetically, then render as one
-  // flat list — no category headers.
-  const byIssuer = new Map<string, SearchCard[]>();
-  for (const card of cards) {
-    const bucket = byIssuer.get(card.issuer);
-    if (bucket) bucket.push(card);
-    else byIssuer.set(card.issuer, [card]);
-  }
-  const ordered: SearchCard[] = [...byIssuer.entries()]
-    .sort(([a], [b]) => a.localeCompare(b, "en", { sensitivity: "base" }))
-    .flatMap(([, issuerCards]) => issuerCards);
+export default async function CreditCardsPage() {
+  const cards = await getCatalogOrderedCards();
+  const issuerCount = new Set(cards.map((card) => card.issuer)).size;
 
   return (
-    <div className="cardpg">
+    <>
       <Nav />
-
-      <main className="cardpg-main cardsidx-main">
-        <nav className="seo-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span className="seo-breadcrumb-sep" aria-hidden="true">
-            {" "}›{" "}
-          </span>
-          <span aria-current="page">All Cards</span>
-        </nav>
-
-        <header className="cardsidx-head">
-          <h1 className="cardsidx-title">All Credit Cards</h1>
-          <p className="cardsidx-lede">
-            Every Canadian card we track, grouped by issuer. Tap any card to see its full earn
-            rates, fees, welcome bonus and benefits.
-          </p>
-          <p className="cardsidx-count">{cards.length} cards</p>
+      <main className="catalog-page">
+        <header className="catalog-hero">
+          <div className="catalog-eyebrow">The ClearFin card catalogue</div>
+          <h1>Your next card<br /><span>starts here.</span></h1>
+          <p>Compare options from {issuerCount} issuers, with fees, reward structures, and key benefits presented in one consistent format—then use ClearFin to find the strongest match for your spending.</p>
+          <div className="catalog-summary">
+            <div><strong>{cards.length}</strong><span>cards listed</span></div>
+            <div><strong>{issuerCount}</strong><span>issuers covered</span></div>
+            <div><strong>Independent</strong><span>comparison approach</span></div>
+          </div>
         </header>
 
-        <ul className="cardsidx-list">
-          {ordered.map((card) => (
-            <li key={card.id}>
-              <Link href={`/credit-cards/${card.id}`} className="cardsidx-item">
-                <span className="cardsidx-thumb">
-                  {card.img ? (
-                    <Image
-                      src={card.img}
-                      alt={card.name}
-                      fill
-                      sizes="283px"
-                      style={{ objectFit: "contain" }}
-                    />
-                  ) : null}
-                </span>
-                <span className="cardsidx-name">{card.name}</span>
-                <span className="cardsidx-arrow" aria-hidden="true">
-                  →
-                </span>
+        <section className="catalog-list" aria-labelledby="catalog-title">
+          <div className="catalog-list-head">
+            <div><span>Canadian credit cards</span><h2 id="catalog-title">Browse the full collection</h2></div>
+            <Link href="/#tool">Find my best card →</Link>
+          </div>
+          <div className="catalog-grid">
+            {cards.map((card) => (
+              <Link href={`/credit-cards/${card.id}`} className="catalog-card" key={card.id}>
+                <div className="catalog-card-art">
+                  <Image src={card.img} alt={card.name} fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 280px" style={{ objectFit: "contain" }} />
+                </div>
+                <div className="catalog-card-copy">
+                  <span>{card.issuer}</span>
+                  <h3>{card.name}</h3>
+                  <p>{card.badge}</p>
+                  <div>
+                    <small>Annual fee</small>
+                    <strong>{card.annualFee === null ? "See details" : card.annualFee === 0 ? "$0" : `$${card.annualFee}`}</strong>
+                  </div>
+                  <em>View card details <b>→</b></em>
+                </div>
               </Link>
-            </li>
-          ))}
-        </ul>
-
-        <p className="cardpg-disclosure cardsidx-disclosure">
-          Issuer terms apply. ClearFin is independent and not affiliated with any card issuer.{" "}
-          <Link href="/disclosures">How we make money</Link>.
-        </p>
+            ))}
+          </div>
+        </section>
       </main>
-
       <SiteFooter />
-    </div>
+    </>
   );
 }

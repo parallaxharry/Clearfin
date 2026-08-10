@@ -39,7 +39,7 @@ export default function WaitlistForm() {
 
   return (
     <>
-      <form className="wait-form reveal" onSubmit={handleSubmit}>
+      <form className="wait-form" onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="your@email.ca"

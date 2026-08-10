@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   CARDS, CardDef, SpendKey,
   fmt, fmtRate, getBreakdown, scoreCard, getTopCards,
@@ -25,113 +25,71 @@ function CardColumn({
 
   return (
     <div className={`cmp-card-col${isTop ? " cmp-col-a" : " cmp-col-b"}`}>
-      <div className="cmp-card-body">
-
-        {/* Left: all text details */}
-        <div className="card-modal-left cmp-modal-left">
+      <div className="cmp-panel-top">
+        <div className="cmp-panel-identity">
+          <div className="cmp-panel-index">0{rank}</div>
           <div className="card-modal-badge">{card.badge}</div>
           <h3 className="card-modal-name">{card.name}</h3>
           <div className="card-modal-issuer">{card.issuer}</div>
-          <div className="card-modal-net-row">
-            <span className="card-modal-net">{fmt(card.netValue)}</span>
-            <span className="card-modal-net-label">net / year for your spend</span>
-          </div>
-          <div className="card-modal-perks">
-            {card.perks.map((p, i) => (
-              <div className="card-modal-perk" key={i}>
-                <span className="card-modal-perk-dot">✦</span>
-                {p}
-              </div>
-            ))}
-          </div>
-
-          <div className="modal-breakdown">
-            <div className="modal-breakdown-label">How we calculated this</div>
-            <div className="modal-bd-table">
-              <div className="modal-bd-head">
-                <span>Category</span>
-                <span>Monthly</span>
-                <span>Rate</span>
-                <span>Yearly</span>
-              </div>
-              {rows.map((r) => (
-                <div key={r.key} className="modal-bd-row">
-                  <span className="modal-bd-cat">{r.label}</span>
-                  <span className="modal-bd-monthly">{fmt(spend[r.key])}</span>
-                  <span className="modal-bd-rate">{fmtRate(r.rate)}</span>
-                  <span className="modal-bd-earn">{fmt(r.annual)}</span>
-                </div>
-              ))}
-              <div className="modal-bd-row bd-gross">
-                <span className="modal-bd-cat">Gross rewards</span>
-                <span /><span />
-                <span className="modal-bd-earn">{fmt(gross)}</span>
-              </div>
-              <div className="modal-bd-row bd-fee">
-                <span className="modal-bd-cat">Annual fee</span>
-                <span /><span />
-                <span className="modal-bd-earn">
-                  {card.annualFee === 0 ? "None" : `-$${card.annualFee}`}
-                </span>
-              </div>
-              <div className="modal-bd-row bd-net">
-                <span className="modal-bd-cat">Net value</span>
-                <span /><span />
-                <span className="modal-bd-earn">{fmt(gross - card.annualFee)}</span>
-              </div>
-            </div>
+        </div>
+        <div className="cmp-card-spinner">
+          <div className="cmp-card-spin-front">
+            {card.img && !imgErr ? (
+              <Image
+                src={card.img}
+                alt={card.name}
+                fill
+                sizes="180px"
+                style={{ objectFit: "contain", borderRadius: "inherit" }}
+                onError={() => setImgErr(true)}
+              />
+            ) : (
+              <div className="cmp-card-img-fallback">{card.issuer}</div>
+            )}
+            <div className="cmp-card-sheen" />
           </div>
         </div>
+      </div>
 
-        {/* Right: card image + apply */}
-        <div className="cmp-card-side">
-          <div className="cmp-card-spinner">
-            <div className="cmp-card-spin-front">
-              {card.img && !imgErr ? (
-                <Image
-                  src={card.img}
-                  alt={card.name}
-                  fill
-                  sizes="180px"
-                  style={{ objectFit: "cover", borderRadius: "inherit" }}
-                  onError={() => setImgErr(true)}
-                />
-              ) : (
-                <div className="cmp-card-img-fallback">{card.issuer}</div>
-              )}
-              <div className="cmp-card-sheen" />
-            </div>
+      <div className="cmp-panel-value">
+        <div><span>Estimated net value</span><strong>{fmt(card.netValue)}</strong><small>per year after fees</small></div>
+        <p>Gross {fmt(gross)} <i>−</i> fee {card.annualFee === 0 ? "$0" : fmt(card.annualFee)}</p>
+      </div>
+
+      <div className="modal-breakdown">
+        <div className="modal-breakdown-label">Category earnings</div>
+        <div className="modal-bd-table">
+          <div className="modal-bd-head">
+            <span>Category</span><span>Monthly</span><span>Rate</span><span>Yearly</span>
           </div>
-          <a
-            href={card.bankUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-modal-cta cmp-apply"
-            onClick={() =>
-              fetch("/api/track-click", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ cardId: card.id }),
-              }).catch(() => {})
-            }
-          >
-            Apply at {card.issuer} →
-          </a>
-          <Link href={`/credit-cards/${card.id}`} className="card-modal-view cmp-view">
-            View full details
-          </Link>
-          <div className="card-modal-disclaimer cmp-disclaimer">
-            Issuer terms apply. Not affiliated.
+          {rows.map((row) => (
+            <div key={row.key} className="modal-bd-row">
+              <span className="modal-bd-cat">{row.label}</span>
+              <span className="modal-bd-monthly">{fmt(spend[row.key])}</span>
+              <span className="modal-bd-rate">{fmtRate(row.rate)}</span>
+              <span className="modal-bd-earn">{fmt(row.annual)}</span>
+            </div>
+          ))}
+          <div className="modal-bd-row bd-net">
+            <span className="modal-bd-cat">Net annual value</span><span /><span />
+            <span className="modal-bd-earn">{fmt(card.netValue)}</span>
           </div>
         </div>
+      </div>
 
+      <div className="cmp-panel-actions">
+        <a href={card.bankUrl} target="_blank" rel="noopener noreferrer" className="card-modal-cta cmp-apply"
+          onClick={() => fetch("/api/track-click", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({cardId:card.id}) }).catch(() => {})}>
+          Apply at {card.issuer} →
+        </a>
+        <Link href={`/credit-cards/${card.id}`} className="card-modal-view cmp-view">View full details</Link>
+        <span>Issuer terms apply · ClearFin is independent</span>
       </div>
     </div>
   );
 }
 
 function CardSlot({
-  slotIndex,
   selectedId,
   otherSelectedId,
   query,
@@ -143,7 +101,6 @@ function CardSlot({
   onClear,
   onQueryChange,
 }: {
-  slotIndex: number;
   selectedId: string | null;
   otherSelectedId: string | null;
   query: string;
@@ -220,7 +177,6 @@ function CardSlot({
         className={`cmp-slot${selectedCard ? " cmp-slot-filled" : ""}${isOpen ? " cmp-slot-open" : ""}`}
         onClick={() => (isOpen ? onClose() : onOpen())}
       >
-        <span className="cmp-slot-num">0{slotIndex + 1}</span>
         {selectedCard ? (
           <>
             <span className="cmp-slot-name">{selectedCard.name}</span>
@@ -283,23 +239,6 @@ export default function CompareSection() {
   const [queries, setQueries] = useState<[string, string]>(["", ""]);
   const [openSlot, setOpenSlot] = useState<0 | 1 | null>(null);
 
-  // Accept a pair of cards from the search palette: ?compare=a,b on load
-  // (cross-page) or a "clearfin:compare" event (palette used on this page).
-  useEffect(() => {
-    const applyIds = (ids: string[]) => {
-      const valid = ids.filter((id) => CARDS.some((c) => c.id === id)).slice(0, 2);
-      if (valid.length !== 2) return;
-      setSelectedIds([valid[0], valid[1]]);
-      document.getElementById("compare")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-    const param = new URLSearchParams(window.location.search).get("compare");
-    if (param) applyIds(param.split(","));
-    const onCompare = (e: Event) =>
-      applyIds((e as CustomEvent<{ ids: string[] }>).detail?.ids ?? []);
-    window.addEventListener("clearfin:compare", onCompare);
-    return () => window.removeEventListener("clearfin:compare", onCompare);
-  }, []);
-
   const selectCard = (slot: 0 | 1, id: string) => {
     setSelectedIds((prev) => {
       const next: [string | null, string | null] = [...prev] as [string | null, string | null];
@@ -333,27 +272,24 @@ export default function CompareSection() {
 
   return (
     <section id="compare">
-      <div className="section-num">Compare Cards</div>
+      <div className="section-num">04 / Compare Cards</div>
       <div className="cmp-wrap">
 
         {/* Header */}
         <div className="cmp-header">
-          <div className="cmp-eyebrow">2 cards · Your spend profile</div>
-          <h1 className="cmp-title">
-            See the <span className="ital">difference</span><br />side by side.
-          </h1>
+          <div className="cmp-eyebrow">Side-by-side card analysis</div>
+          <h2 className="cmp-title">
+            Which card puts <span className="ital">more</span> back in your wallet?
+          </h2>
           <p className="cmp-sub">
-            Pick any two Canadian cards. We&apos;ll show exactly how each one performs
-            against your spending — category by category, fee included.
+            Choose two cards and ClearFin will calculate the stronger fit for your spending.
+            We include annual fees and show exactly where each card earns more.
           </p>
         </div>
 
         {/* Selectors */}
         <div className="cmp-selector-row">
-          <span className="cmp-selector-label">Comparing:</span>
-
           <CardSlot
-            slotIndex={0}
             selectedId={selectedIds[0]}
             otherSelectedId={selectedIds[1]}
             query={queries[0]}
@@ -371,7 +307,6 @@ export default function CompareSection() {
           <div className="cmp-vs">vs</div>
 
           <CardSlot
-            slotIndex={1}
             selectedId={selectedIds[1]}
             otherSelectedId={selectedIds[0]}
             query={queries[1]}
@@ -410,11 +345,9 @@ export default function CompareSection() {
         </div>
 
         <p className="cmp-disclaimer-foot">
-          Cards that earn points or miles are shown as an estimated cash value.{" "}
-          <a href="/credit-card-rewards-canada-guide">See the Rewards Guide</a> for how we convert points to a percentage.
-        </p>
-        <p className="cmp-disclaimer-foot cmp-disclaimer-fine">
-          Estimates based on publicly available reward rates · Actual rewards may vary · ClearFin is not affiliated with any card issuer
+          Points and miles are shown as estimated cash value using publicly available reward rates.
+          Actual rewards may vary · ClearFin is independent of card issuers ·{" "}
+          <a href="/credit-card-rewards-canada-guide">View our methodology</a>
         </p>
       </div>
       <div className="section-divider-bottom" />
