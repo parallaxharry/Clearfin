@@ -1,41 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
-  <defs>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F5E6C8"/>
-      <stop offset="40%" stop-color="#D4A843"/>
-      <stop offset="70%" stop-color="#F0C96A"/>
-      <stop offset="100%" stop-color="#B8892A"/>
-    </linearGradient>
-    <linearGradient id="goldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F5E6C8"/>
-      <stop offset="100%" stop-color="#9A6E1E"/>
-    </linearGradient>
-  </defs>
-  <!-- Black background with subtle border radius -->
-  <rect width="120" height="120" rx="22" fill="#0A0A0A"/>
-  <!-- Subtle gold inner border -->
-  <rect x="4" y="4" width="112" height="112" rx="19" fill="none" stroke="#D4A843" stroke-width="0.5" opacity="0.4"/>
-  <!-- Optically centered CF mark -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#f7f9fc"/>
+  <rect x="10" y="10" width="492" height="492" rx="102" fill="none" stroke="#0071e3" stroke-width="18"/>
   <text
-    x="43"
-    y="63"
-    font-family="'Georgia', 'Times New Roman', serif"
-    font-size="62"
-    font-weight="700"
-    font-style="italic"
-    fill="url(#gold)"
+    x="246"
+    y="294"
+    font-family="-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif"
+    font-size="278"
+    font-weight="800"
+    letter-spacing="-34"
     text-anchor="middle"
-    dominant-baseline="middle"
-  >C</text>
+  ><tspan fill="#1d1d1f">C</tspan><tspan fill="#0071e3">F</tspan></text>
   <text
-    x="75"
-    y="63"
-    font-family="'Georgia', 'Times New Roman', serif"
-    font-size="62"
+    x="420"
+    y="159"
+    font-family="-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif"
+    font-size="52"
     font-weight="700"
-    font-style="italic"
-    fill="url(#gold)"
-    text-anchor="middle"
-    dominant-baseline="middle"
-  >F</text>
+    fill="#0071e3"
+  >™</text>
 </svg>

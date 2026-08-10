@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import SiteFooter from "@/components/SiteFooter";
 import Nav from "@/components/Nav";
 import PageEffects from "@/components/PageEffects";
+import ScrollToSectionButton from "@/components/ScrollToSectionButton";
 import WaitlistForm from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
@@ -49,10 +50,14 @@ export default function EarlyAccessPage() {
               <div className="feat-list-item">Get spending limit reminders before you go over budget</div>
               <div className="feat-list-item">Track rewards across all your cards in one dashboard</div>
             </div>
-            <a href="#waitlist" className="btn-primary" style={{ marginTop: "32px", display: "inline-flex" }}>
+            <ScrollToSectionButton
+              targetId="waitlist"
+              className="btn-primary"
+              style={{ marginTop: "32px", display: "inline-flex" }}
+            >
               <span>Join Waitlist for App Access</span>
               <span className="btn-arrow">→</span>
-            </a>
+            </ScrollToSectionButton>
           </div>
           <div className="feat-visual reveal">
             <div className="app-preview-frame">

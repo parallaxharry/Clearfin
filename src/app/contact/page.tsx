@@ -68,7 +68,7 @@ export default function ContactPage() {
           <h2>Get early access, without the noise.</h2>
           <p>Join the waitlist and we will let you know when your spot is ready.</p>
         </div>
-        <Link href="/#waitlist" className="info-primary-button">
+        <Link href="/early-access" className="info-primary-button">
           Join the waitlist <span aria-hidden="true">→</span>
         </Link>
       </section>

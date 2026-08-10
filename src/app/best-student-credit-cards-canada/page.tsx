@@ -31,7 +31,7 @@ export default function BestStudentCreditCardsCanada() {
       subtitle="Your first credit card shapes your credit history for decades. Choose wisely — here are the best student cards that build credit, earn rewards, and cost nothing."
       breadcrumb={[
         { label: "Home", href: "/" },
-        { label: "Credit Cards", href: "/#tool" },
+        { label: "Credit Cards", href: "/credit-cards" },
         { label: "Best for Students", href: "/best-student-credit-cards-canada" },
       ]}
       lastUpdated="May 2026"
@@ -387,7 +387,7 @@ export default function BestStudentCreditCardsCanada() {
             How Credit Card Rewards Work in Canada
             <span>Points, miles, cashback — understand what your rewards are actually worth.</span>
           </Link>
-          <Link href="/#tool" className="seo-related-link">
+          <Link href="/credit-card-calculator-canada" className="seo-related-link">
             ClearFin Card Calculator
             <span>Match your real spending to the card that rewards you most.</span>
           </Link>

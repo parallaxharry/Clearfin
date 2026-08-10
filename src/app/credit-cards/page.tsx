@@ -36,7 +36,7 @@ export default async function CreditCardsPage() {
         <section className="catalog-list" aria-labelledby="catalog-title">
           <div className="catalog-list-head">
             <div><span>Canadian credit cards</span><h2 id="catalog-title">Browse the full collection</h2></div>
-            <Link href="/#tool">Find my best card →</Link>
+            <Link href="/credit-card-calculator-canada">Find my best card →</Link>
           </div>
           <div className="catalog-grid">
             {cards.map((card) => (

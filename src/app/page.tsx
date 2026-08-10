@@ -22,7 +22,7 @@ const softwareApplicationSchema = {
   name: "ClearFin Credit Card Calculator",
   applicationCategory: "FinanceApplication",
   operatingSystem: "Web",
-  url: "https://www.clearfin.ca/#tool",
+  url: "https://www.clearfin.ca/credit-card-calculator-canada",
   description:
     "Compare 107 Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
   offers: {
@@ -120,10 +120,10 @@ export default async function HomePage() {
               the math across fees, reward rates, income requirements, and credit eligibility.
             </p>
             <div className="hero-cta-row reveal">
-              <a href="#tool" className="btn-primary">
+              <Link href="/credit-card-calculator-canada" className="btn-primary">
                 <span>Find my best card</span>
                 <span className="btn-arrow">→</span>
-              </a>
+              </Link>
               <Link href="/credit-cards" className="btn-secondary">
                 Browse credit cards <span className="btn-arrow">→</span>
               </Link>
@@ -267,10 +267,10 @@ export default async function HomePage() {
               <div className="feat-list-item"><span>02</span><div><strong>Reward tracking</strong><small>See estimated earnings across every card in one place.</small></div></div>
               <div className="feat-list-item"><span>03</span><div><strong>Quiet reminders</strong><small>Stay ahead of bills, subscriptions, and utilization without the noise.</small></div></div>
             </div>
-            <a href="#waitlist" className="btn-primary feat-cta">
+            <Link href="/early-access" className="btn-primary feat-cta">
               <span>Request early access</span>
               <span className="btn-arrow">→</span>
-            </a>
+            </Link>
             <div className="feat-trust"><span>No card numbers</span><span>Read-only by design</span><span>Canada first</span></div>
           </div>
           <div className="feat-visual">

@@ -79,16 +79,6 @@ export default function InteractiveTool() {
     return () => { document.body.style.overflow = ""; };
   }, [modalCard]);
 
-  // Open via hero CTA
-  useEffect(() => {
-    const links = document.querySelectorAll<HTMLAnchorElement>('a[href="#tool"]');
-    const handler = () => setTimeout(() => {
-      setToolState("gate");
-    }, 200);
-    links.forEach((l) => l.addEventListener("click", handler));
-    return () => links.forEach((l) => l.removeEventListener("click", handler));
-  }, []);
-
   const transition = useCallback((fn: () => void) => {
     setAnimDir("out");
     setVisible(false);
@@ -418,10 +408,10 @@ export default function InteractiveTool() {
 
               {/* CTA row */}
               <div className="result-cta-row">
-                <a href="#waitlist" className="btn-primary">
+                <Link href="/early-access" className="btn-primary">
                   <span>Get Early Access — It&apos;s Free</span>
                   <span className="btn-arrow">→</span>
-                </a>
+                </Link>
                 <button className="result-restart" onClick={handleRestart}>
                   ← Recalculate
                 </button>
