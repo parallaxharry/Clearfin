@@ -7530,3 +7530,16 @@ body {
 .how-helps-page { background: #fff; }
 .how-helps-page .blog-index-crumb { padding-top: 30px; }
 .how-helps-page .home-seo-intro { border-top: 0; padding-top: clamp(36px, 4.5vw, 60px); }
+
+/* Search compare tray: blue card names + a visible start-compare button
+   (the old button used undefined --accent-warm, leaving it invisible) */
+.search-tray-chip {
+  color: #2997ff; font-weight: 600;
+  border-color: rgba(41,151,255,.4); background: rgba(41,151,255,.10);
+}
+.search-tray-go {
+  background: linear-gradient(135deg, #2997ff 0%, #0071e3 60%);
+  color: #fff; font-weight: 700;
+  box-shadow: 0 4px 14px rgba(0,113,227,.35);
+}
+.search-tray-go:hover { filter: brightness(1.12); }
