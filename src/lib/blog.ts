@@ -56,6 +56,32 @@ function fromRow(r: BlogPostRow): BlogPost {
  */
 const FALLBACK_POSTS: BlogPost[] = [
   {
+    slug: "how-clearfin-helps",
+    title: "How ClearFin Helps You Compare Canadian Credit Cards",
+    description:
+      "Credit card rewards look simple until you try to compare them. Here's how ClearFin turns your real spending into a calmer, more practical card choice.",
+    coverImg: null,
+    tags: ["about"],
+    author: "ClearFin Team",
+    publishedAt: "2026-08-10T00:00:00Z",
+    updatedAt: "2026-08-10T00:00:00Z",
+    bodyMd: `Credit card rewards look simple until you try to compare them. Grocery rates can depend on the store, travel points can change value depending on how you redeem them, and a large welcome offer does not always make up for an annual fee. ClearFin brings those details into one place so you can make a calmer, more practical choice.
+
+## Start with your real spending
+
+Start with our [Canadian credit card calculator](/credit-card-calculator-canada) and enter the categories that matter in your household. We use that spending mix to estimate which cards may return more value after the annual fee. You can then open the card details, compare alternatives side by side, and check the issuer's current terms before applying.
+
+## See the trade-offs clearly
+
+ClearFin is most useful when your spending is uneven. Maybe groceries and recurring bills are the big categories, or perhaps dining and travel matter more. Instead of assuming the same card is best for everyone, the comparison follows your numbers. You can also browse our guides to understand [cash back](/best-cashback-credit-cards-canada), [travel rewards](/best-travel-credit-cards-canada), and [no-annual-fee cards](/best-no-fee-credit-cards-canada) in plain language.
+
+## Independent by design
+
+ClearFin is not a bank or digital wallet, and it does not move your money. It is an independent comparison and education tool. The goal is straightforward: help you understand the trade-offs, choose a card that fits your real routine, and avoid paying for benefits you are unlikely to use.
+
+Ready to see it with your own numbers? [Explore the card catalogue](/credit-cards) or jump straight into the [calculator](/credit-card-calculator-canada).`,
+  },
+  {
     slug: "how-credit-card-points-work-canada",
     title: "How Credit Card Points Actually Work in Canada",
     description:
@@ -110,7 +136,7 @@ Our calculator converts every points card to an estimated dollar return using co
     tags: ["strategy", "combinations"],
     author: "ClearFin Team",
     publishedAt: "2026-07-10T00:00:00Z",
-    updatedAt: "2026-07-10T00:00:00Z",
+    updatedAt: "2026-07-26T00:00:00Z",
     bodyMd: `The best credit card combination Canada users should consider in 2026 is usually one high-earning rewards card for major spending categories and one backup card for places where the first card is not accepted. For many Canadians, this means pairing a premium points card for groceries, dining, transit, gas, and subscriptions with a no-fee cash back Mastercard or Visa for everyday backup spending.
 
 A two-card strategy works because no single credit card is perfect for every purchase. One card may give strong rewards on groceries and restaurants, while another may be better for utility bills, online purchases, Costco, non-American Express merchants, or flat-rate cash back.
@@ -200,11 +226,7 @@ For people who prefer simplicity, a cash back setup may be better. For people wh
 /** All published posts, newest first. Table rows win; fallback keeps the blog alive without them. */
 export const getPosts = cache(async (): Promise<BlogPost[]> => {
   const supabase = readClient();
-  if (!supabase) {
-    return FALLBACK_POSTS.filter(
-      (post) => post.slug !== "best-credit-card-combination-canada",
-    );
-  }
+  if (!supabase) return FALLBACK_POSTS;
 
   const { data, error } = await supabase
     .from("blog_posts")
@@ -214,13 +236,9 @@ export const getPosts = cache(async (): Promise<BlogPost[]> => {
 
   if (error || !data || data.length === 0) {
     if (error) console.error("getPosts blog_posts error:", error.message);
-    return FALLBACK_POSTS.filter(
-      (post) => post.slug !== "best-credit-card-combination-canada",
-    );
+    return FALLBACK_POSTS;
   }
-  return (data as BlogPostRow[])
-    .map(fromRow)
-    .filter((post) => post.slug !== "best-credit-card-combination-canada");
+  return (data as BlogPostRow[]).map(fromRow);
 });
 
 export const getPost = cache(async (slug: string): Promise<BlogPost | null> => {

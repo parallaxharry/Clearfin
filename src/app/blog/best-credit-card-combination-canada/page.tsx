@@ -5,14 +5,14 @@ import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import SeoLayout from "@/components/SeoLayout";
 
 const pageUrl =
-  "https://www.clearfin.ca/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards";
+  "https://www.clearfin.ca/blog/best-credit-card-combination-canada";
 const pageTitle =
   "Best Credit Card Combination in Canada for 2026: How to Pair Two Cards for Maximum Rewards";
 const pageDescription =
   "Learn how ClearFin helps you choose the best credit card combinations in Canada for 2026 to maximize cash back, travel rewards and everyday savings.";
 
 export const metadata: Metadata = {
-  title: "Best Credit Card Combinations Canada | ClearFin",
+  title: "Best Credit Card Combinations Canada | ClearFin Blog",
   description: pageDescription,
   keywords: [
     "best credit card combination Canada",
@@ -85,7 +85,7 @@ export default function BestCreditCardCombinationCanadaPage() {
         subtitle="A practical two-card setup can cover the weak spots that one rewards card leaves behind."
         breadcrumb={[
           { label: "Home", href: "/" },
-          { label: "Credit Card Guides", href: "/best-credit-cards-canada" },
+          { label: "Blog", href: "/blog" },
           { label: "Best Card Combinations", href: pageUrl },
         ]}
         lastUpdated="July 26, 2026"

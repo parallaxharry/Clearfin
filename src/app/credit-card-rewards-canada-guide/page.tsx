@@ -234,7 +234,7 @@ export default function CreditCardRewardsCanadaGuide() {
           One card may cover your biggest category while a second handles
           merchants where the first is not accepted or earns only a base rate.
           Keep the setup simple and give each card one job. Our{" "}
-          <Link href="/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards">
+          <Link href="/blog/best-credit-card-combination-canada">
             two-card strategy guide
           </Link>{" "}
           gives practical Canadian examples.

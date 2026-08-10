@@ -29,7 +29,7 @@ export default function SiteFooter() {
             <Link href="/best-no-fee-credit-cards-canada">No-Fee Cards</Link>
             <Link href="/best-student-credit-cards-canada">Student Cards</Link>
             <Link href="/credit-card-rewards-canada-guide">Learn</Link>
-            <Link href="/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards">
+            <Link href="/blog/best-credit-card-combination-canada">
               Card Combinations
             </Link>
             <Link href="/blog">Blog</Link>

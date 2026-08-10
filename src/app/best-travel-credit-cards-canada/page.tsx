@@ -241,7 +241,7 @@ export default function BestTravelCreditCardsCanada() {
           A travel card does not need to handle every purchase. You might keep
           it for airline benefits and pair it with a no-fee cash back card for a
           category where it earns slowly. See our{" "}
-          <Link href="/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards">
+          <Link href="/blog/best-credit-card-combination-canada">
             guide to two-card combinations
           </Link>{" "}
           for a simple way to divide the jobs.

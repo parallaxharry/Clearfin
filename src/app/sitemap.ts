@@ -53,12 +53,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards`,
-      lastModified: seoRefresh,
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
-    {
       url: `${baseUrl}/credit-card-calculator-canada`,
       lastModified: now,
       changeFrequency: "weekly",

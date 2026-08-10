@@ -227,7 +227,7 @@ export default function BestGroceryCreditCardsCanada() {
           A high-earning American Express card can still be a good choice even
           when it is not accepted everywhere. The practical solution is often a
           no-fee Visa or Mastercard backup. Our guide to the{" "}
-          <Link href="/best-credit-card-combination-in-canada-for-2026-how-to-pair-two-cards-for-maximum-rewards">
+          <Link href="/blog/best-credit-card-combination-canada">
             best credit card combinations in Canada
           </Link>{" "}
           explains how to give each card a separate job without overcomplicating

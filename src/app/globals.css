@@ -7471,3 +7471,57 @@ body {
     grid-template-columns:repeat(5,minmax(92px,1fr));
   }
 }
+
+/* ── Credit Cards nav dropdown ── */
+.nav-dd { position: relative; }
+.nav-dd-trigger {
+  display: inline-flex; align-items: center; gap: 8px; padding: 11px 14px;
+  border: 1px solid transparent; border-radius: 11px;
+  font-family: inherit; font-size: inherit; letter-spacing: inherit;
+  font-weight: 750; color: inherit; background: none; cursor: pointer;
+  transition: color .22s ease;
+}
+.nav-dd-trigger:hover, .nav-dd.open .nav-dd-trigger { color: #0066cc; font-weight: 800; }
+.nav-dd-caret { width: 12px; height: 12px; margin-left: -2px; transition: transform .2s ease; }
+.nav-dd.open .nav-dd-trigger .nav-dd-caret { transform: rotate(180deg); }
+.nav-dd-panel { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); padding-top: 10px; z-index: 80; }
+.nav-dd-card {
+  width: 330px; padding: 10px; display: grid; gap: 2px;
+  background: #fff; border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(30,45,37,.16);
+  animation: nav-dd-in .18s ease both;
+}
+@keyframes nav-dd-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.nav-links .nav-dd-item {
+  display: flex; align-items: center; gap: 13px; padding: 10px 12px;
+  border: 0; border-radius: 12px;
+}
+.nav-links .nav-dd-item:hover {
+  background: #f0f6fd; color: inherit; transform: none;
+  box-shadow: none; font-weight: inherit;
+}
+.nav-dd-item-icon {
+  width: 40px; height: 40px; flex-shrink: 0; display: grid; place-content: center;
+  border-radius: 11px; background: #e9f2fd;
+}
+.nav-dd-item-icon svg { width: 19px; height: 19px; }
+.nav-dd-item strong { display: block; font-size: 14.5px; font-weight: 750; letter-spacing: -.01em; color: #171917; }
+.nav-dd-item small { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 500; letter-spacing: 0; color: #5f665f; }
+.nav-links .nav-dd-item:hover strong { color: #0066cc; }
+
+@media (max-width: 700px) {
+  .mobile-nav-dd-toggle {
+    display: flex; align-items: center; gap: 9px; width: 100%; padding: 13px 12px;
+    border: 0; border-radius: 9px; background: none; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 700; color: inherit; text-align: left;
+  }
+  .mobile-nav-dd-toggle:hover, .mobile-nav-dd-toggle.open { background: #edf3ef; color: var(--accent); }
+  .mobile-nav-dd-toggle .nav-dd-caret { margin-left: auto; width: 14px; height: 14px; transition: transform .2s ease; }
+  .mobile-nav-dd-toggle.open .nav-dd-caret { transform: rotate(180deg); }
+  .mobile-nav-sub { display: grid; padding: 2px 0 6px 14px; }
+  .mobile-nav-sub a { display: flex; align-items: center; gap: 9px; padding: 11px 12px; border-radius: 9px; font-size: 13.5px; font-weight: 650; }
+  .mobile-nav-sub a:hover { background: #edf3ef; color: var(--accent); }
+}
