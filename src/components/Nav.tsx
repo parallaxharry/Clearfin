@@ -38,7 +38,7 @@ export default function Nav() {
         <Link href="/credit-cards"><NavIcon type="card" />Credit Cards</Link>
         <Link href="/compare-credit-cards-canada"><NavIcon type="compare" />Compare</Link>
         <Link href="/credit-card-calculator-canada"><NavIcon type="calculator" />Calculator</Link>
-        <Link href="/credit-card-rewards-canada-guide"><NavIcon type="learn" />Learn</Link>
+        <Link href="/blog"><NavIcon type="learn" />Blogs</Link>
       </nav>
 
       <div className="nav-right">
@@ -63,7 +63,7 @@ export default function Nav() {
         <Link href="/credit-cards" onClick={() => setMenuOpen(false)}><NavIcon type="card" />Credit Cards</Link>
         <Link href="/compare-credit-cards-canada" onClick={() => setMenuOpen(false)}><NavIcon type="compare" />Compare</Link>
         <Link href="/credit-card-calculator-canada" onClick={() => setMenuOpen(false)}><NavIcon type="calculator" />Calculator</Link>
-        <Link href="/credit-card-rewards-canada-guide" onClick={() => setMenuOpen(false)}><NavIcon type="learn" />Learn</Link>
+        <Link href="/blog" onClick={() => setMenuOpen(false)}><NavIcon type="learn" />Blogs</Link>
       </nav>
     </header>
   );

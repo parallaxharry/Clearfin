@@ -2105,26 +2105,7 @@ section {
 }
 .seo-content table tr:last-child td { border-bottom: none; }
 
-/* ── Blog index cards ── */
-.blog-list { display: flex; flex-direction: column; gap: 20px; }
-.blog-card {
-  display: block; padding: 26px 28px; border: 1px solid var(--line); border-radius: 14px;
-  text-decoration: none; transition: border-color .2s, background .2s;
-  background: rgba(255,255,255,.02);
-}
-.blog-card:hover { border-color: var(--line-strong); background: rgba(255,255,255,.04); }
-.blog-card-meta {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  font-family: var(--font-jetbrains), monospace; font-size: 10.5px; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--ink-mute); margin-bottom: 10px;
-}
-.blog-tag {
-  border: 1px solid var(--line); border-radius: 5px; padding: 1.5px 7px;
-  color: var(--accent-warm);
-}
-.blog-card-title { font-size: 21px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
-.blog-card-desc { color: var(--ink-mute); font-size: 14.5px; line-height: 1.6; margin: 0 0 12px; }
-.blog-card-more { color: var(--accent-warm); font-size: 13.5px; }
+/* Blog index cards now use the catalogue shell — see ".blog-index" below. */
 .seo-table th {
   font-family: var(--font-jetbrains), monospace;
   font-size: 11px;
@@ -5749,6 +5730,38 @@ section { min-height: 0; scroll-snap-align: none; overflow: visible; }
   .top-picks-all span { grid-column:1 / -1; }
 }
 @media (max-width:500px) { .catalog-grid { grid-template-columns:1fr; } }
+
+/* Blog index — the card catalogue shell, retuned for prose cards. */
+.blog-index-crumb { max-width:1320px; margin:0 auto; padding:96px 48px 0; display:flex; align-items:center; gap:7px; color:#898d85; font-size:9px; font-weight:700; }
+.blog-index-crumb a { color:#6d726b; }
+.blog-index-crumb a:hover { color:#0066cc; }
+.blog-index-crumb span[aria-current] { color:#242722; }
+.blog-index .catalog-hero { padding-top:54px; }
+/* "guides" drops a descender straight onto the second line's ascenders at the
+   catalogue's .9 leading, so this headline gets a touch more room. */
+.blog-index .catalog-hero h1 { line-height:.98; }
+/* Prose cards need more measure than card art does, so three across, not four. */
+.blog-index .catalog-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+/* Topic tile stands in for card art — posts carry no image of their own. */
+.blog-index-art { overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; box-shadow:inset 0 0 0 1px rgba(34,37,32,.05); }
+.blog-index-art svg { width:34px; height:34px; fill:none; stroke:#245678; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.blog-index-art > span { color:#6d726b; font-size:9px; font-weight:850; letter-spacing:.14em; text-transform:uppercase; }
+.blog-index .catalog-card:hover .blog-index-art svg { stroke:#0066cc; }
+.blog-index .catalog-card-copy h3 { display:-webkit-box; overflow:hidden; min-height:2.6em; -webkit-box-orient:vertical; -webkit-line-clamp:3; font-size:16px; line-height:1.3; }
+/* Description is prose here, not the catalogue's blue badge line. */
+.catalog-page.blog-index .catalog-card-copy > p {
+  display:-webkit-box; overflow:hidden; min-height:4.65em; margin-top:9px;
+  -webkit-box-orient:vertical; -webkit-line-clamp:3;
+  color:#6d726b; font-size:12px; font-weight:400; line-height:1.55;
+  background:none; -webkit-text-fill-color:currentColor;
+}
+.blog-index-empty { padding:52px 0; color:#6d726b; font-size:14px; text-align:center; }
+@media (max-width:1050px) { .blog-index .catalog-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:760px) {
+  .blog-index-crumb { padding:82px 20px 0; }
+  .blog-index .catalog-hero { padding-top:40px; }
+}
+@media (max-width:500px) { .blog-index .catalog-grid { grid-template-columns:1fr; } }
 
 /* Premium light card-detail system — shared by every /credit-cards/[id] page */
 .cardpg { min-height:100vh; background:#f7f6f2; color:#1b1e1a; }
