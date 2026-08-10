@@ -7525,3 +7525,8 @@ body {
   .mobile-nav-sub a { display: flex; align-items: center; gap: 9px; padding: 11px 12px; border-radius: 9px; font-size: 13.5px; font-weight: 650; }
   .mobile-nav-sub a:hover { background: #edf3ef; color: var(--accent); }
 }
+
+/* /blog/how-clearfin-helps — tighten the gap between nav, crumb and section */
+.how-helps-page { background: #fff; }
+.how-helps-page .blog-index-crumb { padding-top: 30px; }
+.how-helps-page .home-seo-intro { border-top: 0; padding-top: clamp(36px, 4.5vw, 60px); }
