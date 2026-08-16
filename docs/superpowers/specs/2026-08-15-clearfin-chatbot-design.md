@@ -34,6 +34,7 @@ and recommends specific cards.
 | Placement | Floating widget, bottom-right, site-wide | Highest usage; bottom-left and bottom-centre are already occupied |
 | Spend protection | IP rate limit + daily spend cap | Public endpoint with no login; caps the blast radius of scripted abuse |
 | Logging | Questions only, no identifiers | Real search intent for content planning without storing personal data |
+| Model | `gpt-5-mini` | Verified on the account; input-heavy and reasoning-light workload doesn't justify the top tier. Escalate to `gpt-5` if golden questions fail |
 
 ## Architecture
 
@@ -91,11 +92,18 @@ function powering the calculator, so results are consistent by construction.
 
 ### Model selection
 
-The implementation must confirm current OpenAI model IDs and pricing from OpenAI's
-documentation at build time rather than relying on training data. Selection criteria,
-in order: supports function calling and streaming; supports prompt caching (the
-6k-token catalogue is re-sent every turn, so caching dominates cost); then cheapest
-tier that answers the golden-question set correctly.
+**`gpt-5-mini`.** Verified available on the project's OpenAI account on 2026-08-15, by
+querying `/v1/models` rather than relying on training data. The account exposes four
+chat-capable models: `gpt-4o-mini`, `gpt-5`, `gpt-5-mini`, `gpt-5-nano`.
+
+`gpt-5-mini` fits the shape of this workload. Every turn carries the same ~6k-token
+catalogue, so the job is input-heavy but reasoning-light: read a table, write a clear
+paragraph. That does not justify the top tier, and the two smallest models are a
+false economy if they misread a fee.
+
+The model name lives in a single exported constant so it can be changed in one place.
+Escalate to `gpt-5` if the golden-question set shows factual errors on fees, rates or
+bonuses — accuracy on card facts is the one thing this feature cannot trade away.
 
 ## Guardrails
 
