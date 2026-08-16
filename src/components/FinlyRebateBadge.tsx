@@ -19,9 +19,15 @@ export default function FinlyRebateBadge({
       className={`finly-rebate-badge${rebate.isPromotional ? " is-promotional" : ""}${className ? ` ${className}` : ""}`}
       title={`FinlyWealth cash rebate for an eligible approved application. Terms apply. Amount checked ${FINLY_REBATES_CHECKED_AT}.`}
     >
-      <small>{rebate.isPromotional ? "Limited-time rebate" : "Exclusive cash rebate"}</small>
-      <strong>+${rebate.amount}</strong>
-      <em>Apply through ClearFin*</em>
+      <small>
+        <span aria-hidden="true">✦</span>
+        {rebate.isPromotional ? "Limited ClearFin offer" : "ClearFin exclusive"}
+      </small>
+      <span className="finly-rebate-value">
+        <strong>${rebate.amount}</strong>
+        <em>cash rebate*</em>
+      </span>
+      <span className="finly-rebate-fold" aria-hidden="true" />
     </span>
   );
 }
