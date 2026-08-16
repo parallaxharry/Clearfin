@@ -46,7 +46,7 @@ export default async function CreditCardsPage() {
               <span aria-hidden="true">$</span>
               <p>
                 <strong>{rebateCount} cards currently include a verified FinlyWealth cash rebate.</strong>
-                Look for the blue ribbon. Rebates require an eligible application through ClearFin and approval; terms apply. Amounts checked {FINLY_REBATES_CHECKED_AT}.
+                Look for the rebate ribbon. Rebates require an eligible application through ClearFin and approval; terms apply. Amounts checked {FINLY_REBATES_CHECKED_AT}.
               </p>
             </div>
           ) : null}
