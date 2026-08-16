@@ -121,6 +121,10 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
+      // globals.css sets scroll-behavior: smooth. Next 16 no longer suppresses
+      // that during route changes unless this attribute is present, which made
+      // every navigation smooth-scroll instead of landing at the top instantly.
+      data-scroll-behavior="smooth"
       className={`${archivo.variable} ${fraunces.variable} ${jetbrains.variable}`}
     >
       <body>
