@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ClearFinWordmark from "@/components/ClearFinWordmark";
+import HomeLogoLink from "@/components/HomeLogoLink";
 
 /** The one site-wide footer: brand, navigation, legal details, and disclaimer. */
 export default function SiteFooter() {
@@ -7,9 +8,9 @@ export default function SiteFooter() {
     <footer className="footer">
       <div className="footer-main">
         <div className="footer-brand">
-          <Link href="/" className="footer-logo" aria-label="ClearFin home">
+          <HomeLogoLink className="footer-logo">
             <ClearFinWordmark />
-          </Link>
+          </HomeLogoLink>
           <p>
             Clearer credit card decisions, built around how Canadians actually
             spend.

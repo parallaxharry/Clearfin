@@ -34,7 +34,11 @@ export async function generateMetadata({
       url: `/blog/${post.slug}`,
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
+      images: post.coverImg ? [{ url: post.coverImg, alt: post.title }] : undefined,
     },
+    twitter: post.coverImg
+      ? { card: "summary_large_image", title: post.title, description: post.description, images: [post.coverImg] }
+      : undefined,
   };
 }
 
@@ -57,6 +61,7 @@ export default async function BlogPostPage({
     author: { "@type": "Organization", name: post.author, url: "https://www.clearfin.ca" },
     publisher: { "@type": "Organization", name: "ClearFin", url: "https://www.clearfin.ca" },
     mainEntityOfPage: `https://www.clearfin.ca/blog/${post.slug}`,
+    image: post.coverImg ? `https://www.clearfin.ca${post.coverImg}` : undefined,
   };
 
   return (
@@ -74,6 +79,9 @@ export default async function BlogPostPage({
           { label: post.title, href: `/blog/${post.slug}` },
         ]}
         lastUpdated={formatPostDate(post.updatedAt)}
+        eyebrow="ClearFin blog"
+        heroImage={post.coverImg}
+        heroImageAlt={post.title}
       >
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.bodyMd}</ReactMarkdown>
       </SeoLayout>

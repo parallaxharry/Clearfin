@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import AffiliateDisclosure from "@/components/AffiliateDisclosure";
@@ -31,9 +30,9 @@ export const metadata: Metadata = {
     type: "article",
     images: [
       {
-        url: "/images/credit-card-combination-canada.jpg",
-        width: 918,
-        height: 614,
+        url: "/images/blog/best-credit-card-combination-canada.webp",
+        width: 1800,
+        height: 1013,
         alt: "best credit card combination Canada",
       },
     ],
@@ -42,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: pageTitle,
     description: pageDescription,
-    images: ["/images/credit-card-combination-canada.jpg"],
+    images: ["/images/blog/best-credit-card-combination-canada.webp"],
   },
 };
 
@@ -57,7 +56,7 @@ export default function BestCreditCardCombinationCanadaPage() {
     headline: pageTitle,
     description: pageDescription,
     image:
-      "https://www.clearfin.ca/images/credit-card-combination-canada.jpg",
+      "https://www.clearfin.ca/images/blog/best-credit-card-combination-canada.webp",
     author: {
       "@type": "Organization",
       name: "ClearFin",
@@ -89,6 +88,9 @@ export default function BestCreditCardCombinationCanadaPage() {
           { label: "Best Card Combinations", href: pageUrl },
         ]}
         lastUpdated="July 26, 2026"
+        eyebrow="ClearFin card strategy"
+        heroImage="/images/blog/best-credit-card-combination-canada.webp"
+        heroImageAlt="Two complementary credit cards for a simple Canadian two-card strategy"
       >
         <p>
           One credit card rarely earns its best rate everywhere. A card that is
@@ -105,22 +107,6 @@ export default function BestCreditCardCombinationCanadaPage() {
           If you cannot explain when to use each card in one sentence, the
           combination is probably too complicated.
         </p>
-
-        <figure className="seo-article-figure">
-          <Image
-            src="/images/credit-card-combination-canada.jpg"
-            alt="best credit card combination Canada"
-            title="best credit card combination Canada"
-            width={918}
-            height={614}
-            sizes="(max-width: 820px) 88vw, 760px"
-            priority
-          />
-          <figcaption>
-            Two cards are usually enough to cover a strong bonus category and a
-            reliable backup.
-          </figcaption>
-        </figure>
 
         <h2>Why pair two credit cards?</h2>
         <p>
