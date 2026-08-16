@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Archivo, Fraunces, JetBrains_Mono } from "next/font/google";
 import dynamic from "next/dynamic";
 import AnalyticsConsent from "@/components/AnalyticsConsent";
 import { SearchProvider } from "@/context/SearchContext";
 import { getSearchCards } from "@/lib/cardDetail";
+// Self-hosted copies of the same files next/font/google used to download at
+// build time. Fetching them from Google was intermittently failing the build.
+import "./fonts.css";
 import "./globals.css";
 
 /** Client-only and below the fold — keep it out of the initial bundle. */
@@ -12,27 +14,8 @@ const ChatWidget = dynamic(() => import("@/components/ChatWidget"));
 
 const GOOGLE_ANALYTICS_ID = "G-SP0554X7Y2";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
-  display: "swap",
-});
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
 
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clearfin.ca"),
@@ -125,7 +108,6 @@ export default async function RootLayout({
       // that during route changes unless this attribute is present, which made
       // every navigation smooth-scroll instead of landing at the top instantly.
       data-scroll-behavior="smooth"
-      className={`${archivo.variable} ${fraunces.variable} ${jetbrains.variable}`}
     >
       <body>
         <Script id="clearfin-consent-default" strategy="beforeInteractive">
