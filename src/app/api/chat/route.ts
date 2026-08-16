@@ -19,6 +19,17 @@ const MAX_MESSAGE_CHARS = 1000;
 const MAX_HISTORY_TURNS = 10;
 const REQUEST_TIMEOUT_MS = 45_000;
 
+/**
+ * Status updates are inlined in the text stream, wrapped in RS (0x1E) so the
+ * client can pull them out. Card answers never contain that control character.
+ */
+const RS = "\x1E";
+
+const TOOL_STATUS: Record<string, string> = {
+  get_card_details: "Looking up the card details",
+  rank_cards: "Running your numbers",
+};
+
 interface IncomingMessage {
   role: "user" | "assistant";
   content: string;
@@ -100,7 +111,6 @@ export async function POST(req: NextRequest) {
           { signal: timeout }
         );
 
-        let answered = false;
         const toolCalls: { id: string; name: string; args: string }[] = [];
 
         for await (const chunk of first) {
@@ -108,10 +118,7 @@ export async function POST(req: NextRequest) {
           const delta = chunk.choices[0]?.delta;
           if (!delta) continue;
 
-          if (delta.content) {
-            answered = true;
-            send(delta.content);
-          }
+          if (delta.content) send(delta.content);
 
           for (const tc of delta.tool_calls ?? []) {
             const slot = (toolCalls[tc.index] ??= { id: "", name: "", args: "" });
@@ -123,8 +130,10 @@ export async function POST(req: NextRequest) {
 
         const calls = toolCalls.filter((t) => t?.name);
         if (calls.length > 0) {
-          // Tell the user something is happening — lookups take a moment.
-          if (!answered) send("");
+          // Lookups take several seconds — say what's happening rather than
+          // leaving the user watching a silent spinner.
+          const label = TOOL_STATUS[calls[0].name] ?? "Checking the card data";
+          send(`${RS}${label}${RS}`);
 
           messages.push({
             role: "assistant",

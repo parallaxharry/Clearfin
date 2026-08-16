@@ -10,6 +10,9 @@ interface Msg {
   content: string;
 }
 
+/** Matches the status delimiter used by /api/chat. */
+const RS = "\x1E";
+
 const SUGGESTIONS = [
   "Best card for groceries?",
   "Which cards have no annual fee?",
@@ -21,6 +24,7 @@ export default function ChatWidget() {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -55,8 +59,19 @@ export default function ChatWidget() {
       setError(null);
       setInput("");
       const next: Msg[] = [...msgs, { role: "user", content: question }];
-      setMsgs(next);
+      // Placeholder goes in straight away so there is never a silent gap
+      // between hitting send and the first token arriving.
+      setMsgs([...next, { role: "assistant", content: "" }]);
+      setStatus("Thinking");
       setBusy(true);
+
+      const appendToLast = (text: string) =>
+        setMsgs((m) => {
+          const copy = [...m];
+          const last = copy[copy.length - 1];
+          copy[copy.length - 1] = { role: "assistant", content: last.content + text };
+          return copy;
+        });
 
       try {
         const res = await fetch("/api/chat", {
@@ -67,32 +82,52 @@ export default function ChatWidget() {
 
         if (!res.ok || !res.body) {
           const data = await res.json().catch(() => null);
+          setMsgs(next); // drop the placeholder
           setError(data?.error ?? "Something went wrong. Please try again.");
           setBusy(false);
+          setStatus(null);
           return;
         }
 
-        setMsgs((m) => [...m, { role: "assistant", content: "" }]);
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
+        let buf = "";
 
         for (;;) {
           const { value, done } = await reader.read();
           if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          setMsgs((m) => {
-            const copy = [...m];
-            copy[copy.length - 1] = {
-              role: "assistant",
-              content: copy[copy.length - 1].content + chunk,
-            };
-            return copy;
-          });
+          buf += decoder.decode(value, { stream: true });
+
+          // Pull out any complete \x1E-wrapped status markers; the rest is prose.
+          let text = "";
+          for (;;) {
+            const start = buf.indexOf(RS);
+            if (start === -1) {
+              text += buf;
+              buf = "";
+              break;
+            }
+            text += buf.slice(0, start);
+            const end = buf.indexOf(RS, start + 1);
+            if (end === -1) {
+              buf = buf.slice(start); // marker split across chunks — wait
+              break;
+            }
+            setStatus(buf.slice(start + 1, end));
+            buf = buf.slice(end + 1);
+          }
+
+          if (text) {
+            setStatus(null);
+            appendToLast(text);
+          }
         }
       } catch {
+        setMsgs(next);
         setError("Couldn't reach the assistant. Please try again.");
       } finally {
         setBusy(false);
+        setStatus(null);
       }
     },
     [busy, msgs, cardId]
@@ -159,7 +194,10 @@ export default function ChatWidget() {
                       {m.content}
                     </ReactMarkdown>
                   ) : (
-                    <span className="cf-chat-dots" aria-label="Thinking"><i /><i /><i /></span>
+                    <span className="cf-chat-thinking" role="status" aria-live="polite">
+                      <span className="cf-chat-dots" aria-hidden="true"><i /><i /><i /></span>
+                      <em>{status ?? "Thinking"}…</em>
+                    </span>
                   )
                 ) : (
                   m.content

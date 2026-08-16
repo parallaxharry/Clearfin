@@ -7630,3 +7630,11 @@ body {
   .cf-chat-launcher { right: 14px; bottom: 14px; padding: 11px 15px; font-size: 13.5px; }
   .cf-chat-panel { right: 8px; left: 8px; bottom: 72px; width: auto; height: min(70vh, calc(100vh - 110px)); }
 }
+
+/* Thinking indicator — dots plus what the assistant is actually doing. */
+.cf-chat-thinking { display: inline-flex; align-items: center; gap: 9px; }
+.cf-chat-thinking em {
+  font-style: normal; font-size: 13px; font-weight: 550; color: #7b827b;
+  animation: cf-chat-pulse 1.6s ease-in-out infinite;
+}
+@keyframes cf-chat-pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
