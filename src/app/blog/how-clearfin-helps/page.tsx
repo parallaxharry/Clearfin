@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
@@ -19,6 +20,20 @@ export const metadata: Metadata = {
     siteName: "ClearFin",
     locale: "en_CA",
     type: "article",
+    images: [
+      {
+        url: "/images/blog/how-clearfin-helps.webp",
+        width: 1800,
+        height: 1013,
+        alt: "A Canadian comparing credit cards with ClearFin",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: pageTitle,
+    description: pageDescription,
+    images: ["/images/blog/how-clearfin-helps.webp"],
   },
 };
 
@@ -33,6 +48,7 @@ export default function HowClearFinHelpsPage() {
     author: { "@type": "Organization", name: "ClearFin Team", url: "https://www.clearfin.ca" },
     publisher: { "@type": "Organization", name: "ClearFin", url: "https://www.clearfin.ca" },
     mainEntityOfPage: pageUrl,
+    image: "https://www.clearfin.ca/images/blog/how-clearfin-helps.webp",
   };
 
   return (
@@ -66,6 +82,16 @@ export default function HowClearFinHelpsPage() {
                 details into one place so you can make a calmer, more practical
                 choice.
               </p>
+              <figure className="how-helps-feature-image">
+                <Image
+                  src="/images/blog/how-clearfin-helps.webp"
+                  alt="A Canadian comparing credit cards with ClearFin"
+                  width={1800}
+                  height={1013}
+                  sizes="(max-width: 900px) calc(100vw - 40px), 44vw"
+                  preload
+                />
+              </figure>
               <Link href="/credit-cards" className="home-seo-catalog-link">
                 Explore the card catalogue <span aria-hidden="true">→</span>
               </Link>

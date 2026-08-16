@@ -25,6 +25,12 @@ interface BlogPostRow {
   updated_at: string | null;
 }
 
+const DEFAULT_BLOG_COVERS: Record<string, string> = {
+  "how-clearfin-helps": "/images/blog/how-clearfin-helps.webp",
+  "how-credit-card-points-work-canada": "/images/blog/how-credit-card-points-work-canada.webp",
+  "best-credit-card-combination-canada": "/images/blog/best-credit-card-combination-canada.webp",
+};
+
 function readClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -40,7 +46,7 @@ function fromRow(r: BlogPostRow): BlogPost {
     title: r.title ?? r.slug,
     description: r.description ?? "",
     bodyMd: r.body_md ?? "",
-    coverImg: r.cover_img,
+    coverImg: r.cover_img ?? DEFAULT_BLOG_COVERS[r.slug] ?? null,
     tags: r.tags ?? [],
     author: r.author ?? "ClearFin Team",
     publishedAt: r.published_at ?? new Date().toISOString(),
@@ -60,7 +66,7 @@ const FALLBACK_POSTS: BlogPost[] = [
     title: "How ClearFin Helps You Compare Canadian Credit Cards",
     description:
       "Credit card rewards look simple until you try to compare them. Here's how ClearFin turns your real spending into a calmer, more practical card choice.",
-    coverImg: null,
+    coverImg: DEFAULT_BLOG_COVERS["how-clearfin-helps"],
     tags: ["about"],
     author: "ClearFin Team",
     publishedAt: "2026-08-10T00:00:00Z",
@@ -86,7 +92,7 @@ Ready to see it with your own numbers? [Explore the card catalogue](/credit-card
     title: "How Credit Card Points Actually Work in Canada",
     description:
       "Aeroplan, Scene+, Membership Rewards, BMO Rewards — every program values a point differently. Here's how to convert any points card into a real percentage return.",
-    coverImg: null,
+    coverImg: DEFAULT_BLOG_COVERS["how-credit-card-points-work-canada"],
     tags: ["points", "basics"],
     author: "ClearFin Team",
     publishedAt: "2026-07-07T00:00:00Z",
@@ -132,7 +138,7 @@ Our calculator converts every points card to an estimated dollar return using co
     title: "Best Credit Card Combination in Canada for 2026: How to Pair Two Cards for Maximum Rewards",
     description:
       "Learn how ClearFin helps you choose the best credit card combinations in Canada for 2026 to maximize cash back, travel rewards and everyday savings.",
-    coverImg: null,
+    coverImg: DEFAULT_BLOG_COVERS["best-credit-card-combination-canada"],
     tags: ["strategy", "combinations"],
     author: "ClearFin Team",
     publishedAt: "2026-07-10T00:00:00Z",

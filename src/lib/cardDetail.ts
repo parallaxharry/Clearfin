@@ -570,6 +570,7 @@ export const getSearchCards = cache(async (): Promise<SearchCard[]> => {
 export interface CatalogListCard extends SearchCard {
   annualFee: number | null;
   badge: string;
+  bankUrl: string | null;
 }
 
 /**
@@ -585,6 +586,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
       img: card.img,
       annualFee: card.annualFee,
       badge: card.badge,
+      bankUrl: card.bankUrl,
     }));
 
   const supabase = readClient();
@@ -592,7 +594,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,sort_order,annual_fee,badge")
+    .select("id,name,issuer,img,sort_order,annual_fee,badge,bank_url")
     .order("sort_order", { ascending: true });
   if (error || !data) {
     if (error) console.error("getCatalogOrderedCards error:", error.message);
@@ -609,6 +611,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
     img: string | null;
     annual_fee: number | null;
     badge: string | null;
+    bank_url: string | null;
   }>).map((row) => ({
     id: staticIdByCatalogId.get(row.id) ?? row.id,
     name: row.name ?? row.id,
@@ -616,6 +619,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
     img: row.img ?? "",
     annualFee: row.annual_fee,
     badge: row.badge ?? "",
+    bankUrl: row.bank_url,
   }));
 });
 

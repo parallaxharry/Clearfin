@@ -7531,6 +7531,23 @@ body {
 .how-helps-page .blog-index-crumb { padding-top: 30px; }
 .how-helps-page .home-seo-intro { border-top: 0; padding-top: clamp(36px, 4.5vw, 60px); }
 
+.how-helps-feature-image {
+  margin: 28px 0 8px;
+  overflow: hidden;
+  border: 1px solid rgba(21, 95, 193, 0.14);
+  border-radius: 24px;
+  box-shadow: 0 22px 55px rgba(32, 72, 120, 0.13);
+  background: #eef4fb;
+}
+
+.how-helps-feature-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 /* Search compare tray: blue card names + a visible start-compare button
    (the old button used undefined --accent-warm, leaving it invisible) */
 .search-tray-chip {
@@ -7638,3 +7655,309 @@ body {
   animation: cf-chat-pulse 1.6s ease-in-out infinite;
 }
 @keyframes cf-chat-pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+/* ─────────────────────────────────────────────
+   Editorial UX, article imagery, and verified cash-rebate ribbons
+   ───────────────────────────────────────────── */
+
+/* A real offer signal, intentionally distinct from the issuer welcome bonus. */
+.finly-rebate-badge {
+  position:absolute;
+  z-index:4;
+  top:10px;
+  right:10px;
+  min-width:112px;
+  padding:9px 11px 8px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:1px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.48);
+  border-radius:11px 11px 11px 3px;
+  background:linear-gradient(145deg,#087cf0,#0057b8);
+  color:#fff;
+  text-align:left;
+  box-shadow:0 10px 24px rgba(0,87,184,.25),inset 0 1px 0 rgba(255,255,255,.25);
+  pointer-events:none;
+}
+.finly-rebate-badge::after {
+  content:"";
+  position:absolute;
+  right:-13px;
+  bottom:-18px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:rgba(255,255,255,.1);
+}
+.finly-rebate-badge small {
+  color:rgba(255,255,255,.78);
+  font-size:6px;
+  font-weight:850;
+  line-height:1.2;
+  letter-spacing:.065em;
+  text-transform:uppercase;
+}
+.finly-rebate-badge strong {
+  position:relative;
+  z-index:1;
+  color:#fff;
+  font-size:20px;
+  font-weight:850;
+  line-height:1.05;
+  letter-spacing:-.04em;
+}
+.finly-rebate-badge em {
+  position:relative;
+  z-index:1;
+  color:rgba(255,255,255,.86);
+  font-size:6px;
+  font-style:normal;
+  font-weight:700;
+}
+.finly-rebate-badge.is-promotional {
+  background:linear-gradient(145deg,#087cf0 0%,#0057b8 58%,#173e75 100%);
+  box-shadow:0 11px 27px rgba(0,87,184,.3),inset 0 1px 0 rgba(255,255,255,.28);
+}
+.finly-rebate-badge-modal,
+.finly-rebate-badge-seo {
+  position:relative;
+  inset:auto;
+  width:max-content;
+  min-width:145px;
+}
+.finly-rebate-badge-modal {
+  margin:13px 0 3px;
+}
+.finly-rebate-badge-seo {
+  width:100%;
+  margin-top:18px;
+  padding:11px 13px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+}
+.finly-rebate-badge-seo small,
+.finly-rebate-badge-seo em { grid-column:1; }
+.finly-rebate-badge-seo strong { grid-column:2; grid-row:1 / span 2; font-size:25px; }
+.finly-rebate-badge-detail { top:17px; left:17px; right:auto; }
+
+.catalog-rebate-note {
+  margin:-8px 0 30px;
+  padding:16px 18px;
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:14px;
+  align-items:center;
+  border:1px solid rgba(0,113,227,.17);
+  border-radius:14px;
+  background:linear-gradient(135deg,#f2f8ff,#eaf3ff);
+}
+.catalog-rebate-note > span {
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:#0071e3;
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
+  box-shadow:0 7px 17px rgba(0,113,227,.2);
+}
+.catalog-rebate-note p { color:#647067; font-size:11px; line-height:1.55; }
+.catalog-rebate-note strong { display:block; margin-bottom:2px; color:#202b24; font-size:12px; }
+
+/* Image-led blog cards replace the old empty topic placeholders. */
+.blog-index .blog-index-art {
+  height:190px;
+  padding:0;
+  background:#e9ecef;
+}
+.blog-index .blog-index-art img {
+  padding:0 !important;
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .35s ease;
+}
+.blog-index .catalog-card:hover .blog-index-art img {
+  transform:scale(1.045);
+  filter:saturate(1.04) contrast(1.02);
+}
+
+/* Wider editorial canvas: stable reading column plus a sticky contents rail. */
+.seo-page .seo-main { max-width:1220px; }
+.seo-page .seo-hero.has-image {
+  padding:22px;
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(330px,.78fr);
+  gap:24px;
+  align-items:stretch;
+  background:#fff;
+}
+.seo-page .seo-hero.has-image::after { display:none; }
+.seo-page .seo-hero.has-image .seo-hero-copy {
+  padding:29px 20px 29px 28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.seo-page .seo-hero.has-image h1 {
+  font-size:clamp(37px,4.25vw,59px);
+  line-height:1.01;
+}
+.seo-hero-image {
+  position:relative;
+  min-height:390px;
+  margin:0;
+  overflow:hidden;
+  border-radius:16px;
+  background:#e8e8e4;
+  box-shadow:inset 0 0 0 1px rgba(35,38,33,.08);
+}
+.seo-hero-image::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 70%,rgba(14,25,37,.14));
+  pointer-events:none;
+}
+.seo-article-shell {
+  max-width:1080px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr);
+  gap:48px;
+  align-items:start;
+}
+.seo-toc-rail { min-width:0; }
+.seo-toc {
+  position:sticky;
+  top:96px;
+  padding:19px;
+  border:1px solid rgba(35,38,33,.09);
+  border-radius:15px;
+  background:rgba(255,255,255,.88);
+  box-shadow:0 13px 34px rgba(31,33,29,.05);
+  backdrop-filter:blur(14px);
+}
+.seo-toc-label {
+  display:block;
+  margin-bottom:12px;
+  padding-bottom:11px;
+  border-bottom:1px solid rgba(35,38,33,.08);
+  color:#0066cc;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.seo-toc ol { margin:0; padding:0; list-style:none; }
+.seo-toc li { padding:0 !important; margin:0 !important; }
+.seo-toc a {
+  padding:8px 5px;
+  display:grid;
+  grid-template-columns:22px 1fr;
+  gap:7px;
+  border:0 !important;
+  border-radius:8px;
+  color:#737970 !important;
+  font-size:9px;
+  font-weight:700;
+  line-height:1.35;
+  transition:background .2s ease,color .2s ease;
+}
+.seo-toc a > span { color:#a1a69e; font-size:7px; font-weight:850; }
+.seo-toc a:hover,
+.seo-toc a.is-active { background:#edf5ff; color:#0066cc !important; }
+.seo-toc a.is-active > span { color:#0066cc; }
+.seo-toc.is-loading { min-height:130px; opacity:.62; }
+.seo-page .seo-content { min-width:0; max-width:none; margin:0; }
+.seo-page .seo-content > h2 { scroll-margin-top:112px; }
+.seo-page .seo-content > p,
+.seo-page .seo-content > ul,
+.seo-page .seo-content > ol,
+.seo-page .seo-content > blockquote { max-width:760px; }
+.seo-page .seo-content > p { font-size:16px; line-height:1.85; }
+.seo-page .seo-content > ul,
+.seo-page .seo-content > ol { padding-left:20px; }
+.seo-page .seo-content > h2:first-child { margin-top:4px; }
+.seo-page .seo-card-grid { gap:18px; }
+.seo-page .seo-card-box {
+  padding:20px;
+  overflow:hidden;
+  box-shadow:0 14px 36px rgba(31,33,29,.055);
+}
+.seo-page .seo-card-box-img {
+  margin:-8px -8px 18px;
+  padding:20px;
+  border-radius:12px;
+  background:linear-gradient(145deg,#f5f5f2,#ebece8);
+}
+.seo-page .seo-card-box h3 { font-size:20px; line-height:1.2; }
+.seo-page .seo-card-box p { font-size:13px; line-height:1.68; }
+.seo-page .seo-content table {
+  display:table;
+  width:100%;
+  margin:30px 0 42px;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border:1px solid rgba(35,38,33,.09);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 11px 32px rgba(31,33,29,.04);
+}
+.seo-page .seo-content table th {
+  padding:15px 17px;
+  background:#efeee9;
+  color:#71776f;
+  font-family:var(--font-archivo),sans-serif;
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.04em;
+}
+.seo-page .seo-content table td {
+  padding:15px 17px;
+  border-color:rgba(35,38,33,.07);
+  color:#60655d;
+  font-size:12px;
+  line-height:1.5;
+}
+.seo-page .seo-content table tr:hover td { background:#f3f8ff; }
+.seo-cta-kicker {
+  display:block;
+  margin-bottom:12px;
+  color:#70b7ff;
+  font-size:8px;
+  font-weight:850;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+@media (max-width:980px) {
+  .seo-page .seo-main { padding-inline:28px; }
+  .seo-article-shell { grid-template-columns:180px minmax(0,1fr); gap:30px; }
+  .seo-page .seo-hero.has-image { grid-template-columns:1fr minmax(300px,.7fr); }
+  .seo-hero-image { min-height:350px; }
+}
+
+@media (max-width:780px) {
+  .seo-page .seo-main { padding:92px 18px 66px; }
+  .seo-page .seo-hero.has-image { padding:14px; grid-template-columns:1fr; }
+  .seo-page .seo-hero.has-image .seo-hero-copy { padding:23px 13px 16px; }
+  .seo-page .seo-hero.has-image h1 { font-size:42px; }
+  .seo-hero-image { min-height:280px; order:-1; }
+  .seo-article-shell { display:block; }
+  .seo-toc-rail { display:none; }
+  .seo-page .seo-content > p { font-size:15px; }
+  .catalog-rebate-note { margin-top:-12px; }
+}
+
+@media (max-width:520px) {
+  .finly-rebate-badge { min-width:104px; padding:8px 9px 7px; }
+  .finly-rebate-badge strong { font-size:18px; }
+  .catalog-rebate-note { grid-template-columns:1fr; }
+  .catalog-rebate-note > span { display:none; }
+  .seo-page .seo-hero.has-image h1 { font-size:37px; }
+  .seo-hero-image { min-height:220px; }
+}

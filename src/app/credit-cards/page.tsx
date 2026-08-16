@@ -3,7 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
+import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import { getCatalogOrderedCards } from "@/lib/cardDetail";
+import { FINLY_REBATES_CHECKED_AT, getFinlyRebate } from "@/lib/finlyRebates";
 
 export const metadata: Metadata = {
   title: "All Credit Cards (2026) | ClearFin",
@@ -17,6 +19,7 @@ export const revalidate = 300;
 export default async function CreditCardsPage() {
   const cards = await getCatalogOrderedCards();
   const issuerCount = new Set(cards.map((card) => card.issuer)).size;
+  const rebateCount = cards.filter((card) => getFinlyRebate(card.id, card.bankUrl)).length;
 
   return (
     <>
@@ -38,10 +41,20 @@ export default async function CreditCardsPage() {
             <div><span>Canadian credit cards</span><h2 id="catalog-title">Browse the full collection</h2></div>
             <Link href="/credit-card-calculator-canada">Find my best card →</Link>
           </div>
+          {rebateCount > 0 ? (
+            <div className="catalog-rebate-note">
+              <span aria-hidden="true">$</span>
+              <p>
+                <strong>{rebateCount} cards currently include a verified FinlyWealth cash rebate.</strong>
+                Look for the blue ribbon. Rebates require an eligible application through ClearFin and approval; terms apply. Amounts checked {FINLY_REBATES_CHECKED_AT}.
+              </p>
+            </div>
+          ) : null}
           <div className="catalog-grid">
             {cards.map((card) => (
               <Link href={`/credit-cards/${card.id}`} className="catalog-card" key={card.id}>
                 <div className="catalog-card-art">
+                  <FinlyRebateBadge cardId={card.id} applicationUrl={card.bankUrl} />
                   <Image src={card.img} alt={card.name} fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 280px" style={{ objectFit: "contain" }} />
                 </div>
                 <div className="catalog-card-copy">

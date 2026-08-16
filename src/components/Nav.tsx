@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SearchTrigger from "@/components/SearchTrigger";
 import ClearFinWordmark from "@/components/ClearFinWordmark";
+import HomeLogoLink from "@/components/HomeLogoLink";
 
 function NavIcon({ type }: { type: "card" | "compare" | "calculator" | "learn" }) {
   if (type === "card") {
@@ -70,20 +70,6 @@ export default function Nav() {
   const [ddOpen, setDdOpen] = useState(false);
   const [mobileCardsOpen, setMobileCardsOpen] = useState(false);
   const ddRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
-
-  /**
-   * Clicking the wordmark should always land you at the top of the homepage.
-   * Navigating from another page already does that; the same-page case would
-   * otherwise be a no-op, leaving the user parked where they were.
-   */
-  const goHome = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    setMenuOpen(false);
-    if (pathname !== "/") return;
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -108,9 +94,9 @@ export default function Nav() {
 
   return (
     <header className={`nav${scrolled ? " scrolled" : ""}${menuOpen ? " menu-open" : ""}`}>
-      <Link href="/" className="logo" aria-label="ClearFin home" onClick={goHome}>
+      <HomeLogoLink className="logo" onActivate={() => setMenuOpen(false)}>
         <ClearFinWordmark className="logo-word" />
-      </Link>
+      </HomeLogoLink>
 
       <nav className="nav-links" aria-label="Main navigation">
         <div
