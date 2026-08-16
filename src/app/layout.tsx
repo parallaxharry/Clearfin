@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Archivo, Fraunces, JetBrains_Mono } from "next/font/google";
+import dynamic from "next/dynamic";
 import AnalyticsConsent from "@/components/AnalyticsConsent";
 import { SearchProvider } from "@/context/SearchContext";
 import { getSearchCards } from "@/lib/cardDetail";
 import "./globals.css";
+
+/** Client-only and below the fold — keep it out of the initial bundle. */
+const ChatWidget = dynamic(() => import("@/components/ChatWidget"));
 
 const GOOGLE_ANALYTICS_ID = "G-SP0554X7Y2";
 
@@ -154,6 +158,7 @@ export default async function RootLayout({
         />
         <SearchProvider cards={searchCards}>{children}</SearchProvider>
         <AnalyticsConsent />
+        <ChatWidget />
       </body>
     </html>
   );

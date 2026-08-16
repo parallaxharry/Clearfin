@@ -138,6 +138,14 @@ const CARDS_BY_ID = new Map<string, CardDef>(CARDS.map((c) => [c.id, c]));
 const ID_ALIASES: Record<string, string> = { cobalt: "Amex-cobalt" };
 const catalogId = (id: string) => ID_ALIASES[id] ?? id;
 
+const SITE_IDS_BY_CATALOG_ID = new Map(
+  Object.entries(ID_ALIASES).map(([siteId, rowId]) => [rowId, siteId])
+);
+
+/** Inverse of `catalogId`: a card_catalog row id → the id used in /credit-cards/<id>. */
+export const siteCardId = (rowId: string): string =>
+  SITE_IDS_BY_CATALOG_ID.get(rowId) ?? rowId;
+
 function readClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
