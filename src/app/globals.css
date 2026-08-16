@@ -7662,8 +7662,9 @@ body {
 
 /* A real offer signal, intentionally distinct from the issuer welcome bonus. */
 .finly-rebate-badge {
-  --rebate-gold:#d9b665;
-  --rebate-gold-light:#f6dda2;
+  --rebate-gold:#9b742b;
+  --rebate-gold-light:#cf9f3d;
+  --rebate-money:#086854;
   position:absolute;
   z-index:4;
   top:11px;
@@ -7675,18 +7676,20 @@ body {
   align-items:flex-start;
   gap:3px;
   overflow:hidden;
-  border:1px solid rgba(217,182,101,.88);
+  border:1px solid rgba(180,137,53,.88);
   border-left-width:3px;
   border-radius:9px 3px 12px 9px;
   background:
-    radial-gradient(circle at 86% 14%,rgba(255,224,154,.13),transparent 31%),
-    linear-gradient(145deg,#262521 0%,#090a09 55%,#1a150c 100%);
-  color:#fff8e8;
+    radial-gradient(circle at 86% 12%,rgba(255,255,255,.92),transparent 27%),
+    linear-gradient(135deg,#fffdf7 0%,#f3e2bb 37%,#fff8e8 66%,#dcb96f 100%);
+  background-size:140% 140%,220% 220%;
+  background-position:15% 20%,0% 50%;
+  color:#243c34;
   text-align:left;
   box-shadow:
-    0 14px 30px rgba(29,22,10,.3),
-    0 3px 8px rgba(12,10,7,.24),
-    inset 0 1px 0 rgba(255,244,207,.16);
+    0 14px 30px rgba(123,91,29,.22),
+    0 3px 8px rgba(66,50,20,.16),
+    inset 0 1px 0 rgba(255,255,255,.92);
   pointer-events:none;
   isolation:isolate;
 }
@@ -7695,7 +7698,7 @@ body {
   position:absolute;
   z-index:-1;
   inset:1px;
-  border:1px solid rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.58);
   border-radius:6px 2px 9px 6px;
   pointer-events:none;
 }
@@ -7708,7 +7711,7 @@ body {
   width:28%;
   height:185%;
   transform:rotate(18deg);
-  background:linear-gradient(90deg,transparent,rgba(255,241,193,.2),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),rgba(255,232,174,.5),transparent);
   pointer-events:none;
 }
 .finly-rebate-badge small {
@@ -7725,10 +7728,10 @@ body {
   text-transform:uppercase;
 }
 .finly-rebate-badge small > span {
-  color:var(--rebate-gold-light);
+  color:var(--rebate-money);
   font-size:8px;
   line-height:1;
-  text-shadow:0 0 10px rgba(238,196,99,.58);
+  text-shadow:0 0 9px rgba(8,104,84,.18);
 }
 .finly-rebate-value {
   position:relative;
@@ -7739,15 +7742,15 @@ body {
   white-space:nowrap;
 }
 .finly-rebate-badge strong {
-  color:#fff8e8;
+  color:var(--rebate-money);
   font-size:23px;
   font-weight:900;
   line-height:1;
   letter-spacing:-.055em;
-  text-shadow:0 1px 0 rgba(0,0,0,.45);
+  text-shadow:0 1px 0 rgba(255,255,255,.8),0 4px 12px rgba(8,104,84,.13);
 }
 .finly-rebate-badge em {
-  color:#cfc1a2;
+  color:#6e5a2f;
   font-size:6px;
   font-style:normal;
   font-weight:850;
@@ -7763,20 +7766,23 @@ body {
   width:15px;
   height:15px;
   clip-path:polygon(100% 0,0 100%,100% 100%);
-  background:linear-gradient(135deg,#7e622b,#e6c474 68%,#8b692a);
-  box-shadow:-2px -2px 7px rgba(0,0,0,.28);
+  background:linear-gradient(135deg,#8c6823,#f3d990 64%,#a57929);
+  box-shadow:-2px -2px 7px rgba(95,67,16,.25);
 }
 .finly-rebate-badge.is-promotional {
-  --rebate-gold:#f0c96f;
-  --rebate-gold-light:#fff0be;
-  border-color:rgba(240,201,111,.96);
+  --rebate-gold:#8b6320;
+  --rebate-gold-light:#bf8527;
+  --rebate-money:#075f4d;
+  border-color:rgba(200,150,52,.96);
   background:
-    radial-gradient(circle at 84% 12%,rgba(255,220,130,.2),transparent 34%),
-    linear-gradient(145deg,#312a1b 0%,#0b0b09 49%,#231707 100%);
+    radial-gradient(circle at 84% 10%,rgba(255,255,255,.96),transparent 29%),
+    linear-gradient(135deg,#fffaf0 0%,#ebca82 38%,#fff4d9 65%,#d49a32 100%);
+  background-size:140% 140%,220% 220%;
+  background-position:15% 20%,0% 50%;
   box-shadow:
-    0 15px 34px rgba(120,82,18,.28),
-    0 3px 9px rgba(12,10,7,.28),
-    inset 0 1px 0 rgba(255,244,207,.2);
+    0 15px 34px rgba(159,108,15,.24),
+    0 3px 9px rgba(92,63,13,.17),
+    inset 0 1px 0 rgba(255,255,255,.94);
 }
 .finly-rebate-badge-modal,
 .finly-rebate-badge-seo {
@@ -7801,14 +7807,42 @@ body {
 .finly-rebate-badge-detail { top:17px; left:17px; right:auto; }
 
 @media (prefers-reduced-motion:no-preference) {
+  .finly-rebate-badge {
+    animation:finly-rebate-lustre 7.2s ease-in-out infinite;
+  }
   .finly-rebate-badge::after {
-    animation:finly-rebate-sheen 5.2s ease-in-out infinite;
+    animation:finly-rebate-sheen 4.8s cubic-bezier(.4,0,.2,1) infinite;
+  }
+  .finly-rebate-badge small > span {
+    animation:finly-rebate-twinkle 3.6s ease-in-out infinite;
+  }
+  .finly-rebate-badge strong {
+    animation:finly-rebate-value-glow 4.8s ease-in-out infinite;
+  }
+}
+@keyframes finly-rebate-lustre {
+  0%,100% {
+    background-position:15% 20%,0% 50%;
+    box-shadow:0 14px 30px rgba(123,91,29,.22),0 3px 8px rgba(66,50,20,.16),inset 0 1px 0 rgba(255,255,255,.92);
+  }
+  50% {
+    background-position:82% 72%,100% 50%;
+    box-shadow:0 17px 36px rgba(159,114,28,.28),0 4px 10px rgba(66,50,20,.13),inset 0 1px 0 rgba(255,255,255,.96);
   }
 }
 @keyframes finly-rebate-sheen {
-  0%,72% { left:-38%; opacity:0; }
-  78% { opacity:1; }
-  92%,100% { left:118%; opacity:0; }
+  0%,66% { left:-38%; opacity:0; }
+  72% { opacity:1; }
+  89%,100% { left:118%; opacity:0; }
+}
+@keyframes finly-rebate-twinkle {
+  0%,72%,100% { transform:scale(1) rotate(0deg); opacity:.9; }
+  80% { transform:scale(1.22) rotate(12deg); opacity:1; }
+  88% { transform:scale(1) rotate(0deg); opacity:.9; }
+}
+@keyframes finly-rebate-value-glow {
+  0%,68%,100% { text-shadow:0 1px 0 rgba(255,255,255,.8),0 4px 12px rgba(8,104,84,.13); }
+  78% { text-shadow:0 1px 0 #fff,0 4px 15px rgba(8,104,84,.28),0 0 8px rgba(255,255,255,.7); }
 }
 
 .catalog-rebate-note {
