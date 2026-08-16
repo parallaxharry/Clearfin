@@ -7662,70 +7662,128 @@ body {
 
 /* A real offer signal, intentionally distinct from the issuer welcome bonus. */
 .finly-rebate-badge {
+  --rebate-gold:#d9b665;
+  --rebate-gold-light:#f6dda2;
   position:absolute;
   z-index:4;
-  top:10px;
-  right:10px;
-  min-width:112px;
-  padding:9px 11px 8px;
+  top:11px;
+  right:8px;
+  min-width:132px;
+  padding:10px 15px 11px 16px;
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  gap:1px;
+  gap:3px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,.48);
-  border-radius:11px 11px 11px 3px;
-  background:linear-gradient(145deg,#087cf0,#0057b8);
-  color:#fff;
+  border:1px solid rgba(217,182,101,.88);
+  border-left-width:3px;
+  border-radius:9px 3px 12px 9px;
+  background:
+    radial-gradient(circle at 86% 14%,rgba(255,224,154,.13),transparent 31%),
+    linear-gradient(145deg,#262521 0%,#090a09 55%,#1a150c 100%);
+  color:#fff8e8;
   text-align:left;
-  box-shadow:0 10px 24px rgba(0,87,184,.25),inset 0 1px 0 rgba(255,255,255,.25);
+  box-shadow:
+    0 14px 30px rgba(29,22,10,.3),
+    0 3px 8px rgba(12,10,7,.24),
+    inset 0 1px 0 rgba(255,244,207,.16);
+  pointer-events:none;
+  isolation:isolate;
+}
+.finly-rebate-badge::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:1px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:6px 2px 9px 6px;
   pointer-events:none;
 }
 .finly-rebate-badge::after {
   content:"";
   position:absolute;
-  right:-13px;
-  bottom:-18px;
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:rgba(255,255,255,.1);
+  z-index:2;
+  top:-42%;
+  left:-38%;
+  width:28%;
+  height:185%;
+  transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,241,193,.2),transparent);
+  pointer-events:none;
 }
 .finly-rebate-badge small {
-  color:rgba(255,255,255,.78);
-  font-size:6px;
-  font-weight:850;
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  color:var(--rebate-gold);
+  font-size:6.5px;
+  font-weight:900;
   line-height:1.2;
-  letter-spacing:.065em;
+  letter-spacing:.12em;
   text-transform:uppercase;
 }
-.finly-rebate-badge strong {
+.finly-rebate-badge small > span {
+  color:var(--rebate-gold-light);
+  font-size:8px;
+  line-height:1;
+  text-shadow:0 0 10px rgba(238,196,99,.58);
+}
+.finly-rebate-value {
   position:relative;
   z-index:1;
-  color:#fff;
-  font-size:20px;
-  font-weight:850;
-  line-height:1.05;
-  letter-spacing:-.04em;
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  white-space:nowrap;
+}
+.finly-rebate-badge strong {
+  color:#fff8e8;
+  font-size:23px;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:-.055em;
+  text-shadow:0 1px 0 rgba(0,0,0,.45);
 }
 .finly-rebate-badge em {
-  position:relative;
-  z-index:1;
-  color:rgba(255,255,255,.86);
+  color:#cfc1a2;
   font-size:6px;
   font-style:normal;
-  font-weight:700;
+  font-weight:850;
+  line-height:1.2;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.finly-rebate-fold {
+  position:absolute;
+  z-index:1;
+  right:-1px;
+  bottom:-1px;
+  width:15px;
+  height:15px;
+  clip-path:polygon(100% 0,0 100%,100% 100%);
+  background:linear-gradient(135deg,#7e622b,#e6c474 68%,#8b692a);
+  box-shadow:-2px -2px 7px rgba(0,0,0,.28);
 }
 .finly-rebate-badge.is-promotional {
-  background:linear-gradient(145deg,#087cf0 0%,#0057b8 58%,#173e75 100%);
-  box-shadow:0 11px 27px rgba(0,87,184,.3),inset 0 1px 0 rgba(255,255,255,.28);
+  --rebate-gold:#f0c96f;
+  --rebate-gold-light:#fff0be;
+  border-color:rgba(240,201,111,.96);
+  background:
+    radial-gradient(circle at 84% 12%,rgba(255,220,130,.2),transparent 34%),
+    linear-gradient(145deg,#312a1b 0%,#0b0b09 49%,#231707 100%);
+  box-shadow:
+    0 15px 34px rgba(120,82,18,.28),
+    0 3px 9px rgba(12,10,7,.28),
+    inset 0 1px 0 rgba(255,244,207,.2);
 }
 .finly-rebate-badge-modal,
 .finly-rebate-badge-seo {
   position:relative;
   inset:auto;
   width:max-content;
-  min-width:145px;
+  min-width:174px;
 }
 .finly-rebate-badge-modal {
   margin:13px 0 3px;
@@ -7733,15 +7791,25 @@ body {
 .finly-rebate-badge-seo {
   width:100%;
   margin-top:18px;
-  padding:11px 13px;
-  display:grid;
-  grid-template-columns:1fr auto;
-  align-items:center;
+  padding:12px 15px 13px 17px;
 }
-.finly-rebate-badge-seo small,
-.finly-rebate-badge-seo em { grid-column:1; }
-.finly-rebate-badge-seo strong { grid-column:2; grid-row:1 / span 2; font-size:25px; }
+.finly-rebate-badge-seo .finly-rebate-value {
+  width:100%;
+  justify-content:space-between;
+}
+.finly-rebate-badge-seo strong { font-size:26px; }
 .finly-rebate-badge-detail { top:17px; left:17px; right:auto; }
+
+@media (prefers-reduced-motion:no-preference) {
+  .finly-rebate-badge::after {
+    animation:finly-rebate-sheen 5.2s ease-in-out infinite;
+  }
+}
+@keyframes finly-rebate-sheen {
+  0%,72% { left:-38%; opacity:0; }
+  78% { opacity:1; }
+  92%,100% { left:118%; opacity:0; }
+}
 
 .catalog-rebate-note {
   margin:-8px 0 30px;
@@ -7954,8 +8022,10 @@ body {
 }
 
 @media (max-width:520px) {
-  .finly-rebate-badge { min-width:104px; padding:8px 9px 7px; }
-  .finly-rebate-badge strong { font-size:18px; }
+  .finly-rebate-badge { min-width:116px; padding:9px 12px 10px 13px; }
+  .finly-rebate-badge small { font-size:5.8px; letter-spacing:.09em; }
+  .finly-rebate-badge strong { font-size:20px; }
+  .finly-rebate-badge em { font-size:5.4px; }
   .catalog-rebate-note { grid-template-columns:1fr; }
   .catalog-rebate-note > span { display:none; }
   .seo-page .seo-hero.has-image h1 { font-size:37px; }
