@@ -21,7 +21,7 @@ export default function FinlyRebateBadge({
     >
       <small>
         <span aria-hidden="true">✦</span>
-        {rebate.isPromotional ? "Limited ClearFin offer" : "ClearFin exclusive"}
+        {rebate.isPromotional ? "Limited offer" : null}
       </small>
       <span className="finly-rebate-value">
         <strong>${rebate.amount}</strong>
