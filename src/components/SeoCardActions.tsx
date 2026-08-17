@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CARDS } from "@/lib/cards";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 import TrackedApplyLink from "@/components/TrackedApplyLink";
+import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 
 /**
  * Apply + details actions for the hand-written "Best X" pages, keyed by the
@@ -45,18 +46,25 @@ export default async function SeoCardActions({ name }: { name: string }) {
   const applyUrl = info?.bankUrl ?? card.bankUrl;
   const issuer = info?.issuer ?? card.issuer;
   return (
-    <div className="seo-card-actions">
-      {applyUrl && (
-        <TrackedApplyLink
-          cardId={card.id}
-          href={applyUrl}
-          issuer={issuer}
-          className="seo-card-apply"
-        />
-      )}
-      <Link href={`/credit-cards/${card.id}`} className="seo-card-view">
-        View full details
-      </Link>
-    </div>
+    <>
+      <FinlyRebateBadge
+        cardId={card.id}
+        applicationUrl={applyUrl}
+        className="finly-rebate-badge-seo"
+      />
+      <div className="seo-card-actions">
+        {applyUrl && (
+          <TrackedApplyLink
+            cardId={card.id}
+            href={applyUrl}
+            issuer={issuer}
+            className="seo-card-apply"
+          />
+        )}
+        <Link href={`/credit-cards/${card.id}`} className="seo-card-view">
+          View full details
+        </Link>
+      </div>
+    </>
   );
 }

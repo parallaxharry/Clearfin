@@ -7,6 +7,7 @@ import { getCard, getAllCardIds, type WelcomeBonus } from "@/lib/cardDetail";
 import TrackedApplyLink from "@/components/TrackedApplyLink";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
+import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import { CARDS } from "@/lib/cards";
 
 // ISR: Supabase card_catalog edits go live within ~5 min, no redeploy needed.
@@ -435,6 +436,11 @@ export default async function CardPage({
           </div>
 
           <div className="cardpg-hero-media">
+            <FinlyRebateBadge
+              cardId={card.id}
+              applicationUrl={card.bankUrl}
+              className="finly-rebate-badge-detail"
+            />
             {card.img ? (
               <Image
                 src={card.img}

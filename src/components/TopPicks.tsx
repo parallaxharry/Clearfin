@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CARDS } from "@/lib/cards";
 import { useCatalog } from "@/context/CatalogContext";
+import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 
 interface PickCard {
   id: string;
@@ -114,6 +115,7 @@ export default function TopPicks() {
                   <strong>{card.category}</strong>
                 </div>
                 <div className="pick-card-img">
+                  <FinlyRebateBadge cardId={card.id} applicationUrl={card.bankUrl} />
                   <Image
                     src={card.img}
                     alt={card.name}
@@ -170,6 +172,11 @@ export default function TopPicks() {
               <div className="card-modal-badge">{selectedCard.category}</div>
               <h3 className="card-modal-name">{selectedCard.name}</h3>
               <div className="card-modal-issuer">{selectedCard.issuer}</div>
+              <FinlyRebateBadge
+                cardId={selectedCard.id}
+                applicationUrl={selectedCard.bankUrl}
+                className="finly-rebate-badge-modal"
+              />
               <div className="card-modal-net-row">
                 <span className="card-modal-net">{selectedCard.rate}</span>
                 <span className="card-modal-net-label">reward highlight</span>
