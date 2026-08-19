@@ -4,12 +4,20 @@ import type { ChatCompletionMessageParam } from "openai/resources/chat/completio
 import { CHAT_MODEL, getSlimCatalogue, buildSystemPrompt } from "@/lib/chatContext";
 import { CHAT_TOOLS, runChatTool } from "@/lib/chatTools";
 import {
-  checkLimits,
-  recordUsage,
-  logQuestion,
+  getSession,
+  checkGate,
+  dailyCapExceeded,
+  setEmail,
+  recordPrompt,
+  logMessage,
+  isValidEmail,
+  isUuid,
   hashIp,
   clientIpFrom,
-} from "@/lib/chatRateLimit";
+  MAX_PROMPTS,
+  FREE_PROMPTS,
+  CONTACT_EMAIL,
+} from "@/lib/chatSession";
 
 export const runtime = "nodejs";
 /** Never cache a conversation. */
@@ -43,7 +51,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { messages?: IncomingMessage[]; cardId?: string | null };
+  let body: {
+    messages?: IncomingMessage[];
+    cardId?: string | null;
+    clientId?: string;
+    email?: string;
+  };
   try {
     body = await req.json();
   } catch {
@@ -65,11 +78,50 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const ipHash = hashIp(clientIpFrom(req.headers));
-  const decision = await checkLimits(ipHash);
-  if (!decision.allowed) {
-    return NextResponse.json({ error: decision.message }, { status: 429 });
+  if (!isUuid(body.clientId)) {
+    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
+  const clientId = body.clientId;
+
+  const ipHash = hashIp(clientIpFrom(req.headers));
+  const session = await getSession(clientId, ipHash);
+
+  // Global spend ceiling, checked before anything visitor-specific.
+  if (await dailyCapExceeded()) {
+    return NextResponse.json(
+      {
+        error:
+          "The assistant is taking a short break for today. The calculator and compare tool run on the same data.",
+      },
+      { status: 429 }
+    );
+  }
+
+  const gate = await checkGate(session, body.email);
+  if (!gate.allow) {
+    // 428 tells the widget to show the email form; 429 is a hard stop.
+    const status = gate.reason === "email_required" ? 428 : 429;
+    return NextResponse.json(
+      {
+        error: gate.message,
+        reason: gate.reason,
+        promptsUsed: session.promptCount,
+        maxPrompts: MAX_PROMPTS,
+        freePrompts: FREE_PROMPTS,
+        contactEmail: CONTACT_EMAIL,
+      },
+      { status }
+    );
+  }
+
+  // First time an address arrives, attach it to the session and backfill it
+  // onto the prompts this visitor already sent.
+  if (!session.email && isValidEmail(body.email)) {
+    await setEmail(clientId, body.email.trim());
+  }
+  const sessionEmail = gate.email;
+
+  void logMessage(clientId, sessionEmail, "user", latest.content);
 
   const catalogue = await getSlimCatalogue();
   const cardId =
@@ -91,11 +143,16 @@ export async function POST(req: NextRequest) {
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const encoder = new TextEncoder();
   let totalTokens = 0;
-  const citedCards: string[] = [];
+
+  let answerText = "";
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const send = (text: string) => controller.enqueue(encoder.encode(text));
+      const send = (text: string) => {
+        // Status markers are UI-only; keep them out of the stored transcript.
+        if (!text.startsWith(RS)) answerText += text;
+        controller.enqueue(encoder.encode(text));
+      };
       const timeout = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
 
       try {
@@ -147,7 +204,6 @@ export async function POST(req: NextRequest) {
 
           for (const call of calls) {
             const result = await runChatTool(call.name, call.args);
-            collectCardIds(result, citedCards);
             messages.push({
               role: "tool",
               tool_call_id: call.id,
@@ -180,8 +236,8 @@ export async function POST(req: NextRequest) {
       } finally {
         controller.close();
         // Accounting must not block the response.
-        void recordUsage(ipHash, totalTokens);
-        void logQuestion(latest.content, citedCards);
+        void recordPrompt(clientId, totalTokens);
+        void logMessage(clientId, sessionEmail, "assistant", answerText);
       }
     },
   });
@@ -195,11 +251,3 @@ export async function POST(req: NextRequest) {
   });
 }
 
-/** Pull card ids out of a tool result so we can log what was discussed. */
-function collectCardIds(result: unknown, into: string[]): void {
-  if (!result || typeof result !== "object") return;
-  const r = result as { cards?: { id?: string }[]; results?: { id?: string }[] };
-  for (const item of [...(r.cards ?? []), ...(r.results ?? [])]) {
-    if (item?.id && !into.includes(item.id)) into.push(item.id);
-  }
-}

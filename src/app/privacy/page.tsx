@@ -116,6 +116,32 @@ export default function PrivacyPage() {
           ))}
 
           <section className="privacy-section">
+            <h2>ClearFin Ask (the card assistant)</h2>
+            <p>
+              When you use the card assistant, ClearFin stores the questions you
+              send and the answers you receive, so we can understand what people
+              need help with and improve the service. These records are deleted
+              automatically after 7 days.
+            </p>
+            <p>
+              Your browser is given a random identifier, kept in your browser&apos;s
+              local storage, which counts how many questions you have asked. After
+              the first 10 questions we ask for your email address before
+              continuing. If you provide one, it is stored with your session and
+              attached to the questions you have already asked, so we can follow up
+              with you about them. We also store a one-way hashed version of your IP
+              address to help prevent abuse; the address itself is never stored.
+            </p>
+            <p>
+              Your questions are sent to OpenAI, which generates the answers on our
+              behalf. Do not enter account numbers, passwords, or other sensitive
+              personal information into the assistant. You can clear your browser&apos;s
+              site data at any time to remove the identifier and stored email, or
+              contact us to ask for your records to be deleted.
+            </p>
+          </section>
+
+          <section className="privacy-section">
             <h2>Google Analytics</h2>
             <p>
               ClearFin uses Google Analytics only according to the choice saved
