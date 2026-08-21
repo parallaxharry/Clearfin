@@ -40,7 +40,7 @@ const softwareApplicationSchema = {
   operatingSystem: "Web",
   url: "https://www.clearfin.ca/credit-card-calculator-canada",
   description:
-    "Compare 107 Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
+    "Compare 120+ Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
   offers: {
     "@type": "Offer",
     price: "0",
@@ -101,7 +101,7 @@ const howToSchema = {
       "@type": "HowToStep",
       position: 7,
       name: "Review your personalized card recommendations",
-      text: "ClearFin calculates your estimated annual earnings across all 107 Canadian cards and ranks them by net value for your specific spending profile.",
+      text: "ClearFin calculates your estimated annual earnings across 120+ Canadian cards and ranks them by net value for your specific spending profile.",
     },
   ],
 };

@@ -170,7 +170,7 @@ export default function CardParade() {
 
       {/* ── Infinite marquee strip ── */}
       <div className="marquee-wrap">
-        <div className="marquee-eyebrow">107 cards tracked · 17 issuers covered</div>
+        <div className="marquee-eyebrow">120+ cards tracked · 19 issuers covered</div>
         <div className="marquee-track">
           <div className="marquee-reel">
             {[...MARQUEE, ...MARQUEE].map((c, i) => (

@@ -24,7 +24,7 @@ const softwareApplicationSchema = {
   operatingSystem: "Web",
   url: "https://www.clearfin.ca/credit-card-calculator-canada",
   description:
-    "Compare 107 Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
+    "Compare 120+ Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
   offers: {
     "@type": "Offer",
     price: "0",
@@ -85,7 +85,7 @@ const howToSchema = {
       "@type": "HowToStep",
       position: 7,
       name: "Review your personalized card recommendations",
-      text: "ClearFin calculates your estimated annual earnings across all 107 Canadian cards and ranks them by net value for your specific spending profile.",
+      text: "ClearFin calculates your estimated annual earnings across 120+ Canadian cards and ranks them by net value for your specific spending profile.",
     },
   ],
 };
@@ -138,8 +138,8 @@ export default async function HomePage() {
           </div>
         </div>
         <div className="home-proof" role="region" aria-label="ClearFin coverage">
-          <div className="home-proof-item"><strong>107+</strong><span>Canadian cards compared</span></div>
-          <div className="home-proof-item"><strong>17</strong><span>Issuers covered</span></div>
+          <div className="home-proof-item"><strong>120+</strong><span>Canadian cards compared</span></div>
+          <div className="home-proof-item"><strong>19</strong><span>Issuers covered</span></div>
           <div className="home-proof-item"><strong>Independent</strong><span>Recommendations built around your spending</span></div>
         </div>
       </section>

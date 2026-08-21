@@ -33,12 +33,12 @@ const faqs = [
   {
     question: "Which credit cards does ClearFin track?",
     answer:
-      "ClearFin tracks 107 Canadian credit cards across 17 major issuers, including American Express, Scotiabank, TD Bank, RBC, BMO, CIBC, Tangerine, Rogers, Wealthsimple, PC Financial, and more.",
+      "ClearFin tracks more than 120 Canadian credit cards across 19 major issuers, including American Express, Scotiabank, TD Bank, RBC, BMO, CIBC, Tangerine, Rogers, Wealthsimple, PC Financial, and more.",
   },
   {
     question: "Is ClearFin affiliated with any bank or card issuer?",
     answer:
-      "No. ClearFin is completely independent. We are not sponsored, endorsed, or affiliated with any bank, credit card issuer, or payment network. Card comparisons are based on publicly available rates and terms.",
+      "No. ClearFin is not sponsored, endorsed, or affiliated with any bank, credit card issuer, or payment network, and comparisons are based on publicly available rates and terms. Some “Apply” links are affiliate links, so ClearFin may earn a commission if you are approved for a card through one, at no extra cost to you. That never affects how cards are ranked or reviewed — every card is scored by the same calculation, and we do not accept payment for placement.",
   },
   {
     question: "How accurate are the cashback estimates?",
@@ -58,7 +58,7 @@ const faqs = [
   {
     question: "How does the credit card calculator work?",
     answer:
-      "Enter your monthly spend across five categories: dining, groceries, gas, travel, and other. ClearFin applies each card's earn rate to your spend, calculates annual rewards, subtracts the annual fee, and ranks all 107 cards by net annual value. The process takes about 30 seconds.",
+      "Enter your monthly spend across five categories: dining, groceries, gas, travel, and other. ClearFin applies each card's earn rate to your spend, calculates annual rewards, subtracts the annual fee, and ranks every card in the catalogue by net annual value. The process takes about 30 seconds.",
   },
   {
     question: "Can I upload my credit card statement?",

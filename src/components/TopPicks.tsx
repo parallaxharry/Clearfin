@@ -138,7 +138,7 @@ export default function TopPicks() {
           </div>
           <div className="top-picks-proof">
             <span>Independently compared</span>
-            <strong>107+ Canadian cards reviewed</strong>
+            <strong>120+ Canadian cards reviewed</strong>
             <span>Rates and offers can change</span>
           </div>
           <Link href="/credit-cards" className="top-picks-all">

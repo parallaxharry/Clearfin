@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import InfoPageLayout from "@/components/InfoPageLayout";
 
 export const metadata: Metadata = {
@@ -100,7 +101,7 @@ export default function AboutPage() {
           <h2>What we are building</h2>
           <p>
             ClearFin is a unified financial system for your credit cards. The calculator
-            shows you which of 107 Canadian cards earns the most for your actual spending
+            shows you which of 120+ Canadian cards earns the most for your actual spending
             habits. The app tracks your cards, reminds you before payments are due, flags
             active subscriptions, and tells you — in real time — whether you used the
             right card for every purchase.
@@ -127,9 +128,15 @@ export default function AboutPage() {
           <h2>Independence</h2>
           <p>
             ClearFin is not affiliated with any bank, credit card issuer, or payment
-            network. Every comparison is based on publicly available rates and terms.
-            We earn nothing from card applications. Our only job is to give you the
-            most accurate picture of your options.
+            network. We are not sponsored or endorsed by any of them, and every
+            comparison is based on publicly available rates and terms.
+          </p>
+          <p>
+            Some &ldquo;Apply&rdquo; links are affiliate links. ClearFin may earn a
+            commission if you are approved for a card through one, at no extra cost to
+            you. This never affects how we rank or review cards — every card is scored
+            by the same calculation, and we do not accept payment for placement. Read
+            the full <Link href="/disclosures">site disclosures</Link>.
           </p>
         </section>
 
