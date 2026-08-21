@@ -6164,10 +6164,14 @@ section { min-height: 0; scroll-snap-align: none; overflow: visible; }
 }
 .info-section p + p { margin-top:14px !important; }
 .info-section ul {
-  display:grid;
-  gap:11px;
+  /* Block, not grid — grid items drop their ::marker. Tailwind's preflight
+     also strips list-style globally, so restore it explicitly or these
+     policy lists render as indented text with no bullets. */
+  display:block;
+  list-style:disc;
   padding-left:19px;
 }
+.info-section li + li { margin-top:11px; }
 .info-section li::marker { color:#0071e3; }
 .info-section a,
 .info-notice a {

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
-import SiteFooter from "@/components/SiteFooter";
+import InfoPageLayout from "@/components/InfoPageLayout";
 
 export const metadata: Metadata = {
   title: "FAQ | ClearFin",
@@ -99,38 +98,24 @@ const faqSchema = {
 export default function FaqPage() {
   return (
     <>
-    <main className="privacy-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <div className="grain" />
-      <Nav />
-      <div className="privacy-shell">
-
-        <header className="privacy-hero">
-          <div className="privacy-kicker">ClearFin Digital Inc.</div>
-          <h1>
-            Frequently Asked <span className="ital">Questions</span>
-          </h1>
-          <p>
-            Everything you need to know about how ClearFin works, which cards we
-            track, and what to expect at launch.
-          </p>
-          <div className="privacy-updated">Updated: May 2026</div>
-        </header>
-
-        <div className="privacy-content">
-          {faqs.map((faq) => (
-            <section className="privacy-section" key={faq.question}>
-              <h2>{faq.question}</h2>
-              <p>{faq.answer}</p>
-            </section>
-          ))}
-        </div>
-      </div>
-    </main>
-      <SiteFooter />
+      <InfoPageLayout
+        eyebrow="FAQ"
+        title="Frequently asked"
+        accent="questions"
+        description="Everything you need to know about how ClearFin works, which cards we track, and what to expect at launch."
+        meta="Updated May 2026"
+      >
+        {faqs.map((faq) => (
+          <section className="info-section" key={faq.question}>
+            <h2>{faq.question}</h2>
+            <p>{faq.answer}</p>
+          </section>
+        ))}
+      </InfoPageLayout>
     </>
   );
 }

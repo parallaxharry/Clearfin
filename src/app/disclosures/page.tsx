@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
-import SiteFooter from "@/components/SiteFooter";
+import InfoPageLayout from "@/components/InfoPageLayout";
 
 export const metadata: Metadata = {
   title: "Disclosures | ClearFin",
@@ -45,41 +44,28 @@ const disclosureSections = [
 
 export default function DisclosuresPage() {
   return (
-    <>
-    <main className="privacy-page">
-      <div className="grain" />
-      <Nav />
-      <div className="privacy-shell">
-
-        <header className="privacy-hero">
-          <div className="privacy-kicker">ClearFin Digital Inc.</div>
-          <h1>
-            Site <span className="ital">Disclosures</span>
-          </h1>
-          <p>
-            These disclosures explain ClearFin&apos;s independence, how card information is
-            presented, and how banks, issuers, providers, or users can request updates.
-          </p>
-          <div className="privacy-updated">Last updated: May 2026</div>
-        </header>
-
-        <section className="privacy-notice">
-          <strong>No bank affiliation.</strong> ClearFin is not affiliated with any bank
-          or credit card provider. For corrections, removals, or modifications, contact{" "}
+    <InfoPageLayout
+      eyebrow="Disclosures"
+      title="Site"
+      accent="disclosures"
+      description="These disclosures explain ClearFin's independence, how card information is presented, and how banks, issuers, providers, or users can request updates."
+      meta="Last updated May 2026"
+    >
+      <section className="info-section info-section-lead">
+        <h2>No bank affiliation</h2>
+        <p>
+          ClearFin is not affiliated with any bank or credit card provider. For
+          corrections, removals, or modifications, contact{" "}
           <a href="mailto:info@clearfin.ca">info@clearfin.ca</a>.
-        </section>
+        </p>
+      </section>
 
-        <div className="privacy-content">
-          {disclosureSections.map((section) => (
-            <section className="privacy-section" key={section.title}>
-              <h2>{section.title}</h2>
-              <p>{section.body}</p>
-            </section>
-          ))}
-        </div>
-      </div>
-    </main>
-      <SiteFooter />
-    </>
+      {disclosureSections.map((section) => (
+        <section className="info-section" key={section.title}>
+          <h2>{section.title}</h2>
+          <p>{section.body}</p>
+        </section>
+      ))}
+    </InfoPageLayout>
   );
 }
