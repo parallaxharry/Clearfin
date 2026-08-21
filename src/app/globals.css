@@ -1410,6 +1410,10 @@ section {
   background: rgba(10,10,14,.97); border: 1px solid var(--line-strong);
   border-radius: 20px; width: 100%; max-width: 860px; max-height: 90dvh;
   display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  /* minmax(0,1fr): without it the row is sized to its tallest content, so a
+     long perk list pushed the row past max-height and overflow:hidden clipped
+     the Apply / View-details buttons out of sight. */
+  grid-template-rows: minmax(0, 1fr);
   overflow: hidden; position: relative;
   animation: modal-slide .3s var(--ease);
 }
@@ -1426,6 +1430,11 @@ section {
   padding: 48px 40px; border-right: 1px solid var(--line);
   display: flex; flex-direction: column; gap: 12px;
   overflow-y: auto;
+  /* Grid items default to min-height:auto, so this column grew to its full
+     content height instead of scrolling — on cards with long perk lists the
+     Apply and View-details buttons fell below the modal's clip line and were
+     invisible. min-height:0 lets it shrink so overflow-y actually engages. */
+  min-height: 0;
 }
 .card-modal-badge {
   font-family: var(--font-jetbrains), monospace; font-size: 9px; letter-spacing: .3em;
@@ -1519,8 +1528,10 @@ section {
 @media (max-width: 700px) {
   /* Single scroll context: the modal scrolls as a whole so the Apply CTA and
      disclaimer below the fold stay reachable on short phone viewports. */
-  .card-modal { grid-template-columns: 1fr; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .card-modal-left { overflow-y: visible; }
+  /* Undo the desktop row clamp: here the whole modal scrolls, so rows must be
+     free to size to their content. */
+  .card-modal { grid-template-columns: 1fr; grid-template-rows: auto; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .card-modal-left { overflow-y: visible; min-height: auto; }
   .card-modal-right {
     display: flex; padding: 0 24px 32px;
     background: none; gap: 16px;
