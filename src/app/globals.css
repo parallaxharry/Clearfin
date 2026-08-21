@@ -8122,3 +8122,37 @@ body {
   font-weight: 700; text-decoration: none; background: linear-gradient(135deg, #2997ff 0%, #0071e3 65%);
 }
 .cf-chat-form textarea:disabled { background: #f2f4f2; color: #9aa09a; cursor: not-allowed; }
+
+/* ─────────────────────────────────────────────
+   Card modal on phones
+   Must live AFTER the .top-picks-modal block above: that rule sets
+   overflow:hidden with equal specificity, so the earlier @media block at the
+   top of this file lost the cascade and the modal could not scroll.
+───────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .card-modal,
+  .top-picks-modal {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Children must not be clamped when the whole modal is the scroll context. */
+  .card-modal-left { min-height: auto; overflow-y: visible; }
+  .card-modal-left > * { flex-shrink: 0; }
+
+  /* Show the card art on phones — it was hidden, leaving an empty panel. */
+  .card-modal-right {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 8px 24px 28px; gap: 18px;
+  }
+  .card-modal-right .card-modal-spinner {
+    display: block;
+    width: min(280px, 78vw);
+    height: auto;
+    aspect-ratio: 300 / 190;
+    animation: none; /* no float on touch — it fights the scroll */
+  }
+  .card-modal-right .card-modal-cta { width: 100%; justify-content: center; }
+}
