@@ -453,7 +453,7 @@ export default function InteractiveTool() {
             <div className="card-modal-perks">
               {modalCard.perks.map((p, i) => (
                 <div className="card-modal-perk" key={i}>
-                  <span className="card-modal-perk-dot">✦</span>
+                  <span className="card-modal-perk-dot" aria-hidden="true">✦</span>
                   {p}
                 </div>
               ))}

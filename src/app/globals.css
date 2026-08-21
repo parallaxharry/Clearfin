@@ -1443,9 +1443,16 @@ section {
 .card-modal-summary { font-size: 13px; line-height: 1.6; color: rgba(245,245,242,.68); margin: 0; }
 .card-modal-perks { display: flex; flex-direction: column; gap: 8px; margin: 4px 0; }
 .card-modal-perk {
-  font-size: 13px; color: var(--ink-mute); display: flex; align-items: center; gap: 8px;
+  /* flex-start, not center: centring floats the marker into the middle of a
+     two-line perk instead of sitting beside its first line. */
+  font-size: 13px; color: var(--ink-mute); display: flex; align-items: flex-start;
+  gap: 9px; line-height: 1.5;
 }
-.card-modal-perk-dot { color: var(--accent-blue); font-size: 8px; flex-shrink: 0; }
+.card-modal-perk-dot {
+  color: var(--accent-blue); font-size: 10px; flex-shrink: 0;
+  /* Optically drops the mark onto the first text line. */
+  line-height: 1.95;
+}
 .card-modal-cta {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 12px;
   font-family: var(--font-jetbrains), monospace; font-size: 10px; letter-spacing: .2em;

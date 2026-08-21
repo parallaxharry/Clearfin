@@ -184,7 +184,7 @@ export default function TopPicks() {
               <div className="card-modal-perks">
                 {selectedCard.perks.map((perk) => (
                   <div className="card-modal-perk" key={perk}>
-                    <span className="card-modal-perk-dot">*</span>
+                    <span className="card-modal-perk-dot" aria-hidden="true">✦</span>
                     {perk}
                   </div>
                 ))}
