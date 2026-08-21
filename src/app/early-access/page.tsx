@@ -44,11 +44,26 @@ export default function EarlyAccessPage() {
               All your finances in one app. Track your cards, compare rewards, and take
               control of your spending from a single ClearFin dashboard.
             </p>
+            {/* #feat-app styles these as a 30px badge + content grid, so each
+                item needs both children — bare text lands in the 30px column
+                and wraps to one word per line. */}
             <div className="feat-list">
-              <div className="feat-list-item">Get payment reminders before bills are due</div>
-              <div className="feat-list-item">Get notified about active subscriptions</div>
-              <div className="feat-list-item">Get spending limit reminders before you go over budget</div>
-              <div className="feat-list-item">Track rewards across all your cards in one dashboard</div>
+              <div className="feat-list-item">
+                <span>01</span>
+                <div><strong>Get payment reminders before bills are due</strong></div>
+              </div>
+              <div className="feat-list-item">
+                <span>02</span>
+                <div><strong>Get notified about active subscriptions</strong></div>
+              </div>
+              <div className="feat-list-item">
+                <span>03</span>
+                <div><strong>Get spending limit reminders before you go over budget</strong></div>
+              </div>
+              <div className="feat-list-item">
+                <span>04</span>
+                <div><strong>Track rewards across all your cards in one dashboard</strong></div>
+              </div>
             </div>
             <ScrollToSectionButton
               targetId="waitlist"
