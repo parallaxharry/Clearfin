@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import PageEffects from "@/components/PageEffects";
 import ScrollToSectionButton from "@/components/ScrollToSectionButton";
 import WaitlistForm from "@/components/WaitlistForm";
+import ClearFinWordmark from "@/components/ClearFinWordmark";
 
 export const metadata: Metadata = {
   title: "Get Early Access to the ClearFin App | ClearFin",
@@ -74,41 +75,46 @@ export default function EarlyAccessPage() {
               <span className="btn-arrow">→</span>
             </ScrollToSectionButton>
           </div>
+          {/* Same private-preview mockup as the home page, so the app looks
+              identical on the page people land on to request access. */}
           <div className="feat-visual reveal">
             <div className="app-preview-frame">
               <div className="app-preview-screen">
                 <div className="app-preview-header">
-                  <span className="app-preview-brand">ClearFin</span>
-                  <span className="app-preview-tag">· Live</span>
+                  <span className="app-preview-brand"><ClearFinWordmark /></span>
+                  <span className="app-preview-tag">PRIVATE BETA</span>
                 </div>
-                <div className="app-preview-card-row">
-                  <div className="app-mini-card app-mini-cobalt">
-                    <div className="app-mini-card-name">Cobalt</div>
-                    <div className="app-mini-card-pts">+5x</div>
-                  </div>
-                  <div className="app-mini-card app-mini-scotia">
-                    <div className="app-mini-card-name">Scotia</div>
-                    <div className="app-mini-card-pts">+6x</div>
-                  </div>
-                  <div className="app-mini-card app-mini-td">
-                    <div className="app-mini-card-name">Aeroplan</div>
-                    <div className="app-mini-card-pts">+3x</div>
-                  </div>
+                <div className="app-preview-welcome"><span>Good morning</span><strong>Your wallet is working smarter.</strong></div>
+                <div className="app-reward-total">
+                  <span>Estimated rewards this year</span>
+                  <strong>$1,284</strong>
+                  <small>+$218 optimized with ClearFin</small>
+                  <div className="app-reward-line"><i /><i /><i /><i /><i /><i /></div>
                 </div>
+                <div className="app-smart-label"><span>SMART GUIDANCE</span><small>Now</small></div>
                 <div className="app-preview-rec">
-                  <div className="app-preview-rec-label">Best for your Loblaws shop</div>
-                  <div className="app-preview-rec-card">Scotia Gold Amex</div>
-                  <div className="app-preview-rec-earn">+$4.20 more than your current card</div>
+                  <div className="app-rec-mark">6×</div>
+                  <div>
+                    <div className="app-preview-rec-label">Shopping at Sobeys?</div>
+                    <div className="app-preview-rec-card">Use Scotia Gold Amex</div>
+                    <div className="app-preview-rec-earn">Estimated +$3.40 more on this purchase</div>
+                  </div>
+                </div>
+                <div className="app-preview-grid">
+                  <div><span>Next payment</span><strong>$842</strong><small>Amex · in 6 days</small></div>
+                  <div><span>Utilization</span><strong>18%</strong><small>Healthy range</small></div>
                 </div>
                 <div className="clearsave-badge">
-                  <span className="clearsave-icon">✦</span>
+                  <span className="clearsave-icon">✓</span>
                   <div>
-                    <div className="clearsave-title">ClearSave active</div>
-                    <div className="clearsave-desc">Extra 3% at Fresh Prep — auto-applied</div>
+                    <div className="clearsave-title">You&apos;re all caught up</div>
+                    <div className="clearsave-desc">No payments or subscriptions need attention.</div>
                   </div>
                 </div>
               </div>
             </div>
+            <div className="app-float-card app-float-one"><span>Cards tracked</span><strong>3</strong><small>One clear view</small></div>
+            <div className="app-float-card app-float-two"><span>This month</span><strong>+$46</strong><small>estimated extra rewards</small></div>
           </div>
         </div>
         <div className="section-divider-bottom" />
