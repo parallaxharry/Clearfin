@@ -1436,6 +1436,10 @@ section {
      invisible. min-height:0 lets it shrink so overflow-y actually engages. */
   min-height: 0;
 }
+/* Now that the column has a bounded height, its flex children would otherwise
+   shrink to fit — which squashed the rebate ribbon to a sliver and clipped its
+   value. Keep every child at its natural size and let the column scroll. */
+.card-modal-left > * { flex-shrink: 0; }
 .card-modal-badge {
   font-family: var(--font-jetbrains), monospace; font-size: 9px; letter-spacing: .3em;
   text-transform: uppercase; color: var(--accent-blue);
