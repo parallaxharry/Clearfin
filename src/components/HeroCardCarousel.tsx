@@ -8,7 +8,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 /**
  * Hero showcase deck.
  *
- * Ordered by FinlyWealth payout (highest first), so this is a commercially
+ * Ordered by FinlyWealth payout, except the front slot: the owner swapped
+ * BMO VIPorter out (its only art is portrait, 378x600, and rendered badly
+ * in the landscape frame) for Tangerine Rewards World Elite. Commercially
  * featured selection rather than an editorial pick. The eyebrow says
  * "Featured" rather than "shortlist" for that reason, and the per-card
  * "Best for …" labels were removed — they were never rendered, and keeping
@@ -19,10 +21,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
  */
 const FEATURED_CARDS = [
   {
-    id: "bmo-viporter-world-elite",
-    name: "BMO VIPorter World Elite Mastercard",
-    issuer: "BMO",
-    image: "/cards/bmo-viporter-world-elite.webp",
+    id: "tangerine-rewards-world-elite",
+    name: "Tangerine Rewards World Elite Mastercard",
+    issuer: "Tangerine",
+    image: "/cards/tangerine-rewards-world-elite.webp",
   },
   {
     id: "scotia-passport-privilege",
@@ -67,10 +69,10 @@ const FEATURED_CARDS = [
     image: "/cards/bmo-blue-world-elite.webp",
   },
   {
-    id: "tangerine-rewards-world-elite",
-    name: "Tangerine Rewards World Elite Mastercard",
-    issuer: "Tangerine",
-    image: "/cards/tangerine-rewards-world-elite.webp",
+    id: "td-first-class",
+    name: "TD First Class Travel Visa Infinite",
+    issuer: "TD Bank",
+    image: "/cards/td-first-class.jpeg",
   },
   {
     id: "scotiabank-student",
