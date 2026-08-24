@@ -8,9 +8,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 /**
  * Hero showcase deck.
  *
- * Ordered by FinlyWealth payout, except the front slot: the owner swapped
- * BMO VIPorter out (its only art is portrait, 378x600, and rendered badly
- * in the landscape frame) for Tangerine Rewards World Elite. Commercially
+ * Ordered by FinlyWealth payout, with two owner overrides. BMO VIPorter was
+ * dropped (its only art is portrait, 378x600, and rendered badly in the
+ * landscape frame) and Tangerine Rewards World Elite took its place; the
+ * owner then asked that Tangerine not be the card shown first, so Scotia
+ * Passport Privilege holds the front slot and Tangerine sits second. `active`
+ * starts at 0, so index 0 is whatever the deck opens on. Commercially
  * featured selection rather than an editorial pick. The eyebrow says
  * "Featured" rather than "shortlist" for that reason, and the per-card
  * "Best for …" labels were removed — they were never rendered, and keeping
@@ -21,16 +24,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
  */
 const FEATURED_CARDS = [
   {
-    id: "tangerine-rewards-world-elite",
-    name: "Tangerine Rewards World Elite Mastercard",
-    issuer: "Tangerine",
-    image: "/cards/tangerine-rewards-world-elite.webp",
-  },
-  {
     id: "scotia-passport-privilege",
     name: "Scotia Passport Visa Infinite Privilege",
     issuer: "Scotiabank",
     image: "/cards/scotia-passport-privilege.avif",
+  },
+  {
+    id: "tangerine-rewards-world-elite",
+    name: "Tangerine Rewards World Elite Mastercard",
+    issuer: "Tangerine",
+    image: "/cards/tangerine-rewards-world-elite.webp",
   },
   {
     id: "scotia-platinum",
