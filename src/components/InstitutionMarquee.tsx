@@ -12,7 +12,10 @@ const INSTITUTIONS = [
   { name: "CIBC", mark: "CIBC", tone: "cibc", logos: ["https://www.cibc.com/apple-touch-icon.png", "https://www.cibc.com/favicon.ico"] },
   { name: "National Bank", mark: "NB", tone: "nbc", logos: ["https://www.nbc.ca/apple-touch-icon.png", "https://www.nbc.ca/favicon.ico"] },
   { name: "Desjardins", mark: "D", tone: "desjardins", logos: ["https://www.desjardins.com/favicon.ico"] },
-  { name: "MBNA", mark: "MBNA", tone: "mbna", logos: ["https://www.mbna.ca/content/dam/mbna/images/credit-cards/mbna-logo-en.png", "https://www.mbna.ca/etc.clientlibs/tdsite/clientlibs/clientlib-sapphire/resources/images/mbna-favicon.ico"] },
+  // MBNA publishes no square mark: the wordmark is 352×108 and squashes badly
+  // in the 30px slot, and the favicon is only 16×16 and blurs when scaled. The
+  // lettermark reads cleanly and matches AMEX / CIBC / BRIM in the same row.
+  { name: "MBNA", mark: "MBNA", tone: "mbna", logos: [] },
   { name: "PC Financial", mark: "PC", tone: "pc", logos: ["https://www.pcfinancial.ca/favicon.ico"] },
   { name: "Wealthsimple", mark: "W", tone: "wealthsimple", logos: ["https://www.wealthsimple.com/apple-touch-icon.png", "https://www.wealthsimple.com/favicon.ico"] },
   { name: "Tangerine", mark: "T", tone: "tangerine", logos: ["https://www.tangerine.ca/etc.clientlibs/tangerine/clientlibs/clientlib-site/resources/icon-192x192.png"] },

@@ -4808,7 +4808,9 @@ section { min-height: 0; scroll-snap-align: none; overflow: visible; }
 .story-result p strong { color:#30332e; font-size:12px; font-weight:800; }
 .story-result p small { color:#858981; font-size:8px; font-weight:600; }
 .story-impact {
-  margin:14px 0 0 12px; padding-left:11px; display:flex; flex-direction:column;
+  /* Sits apart from "One card comes forward" so the contrast between the
+     matched card and the do-nothing case reads as its own point. */
+  margin:30px 0 0 12px; padding-left:11px; display:flex; flex-direction:column;
   border-left:2px solid #0071e3; opacity:0; transform:translateY(6px);
   animation:story-impact-in .55s 2.05s ease forwards;
 }
@@ -8156,3 +8158,97 @@ body {
   }
   .card-modal-right .card-modal-cta { width: 100%; justify-content: center; }
 }
+
+/* ─────────────────────────────────────────────
+   Typography + sizing corrections (requested)
+   Appended last so these win over the per-context size/colour overrides
+   scattered above.
+───────────────────────────────────────────── */
+
+/* Reward highlights ("5x on dining", "6x on groceries") and the estimated
+   net value read as figures, not display copy — bold sans, not italic serif. */
+.pick-card-rate,
+.card-modal-net,
+.top-picks-modal .card-modal-net,
+#compare .card-modal-net,
+.cmp-panel-value strong,
+#compare .cmp-panel-value strong,
+.cmp-unified-total > div:not(:first-child) strong {
+  font-family: var(--font-archivo), sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+
+/* Gold rebate ribbon: same design, roughly a third less space. */
+.finly-rebate-badge {
+  min-width: 104px;
+  padding: 7px 12px 8px 12px;
+  gap: 2px;
+  border-radius: 7px 3px 9px 7px;
+}
+.finly-rebate-badge small { font-size: 5.5px; gap: 4px; }
+.finly-rebate-badge small > span { font-size: 7px; }
+.finly-rebate-badge strong { font-size: 17px; }
+.finly-rebate-badge em { font-size: 6.5px; }
+.finly-rebate-value { gap: 5px; }
+
+/* ─────────────────────────────────────────────
+   Search palette — light theme
+   The palette was built for the original dark theme: a #0a0b0e panel with
+   var(--ink) text. After the light restyle --ink became near-black, so the
+   typed query rendered black-on-black. Rebuilt to match the rest of the site
+   rather than re-darkening the text.
+───────────────────────────────────────────── */
+.search-overlay { background: rgba(23,25,23,.42); }
+.search-panel {
+  background: #fff;
+  border: 1px solid rgba(23,25,23,.12);
+  box-shadow: 0 30px 80px -18px rgba(23,35,28,.28);
+}
+.search-input-row { border-bottom: 1px solid rgba(23,25,23,.09); }
+.search-input { color: #171917; }
+.search-input::placeholder { color: #9aa09a; }
+.search-input-icon, .search-esc { color: #7b827b; }
+.search-esc { border-color: rgba(23,25,23,.14); }
+
+.search-group-label, .search-hint, .search-empty { color: #7b827b; }
+.search-item.is-active, .search-item:hover { background: #f0f6fd; }
+.search-item-label { color: #171917; font-weight: 600; }
+.search-item-sub, .search-item-snippet { color: #5f665f; }
+.search-item-thumb { background: #f4f5f2; }
+.search-item-ico { color: #0066cc; background: rgba(41,151,255,.10); }
+.search-mark { color: #0066cc; background: rgba(41,151,255,.14); }
+
+.search-pill {
+  color: #0066cc;
+  border: 1px solid rgba(0,113,227,.26);
+  background: rgba(41,151,255,.07);
+}
+.search-pill:hover, .search-pill.is-active {
+  color: #0066cc; border-color: rgba(0,113,227,.55); background: rgba(41,151,255,.15);
+}
+
+.search-chip { color: #5f665f; border-color: rgba(23,25,23,.14); background: #f7f8f6; }
+.search-chip-free { color: #0f7a53; border-color: rgba(15,122,83,.28); background: rgba(15,122,83,.07); }
+
+.search-cmp-btn { color: #5f665f; border-color: rgba(23,25,23,.16); }
+.search-cmp-btn:hover { color: #171917; border-color: rgba(23,25,23,.34); }
+.search-cmp-btn.is-on {
+  color: #0f7a53; border-color: rgba(15,122,83,.35); background: rgba(15,122,83,.08);
+}
+
+.search-tray { border-top: 1px solid rgba(23,25,23,.09); background: #fbfcfa; }
+.search-tray-label, .search-tray-hint { color: #7b827b; }
+.search-tray-x { color: #8b918a; }
+.search-tray-x:hover { color: #171917; }
+
+.search-foot { border-top: 1px solid rgba(23,25,23,.09); color: #8b918a; background: #fbfcfa; }
+.search-foot kbd {
+  color: #5f665f; border: 1px solid rgba(23,25,23,.16);
+  background: #fff; border-radius: 5px;
+}
+
+/* The earnings-table total is the same kind of figure as the headline net
+   value, so it loses the italic too. */
+.modal-bd-earn { font-style: normal; font-weight: 800; }
