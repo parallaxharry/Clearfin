@@ -5597,7 +5597,18 @@ section { min-height: 0; scroll-snap-align: none; overflow: visible; }
 .institution-mark--td,.institution-mark--desjardins,.institution-mark--pc { color:#19834b; background:#eef8f1; }
 .institution-mark--tangerine { color:#dd6200; background:#fff4e9; }
 .institution-mark--neo,.institution-mark--simplii { color:#6c388f; background:#f7f0fb; }
-.institution-mark--wealthsimple,.institution-mark--brim,.institution-mark--capital-one,.institution-mark--mbna { color:#20231f; background:#f1f2ef; }
+.institution-mark--wealthsimple,.institution-mark--brim,.institution-mark--capital-one { color:#20231f; background:#f1f2ef; }
+/* MBNA publishes no square mark, so the badge reproduces the wordmark itself:
+   white lowercase "mbna" on the brand navy (#003087, the same value cards.ts
+   uses for every MBNA card). Live text rather than an image, so it stays sharp
+   at any zoom or DPI. */
+.institution-mark--mbna {
+  color:#fff;
+  background:#003087;
+  border-color:rgba(255,255,255,.18);
+  font-size:12px;
+  letter-spacing:-.04em;
+}
 .institution-routing-note {
   width:min(100% - 48px,760px);
   margin:26px auto 0;

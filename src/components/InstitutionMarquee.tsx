@@ -13,9 +13,10 @@ const INSTITUTIONS = [
   { name: "National Bank", mark: "NB", tone: "nbc", logos: ["https://www.nbc.ca/apple-touch-icon.png", "https://www.nbc.ca/favicon.ico"] },
   { name: "Desjardins", mark: "D", tone: "desjardins", logos: ["https://www.desjardins.com/favicon.ico"] },
   // MBNA publishes no square mark: the wordmark is 352×108 and squashes badly
-  // in the 30px slot, and the favicon is only 16×16 and blurs when scaled. The
-  // lettermark reads cleanly and matches AMEX / CIBC / BRIM in the same row.
-  { name: "MBNA", mark: "MBNA", tone: "mbna", logos: [] },
+  // in the 30px slot, and the favicon is only 16×16 and blurs when scaled. So
+  // the badge reproduces the wordmark instead — lowercase "mbna" in white on
+  // the brand navy, styled in .institution-mark--mbna.
+  { name: "MBNA", mark: "mbna", tone: "mbna", logos: [] },
   { name: "PC Financial", mark: "PC", tone: "pc", logos: ["https://www.pcfinancial.ca/favicon.ico"] },
   { name: "Wealthsimple", mark: "W", tone: "wealthsimple", logos: ["https://www.wealthsimple.com/apple-touch-icon.png", "https://www.wealthsimple.com/favicon.ico"] },
   { name: "Tangerine", mark: "T", tone: "tangerine", logos: ["https://www.tangerine.ca/etc.clientlibs/tangerine/clientlibs/clientlib-site/resources/icon-192x192.png"] },
