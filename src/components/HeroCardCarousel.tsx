@@ -5,76 +5,78 @@ import Link from "next/link";
 import type { CSSProperties, PointerEvent, WheelEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+/**
+ * Hero showcase deck.
+ *
+ * Ordered by FinlyWealth payout (highest first), so this is a commercially
+ * featured selection rather than an editorial pick. The eyebrow says
+ * "Featured" rather than "shortlist" for that reason, and the per-card
+ * "Best for …" labels were removed — they were never rendered, and keeping
+ * merit language on a commercially ordered list would have been misleading.
+ *
+ * The calculator, comparison tool and best-X pages are unaffected and remain
+ * ranked purely on the user's spending.
+ */
 const FEATURED_CARDS = [
   {
-    id: "rbc-avion",
-    name: "RBC Avion Visa Infinite",
-    issuer: "RBC",
-    label: "Flexible travel rewards",
-    image: "/cards/rbc-avion-infinite.webp",
+    id: "bmo-viporter-world-elite",
+    name: "BMO VIPorter World Elite Mastercard",
+    issuer: "BMO",
+    image: "/cards/bmo-viporter-world-elite.webp",
+  },
+  {
+    id: "scotia-passport-privilege",
+    name: "Scotia Passport Visa Infinite Privilege",
+    issuer: "Scotiabank",
+    image: "/cards/scotia-passport-privilege.avif",
+  },
+  {
+    id: "scotia-platinum",
+    name: "Scotiabank Platinum Amex",
+    issuer: "Scotiabank",
+    image: "/cards/scotia-platinum.webp",
   },
   {
     id: "scotia-gold",
     name: "Scotia Gold Amex",
     issuer: "Scotiabank",
-    label: "Best for groceries",
     image: "/cards/Scotiabank-gold-amex.avif",
   },
   {
-    id: "cobalt",
-    name: "Amex Cobalt",
+    id: "amex-gold",
+    name: "Amex Gold Rewards",
     issuer: "American Express",
-    label: "Best for dining",
-    image: "/cards/amex-cobalt.webp",
+    image: "/cards/amex-gold.avif",
   },
   {
-    id: "td-aeroplan",
-    name: "TD Aeroplan Visa Infinite",
-    issuer: "TD Bank",
-    label: "Best for Aeroplan",
-    image: "/cards/td-aeroplan-infinite.png",
-  },
-  {
-    id: "bmo-eclipse",
-    name: "BMO Eclipse Visa Infinite",
-    issuer: "BMO",
-    label: "Everyday categories",
-    image: "/cards/bmo-eclipse.png",
-  },
-  {
-    id: "wealthsimple",
-    name: "Wealthsimple Card",
-    issuer: "Wealthsimple",
-    label: "Simple flat-rate value",
-    image: "/cards/newwealthsimple.webp",
+    id: "scotia-momentum-infinite",
+    name: "Scotia Momentum Visa Infinite",
+    issuer: "Scotiabank",
+    image: "/cards/scotia-momentum-infinite.webp",
   },
   {
     id: "amex-platinum",
     name: "Amex Platinum Card",
     issuer: "American Express",
-    label: "Premium travel",
     image: "/cards/amex-platinum.avif",
   },
   {
-    id: "scotia-passport",
-    name: "Scotia Passport Visa Infinite",
-    issuer: "Scotiabank",
-    label: "No-FX travel",
-    image: "/cards/scotia-passport.webp",
+    id: "bmo-blue-world-elite",
+    name: "BMO Blue Rewards World Elite Mastercard",
+    issuer: "BMO",
+    image: "/cards/bmo-blue-world-elite.webp",
   },
   {
-    id: "tangerine-money-back",
-    name: "Tangerine Money-Back Card",
+    id: "tangerine-rewards-world-elite",
+    name: "Tangerine Rewards World Elite Mastercard",
     issuer: "Tangerine",
-    label: "No-fee cash back",
-    image: "/cards/tangerine-money-back.jpg",
+    image: "/cards/tangerine-rewards-world-elite.webp",
   },
   {
-    id: "rogers-world-elite",
-    name: "Rogers World Elite Mastercard",
-    issuer: "Rogers Bank",
-    label: "Everyday cash back",
-    image: "/cards/rogers-world-elite.png",
+    id: "scotiabank-student",
+    name: "Scotiabank Scene+ Student Visa",
+    issuer: "Scotiabank",
+    image: "/cards/scotia_no_fee_visa.webp",
   },
 ] as const;
 
@@ -160,7 +162,7 @@ export default function HeroCardCarousel() {
       <div className="hero-carousel-ambient" aria-hidden="true" />
 
       <div className="hero-carousel-topline">
-        <span>10 Canadian cards · ClearFin shortlist</span>
+        <span>10 Canadian cards · Featured</span>
       </div>
 
       <div className="hero-carousel-stage" aria-live="polite">
