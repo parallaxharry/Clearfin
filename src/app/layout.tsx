@@ -12,7 +12,7 @@ import "./globals.css";
 /** Client-only and below the fold — keep it out of the initial bundle. */
 const ChatWidget = dynamic(() => import("@/components/ChatWidget"));
 
-const GOOGLE_ANALYTICS_ID = "G-SP0554X7Y2";
+const GOOGLE_ANALYTICS_ID = "G-7E7SRWHXL4";
 
 
 
