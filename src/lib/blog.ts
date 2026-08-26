@@ -1,9 +1,12 @@
 import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { EDITORIAL_BLOG_POSTS } from "@/lib/editorialBlogPosts";
 
 export interface BlogPost {
   slug: string;
   title: string;
+  metaTitle?: string;
+  path?: string;
   description: string;
   bodyMd: string;
   coverImg: string | null;
@@ -56,9 +59,8 @@ function fromRow(r: BlogPostRow): BlogPost {
 
 /**
  * Launch posts, shipped in code so the blog works before the blog_posts table
- * exists (and if Supabase is ever unreachable). Once the table has published
- * rows, it takes over entirely — keep slugs identical in scripts/blog-posts.sql
- * so the table versions replace these cleanly.
+ * exists (and if Supabase is ever unreachable). Published table rows override
+ * code posts with the same slug, while code-only posts remain available.
  */
 const FALLBACK_POSTS: BlogPost[] = [
   {
@@ -229,10 +231,18 @@ For people who prefer simplicity, a cash back setup may be better. For people wh
   },
 ];
 
+const CODE_POSTS = [...EDITORIAL_BLOG_POSTS, ...FALLBACK_POSTS].sort(
+  (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
+);
+
+export function getPostPath(post: BlogPost): string {
+  return post.path ?? `/blog/${post.slug}`;
+}
+
 /** All published posts, newest first. Table rows win; fallback keeps the blog alive without them. */
 export const getPosts = cache(async (): Promise<BlogPost[]> => {
   const supabase = readClient();
-  if (!supabase) return FALLBACK_POSTS;
+  if (!supabase) return CODE_POSTS;
 
   const { data, error } = await supabase
     .from("blog_posts")
@@ -242,9 +252,21 @@ export const getPosts = cache(async (): Promise<BlogPost[]> => {
 
   if (error || !data || data.length === 0) {
     if (error) console.error("getPosts blog_posts error:", error.message);
-    return FALLBACK_POSTS;
+    return CODE_POSTS;
   }
-  return (data as BlogPostRow[]).map(fromRow);
+
+  const codeBySlug = new Map(CODE_POSTS.map((post) => [post.slug, post]));
+  const databasePosts = (data as BlogPostRow[]).map((row) => {
+    const databasePost = fromRow(row);
+    const codePost = codeBySlug.get(databasePost.slug);
+    return codePost ? { ...codePost, ...databasePost } : databasePost;
+  });
+  const databaseSlugs = new Set(databasePosts.map((post) => post.slug));
+
+  return [
+    ...databasePosts,
+    ...CODE_POSTS.filter((post) => !databaseSlugs.has(post.slug)),
+  ].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
 });
 
 export const getPost = cache(async (slug: string): Promise<BlogPost | null> => {

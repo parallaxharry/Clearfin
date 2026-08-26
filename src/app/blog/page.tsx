@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
-import { getPosts, formatPostDate } from "@/lib/blog";
+import { getPosts, getPostPath, formatPostDate } from "@/lib/blog";
 
 // ISR: new blog_posts rows go live within ~5 min, no redeploy needed.
 export const revalidate = 300;
@@ -57,7 +57,7 @@ export default async function BlogIndex() {
           ) : (
             <div className="catalog-grid">
               {posts.map((post) => (
-                <Link href={`/blog/${post.slug}`} className="catalog-card" key={post.slug}>
+                <Link href={getPostPath(post)} className="catalog-card" key={post.slug}>
                   <div className="catalog-card-art blog-index-art">
                     {post.coverImg ? (
                       <Image src={post.coverImg} alt="" fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 380px" style={{ objectFit: "cover" }} />

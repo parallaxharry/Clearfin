@@ -53,6 +53,8 @@ export const PAGES: SearchPage[] = [
   { title: "All Credit Cards", group: "Page", href: "/credit-cards", keywords: ["all", "cards", "list", "browse", "every", "directory", "issuer"] },
   { title: "Best Credit Cards in Canada", group: "Guide", href: "/best-credit-cards-canada", keywords: ["best", "top", "overall", "ranking", "2026"] },
   { title: "Best Credit Cards for Everyday Spending", group: "Guide", href: "/best-credit-card-for-everyday-spending-in-canada-2026-picks", keywords: ["everyday", "daily spending", "groceries", "dining", "bills", "cash back", "2026"] },
+  { title: "Best Credit Card Sign-Up Bonuses", group: "Guide", href: "/best-credit-card-sign-up-bonuses-and-welcome-offers-in-canada-august-2026", keywords: ["sign up bonus", "welcome offer", "welcome bonus", "aeroplan", "scene", "avion", "august 2026"] },
+  { title: "Best Credit Cards for Restaurants and Dining", group: "Guide", href: "/best-credit-cards-for-restaurants-and-dining-in-canada-2026", keywords: ["restaurant", "restaurants", "dining", "takeout", "food delivery", "cash back", "2026"] },
   { title: "Best Credit Card Combinations", group: "Guide", href: "/blog/best-credit-card-combination-canada", keywords: ["combination", "pair", "two cards", "card strategy", "maximum rewards", "2026"] },
   { title: "Best Cashback Cards", group: "Guide", href: "/best-cashback-credit-cards-canada", keywords: ["cashback", "cash back", "money back"] },
   { title: "Best Travel Cards", group: "Guide", href: "/best-travel-credit-cards-canada", keywords: ["travel", "points", "aeroplan", "miles", "flights"] },
