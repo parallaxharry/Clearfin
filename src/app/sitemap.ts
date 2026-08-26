@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllCardIds } from "@/lib/cardDetail";
-import { getPosts } from "@/lib/blog";
+import { getPosts, getPostPath } from "@/lib/blog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.clearfin.ca";
@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogPages: MetadataRoute.Sitemap = [
     { url: `${baseUrl}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ...posts.map((p) => ({
-      url: `${baseUrl}/blog/${p.slug}`,
+      url: `${baseUrl}${getPostPath(p)}`,
       lastModified: new Date(p.updatedAt),
       changeFrequency: "monthly" as const,
       priority: 0.75,
