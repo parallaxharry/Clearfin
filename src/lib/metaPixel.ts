@@ -9,6 +9,7 @@ type PixelFunction = {
   push: PixelFunction;
   loaded: boolean;
   version: string;
+  disablePushState?: boolean;
 };
 
 declare global {
@@ -74,6 +75,9 @@ export function syncMetaPixel() {
       window.fbq = fbq;
       window._fbq = window._fbq || fbq;
     }
+    // Next's route observer below owns PageView. Meta otherwise emits an
+    // additional PageView on pushState even with automatic configuration off.
+    window.fbq.disablePushState = true;
     window.fbq("consent", "revoke");
     // Manual events only: no automatic button/form/metadata collection or
     // advanced-matching contact details from ClearFin's financial tools.

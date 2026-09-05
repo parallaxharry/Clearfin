@@ -78,6 +78,7 @@ test("consent loads the supplied Pixel once; each route gets one PageView", () =
   f.consent.saveConsent("denied", "granted");
   assert.equal(f.inserted.length, 1);
   assert.equal(f.inserted[0].src, "https://connect.facebook.net/en_US/fbevents.js");
+  assert.equal(f.window.fbq.disablePushState, true);
   f.finishLoading();
   f.pixel.syncMetaPixel();
   f.pixel.syncMetaPixel();
