@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ClearFinWordmark from "@/components/ClearFinWordmark";
 import HomeLogoLink from "@/components/HomeLogoLink";
+import CookiePreferencesButton from "@/components/CookiePreferencesButton";
 
 /** The one site-wide footer: brand, navigation, legal details, and disclaimer. */
 export default function SiteFooter() {
@@ -43,6 +44,7 @@ export default function SiteFooter() {
             <Link href="/about">About</Link>
             <Link href="/faq">FAQ</Link>
             <Link href="/privacy">Privacy</Link>
+            <CookiePreferencesButton />
             <Link href="/disclosures">Disclosures</Link>
             <Link href="/early-access">Early Access</Link>
             <Link href="/contact">Contact</Link>

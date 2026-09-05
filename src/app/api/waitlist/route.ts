@@ -37,13 +37,13 @@ export async function POST(req: NextRequest) {
     if (error) {
       // Duplicate email → treat as success (silent dedup)
       if (error.code === "23505") {
-        return NextResponse.json({ message: "Already on the list!" }, { status: 200 });
+        return NextResponse.json({ message: "Already on the list!", created: false }, { status: 200 });
       }
       console.error("Supabase waitlist error:", JSON.stringify(error));
       return NextResponse.json({ error: "Failed to add to waitlist." }, { status: 500 });
     }
 
-    return NextResponse.json({ message: "Added to waitlist." }, { status: 200 });
+    return NextResponse.json({ message: "Added to waitlist.", created: true }, { status: 200 });
   } catch (err) {
     console.error("Waitlist API error:", err instanceof Error ? err.message : err);
     return NextResponse.json({ error: "Server error." }, { status: 500 });

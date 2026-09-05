@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import InfoPageLayout from "@/components/InfoPageLayout";
+import CookiePreferencesButton from "@/components/CookiePreferencesButton";
 
 export const metadata: Metadata = {
   title: "Privacy Statement | ClearFin",
@@ -26,6 +27,7 @@ const privacySections = [
       "Contact details you choose to share, such as your name and email address when you join the waitlist, request early access, or book a card strategy call.",
       "Card comparison inputs you provide, such as spending categories, estimated monthly spend, preferred issuers, and reward preferences.",
       "If you accept analytics cookies, Google Analytics may collect website usage information such as pages visited, approximate location, browser type, device information, and interactions with the site.",
+      "If you accept advertising cookies, Meta Pixel shares website visits and selected actions with Meta, such as viewing a card, completing the calculator, comparing cards, clicking Apply, or successfully joining the waitlist. Meta also receives browser and device information, IP address, page/referrer URLs, and cookie identifiers.",
       "Card application click activity, such as which card or issuer link was selected, so we can measure whether our comparisons are useful and administer affiliate relationships.",
     ],
   },
@@ -36,6 +38,7 @@ const privacySections = [
       "To personalize educational card recommendations based on your stated shopping habits and spending categories.",
       "To respond to your requests, send product updates, and manage early access communications.",
       "To measure website performance, prevent misuse, debug errors, and improve ClearFin.",
+      "With your advertising consent, to measure Facebook and Instagram campaign results and support ad optimization and advertising audiences.",
     ],
   },
   {
@@ -43,6 +46,7 @@ const privacySections = [
     body: [
       "Waitlist emails and card click activity may be stored in ClearFin's Supabase-hosted database.",
       "Google processes analytics information on our behalf when you accept analytics cookies. Google's handling of that information is governed by its own privacy terms.",
+      "Meta processes advertising event information under its own privacy terms and may associate it with your Meta account. Information processed by our providers may be stored outside Canada.",
       "Access to ClearFin's stored records is limited to authorized systems and people who need it to operate the service.",
     ],
   },
@@ -60,7 +64,7 @@ const privacySections = [
       "You can ask to access, correct, or delete personal information we hold about you, subject to legal and operational requirements.",
       "You can unsubscribe from non-essential emails using the link in those messages or by contacting us directly.",
       "You can choose not to provide optional calculator inputs, but some comparison features may be less useful without them.",
-      "You can accept or decline Google Analytics from the cookie notice. To change a saved choice later, clear ClearFin's site data in your browser and reload the website.",
+      "You can choose analytics and advertising separately in the cookie notice. Open Cookie preferences in the footer or below to change your choices at any time. Withdrawing advertising consent stops new Meta events and removes Meta's first-party advertising cookies from ClearFin; it does not retract information already sent.",
     ],
   },
   {
@@ -81,7 +85,7 @@ export default function PrivacyPage() {
       title="Privacy"
       accent="statement"
       description="How ClearFin handles your information — what we collect, what we never collect, and the choices you control."
-      meta="Last updated July 26, 2026"
+      meta="Last updated September 4, 2026"
     >
       <section className="info-section info-section-lead">
         <h2>Educational information only</h2>
@@ -148,6 +152,23 @@ export default function PrivacyPage() {
             </a>
             .
           </p>
+        </section>
+
+        <section className="info-section">
+          <h2>Meta Pixel and advertising choices</h2>
+          <p>
+            Meta Pixel loads only after you accept advertising cookies. Previous
+            Google Analytics acceptance does not enable Meta Pixel. We disable
+            automatic event collection and do not pass your email address,
+            calculator answers, income, credit score, or spending amounts in our
+            advertising events. An Apply click records an outbound action, not
+            an approved application or a purchase.
+          </p>
+          <p>
+            Learn more in <a href="https://www.facebook.com/privacy/policy/"
+              target="_blank" rel="noopener noreferrer">Meta&apos;s privacy policy</a>.
+          </p>
+          <CookiePreferencesButton />
         </section>
 
         <section className="info-section">
