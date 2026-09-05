@@ -3419,8 +3419,17 @@ section {
 .analytics-consent-actions {
   display: flex;
   flex: 0 0 auto;
+  flex-direction: column;
   gap: 8px;
 }
+
+.consent-options { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 12px; }
+.consent-options label { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; cursor: pointer; }
+.consent-options input { width: 16px; height: 16px; accent-color: #0071e3; }
+.cookie-preferences-button { border: 0; padding: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.cookie-preferences-button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.footer-guides-grid .cookie-preferences-button { color: #5f645d; font-size: 11px; font-weight: 650; }
+.footer-guides-grid .cookie-preferences-button:hover { color: #0066cc; }
 
 .analytics-consent button {
   min-height: 42px;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import dynamic from "next/dynamic";
 import AnalyticsConsent from "@/components/AnalyticsConsent";
+import MetaPixel from "@/components/MetaPixel";
 import { SearchProvider } from "@/context/SearchContext";
 import { getSearchCards } from "@/lib/cardDetail";
 // Self-hosted copies of the same files next/font/google used to download at
@@ -115,7 +116,8 @@ export default async function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             window.gtag = gtag;
-            var clearfinConsent = window.localStorage.getItem("clearfin-analytics-consent");
+            var clearfinConsent = null;
+            try { clearfinConsent = window.localStorage.getItem("clearfin-analytics-consent"); } catch (e) {}
             gtag("consent", "default", {
               analytics_storage: clearfinConsent === "granted" ? "granted" : "denied",
               wait_for_update: 500
@@ -144,6 +146,7 @@ export default async function RootLayout({
         />
         <SearchProvider cards={searchCards}>{children}</SearchProvider>
         <AnalyticsConsent />
+        <MetaPixel />
         <ChatWidget />
       </body>
     </html>

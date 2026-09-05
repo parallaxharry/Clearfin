@@ -10,6 +10,7 @@ import {
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import CalculatorPreview from "@/components/CalculatorPreview";
+import { trackMetaAction } from "@/lib/metaPixel";
 
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -101,7 +102,10 @@ export default function InteractiveTool() {
     if (currentStep < TOTAL_STEPS - 1) {
       transition(() => setCurrentStep((s) => s + 1));
     } else {
-      transition(() => setToolState("result"));
+      transition(() => {
+        setToolState("result");
+        trackMetaAction("CalculatorCompleted");
+      });
     }
   };
 
@@ -526,7 +530,10 @@ export default function InteractiveTool() {
               target="_blank"
               rel="noopener noreferrer"
               className="card-modal-cta"
-              onClick={() => fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {})}
+              onClick={() => {
+                trackMetaAction("ApplyClick");
+                fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {});
+              }}
             >
               Apply at {modalCard.issuer} →
             </a>

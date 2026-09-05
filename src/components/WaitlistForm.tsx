@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackMetaAction } from "@/lib/metaPixel";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -24,8 +25,11 @@ export default function WaitlistForm() {
       });
 
       if (res.ok) {
+        const data = await res.json();
         setStatus("success");
         setEmail("");
+        // Existing addresses receive the same success UI without a second lead.
+        if (data.created === true) trackMetaAction("Lead");
       } else {
         const data = await res.json();
         setErrorMsg(data.error || "Something went wrong. Try again.");

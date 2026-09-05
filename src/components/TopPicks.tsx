@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CARDS } from "@/lib/cards";
 import { useCatalog } from "@/context/CatalogContext";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
+import { trackMetaAction } from "@/lib/metaPixel";
 
 interface PickCard {
   id: string;
@@ -49,6 +50,7 @@ const PICKS: PickCard[] = CURATION.flatMap((pick) => {
 });
 
 async function trackClick(cardId: string) {
+  trackMetaAction("ApplyClick");
   try {
     await fetch("/api/track-click", {
       method: "POST",

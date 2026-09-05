@@ -1,5 +1,7 @@
 "use client";
 
+import { trackMetaAction } from "@/lib/metaPixel";
+
 interface TrackedApplyLinkProps {
   cardId: string;
   href: string;
@@ -8,6 +10,7 @@ interface TrackedApplyLinkProps {
 }
 
 function trackClick(cardId: string) {
+  trackMetaAction("ApplyClick");
   fetch("/api/track-click", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
