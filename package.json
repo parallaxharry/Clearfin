@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:qa": "node --test scripts/qa-reliability.test.cjs scripts/meta-pixel.test.cjs",
+    "test:qa:browser": "node scripts/qa-calculator.browser.cjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",
