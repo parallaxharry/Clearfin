@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **5/38 implemented and locally verified**. Publication/live check pending for: CF-01, CF-04, CF-09, CF-10, CF-30.
+Progress: **5/38 completed and deployed**. Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
 
@@ -72,4 +72,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Isolated Chrome against the production-mode local server: grocery $1,000 retained across Back/forward and Calculator/Compare round trip; all seven answers reset; reload clears answers; repeated click/Enter advances once; leaving mid-transition and revisiting is safe; no uncaught browser errors.
 - No real waitlist/chat/application submissions or new analytics profile fields.
 - Run `npm run test:qa`; for browser checks, run a local production server on port 3100 then `npm run test:qa:browser` with Playwright installed or `PLAYWRIGHT_MODULE` pointing to an existing installation. `QA_BASE_URL` selects a verified deployment; `QA_BROWSER_CHANNEL=chrome` uses installed Chrome in an isolated test profile.
-- GitHub publication and live verification pending.
+- Published in [PR #17](https://github.com/parallaxharry/Clearfin/pull/17), merged to main as e08d8e9bc187420cb8e415025f5d100a5730d30a.
+- Vercel preview CPngq3f34jUqHKw6o4VTQ8hshcLX succeeded. [Production deployment](https://vercel.com/harrys-projects-9929d12d/clearfin/8UJwA4Q4ArjdTY4oce2PBDwavfGk) verified Ready for www.clearfin.ca, sourced from that main commit.
+- Live browser check on www.clearfin.ca: dining $800 and groceries $1,000 retained across Back/forward, Compare (both columns), and return to Calculator. No warning/error logs in that checked journey; optional tracking declined. Full seven-field reset/reentry and offer-date boundary checks were performed locally, not by changing production data/time.
+- 33 items remain open. Keep subsequent work in small verified batches; accessibility is the next compact batch, with the larger CF-02/03/05 product-model work separately source-verified.
