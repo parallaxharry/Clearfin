@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import SiteFooter from "@/components/SiteFooter";
 import Nav from "@/components/Nav";
 import InteractiveTool from "@/components/InteractiveTool";
-import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 
@@ -121,11 +120,9 @@ export default async function CalculatorPage() {
       <div className="grain" />
       <Nav />
 
-      <SpendProvider>
-        <CatalogProvider map={catalog}>
-          <InteractiveTool />
-        </CatalogProvider>
-      </SpendProvider>
+      <CatalogProvider map={catalog}>
+        <InteractiveTool />
+      </CatalogProvider>
 
       <SiteFooter />
     </>

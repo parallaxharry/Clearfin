@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
-  CARDS, CardDef, SpendKey, DEFAULT_SPEND, STEPS,
+  CARDS, CardDef, SpendKey, STEPS,
   fmt, fmtRate, getBreakdown, getTopCards,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
@@ -58,22 +58,22 @@ const PROFILE_STEPS = [
 const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 
 export default function InteractiveTool() {
-  const { spend, setSpend: onSpendChange } = useSpend();
+  const { spend, setSpend, income, setIncome, credit, setCredit, resetProfile } = useSpend();
   const [toolState, setToolState] = useState<ToolState>("gate");
   const [currentStep, setCurrentStep] = useState(0);
-  const [stepValue, setStepValue] = useState(STEPS[0].defaultVal);
-  const [income, setIncome] = useState(60000);
-  const [credit, setCredit] = useState(720);
+  // Edits are saved immediately, including when users go Back or leave the page.
+  const stepValue = currentStep < STEPS.length ? spend[STEPS[currentStep].key] : 0;
+  const setStepValue = (value: number) => setSpend({ ...spend, [STEPS[currentStep].key]: value });
   const [animDir, setAnimDir] = useState<"in" | "out">("in");
   const [visible, setVisible] = useState(true);
   const [modalCard, setModalCard] = useState<(CardDef & { netValue: number }) | null>(null);
 
-  // Sync stepValue when entering a spend step (profile steps bind their own state).
-  useEffect(() => {
-    // The displayed slider value must follow the newly selected spending category.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (currentStep < STEPS.length) setStepValue(spend[STEPS[currentStep].key]);
-  }, [currentStep]); // eslint-disable-line react-hooks/exhaustive-deps
+  const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (transitionTimer.current !== null) clearTimeout(transitionTimer.current);
+    if (scrollTimer.current !== null) clearTimeout(scrollTimer.current);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = modalCard ? "hidden" : "";
@@ -81,9 +81,12 @@ export default function InteractiveTool() {
   }, [modalCard]);
 
   const transition = useCallback((fn: () => void) => {
+    // Also guard keyboard activation before React has disabled the button.
+    if (transitionTimer.current !== null) return;
     setAnimDir("out");
     setVisible(false);
-    setTimeout(() => {
+    transitionTimer.current = setTimeout(() => {
+      transitionTimer.current = null;
       fn();
       setAnimDir("in");
       setVisible(true);
@@ -93,12 +96,6 @@ export default function InteractiveTool() {
   const handlePreset = (val: number) => setStepValue(val);
 
   const handleNext = () => {
-    // Spend steps persist their slider value; profile steps already bind income/credit.
-    if (currentStep < STEPS.length) {
-      const key = STEPS[currentStep].key;
-      onSpendChange({ ...spend, [key]: stepValue });
-    }
-
     if (currentStep < TOTAL_STEPS - 1) {
       transition(() => setCurrentStep((s) => s + 1));
     } else {
@@ -120,8 +117,7 @@ export default function InteractiveTool() {
   const handleRestart = () => {
     transition(() => {
       setCurrentStep(0);
-      onSpendChange(DEFAULT_SPEND);
-      setStepValue(STEPS[0].defaultVal);
+      resetProfile();
       setToolState("step");
     });
   };
@@ -184,7 +180,8 @@ export default function InteractiveTool() {
                 </p>
                 <button className="gate-btn" onClick={() => {
                   setToolState("step");
-                  setTimeout(() => {
+                  scrollTimer.current = setTimeout(() => {
+                    scrollTimer.current = null;
                     document.getElementById("tool")?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }, 100);
                 }}>
@@ -279,10 +276,10 @@ export default function InteractiveTool() {
 
               {/* Nav buttons */}
               <div className="step-nav">
-                <button className="step-back" onClick={handleBack}>
+                <button className="step-back" onClick={handleBack} disabled={!visible}>
                   ← Back
                 </button>
-                <button className="step-next" onClick={handleNext}>
+                <button className="step-next" onClick={handleNext} disabled={!visible}>
                   {currentStep < TOTAL_STEPS - 1 ? "Next →" : "See Results →"}
                 </button>
               </div>

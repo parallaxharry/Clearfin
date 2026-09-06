@@ -1,27 +1,37 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
-import { SpendKey, DEFAULT_SPEND } from "@/lib/cards";
+import { createContext, useContext, useReducer, ReactNode } from "react";
+import { SpendKey } from "@/lib/cards";
+import { createDefaultProfile, spendProfileReducer, type SpendProfile } from "@/lib/spendProfile";
 
-interface SpendContextValue {
-  spend: Record<SpendKey, number>;
+interface SpendContextValue extends SpendProfile {
   setSpend: (spend: Record<SpendKey, number>) => void;
+  setIncome: (income: number) => void;
+  setCredit: (credit: number) => void;
+  resetProfile: () => void;
 }
 
-const SpendContext = createContext<SpendContextValue>({
-  spend: DEFAULT_SPEND,
-  setSpend: () => {},
-});
+const SpendContext = createContext<SpendContextValue | null>(null);
 
 export function SpendProvider({ children }: { children: ReactNode }) {
-  const [spend, setSpend] = useState<Record<SpendKey, number>>(DEFAULT_SPEND);
+  // Root-layout state survives internal navigation. A reload/new tab starts fresh;
+  // financial answers are not written to browser storage or sent to analytics.
+  const [profile, dispatch] = useReducer(spendProfileReducer, undefined, createDefaultProfile);
   return (
-    <SpendContext.Provider value={{ spend, setSpend }}>
+    <SpendContext.Provider value={{
+      ...profile,
+      setSpend: (value) => dispatch({ type: "spend", value }),
+      setIncome: (value) => dispatch({ type: "income", value }),
+      setCredit: (value) => dispatch({ type: "credit", value }),
+      resetProfile: () => dispatch({ type: "reset" }),
+    }}>
       {children}
     </SpendContext.Provider>
   );
 }
 
 export function useSpend() {
-  return useContext(SpendContext);
+  const context = useContext(SpendContext);
+  if (!context) throw new Error("useSpend must be used within SpendProvider");
+  return context;
 }

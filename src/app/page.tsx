@@ -5,7 +5,6 @@ import InteractiveTool from "@/components/InteractiveTool";
 import CompareSection from "@/components/CompareSection";
 import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
-import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 import HeroCardCarousel from "@/components/HeroCardCarousel";
@@ -144,24 +143,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <SpendProvider>
-        <CatalogProvider map={catalog}>
-          {/* ══════════════════════════════════════
-              02 INTERACTIVE TOOL
-          ══════════════════════════════════════ */}
-          <InteractiveTool />
+      <CatalogProvider map={catalog}>
+        {/* ══════════════════════════════════════
+            02 INTERACTIVE TOOL
+        ══════════════════════════════════════ */}
+        <InteractiveTool />
 
-          {/* ══════════════════════════════════════
-              03 TOP PICKS BY CATEGORY
-          ══════════════════════════════════════ */}
-          <TopPicks />
+        {/* ══════════════════════════════════════
+            03 TOP PICKS BY CATEGORY
+        ══════════════════════════════════════ */}
+        <TopPicks />
 
-          {/* ══════════════════════════════════════
-              04 COMPARE CARDS
-          ══════════════════════════════════════ */}
-          <CompareSection />
-        </CatalogProvider>
-      </SpendProvider>
+        {/* ══════════════════════════════════════
+            04 COMPARE CARDS
+        ══════════════════════════════════════ */}
+        <CompareSection />
+      </CatalogProvider>
 
       {/* ══════════════════════════════════════
           05 APP PREVIEW + CLEARSAVE

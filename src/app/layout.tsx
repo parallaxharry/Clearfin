@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import AnalyticsConsent from "@/components/AnalyticsConsent";
 import MetaPixel from "@/components/MetaPixel";
 import { SearchProvider } from "@/context/SearchContext";
+import { SpendProvider } from "@/context/SpendContext";
 import { getSearchCards } from "@/lib/cardDetail";
 // Self-hosted copies of the same files next/font/google used to download at
 // build time. Fetching them from Google was intermittently failing the build.
@@ -144,7 +145,9 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        <SearchProvider cards={searchCards}>{children}</SearchProvider>
+        <SpendProvider>
+          <SearchProvider cards={searchCards}>{children}</SearchProvider>
+        </SpendProvider>
         <AnalyticsConsent />
         <MetaPixel />
         <ChatWidget />
