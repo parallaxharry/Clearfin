@@ -130,7 +130,7 @@ export default function BestStudentCreditCardsCanada() {
         to students.
       </p>
 
-      <div className="seo-table-wrap">
+        <div className="seo-table-wrap" role="region" aria-label="Card comparison table" tabIndex={0}>
         <table className="seo-table">
           <thead>
             <tr>
@@ -223,7 +223,7 @@ export default function BestStudentCreditCardsCanada() {
         Student credit cards are specifically designed for applicants with limited or no
         credit history. Here is how they differ from regular cards.
       </p>
-      <div className="seo-table-wrap">
+      <div className="seo-table-wrap" role="region" aria-label="Student card comparison table" tabIndex={0}>
         <table className="seo-table">
           <thead>
             <tr>

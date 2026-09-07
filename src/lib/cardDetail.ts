@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { CARDS, type CardDef, type SpendKey } from "@/lib/cards";
 import type { SearchCard, RichSearchCard } from "@/lib/searchIndex";
 import { CARD_REVIEW_ENRICHMENT, type CardResearchLevel } from "@/lib/cardReviewData";
+import { classifyReward, type RewardKind } from "@/lib/catalogueFilters";
 
 // ---------- Rich card_catalog shapes (jsonb) ----------
 
@@ -571,6 +572,7 @@ export interface CatalogListCard extends SearchCard {
   annualFee: number | null;
   badge: string;
   bankUrl: string | null;
+  rewardKind: RewardKind;
 }
 
 /**
@@ -587,6 +589,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
       annualFee: card.annualFee,
       badge: card.badge,
       bankUrl: card.bankUrl,
+      rewardKind: classifyReward(null, `${card.name} ${card.description}`),
     }));
 
   const supabase = readClient();
@@ -594,7 +597,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,sort_order,annual_fee,badge,bank_url")
+    .select("id,name,issuer,img,sort_order,annual_fee,badge,bank_url,reward_program")
     .order("sort_order", { ascending: true });
   if (error || !data) {
     if (error) console.error("getCatalogOrderedCards error:", error.message);
@@ -612,6 +615,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
     annual_fee: number | null;
     badge: string | null;
     bank_url: string | null;
+    reward_program: string | null;
   }>).map((row) => ({
     id: staticIdByCatalogId.get(row.id) ?? row.id,
     name: row.name ?? row.id,
@@ -620,6 +624,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
     annualFee: row.annual_fee,
     badge: row.badge ?? "",
     bankUrl: row.bank_url,
+    rewardKind: classifyReward(row.reward_program, row.name ?? ""),
   }));
 });
 

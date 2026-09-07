@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **20/38 implemented and tested**. Batches 1–4 are live; batch 5 release verification is recorded in its pull request.
+Progress: **22/38 implemented and tested**. Batches 1–5 are live; batch 6 release verification is recorded in its pull request.
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -25,7 +25,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [x] CF-06 — Make comparison selectors work with the keyboard. (Batch 2)
 - [x] CF-07 — Fix modal/search focus, Escape and return focus. (Batch 2)
 - [x] CF-08 — Label inputs and announce form outcomes. (Batch 2)
-- [ ] CF-12 — Add catalogue search, filters, sorting and result count.
+- [x] CF-12 — Add catalogue search, filters, sorting and result count. (Batch 6)
 - [x] CF-15 — Fix search keyboard shortcuts and selected-result behaviour. (Batch 2)
 - [x] CF-16 — Improve small comparison labels and spacing. (Batch 4)
 - [x] CF-17 — Add carousel pause and respect reduced motion. (Batch 4)
@@ -44,7 +44,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] CF-27 — Verify tracking, consent and private-data exclusions.
 - [ ] CF-28 — Verify API limits and deployment protections safely.
 - [ ] CF-31 — Simplify styles and scroll handling after a visual baseline.
-- [ ] CF-32 — Check long articles, FAQ, footer and information pages.
+- [x] CF-32 — Check long articles, FAQ, footer and information pages. (Batch 6; editorial follow-up owners recorded separately)
 
 ## Animation — after reliability, accessibility and performance checks
 
@@ -123,3 +123,11 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - A temporary local-only route threw a real component error; the branded error boundary appeared and Try again restored the page after the injected failure was cleared. The fixture was removed before the final release build (162 routes). Unknown route returns an actual 404 with noindex; recovery links and 1280/390/320px reflow checked. Global fallback compiles with its own fonts/styles; a production root-layout failure was not induced.
 - Re-run with npm run test:qa:recovery using the existing Playwright variables. QA_ERROR_FIXTURE=1 is local-only and requires recreating the temporary test component; do not add a public failure-trigger route. No issuer data, SEO content, analytics configuration or chat API quota policy changes. API-rate-limit/infrastructure validation remains CF-28.
 - Release evidence is recorded in this batch's pull request. Progress: 20/38 implemented/tested; 18 remain. Next compact candidates: catalogue search/filter/sort CF-12 and long-article/footer checks CF-32. Source-verified card-model work, real phones, performance and optional animation items remain separate.
+
+## Batch 6 — catalogue exploration and editorial-page interactions
+
+- CF-12: local search, issuer/fee/reward filters, native labelled controls, result count, reset and zero-results recovery. Sort by catalogue order, name or exact annual fee; unknown fees sort last and never count as free. All cards remain in the initial server-rendered HTML. Card text/artwork/links are preserved. Reward classification uses explicit stored program wording or existing name/description; missing/ambiguous information remains Not classified. No new issuer facts or approval guarantees are inferred.
+- CF-32: restored contents navigation on mobile, larger contents/table text, keyboard focus transfer, initial hydrated hash links and route-change updates. Observer failure leaves contents links usable. Markdown and category tables use labelled keyboard-scroll wrappers. Corrected the FAQ's statement-upload claim to match the actual site and current privacy page; generated FAQ schema follows the same answer.
+- Validation: 23 unit tests, focused ESLint, TypeScript and 162-route production build pass. New browser suite tests combined catalogue narrowing, fee order, keyboard reset/empty recovery, 320/390px layouts and no-JS discoverability. Checks 19 editorial/info routes, all generated contents links, initial hash and client navigation, tables, static FAQs, mail/footer links and 200% CSS zoom. Screenshots reviewed. No actual submissions or application-funnel visits.
+- Remaining factual/date/policy/external-destination checks have confirmation owners in [editorial follow-ups](editorial-qa-followups-2026-09-07.md). CF-32 covers shared interactions and assigned follow-ups, not a legal or full editorial sign-off. Current offer/data verification remains CF-26; real-device checks remain CF-23/24.
+- Run npm run test:qa:catalogue with the same Playwright/runtime environment as earlier suites. Local build uses static fallback data; release verification is recorded in this batch's pull request. Progress: 22/38 implemented/tested; 16 remain. Next safe candidate: measured performance baseline CF-25 before optional animation work.

@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
-import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import { getCatalogOrderedCards } from "@/lib/cardDetail";
-import { formatCost } from "@/lib/money";
+import CatalogueBrowser from "@/components/CatalogueBrowser";
 import { FINLY_REBATES_CHECKED_AT, getFinlyRebate } from "@/lib/finlyRebates";
 
 export const metadata: Metadata = {
@@ -51,26 +49,7 @@ export default async function CreditCardsPage() {
               </p>
             </div>
           ) : null}
-          <div className="catalog-grid">
-            {cards.map((card) => (
-              <Link href={`/credit-cards/${card.id}`} className="catalog-card" key={card.id}>
-                <div className="catalog-card-art">
-                  <FinlyRebateBadge cardId={card.id} applicationUrl={card.bankUrl} />
-                  <Image src={card.img} alt={card.name} fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 280px" style={{ objectFit: "contain" }} />
-                </div>
-                <div className="catalog-card-copy">
-                  <span>{card.issuer}</span>
-                  <h3>{card.name}</h3>
-                  <p>{card.badge}</p>
-                  <div>
-                    <small>Annual fee</small>
-                    <strong>{card.annualFee === null ? "See details" : formatCost(card.annualFee)}</strong>
-                  </div>
-                  <em>View card details <b>→</b></em>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <CatalogueBrowser cards={cards} />
         </section>
       </main>
       <SiteFooter />

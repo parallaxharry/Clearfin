@@ -8368,6 +8368,25 @@ body {
 .hero-carousel-controls { position:absolute; top:38px; left:0; right:0; z-index:20; display:flex; justify-content:center; align-items:center; gap:8px; }
 .hero-carousel-controls button { min-height:36px; padding:6px 10px; border:1px solid #bcc8d5; border-radius:8px; background:#fff; color:#24405d; font:inherit; font-size:12px; cursor:pointer; }
 .hero-carousel-controls button:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
+.catalog-controls { display:grid; grid-template-columns:2fr repeat(4,minmax(0,1fr)); gap:14px; align-items:end; margin:24px 0 12px; padding:20px; border:1px solid #d3dfeb; border-radius:16px; background:#f7faff; }
+.catalog-controls label { display:flex; flex-direction:column; gap:7px; min-width:0; font-size:13px; font-weight:650; color:#34485c; }
+.catalog-controls input,.catalog-controls select { min-width:0; width:100%; min-height:44px; padding:10px; border:1px solid #b6c7d8; border-radius:8px; background:#fff; color:#1d1d1f; font:inherit; font-size:14px; }
+.catalog-controls button,.catalog-empty button { min-height:44px; padding:10px 16px; border:1px solid #0066cc; border-radius:8px; background:white; color:#0066cc; font:inherit; font-size:14px; cursor:pointer; }
+.catalog-controls :focus-visible,.catalog-empty button:focus-visible,.seo-table-wrap:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
+.catalog-filter-note { color:#525b66; font-size:13px; line-height:1.6; }
+.catalog-results { margin:18px 0; font-size:15px; font-weight:650; }
+.catalog-empty { padding:36px 20px; border:1px dashed #a8bfd6; border-radius:16px; text-align:center; }
+.catalog-empty p { margin:12px 0 20px; line-height:1.6; }
+.seo-page .seo-article-shell,.seo-page .seo-content { min-width:0; }
+.seo-page .seo-table-wrap { max-width:100%; overflow-x:auto; margin:24px 0 32px; }
+.seo-page .seo-table-wrap table { min-width:600px; margin:0; }
+.seo-page .seo-content table th,.seo-page .seo-content table td { font-size:14px; line-height:1.5; color:#424b55; }
+.seo-page .seo-content h2 { scroll-margin-top:110px; }
+.seo-toc[hidden] { display:none; }
+.seo-toc a { font-size:14px; line-height:1.5; }
+@media (max-width:1000px) { .seo-toc-rail { display:block; } .seo-toc { position:static; margin-bottom:24px; } }
+@media (max-width:1000px) { .catalog-controls { grid-template-columns:repeat(2,minmax(0,1fr)); } .catalog-query { grid-column:1 / -1; } }
+@media (max-width:420px) { .catalog-controls { grid-template-columns:minmax(0,1fr); padding:16px; } }
 .cf-chat-recovery { margin:12px 0; padding:12px; border:1px solid #bccfe3; border-radius:10px; background:#f4f8fd; color:#34485c; font-size:13px; overflow-wrap:anywhere; }
 .cf-chat-recovery p { margin:0 0 10px; }
 .cf-chat-recovery button { min-height:44px; padding:8px 14px; border:1px solid #0066cc; border-radius:8px; background:#fff; color:#0066cc; font:inherit; cursor:pointer; }

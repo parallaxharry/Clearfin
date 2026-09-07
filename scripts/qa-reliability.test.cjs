@@ -22,6 +22,35 @@ const cards = load("src/lib/cards.ts", { "./money": money });
 const { createDefaultProfile, spendProfileReducer: reduce } = load("src/lib/spendProfile.ts", { "./cards": cards });
 const { isOfferExpired } = load("src/lib/offerExpiry.ts");
 const { resolveComparison, comparisonQuery, comparisonWinner } = load("src/lib/comparison.ts");
+const { classifyReward, filterCatalogue, DEFAULT_CATALOGUE_FILTERS } = load("src/lib/catalogueFilters.ts");
+
+test("catalogue filters combine search, issuer, fee and rewards without changing source order", () => {
+  const sample = [
+    { name: "Zulu Cash Back", issuer: "Bank A", badge: "Everyday", annualFee: 0, rewardKind: "cashback" },
+    { name: "Élite Points", issuer: "Bank B", badge: "Travel", annualFee: 119.88, rewardKind: "points" },
+    { name: "Alpha", issuer: "Bank A", badge: "Basic", annualFee: null, rewardKind: "unknown" },
+    { name: "Beta", issuer: "Bank B", badge: "Travel", annualFee: 12.5, rewardKind: "points" },
+  ];
+  const query = extra => filterCatalogue(sample, { ...DEFAULT_CATALOGUE_FILTERS, ...extra });
+  assert.equal(query({ query: " ELITE travel ", issuer: "Bank B", fee: "paid", reward: "points" })[0].name, "Élite Points");
+  assert.equal(query({ fee: "free" }).length, 1);
+  assert.equal(query({ fee: "unknown" })[0].name, "Alpha");
+  assert.equal(query({ reward: "unknown" })[0].name, "Alpha");
+  assert.equal(query({ query: "absent" }).length, 0);
+  assert.equal(query({ sort: "fee-asc" }).map(c => c.name).join(","), "Zulu Cash Back,Beta,Élite Points,Alpha");
+  assert.equal(query({ sort: "fee-desc" }).map(c => c.name).join(","), "Élite Points,Beta,Zulu Cash Back,Alpha");
+  assert.equal(query({ sort: "name" })[0].name, "Alpha");
+  assert.equal(query({})[0].name, "Zulu Cash Back");
+});
+
+test("reward classifications use explicit programme wording and leave ambiguity unclassified", () => {
+  assert.equal(classifyReward("Cash Back"), "cashback");
+  assert.equal(classifyReward("Membership Rewards"), "points");
+  assert.equal(classifyReward("Aeroplan"), "points");
+  assert.equal(classifyReward(null, "5x points on dining"), "points");
+  assert.equal(classifyReward(null, "Premium travel benefits"), "unknown");
+  assert.equal(classifyReward("Unspecified", "Cash Back card"), "unknown");
+});
 
 test("shared comparisons preserve slots and reject duplicate or unknown cards", () => {
   const ids = new Set(["a", "b", "c"]);
