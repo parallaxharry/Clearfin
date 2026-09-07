@@ -8272,3 +8272,46 @@ body {
 /* The earnings-table total is the same kind of figure as the headline net
    value, so it loses the italic too. */
 .modal-bd-earn { font-style: normal; font-weight: 800; }
+
+/* QA accessibility: preserve existing artwork/layout while exposing controls. */
+.cf-modal-root {
+  position: fixed; inset: 0; width: 100%; height: 100dvh;
+  max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: transparent; color: inherit;
+}
+.cf-modal-root::backdrop { background: transparent; }
+.cf-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.cmp-slot-trigger {
+  display: flex; flex: 1; align-items: center; min-width: 0;
+  padding: 0; border: 0; background: transparent;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+.cmp-dropdown-input input { min-width: 0; }
+.cmp-dropdown-item[aria-selected="true"] { background: #eaf3ff; }
+.search-open-cell { flex: 1; min-width: 0; }
+.search-result-open {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-width: 0;
+  padding: 0; border: 0; background: transparent;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+.search-item:focus-within .search-cmp-btn { opacity: 1; }
+.cmp-slot-trigger:focus-visible, .cmp-slot-x:focus-visible,
+.cmp-dropdown-input input:focus-visible, .result-card:focus-visible,
+.step-slider:focus-visible, .cf-modal-root button:focus-visible,
+.cf-modal-root a:focus-visible, .cf-modal-root input:focus-visible {
+  outline: 2px solid #0071e3; outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .nav-search { display: inline-flex !important; }
+}
+@media (max-width: 600px) {
+  .search-item { flex-wrap: wrap; gap: 8px; }
+  .search-open-cell { flex-basis: 100%; }
+  .search-item-row { flex-wrap: wrap; gap: 4px 8px; }
+  .search-item-label { flex-basis: 100%; white-space: normal; }
+  .search-item > [role="gridcell"]:not(.search-open-cell) { margin-left: 56px; }
+  .search-cmp-btn { opacity: 1; margin-left: 0; }
+}

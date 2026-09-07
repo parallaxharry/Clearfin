@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { trackMetaAction } from "@/lib/metaPixel";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function WaitlistForm() {
+  const messageId = useId();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -46,6 +47,9 @@ export default function WaitlistForm() {
       <form className="wait-form" onSubmit={handleSubmit}>
         <input
           type="email"
+          aria-label="Email address for early access"
+          autoComplete="email"
+          aria-describedby={status === "error" ? messageId : undefined}
           placeholder="your@email.ca"
           required
           value={email}
@@ -64,7 +68,10 @@ export default function WaitlistForm() {
             : "Get Early Access →"}
         </button>
       </form>
-      {errorMsg && <div className="wait-error">{errorMsg}</div>}
+      <div role="status" aria-live="polite" aria-atomic="true" className="cf-sr-only">
+        {status === "loading" ? "Adding..." : status === "success" ? "You're on the list" : ""}
+      </div>
+      <div id={messageId} role="alert" aria-atomic="true" className={errorMsg ? "wait-error" : "cf-sr-only"}>{errorMsg}</div>
     </>
   );
 }
