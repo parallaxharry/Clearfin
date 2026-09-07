@@ -108,10 +108,14 @@ export default function SearchPalette({
   const goCompare = () => {
     if (compare.length !== 2) return;
     const ids = compare.map((c) => c.id);
+    const href = `/compare-credit-cards-canada?compare=${ids.join(",")}`;
+    if (window.location.pathname === "/compare-credit-cards-canada") {
+      // Change only URL state when the comparison is already on screen.
+      window.history.pushState(null, "", href);
+    } else {
+      router.push(href);
+    }
     onClose();
-    router.push(`/compare-credit-cards-canada?compare=${ids.join(",")}`);
-    // Same-page case: the compare page is already mounted and listens for this.
-    window.dispatchEvent(new CustomEvent("clearfin:compare", { detail: { ids } }));
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {

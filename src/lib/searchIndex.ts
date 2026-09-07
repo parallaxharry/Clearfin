@@ -1,5 +1,6 @@
 // Pure (client-safe) search domain: types, the static page manifest, and the
 // matcher used by the search palette. No server / Supabase imports here.
+import { formatCost } from "./money";
 
 export interface SearchCard {
   id: string;
@@ -243,7 +244,7 @@ function scoreRichCard(card: RichSearchCard, parsed: ParsedQuery): CardScore | n
 }
 
 const feeChip = (fee: number | null): string | undefined =>
-  fee == null ? undefined : fee === 0 ? "No fee" : `$${Math.round(fee)}/yr`;
+  fee == null ? undefined : fee === 0 ? "No fee" : `${formatCost(fee)}/yr`;
 
 /** Attribute search over the rich index. Returns [] when nothing qualifies. */
 function searchRichCards(query: string, rich: RichSearchCard[]): SearchResult[] {

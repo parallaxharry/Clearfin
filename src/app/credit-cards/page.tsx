@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import { getCatalogOrderedCards } from "@/lib/cardDetail";
+import { formatCost } from "@/lib/money";
 import { FINLY_REBATES_CHECKED_AT, getFinlyRebate } from "@/lib/finlyRebates";
 
 export const metadata: Metadata = {
@@ -63,7 +64,7 @@ export default async function CreditCardsPage() {
                   <p>{card.badge}</p>
                   <div>
                     <small>Annual fee</small>
-                    <strong>{card.annualFee === null ? "See details" : card.annualFee === 0 ? "$0" : `$${card.annualFee}`}</strong>
+                    <strong>{card.annualFee === null ? "See details" : formatCost(card.annualFee)}</strong>
                   </div>
                   <em>View card details <b>→</b></em>
                 </div>

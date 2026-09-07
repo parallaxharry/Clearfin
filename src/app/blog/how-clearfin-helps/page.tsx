@@ -71,9 +71,9 @@ export default function HowClearFinHelpsPage() {
           <div className="home-seo-intro-inner">
             <div className="home-seo-intro-heading">
               <div className="home-seo-kicker">How ClearFin helps</div>
-              <h2 id="home-seo-intro-title">
+              <h1 id="home-seo-intro-title">
                 Compare Canadian credit cards around the way you <span>actually spend.</span>
-              </h2>
+              </h1>
               <p className="home-seo-lede">
                 Credit card rewards look simple until you try to compare them.
                 Grocery rates can depend on the store, travel points can change

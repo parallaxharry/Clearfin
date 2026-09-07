@@ -10,6 +10,7 @@ import SiteFooter from "@/components/SiteFooter";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import { CARDS } from "@/lib/cards";
 import { isOfferExpired } from "@/lib/offerExpiry";
+import { formatEstimate as money, formatCost as feeMoney } from "@/lib/money";
 
 // ISR: refresh catalogue and offer expiry on requests after five minutes.
 // The first stale request can serve the prior page while regeneration completes.
@@ -31,7 +32,7 @@ export async function generateMetadata({
   const card = await getCard(id);
   if (!card) return { title: "Card not found - ClearFin" };
 
-  const feeText = card.annualFee > 0 ? `$${card.annualFee}/year` : "no annual fee";
+  const feeText = card.annualFee > 0 ? `${feeMoney(card.annualFee)}/year` : "no annual fee";
   const title = `${card.name} Review (2026) - Rewards, Fees & Perks | ClearFin`;
   const description = `${card.name} from ${card.issuer}: ${feeText}, full earn rates, welcome bonus, fees and benefits. Compare it against every Canadian card on ClearFin.`;
 
@@ -51,12 +52,6 @@ export async function generateMetadata({
 
 // ---------- formatting helpers ----------
 
-const money = (n: number) => `$${Math.round(n).toLocaleString("en-CA")}`;
-const feeMoney = (n: number) =>
-  `$${n.toLocaleString("en-CA", {
-    minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
-    maximumFractionDigits: 2,
-  })}`;
 
 const CAT = [
   { key: "dining", icon: "🍽️", label: "Dining" },
@@ -335,7 +330,7 @@ export default async function CardPage({
     { label: "Income requirement", value: card.minIncomePersonal !== null ? money(card.minIncomePersonal) : "Not stated", note: "Issuer approval criteria apply" },
   ];
   if (card.balanceTransferApr !== null) economics.push({ label: "Balance transfer interest", value: `${card.balanceTransferApr}%` });
-  if (card.additionalCardFee !== null) economics.push({ label: "Additional card", value: card.additionalCardFee === 0 ? "$0" : money(card.additionalCardFee) });
+  if (card.additionalCardFee !== null) economics.push({ label: "Additional card", value: feeMoney(card.additionalCardFee) });
   if (card.minIncomeHousehold !== null) economics.push({ label: "Household income", value: money(card.minIncomeHousehold), note: "Alternative minimum" });
 
   const verdictPros = card.pros.length > 0 ? card.pros : [

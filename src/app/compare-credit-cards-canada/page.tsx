@@ -55,9 +55,11 @@ export default async function CompareCreditCardsPage() {
       <div className="grain" />
       <Nav />
 
-      <CatalogProvider map={catalog}>
-        <CompareSection />
-      </CatalogProvider>
+      <main>
+        <CatalogProvider map={catalog}>
+          <CompareSection pageHeading />
+        </CatalogProvider>
+      </main>
 
       <SiteFooter />
     </>

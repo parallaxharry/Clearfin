@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef, useId } from "react";
+import { Suspense, useState, useEffect, useRef, useId } from "react";
+import { useSearchParams } from "next/navigation";
+import { comparisonQuery, comparisonWinner, resolveComparison, type ComparisonPair } from "@/lib/comparison";
+import { formatCost } from "@/lib/money";
 import {
   CARDS, CardDef, SpendKey,
   fmt, fmtRate, getBreakdown, scoreCard, getTopCards,
@@ -15,20 +18,22 @@ function CardColumn({
   card,
   spend,
   rank,
+  outcome,
 }: {
   card: CardDef & { netValue: number };
   spend: Record<SpendKey, number>;
   rank: number;
+  outcome: "winner" | "tie" | null;
 }) {
   const { rows, gross } = getBreakdown(card, spend);
-  const isTop = rank === 1;
   const [imgErr, setImgErr] = useState(false);
 
   return (
-    <div className={`cmp-card-col${isTop ? " cmp-col-a" : " cmp-col-b"}`}>
+    <div className={`cmp-card-col cmp-col-b${outcome === "winner" ? " cmp-winner" : ""}`}>
       <div className="cmp-panel-top">
         <div className="cmp-panel-identity">
           <div className="cmp-panel-index">0{rank}</div>
+          {outcome && <div className="cmp-outcome">{outcome === "winner" ? "Higher estimated value" : "Same rounded estimate"}</div>}
           <div className="card-modal-badge">{card.badge}</div>
           <h3 className="card-modal-name">{card.name}</h3>
           <div className="card-modal-issuer">{card.issuer}</div>
@@ -54,7 +59,7 @@ function CardColumn({
 
       <div className="cmp-panel-value">
         <div><span>Estimated net value</span><strong>{fmt(card.netValue)}</strong><small>per year after fees</small></div>
-        <p>Gross {fmt(gross)} <i>−</i> fee {card.annualFee === 0 ? "$0" : fmt(card.annualFee)}</p>
+        <p>Gross {fmt(gross)} <i>−</i> fee {formatCost(card.annualFee)}</p>
       </div>
 
       <div className="modal-breakdown">
@@ -277,41 +282,46 @@ function CardSlot({
   );
 }
 
-export default function CompareSection() {
+const comparableIds = new Set(CARDS.map((card) => card.id));
+
+function CompareCards({ compareParam }: { compareParam: string | null }) {
   const { spend: effectiveSpend } = useSpend();
 
-  const defaultIds = getTopCards(effectiveSpend, 2).map((c) => c.id) as [string, string];
-  const [selectedIds, setSelectedIds] = useState<[string | null, string | null]>(defaultIds);
+  const [defaultIds] = useState<ComparisonPair>(() => getTopCards(effectiveSpend, 2).map((c) => c.id) as ComparisonPair);
+  const selectedIds = resolveComparison(compareParam, defaultIds, comparableIds);
   const [queries, setQueries] = useState<[string, string]>(["", ""]);
   const [openSlot, setOpenSlot] = useState<0 | 1 | null>(null);
+  const [copyStatus, setCopyStatus] = useState("");
+  const [manualLink, setManualLink] = useState("");
 
-  // Compare-from-search: ?compare=a,b on page load, and the clearfin:compare
-  // event when the palette is used while this section is already mounted.
-  useEffect(() => {
-    const apply = (ids: string[]) => {
-      const valid = ids.filter((id) => CARDS.some((c) => c.id === id)).slice(0, 2);
-      if (valid.length === 2) setSelectedIds([valid[0], valid[1]]);
-      else if (valid.length === 1) setSelectedIds((prev) => [valid[0], prev[1]]);
-    };
-    const fromUrl = new URLSearchParams(window.location.search).get("compare");
-    if (fromUrl) apply(fromUrl.split(","));
-    const onCompare = (e: Event) => {
-      const ids = (e as CustomEvent<{ ids?: string[] }>).detail?.ids;
-      if (ids) apply(ids);
-    };
-    window.addEventListener("clearfin:compare", onCompare);
-    return () => window.removeEventListener("clearfin:compare", onCompare);
-  }, []);
+  const updatePair = (pair: ComparisonPair) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("compare", comparisonQuery(pair));
+    window.history.pushState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    setCopyStatus("");
+    setManualLink("");
+  };
+
+  const copyLink = async () => {
+    const url = new URL("/compare-credit-cards-canada", window.location.origin);
+    url.searchParams.set("compare", comparisonQuery(selectedIds));
+    try {
+      await navigator.clipboard.writeText(url.href);
+      setCopyStatus("Comparison link copied.");
+      setManualLink("");
+    } catch {
+      setManualLink(url.href);
+      setCopyStatus("Select and copy the link below.");
+    }
+  };
 
   const selectCard = (slot: 0 | 1, id: string) => {
     if (selectedIds[slot] !== id && selectedIds[slot === 0 ? 1 : 0]) {
       trackMetaAction("CardComparison");
     }
-    setSelectedIds((prev) => {
-      const next: [string | null, string | null] = [...prev] as [string | null, string | null];
-      next[slot] = id;
-      return next;
-    });
+    const next: ComparisonPair = [...selectedIds];
+    next[slot] = id;
+    updatePair(next);
     setQueries((prev) => {
       const next: [string, string] = [...prev] as [string, string];
       next[slot] = "";
@@ -320,11 +330,9 @@ export default function CompareSection() {
   };
 
   const clearSlot = (slot: 0 | 1) => {
-    setSelectedIds((prev) => {
-      const next: [string | null, string | null] = [...prev] as [string | null, string | null];
-      next[slot] = null;
-      return next;
-    });
+    const next: ComparisonPair = [...selectedIds];
+    next[slot] = null;
+    updatePair(next);
     setOpenSlot(slot);
   };
 
@@ -336,24 +344,10 @@ export default function CompareSection() {
     // Display fields from Supabase; scoreCard uses cards.ts rates/fee (math unchanged).
     return withCatalog({ ...card, netValue: scoreCard(card, effectiveSpend) }, catalog);
   }) as [(CardDef & { netValue: number }) | null, (CardDef & { netValue: number }) | null];
+  const winner = comparisonWinner([scoredCards[0]?.netValue ?? null, scoredCards[1]?.netValue ?? null]);
 
   return (
-    <section id="compare">
-      <div className="section-num">04 / Compare Cards</div>
-      <div className="cmp-wrap">
-
-        {/* Header */}
-        <div className="cmp-header">
-          <div className="cmp-eyebrow">Side-by-side card analysis</div>
-          <h2 className="cmp-title">
-            Which card puts <span className="ital">more</span> back in your wallet?
-          </h2>
-          <p className="cmp-sub">
-            Choose two cards and ClearFin will calculate the stronger fit for your spending.
-            We include annual fees and show exactly where each card earns more.
-          </p>
-        </div>
-
+    <>
         {/* Selectors */}
         <div className="cmp-selector-row">
           <CardSlot
@@ -391,6 +385,13 @@ export default function CompareSection() {
           />
         </div>
 
+        <div className="cmp-share">
+          <button type="button" onClick={copyLink} disabled={!selectedIds[0] || !selectedIds[1]}>Copy comparison link</button>
+          <span>Shares the cards. Estimates use each visitor&apos;s spending.</span>
+          <span role="status" aria-live="polite">{copyStatus}</span>
+          {manualLink && <input aria-label="Comparison link" readOnly value={manualLink} onFocus={(event) => event.currentTarget.select()} />}
+        </div>
+
         {/* Comparison grid */}
         <div className="cmp-grid">
           {([0, 1] as const).map((i) => {
@@ -408,7 +409,7 @@ export default function CompareSection() {
               );
             }
             return (
-              <CardColumn key={card.id} card={card} spend={effectiveSpend} rank={i + 1} />
+              <CardColumn key={card.id} card={card} spend={effectiveSpend} rank={i + 1} outcome={winner === i ? "winner" : winner === "tie" ? "tie" : null} />
             );
           })}
         </div>
@@ -418,6 +419,28 @@ export default function CompareSection() {
           Actual rewards may vary · ClearFin is independent of card issuers ·{" "}
           <a href="/credit-card-rewards-canada-guide">View our methodology</a>
         </p>
+    </>
+  );
+}
+
+function CompareFromUrl() {
+  const searchParams = useSearchParams();
+  return <CompareCards compareParam={searchParams.get("compare")} />;
+}
+
+export default function CompareSection({ pageHeading = false }: { pageHeading?: boolean }) {
+  const Heading = pageHeading ? "h1" : "h2";
+  return (
+    <section id="compare">
+      <div className="section-num">04 / Compare Cards</div>
+      <div className="cmp-wrap">
+        <div className="cmp-header">
+          <div className="cmp-eyebrow">Side-by-side card analysis</div>
+          <Heading className="cmp-title">Which card puts <span className="ital">more</span> back in your wallet?</Heading>
+          <p className="cmp-sub">Choose two cards and ClearFin will calculate the stronger fit for your spending.
+            We include annual fees and show exactly where each card earns more.</p>
+        </div>
+        <Suspense fallback={<CompareCards compareParam={null} />}><CompareFromUrl /></Suspense>
       </div>
       <div className="section-divider-bottom" />
     </section>

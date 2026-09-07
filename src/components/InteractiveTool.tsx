@@ -12,6 +12,7 @@ import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import CalculatorPreview from "@/components/CalculatorPreview";
 import Modal from "@/components/Modal";
 import { trackMetaAction } from "@/lib/metaPixel";
+import { formatCost } from "@/lib/money";
 
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -58,7 +59,8 @@ const PROFILE_STEPS = [
 ];
 const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 
-export default function InteractiveTool() {
+export default function InteractiveTool({ pageHeading = false }: { pageHeading?: boolean }) {
+  const Heading = pageHeading ? "h1" : "h2";
   const questionId = useId();
   const { spend, setSpend, income, setIncome, credit, setCredit, resetProfile } = useSpend();
   const [toolState, setToolState] = useState<ToolState>("gate");
@@ -168,9 +170,9 @@ export default function InteractiveTool() {
             <div className="tool-gate">
               <div className="gate-copy">
                 <div className="gate-eyebrow"><span>Live calculator</span> · Built for Canada</div>
-                <h2 className="gate-title">
+                <Heading className="gate-title">
                   See what your spending<br />could <span className="ital">earn.</span>
-                </h2>
+                </Heading>
                 <p className="gate-sub">
                   Tell us how you spend and we&apos;ll rank eligible Canadian cards by estimated
                   annual rewards after fees. Your assumptions stay visible.
@@ -217,7 +219,7 @@ export default function InteractiveTool() {
 
               {/* Icon + Question */}
               <div className="step-icon">{String(currentStep + 1).padStart(2, "0")}</div>
-              <h2 id={questionId} className="step-question">{isSpendStep ? step.question : profile.question}</h2>
+              <Heading id={questionId} className="step-question">{isSpendStep ? step.question : profile.question}</Heading>
               <p className="step-hint">{isSpendStep ? step.hint : profile.hint}</p>
 
               {/* Current value display */}
@@ -306,10 +308,10 @@ export default function InteractiveTool() {
             <div className={`result-shell${visible ? " result-visible" : ""} result-${animDir}`}>
               <div className="result-header">
                 <div className="result-eyebrow">No matches yet</div>
-                <h2 className="result-title">
+                <Heading className="result-title">
                   No cards fit that <span className="ital">income</span> &amp;{" "}
                   <span className="ital">credit score</span>.
-                </h2>
+                </Heading>
               </div>
               <p className="step-hint" style={{ textAlign: "center" }}>
                 Most cards need a higher credit score or income. Try raising either, or start over
@@ -342,10 +344,10 @@ export default function InteractiveTool() {
               {/* Header */}
               <div className="result-header">
                 <div className="result-eyebrow">Your personalised analysis</div>
-                <h2 className="result-title">
+                <Heading className="result-title">
                   <span className="ital">{topCards[0]?.name}</span> could earn you an
                   estimated <span className="result-leak">{fmt(bestNetValue)}</span> a year.
-                </h2>
+                </Heading>
               </div>
 
               {/* Stats row */}
@@ -406,7 +408,7 @@ export default function InteractiveTool() {
                         <div className="result-card-net">{fmt(card.netValue)}</div>
                         <div className="result-card-net-label">net/year</div>
                         <div className="result-card-fee">
-                          {card.annualFee === 0 ? "No annual fee" : `$${card.annualFee}/yr fee`}
+                          {card.annualFee === 0 ? "No annual fee" : `${formatCost(card.annualFee)}/yr fee`}
                         </div>
                         <div className="result-card-tap">Tap for details →</div>
                       </div>
@@ -501,7 +503,7 @@ export default function InteractiveTool() {
                       <span />
                       <span />
                       <span className="modal-bd-earn">
-                        {modalCard.annualFee === 0 ? "None" : `-$${modalCard.annualFee}`}
+                        {modalCard.annualFee === 0 ? "None" : `-${formatCost(modalCard.annualFee)}`}
                       </span>
                     </div>
                     <div className="modal-bd-row bd-net">

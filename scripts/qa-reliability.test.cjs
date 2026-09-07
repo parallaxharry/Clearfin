@@ -17,9 +17,41 @@ function load(relativePath, overrides = {}) {
   });
   return module.exports;
 }
-const cards = load("src/lib/cards.ts");
+const money = load("src/lib/money.ts");
+const cards = load("src/lib/cards.ts", { "./money": money });
 const { createDefaultProfile, spendProfileReducer: reduce } = load("src/lib/spendProfile.ts", { "./cards": cards });
 const { isOfferExpired } = load("src/lib/offerExpiry.ts");
+const { resolveComparison, comparisonQuery, comparisonWinner } = load("src/lib/comparison.ts");
+
+test("shared comparisons preserve slots and reject duplicate or unknown cards", () => {
+  const ids = new Set(["a", "b", "c"]);
+  const defaults = ["a", "b"];
+  const cases = [[null, defaults], ["c,a", ["c", "a"]], ["a,a", ["a", null]],
+    ["missing,b", [null, "b"]], [",b", [null, "b"]], ["a,", ["a", null]],
+    ["", [null, null]], ["a,b,c", ["a", "b"]], [" a , b ", ["a", "b"]]];
+  for (const [raw, expected] of cases) {
+    const pair = resolveComparison(raw, defaults, ids);
+    assert.equal(JSON.stringify(pair), JSON.stringify(expected));
+    assert.equal(JSON.stringify(resolveComparison(comparisonQuery(pair), defaults, ids)), JSON.stringify(pair));
+  }
+});
+
+test("comparison winner follows displayed estimates, slot swaps and ties", () => {
+  assert.equal(comparisonWinner([540.12, 618]), 1);
+  assert.equal(comparisonWinner([618, 540.12]), 0);
+  assert.equal(comparisonWinner([468, 468]), "tie");
+  assert.equal(comparisonWinner([100.1, 100.2]), "tie");
+  assert.equal(comparisonWinner([-100, -20]), 1);
+  assert.equal(comparisonWinner([null, 618]), null);
+});
+
+test("fees keep cents while estimates retain the established whole-dollar rounding", () => {
+  for (const [value, exact, estimate] of [[119.88, "$119.88", "$120"], [191.88, "$191.88", "$192"],
+    [12.5, "$12.50", "$13"], [120, "$120", "$120"], [0, "$0", "$0"]]) {
+    assert.equal(money.formatCost(value), exact);
+    assert.equal(money.formatEstimate(value), estimate);
+  }
+});
 
 test("profile edits retain the other answers without mutating defaults", () => {
   const original = createDefaultProfile();

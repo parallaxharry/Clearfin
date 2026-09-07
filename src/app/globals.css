@@ -2372,7 +2372,7 @@ section {
   background: #0071e3;
 }
 
-.home-seo-intro h2 {
+.home-seo-intro :is(h1, h2) {
   margin: 0;
   color: #1d1d1f;
   font-family: var(--font-archivo), system-ui, sans-serif;
@@ -2382,7 +2382,7 @@ section {
   letter-spacing: -0.055em;
 }
 
-.home-seo-intro h2 > span {
+.home-seo-intro :is(h1, h2) > span {
   color: #0071e3;
   background: linear-gradient(100deg, #0066cc 4%, #2997ff 96%);
   background-clip: text;
@@ -2526,7 +2526,7 @@ section {
   .home-seo-intro {
     padding: 76px 20px;
   }
-  .home-seo-intro h2 {
+  .home-seo-intro :is(h1, h2) {
     font-size: clamp(2.55rem, 13vw, 3.55rem);
   }
   .home-seo-story {
@@ -8315,3 +8315,13 @@ body {
   .search-item > [role="gridcell"]:not(.search-open-cell) { margin-left: 56px; }
   .search-cmp-btn { opacity: 1; margin-left: 0; }
 }
+
+/* Comparison outcome follows displayed values, never the slot position. */
+#compare .cmp-card-col { border-color:rgba(27,30,26,.12); box-shadow:0 12px 30px rgba(27,30,26,.04); }
+#compare .cmp-card-col.cmp-winner { border-color:rgba(0,102,204,.5); box-shadow:0 17px 44px rgba(0,102,204,.10); }
+.cmp-outcome { margin-bottom:8px; color:#0066cc; font-size:12px; font-weight:650; line-height:1.35; }
+.cmp-share { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin:16px 0 22px; font-size:12px; color:#606770; }
+.cmp-share button { border:1px solid #b9cce0; border-radius:8px; padding:9px 13px; background:#f5f9ff; color:#0066cc; font:inherit; font-weight:600; cursor:pointer; }
+.cmp-share button:disabled { opacity:.5; cursor:default; }
+.cmp-share button:focus-visible, .cmp-share input:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
+.cmp-share input { flex-basis:100%; width:100%; min-width:0; border:1px solid #b9cce0; border-radius:6px; padding:8px; font:inherit; }

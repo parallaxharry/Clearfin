@@ -120,9 +120,11 @@ export default async function CalculatorPage() {
       <div className="grain" />
       <Nav />
 
-      <CatalogProvider map={catalog}>
-        <InteractiveTool />
-      </CatalogProvider>
+      <main>
+        <CatalogProvider map={catalog}>
+          <InteractiveTool pageHeading />
+        </CatalogProvider>
+      </main>
 
       <SiteFooter />
     </>

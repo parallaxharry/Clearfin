@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **9/38 implemented and tested**. Release verification is recorded in each batch's pull request.
+Progress: **13/38 implemented and tested**. Batches 1–2 are live; batch 3 release verification is recorded in its pull request.
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -15,9 +15,9 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [x] CF-09 — Keep edited answers when pressing Back. (Batch 1)
 - [x] CF-10 — Reset spending, income and credit score together. (Batch 1)
 - [ ] CF-11 — Open the first calculator question from the main CTA.
-- [ ] CF-13 — Save selected comparison cards in a shareable link.
-- [ ] CF-14 — Highlight the actual comparison winner, including ties.
-- [ ] CF-20 — Show exact fees consistently, including cents.
+- [x] CF-13 — Save selected comparison cards in a shareable link. (Batch 3)
+- [x] CF-14 — Highlight the actual comparison winner, including ties. (Batch 3)
+- [x] CF-20 — Show exact fees consistently, including cents. (Batch 3)
 - [x] CF-30 — Test keyboard reentry and cancel abandoned step timers. (Batch 1; regression risk, not a confirmed pointer-click skip)
 
 ## Access and usability
@@ -30,7 +30,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] CF-16 — Improve small comparison labels and spacing.
 - [ ] CF-17 — Add carousel pause and respect reduced motion.
 - [ ] CF-18 — Keep content visible if reveal animations fail.
-- [ ] CF-19 — Add missing page headings without changing their wording.
+- [x] CF-19 — Add missing page headings without changing their wording. (Batch 3)
 - [ ] CF-21 — Improve waitlist validation and failure recovery.
 - [ ] CF-22 — Add chat timeout, stop and retry.
 - [ ] CF-29 — Add helpful not-found and error screens.
@@ -92,3 +92,13 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - These are implementation and browser/ARIA checks, not a formal screen-reader certification or physical iOS/Android device audit; CF-23/24 remain open.
 - References: [W3C modal pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/), [W3C combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/), [native dialog behaviour](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog). Checked 6 September 2026.
 - Release evidence is added to this batch's GitHub pull request after preview and production verification. Next compact backlog: shareable comparisons and correct winner emphasis (CF-13/14), plus missing headings/exact fee precision (CF-19/20).
+
+## Batch 3 — comparison sharing, outcomes, headings and fee precision
+
+- CF-13: selected cards are URL state, including deliberately empty slots. Unknown/repeated IDs cannot create duplicate panels. Manual changes, reload, Back/Forward and search-driven navigation preserve the pair. Copy comparison link shares only card IDs; recipients use their own spending defaults/profile. Clipboard failure exposes a selectable link.
+- CF-14: winner emphasis follows the displayed whole-dollar net estimate, independent of slot order. Equal rounded estimates show the same tie label and styling; incomplete pairs have no winner.
+- CF-19: Calculator, Compare and /blog/how-clearfin-helps have one primary heading and one main landmark. Calculator headings remain present through questions/results. Existing headline wording and class-based styling retained; homepage sections remain h2.
+- CF-20: shared exact-cost formatting preserves cents in comparison fees, calculator results/modal fees, catalogue/search chips, card detail and additional-card fees. Estimated rewards retain whole-dollar rounding. Fee/rate source values and reward formulas were not changed; data reconciliation is still CF-03.
+- Validation: 20 unit tests, focused ESLint, TypeScript and production build pass (162 routes). Browser checks pass for server/client headings, reload/history/copy/clear/invalid links, same-page search, winner swaps/ties, fee precision, clipboard fallback and 390px/320px layouts. Existing accessibility suite passes. Local build uses static catalogue fallback; real-phone testing remains open.
+- Added npm run test:qa:comparison. Browser test submissions are mocked and the copy test uses an isolated clipboard fixture. No financial profile values are encoded in shared links.
+- Release evidence is recorded in the batch 3 pull request. Progress: 13/38 implemented/tested; 25 remain. Next compact tasks: calculator entry CTA (CF-11), comparison label readability (CF-16), reduced-motion/pause controls (CF-17), and content visibility when animation fails (CF-18).
