@@ -192,7 +192,7 @@ export default function BestCreditCardsCanadaPage() {
         <AffiliateDisclosure />
 
         <h2>A quick comparison before you calculate</h2>
-        <div className="seo-table-wrap">
+        <div className="seo-table-wrap" role="region" aria-label="Card comparison table" tabIndex={0}>
           <table className="seo-table">
             <thead>
               <tr>

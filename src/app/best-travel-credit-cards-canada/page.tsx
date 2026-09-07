@@ -146,7 +146,7 @@ export default function BestTravelCreditCardsCanada() {
         <AffiliateDisclosure />
 
         <h2>Quick comparison</h2>
-        <div className="seo-table-wrap">
+        <div className="seo-table-wrap" role="region" aria-label="Card comparison table" tabIndex={0}>
           <table className="seo-table">
             <thead>
               <tr>
