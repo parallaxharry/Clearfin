@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **17/38 implemented and tested**. Batches 1–3 are live; batch 4 release verification is recorded in its pull request.
+Progress: **20/38 implemented and tested**. Batches 1–4 are live; batch 5 release verification is recorded in its pull request.
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -31,9 +31,9 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [x] CF-17 — Add carousel pause and respect reduced motion. (Batch 4)
 - [x] CF-18 — Keep content visible if reveal animations fail. (Batch 4)
 - [x] CF-19 — Add missing page headings without changing their wording. (Batch 3)
-- [ ] CF-21 — Improve waitlist validation and failure recovery.
-- [ ] CF-22 — Add chat timeout, stop and retry.
-- [ ] CF-29 — Add helpful not-found and error screens.
+- [x] CF-21 — Improve waitlist validation and failure recovery. (Batch 5)
+- [x] CF-22 — Add chat timeout, stop and retry. (Batch 5)
+- [x] CF-29 — Add helpful not-found and error screens. (Batch 5)
 
 ## Verification and maintenance
 
@@ -113,3 +113,13 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Run `npm run test:qa:usability` with the same Playwright/runtime variables as earlier suites. Browser write endpoints are mocked; no real waitlist/chat/application submissions. No card rates, fees, SEO URLs, tracking configuration or backend changes.
 - References checked 7 September 2026: [W3C carousel pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/) and [Element.animate](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate). These checks are not formal accessibility certification.
 - Release evidence will be attached to this batch's pull request after preview and production verification. Progress: 17/38 implemented/tested; 21 remain. Next compact candidates: waitlist recovery CF-21, chat timeout/retry CF-22, helpful error/not-found screens CF-29.
+
+## Batch 5 — recoverable signups, chat and page failures
+
+- CF-21: API rejects malformed JSON/body types, invalid or overlong email addresses and invalid source values before storage. Valid addresses are trimmed/lowercased; duplicate success and new-lead-only tracking remain unchanged. Both waitlists have a 15-second timeout, input-preserving errors and explicit retry. In-flight/unmounted requests cannot update later attempts; malformed success responses are not treated as confirmed signups.
+- CF-22: chat has Stop and Retry question controls. Requests stop after 20 seconds without data or 60 seconds overall; closing the panel cancels the current request. Failed/incomplete responses are discarded, with the question retained for manual retry and no duplicated history turn. Email and allowance gates remain enforced. Retrying may use another prompt allowance; the UI explains this. Browser cancellation does not guarantee backend work or accounting is rolled back.
+- CF-29: branded 404, segment-error and global-error pages use the existing fonts/colours and safe recovery destinations. Next 16.2's unstable_retry refreshes and retries failed content. Recovery links use full navigation so they do not depend on a possibly broken client router. Error details are not shown. No loading boundary was added, to avoid changing existing response streaming/status behaviour.
+- Validation: 21 unit tests (including API normalization, malformed bodies, duplicate/new lead outcomes), focused ESLint, TypeScript and production build pass. Browser fixtures verify both waitlist forms, network/malformed responses, timeouts, chat offline/error/empty/slow/stalled/broken streams, total deadline, stop/close/retry, email gates and allowance limits. Timers are advanced with the browser test clock. All write endpoints are intercepted; no real leads, emails or paid chat requests are sent.
+- A temporary local-only route threw a real component error; the branded error boundary appeared and Try again restored the page after the injected failure was cleared. The fixture was removed before the final release build (162 routes). Unknown route returns an actual 404 with noindex; recovery links and 1280/390/320px reflow checked. Global fallback compiles with its own fonts/styles; a production root-layout failure was not induced.
+- Re-run with npm run test:qa:recovery using the existing Playwright variables. QA_ERROR_FIXTURE=1 is local-only and requires recreating the temporary test component; do not add a public failure-trigger route. No issuer data, SEO content, analytics configuration or chat API quota policy changes. API-rate-limit/infrastructure validation remains CF-28.
+- Release evidence is recorded in this batch's pull request. Progress: 20/38 implemented/tested; 18 remain. Next compact candidates: catalogue search/filter/sort CF-12 and long-article/footer checks CF-32. Source-verified card-model work, real phones, performance and optional animation items remain separate.

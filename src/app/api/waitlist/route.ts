@@ -2,14 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 export async function POST(req: NextRequest) {
+  let body: unknown;
+  try { body = await req.json(); }
+  catch { return NextResponse.json({ error: "Invalid request." }, { status: 400 }); }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+  }
+  const { email: rawEmail, source = "waitlist" } = body as { email?: unknown; source?: unknown };
+  const email = typeof rawEmail === "string" ? rawEmail.trim().toLowerCase() : "";
+  if (!email || email.length > 254 || email.split("@")[0].length > 64 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
+  }
+  if (typeof source !== "string" || !source.trim() || source.trim().length > 100) {
+    return NextResponse.json({ error: "Invalid request source." }, { status: 400 });
+  }
   try {
-    const body = await req.json();
-    const { email, source } = body as { email?: string; source?: string };
-
-    if (!email || typeof email !== "string" || !email.includes("@")) {
-      return NextResponse.json({ error: "Valid email required." }, { status: 400 });
-    }
-
     // Check env vars exist
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -30,8 +37,8 @@ export async function POST(req: NextRequest) {
     const { error } = await supabase
       .from("waitlist_users")
       .insert({
-        email: email.toLowerCase().trim(),
-        source: source ?? "waitlist",
+        email,
+        source: source.trim(),
       });
 
     if (error) {
@@ -39,7 +46,7 @@ export async function POST(req: NextRequest) {
       if (error.code === "23505") {
         return NextResponse.json({ message: "Already on the list!", created: false }, { status: 200 });
       }
-      console.error("Supabase waitlist error:", JSON.stringify(error));
+      console.error("Supabase waitlist error code:", error.code);
       return NextResponse.json({ error: "Failed to add to waitlist." }, { status: 500 });
     }
 
