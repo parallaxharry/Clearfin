@@ -8368,6 +8368,11 @@ body {
 .hero-carousel-controls { position:absolute; top:38px; left:0; right:0; z-index:20; display:flex; justify-content:center; align-items:center; gap:8px; }
 .hero-carousel-controls button { min-height:36px; padding:6px 10px; border:1px solid #bcc8d5; border-radius:8px; background:#fff; color:#24405d; font:inherit; font-size:12px; cursor:pointer; }
 .hero-carousel-controls button:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
+.cf-chat-recovery { margin:12px 0; padding:12px; border:1px solid #bccfe3; border-radius:10px; background:#f4f8fd; color:#34485c; font-size:13px; overflow-wrap:anywhere; }
+.cf-chat-recovery p { margin:0 0 10px; }
+.cf-chat-recovery button { min-height:44px; padding:8px 14px; border:1px solid #0066cc; border-radius:8px; background:#fff; color:#0066cc; font:inherit; cursor:pointer; }
+.cf-chat-recovery small { display:block; margin-top:8px; line-height:1.5; }
+.cf-chat-recovery button:focus-visible { outline:2px solid #0071e3; outline-offset:3px; }
 @media (prefers-reduced-motion:reduce) {
   .reveal { opacity:1 !important; transform:none !important; }
   .hero-carousel-card { transition:none !important; }

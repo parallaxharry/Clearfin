@@ -1,0 +1,13 @@
+.page { min-height:100svh; box-sizing:border-box; padding:32px max(24px,calc((100vw - 1100px)/2)); background:#f7f9fc; color:#1d1d1f; font-family:var(--font-archivo),Arial,sans-serif; }
+.brand { display:inline-block; color:#1d1d1f; font-size:28px; font-weight:750; text-decoration:none; letter-spacing:-1px; }
+.brand span { color:#0071e3; }
+.panel { max-width:720px; padding:clamp(28px,5vw,56px); margin:70px auto; border:1px solid #dce5ef; border-radius:24px; background:white; box-shadow:0 16px 48px #16436d0a; }
+.eyebrow { color:#0066cc; font-size:12px; font-weight:700; letter-spacing:.09em; }
+.panel h1 { font-size:clamp(30px,5vw,48px); line-height:1.12; letter-spacing:-.035em; margin:18px 0; }
+.panel p { font-size:16px; line-height:1.65; }
+.actions { display:flex; flex-wrap:wrap; gap:12px; margin:28px 0; }
+.actions a,.actions button { display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; padding:12px 18px; border:1px solid #b8cee5; border-radius:10px; background:#f6faff; color:#0066cc; font:inherit; font-size:14px; font-weight:600; text-decoration:none; cursor:pointer; }
+.actions > :first-child { background:#0071e3; border-color:#0071e3; color:#fff; }
+.page a:focus-visible,.page button:focus-visible { outline:3px solid #0071e3; outline-offset:4px; }
+.help a { color:#0066cc; text-decoration:underline; }
+@media (max-width:420px) { .page { padding:24px 16px; } .panel { padding:24px; margin:36px auto; } .actions { flex-direction:column; } }

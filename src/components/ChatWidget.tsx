@@ -46,6 +46,8 @@ export default function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [retry, setRetry] = useState<{ question: string; history: Msg[] } | null>(null);
+  const requestRef = useRef<{ controller: AbortController; reason: "stopped" | "timeout" | null } | null>(null);
   /** Set when the server asks for an email before answering (HTTP 428). */
   const [emailGate, setEmailGate] = useState<string | null>(null);
   const [emailInput, setEmailInput] = useState("");
@@ -56,6 +58,12 @@ export default function ChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const pathname = usePathname();
+  const stop = useCallback(() => {
+    const request = requestRef.current;
+    if (request) { request.reason = "stopped"; request.controller.abort(); }
+  }, []);
+  const close = useCallback(() => { stop(); setOpen(false); }, [stop]);
+  useEffect(() => () => { requestRef.current?.controller.abort(); requestRef.current = null; }, []);
 
   /** On a card detail page the assistant gets that card as context. */
   const cardId = pathname?.startsWith("/credit-cards/")
@@ -72,21 +80,29 @@ export default function ChatWidget() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") close();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, []);
+  }, [close]);
 
   const send = useCallback(
-    async (text: string, emailOverride?: string) => {
+    async (text: string, emailOverride?: string, history = msgs) => {
       const question = text.trim();
-      if (!question || busy || limitReached) return;
+      if (!question || requestRef.current || limitReached) return;
+      const request = { controller: new AbortController(), reason: null as "stopped" | "timeout" | null };
+      requestRef.current = request;
+      const current = () => requestRef.current === request;
+      const expire = () => { request.reason = "timeout"; request.controller.abort(); };
+      const totalTimeout = window.setTimeout(expire, 60_000);
+      let idleTimeout = window.setTimeout(expire, 20_000);
+      const touch = () => { window.clearTimeout(idleTimeout); idleTimeout = window.setTimeout(expire, 20_000); };
 
       setError(null);
+      setRetry(null);
       setEmailError(null);
       setInput("");
-      const next: Msg[] = [...msgs, { role: "user", content: question }];
+      const next: Msg[] = [...history, { role: "user", content: question }];
       // Placeholder goes in straight away so there is never a silent gap
       // between hitting send and the first token arriving.
       setMsgs([...next, { role: "assistant", content: "" }]);
@@ -112,6 +128,7 @@ export default function ChatWidget() {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: request.controller.signal,
           body: JSON.stringify({
             messages: next,
             cardId,
@@ -122,6 +139,9 @@ export default function ChatWidget() {
 
         if (!res.ok || !res.body) {
           const data = await res.json().catch(() => null);
+          const detail = typeof data?.error === "string" ? data.error : null;
+          if (!current()) return;
+          if (request.controller.signal.aborted) throw new Error("aborted");
           setMsgs(next); // drop the placeholder
           setBusy(false);
           setStatus(null);
@@ -129,12 +149,13 @@ export default function ChatWidget() {
           if (res.status === 428) {
             // Hold the question so it can be sent once we have an address.
             pendingRef.current = question;
-            setMsgs(msgs);
-            setEmailGate(data?.error ?? "Enter your email to keep going.");
+            setMsgs(history);
+            setEmailGate(detail ?? "Enter your email to keep going.");
           } else if (res.status === 429 && data?.reason === "limit_reached") {
-            setLimitReached(data.error);
+            setLimitReached(detail ?? "You've reached your question allowance.");
           } else {
-            setError(data?.error ?? "Something went wrong. Please try again.");
+            setError(detail ?? "Something went wrong. Please try again.");
+            setRetry({ question, history });
           }
           return;
         }
@@ -142,10 +163,15 @@ export default function ChatWidget() {
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
         let buf = "";
+        let answer = "";
+        touch();
 
         for (;;) {
           const { value, done } = await reader.read();
+          if (!current()) return;
+          if (request.controller.signal.aborted) throw new Error("aborted");
           if (done) break;
+          touch();
           buf += decoder.decode(value, { stream: true });
 
           // Pull out any complete \x1E-wrapped status markers; the rest is prose.
@@ -168,19 +194,28 @@ export default function ChatWidget() {
           }
 
           if (text) {
+            answer += text;
             setStatus(null);
             appendToLast(text);
           }
         }
+        if (!answer.trim()) throw new Error("empty response");
       } catch {
+        if (!current()) return;
         setMsgs(next);
-        setError("Couldn't reach the assistant. Please try again.");
+        setRetry({ question, history });
+        setError(request.reason === "stopped" ? "Response stopped. Your question is saved below for retry." : request.reason === "timeout" ? "The assistant took too long. Please try again." : "Couldn't finish the answer. Check your connection and try again.");
       } finally {
-        setBusy(false);
-        setStatus(null);
+        window.clearTimeout(totalTimeout);
+        window.clearTimeout(idleTimeout);
+        if (current()) {
+          requestRef.current = null;
+          setBusy(false);
+          setStatus(null);
+        }
       }
     },
-    [busy, msgs, cardId, limitReached]
+    [msgs, cardId, limitReached]
   );
 
   /** Submit the email gate, then replay the question that triggered it. */
@@ -212,7 +247,7 @@ export default function ChatWidget() {
       <button
         type="button"
         className={`cf-chat-launcher${open ? " is-open" : ""}`}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => { if (open) close(); else setOpen(true); }}
         aria-expanded={open}
         aria-controls="cf-chat-panel"
         aria-label={open ? "Close card assistant" : "Ask about credit cards"}
@@ -236,7 +271,7 @@ export default function ChatWidget() {
               <strong>Card assistant</strong>
               <small>Answers from ClearFin&apos;s live card data</small>
             </div>
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close">✕</button>
+            <button type="button" onClick={close} aria-label="Close">✕</button>
           </header>
 
           <div className="cf-chat-body" ref={scrollRef}>
@@ -261,7 +296,7 @@ export default function ChatWidget() {
                     <ReactMarkdown
                       components={{
                         a: ({ href, children }) => (
-                          <Link href={href ?? "#"} onClick={() => setOpen(false)}>{children}</Link>
+                          <Link href={href ?? "#"} onClick={close}>{children}</Link>
                         ),
                       }}
                     >
@@ -280,6 +315,13 @@ export default function ChatWidget() {
             ))}
 
             <div role="alert" aria-atomic="true" className={error ? "cf-chat-error" : "cf-sr-only"}>{error}</div>
+            {retry && !busy && !limitReached && !emailGate && (
+              <div className="cf-chat-recovery">
+                <p>Retry: {retry.question}</p>
+                <button type="button" onClick={() => send(retry.question, undefined, retry.history)}>Retry question</button>
+                <small>Retrying sends a new request and may count toward your question allowance.</small>
+              </div>
+            )}
 
             {emailGate && (
               <form className="cf-chat-gate" onSubmit={submitEmail}>
@@ -328,7 +370,7 @@ export default function ChatWidget() {
               value={input}
               rows={1}
               maxLength={1000}
-              disabled={!!limitReached || !!emailGate}
+              disabled={busy || !!limitReached || !!emailGate}
               placeholder={
                 limitReached
                   ? "Question limit reached"
@@ -344,13 +386,13 @@ export default function ChatWidget() {
                 }
               }}
             />
-            <button
+            {busy ? <button type="button" onClick={stop} aria-label="Stop response">Stop</button> : <button
               type="submit"
               disabled={busy || !input.trim() || !!limitReached || !!emailGate}
               aria-label="Send"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
-            </button>
+            </button>}
           </form>
 
           <p className="cf-chat-foot">

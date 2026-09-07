@@ -189,3 +189,22 @@ test("waitlist distinguishes a new lead from duplicate, failed, and invalid subm
     assert.equal(invalid.body.created, undefined);
   }
 });
+
+test("waitlist rejects malformed bodies before storage and normalizes valid input", async () => {
+  const inserts = [];
+  const route = loadModule("src/app/api/waitlist/route.ts", {
+    process: { env: { NEXT_PUBLIC_SUPABASE_URL: "https://test.invalid", NEXT_PUBLIC_SUPABASE_ANON_KEY: "test" } },
+    console: { error() {} },
+  }, {
+    "next/server": { NextResponse: { json: (body, opts) => ({ body, status: opts.status }) } },
+    "@supabase/supabase-js": { createClient: () => ({ from: () => ({ insert: async (value) => { inserts.push(value); return { error: null }; } }) }) },
+  });
+  for (const body of [null, [], 1, "text", {}, { email: 1 }, { email: "a@b" }, { email: "a@@b.ca" }, { email: "a b@example.ca" }, { email: "a".repeat(65) + "@example.ca" }, { email: "a@" + "b".repeat(250) + ".ca" }, { email: "a@example.ca", source: {} }, { email: "a@example.ca", source: "x".repeat(101) }]) {
+    assert.equal((await route.POST({ json: async () => body })).status, 400);
+  }
+  assert.equal((await route.POST({ json: async () => { throw Error("bad JSON"); } })).status, 400);
+  assert.equal(inserts.length, 0);
+  assert.equal((await route.POST({ json: async () => ({ email: "  HELLO+test@Example.CA  ", source: " home " }) })).status, 200);
+  assert.equal(inserts[0].email, "hello+test@example.ca");
+  assert.equal(inserts[0].source, "home");
+});

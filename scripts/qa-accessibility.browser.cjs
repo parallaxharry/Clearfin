@@ -142,7 +142,7 @@ const base = process.env.QA_BASE_URL || "http://127.0.0.1:3100";
     await page.getByRole("button", { name: "Get Early Access →", exact: true }).click();
     await page.getByRole("alert").filter({ hasText: "Test service unavailable" }).waitFor();
     assert.equal(await email.inputValue(), "qa@example.invalid");
-    await page.getByRole("button", { name: "Get Early Access →", exact: true }).click();
+    await page.getByRole("button", { name: "Try again →", exact: true }).click();
     await page.getByRole("status").filter({ hasText: "You're on the list" }).waitFor();
     await page.getByRole("button", { name: "Ask about credit cards", exact: true }).click();
     const question = page.getByRole("textbox", { name: "Your credit card question" });
