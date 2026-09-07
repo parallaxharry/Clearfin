@@ -279,7 +279,7 @@ export default function ChatWidget() {
               </div>
             ))}
 
-            {error && <div className="cf-chat-error">{error}</div>}
+            <div role="alert" aria-atomic="true" className={error ? "cf-chat-error" : "cf-sr-only"}>{error}</div>
 
             {emailGate && (
               <form className="cf-chat-gate" onSubmit={submitEmail}>
@@ -298,7 +298,7 @@ export default function ChatWidget() {
                   />
                   <button type="submit">Continue</button>
                 </div>
-                {emailError && <em className="cf-chat-gate-err">{emailError}</em>}
+                <em role="alert" className={emailError ? "cf-chat-gate-err" : "cf-sr-only"}>{emailError}</em>
                 <small>
                   We&apos;ll only use this to follow up about your questions. See our{" "}
                   <Link href="/privacy" onClick={() => setOpen(false)}>privacy policy</Link>.
@@ -324,6 +324,7 @@ export default function ChatWidget() {
           >
             <textarea
               ref={inputRef}
+              aria-label="Your credit card question"
               value={input}
               rows={1}
               maxLength={1000}

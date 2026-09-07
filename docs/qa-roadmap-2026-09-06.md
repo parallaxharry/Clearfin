@@ -1,6 +1,7 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **5/38 completed and deployed**. Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30.
+Progress: **9/38 implemented and tested**. Release verification is recorded in each batch's pull request.
+Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
 
@@ -21,11 +22,11 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 
 ## Access and usability
 
-- [ ] CF-06 — Make comparison selectors work with the keyboard.
-- [ ] CF-07 — Fix modal/search focus, Escape and return focus.
-- [ ] CF-08 — Label inputs and announce form outcomes.
+- [x] CF-06 — Make comparison selectors work with the keyboard. (Batch 2)
+- [x] CF-07 — Fix modal/search focus, Escape and return focus. (Batch 2)
+- [x] CF-08 — Label inputs and announce form outcomes. (Batch 2)
 - [ ] CF-12 — Add catalogue search, filters, sorting and result count.
-- [ ] CF-15 — Fix search keyboard shortcuts and selected-result behaviour.
+- [x] CF-15 — Fix search keyboard shortcuts and selected-result behaviour. (Batch 2)
 - [ ] CF-16 — Improve small comparison labels and spacing.
 - [ ] CF-17 — Add carousel pause and respect reduced motion.
 - [ ] CF-18 — Keep content visible if reveal animations fail.
@@ -75,4 +76,19 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Published in [PR #17](https://github.com/parallaxharry/Clearfin/pull/17), merged to main as e08d8e9bc187420cb8e415025f5d100a5730d30a.
 - Vercel preview CPngq3f34jUqHKw6o4VTQ8hshcLX succeeded. [Production deployment](https://vercel.com/harrys-projects-9929d12d/clearfin/8UJwA4Q4ArjdTY4oce2PBDwavfGk) verified Ready for www.clearfin.ca, sourced from that main commit.
 - Live browser check on www.clearfin.ca: dining $800 and groceries $1,000 retained across Back/forward, Compare (both columns), and return to Calculator. No warning/error logs in that checked journey; optional tracking declined. Full seven-field reset/reentry and offer-date boundary checks were performed locally, not by changing production data/time.
-- 33 items remain open. Keep subsequent work in small verified batches; accessibility is the next compact batch, with the larger CF-02/03/05 product-model work separately source-verified.
+- Batch 1 left 33 items open; batch 2 below brings that to 29. Keep subsequent work in small verified batches, with the larger CF-02/03/05 product-model work separately source-verified.
+
+## Batch 2 — keyboard, focus and input accessibility
+
+- Based on current main 4a04dedb89bac099b2cdd80c90a0f23e2fb94c7a. No card economics, SEO copy, tracking configuration or backend routes changed.
+- CF-06: native comparison trigger/clear buttons; labelled searchable comboboxes with Arrow/Enter selection, selected-option semantics, Escape/focus return, visible focus and clean Tab exit. Unknown searches keep a usable empty state.
+- CF-07: one shared native-modal wrapper for Search, Top Picks and calculator card details. Initial focus, Tab/Shift+Tab wrapping, inert background, Escape, close buttons, return focus and nested-modal restoration. Calculator result cards also open from the keyboard.
+- CF-08: slider labels/value descriptions, comparison search labels, early-access email autocomplete/label, persistent form success/error live regions, chat question label and error alerts. No new form submissions or personal-data collection were introduced.
+- CF-15: only the search input handles Arrow/Enter shortcuts. Result/open and Compare actions are separate buttons in a labelled result grid; active-result IDs, visual grouping order and scrolling agree. Close/remove/Compare buttons keep their native Enter behaviour.
+- Related small-screen corrections: restored the existing search icon on phones; stacked search actions/labels so result names remain readable. Existing colours/fonts/artwork retained.
+- Automated browser coverage: comparison open/search/select/clear/empty/Escape/Tab; search nested controls and active-result navigation; all three modal flows plus nesting; input names and mocked form/chat outcome announcements; 390px/320px viewport checks. Existing calculator navigation/back/reset/reentry tests also pass.
+- All 17 existing unit tests, focused ESLint, TypeScript and production build pass (162 generated routes; local static fallback catalogue). Test requests to waitlist, chat and click endpoints are intercepted with fixtures, not submitted to real services.
+- Re-run with `npm run test:qa:accessibility`, using the same Playwright/runtime variables as the first browser suite. Small-screen screenshots are temporary QA outputs, not website assets.
+- These are implementation and browser/ARIA checks, not a formal screen-reader certification or physical iOS/Android device audit; CF-23/24 remain open.
+- References: [W3C modal pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/), [W3C combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/), [native dialog behaviour](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog). Checked 6 September 2026.
+- Release evidence is added to this batch's GitHub pull request after preview and production verification. Next compact backlog: shareable comparisons and correct winner emphasis (CF-13/14), plus missing headings/exact fee precision (CF-19/20).

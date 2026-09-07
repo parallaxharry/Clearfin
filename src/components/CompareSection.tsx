@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import {
   CARDS, CardDef, SpendKey,
   fmt, fmtRate, getBreakdown, scoreCard, getTopCards,
@@ -94,6 +94,7 @@ function CardColumn({
 }
 
 function CardSlot({
+  label,
   selectedId,
   otherSelectedId,
   query,
@@ -105,6 +106,7 @@ function CardSlot({
   onClear,
   onQueryChange,
 }: {
+  label: string;
   selectedId: string | null;
   otherSelectedId: string | null;
   query: string;
@@ -118,6 +120,9 @@ function CardSlot({
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listId = useId();
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
     if (isOpen) inputRef.current?.focus();
@@ -175,26 +180,44 @@ function CardSlot({
       return a.name.localeCompare(b.name);
     });
 
+  const activeIndex = Math.min(active, Math.max(0, filtered.length - 1));
+  useEffect(() => {
+    if (isOpen) document.getElementById(`${listId}-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex, isOpen, listId, query]);
+
+  const dismiss = () => { onClose(); triggerRef.current?.focus(); };
+  const select = (id: string) => { onSelect(id); dismiss(); };
+
   return (
-    <div className="cmp-slot-wrap" ref={wrapRef}>
+    <div className="cmp-slot-wrap" ref={wrapRef}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onClose();
+      }}
+      onKeyDown={(event) => {
+        if (isOpen && event.key === "Escape") { event.preventDefault(); event.stopPropagation(); dismiss(); }
+      }}
+    >
       <div
         className={`cmp-slot${selectedCard ? " cmp-slot-filled" : ""}${isOpen ? " cmp-slot-open" : ""}`}
-        onClick={() => (isOpen ? onClose() : onOpen())}
       >
-        {selectedCard ? (
-          <>
-            <span className="cmp-slot-name">{selectedCard.name}</span>
+        <button type="button" ref={triggerRef} className="cmp-slot-trigger"
+          aria-label={`${label}: ${selectedCard?.name ?? "Search cards"}`}
+          aria-expanded={isOpen} aria-haspopup="listbox" aria-controls={isOpen ? listId : undefined}
+          onClick={() => { setActive(0); if (isOpen) onClose(); else onOpen(); }}
+        >
+          {selectedCard ? <span className="cmp-slot-name">{selectedCard.name}</span> : (
+            <span className="cmp-slot-placeholder">{isOpen ? "" : "Search cards…"}</span>
+          )}
+        </button>
+        {selectedCard && (
             <button
+              type="button"
               className="cmp-slot-x"
-              onClick={(e) => { e.stopPropagation(); onClear(); }}
+              aria-label={`Clear ${label.toLowerCase()}: ${selectedCard.name}`}
+              onClick={() => { setActive(0); onClear(); }}
             >
               ✕
             </button>
-          </>
-        ) : (
-          <span className="cmp-slot-placeholder">
-            {isOpen ? "" : "Search cards…"}
-          </span>
         )}
       </div>
 
@@ -205,21 +228,40 @@ function CardSlot({
             <input
               ref={inputRef}
               type="text"
+              role="combobox"
+              aria-label={`Search ${label.toLowerCase()} by card or issuer`}
+              aria-expanded="true"
+              aria-autocomplete="list"
+              aria-controls={listId}
+              aria-activedescendant={filtered.length ? `${listId}-${activeIndex}` : undefined}
               placeholder="Search by card or issuer…"
               value={query}
-              onChange={(e) => onQueryChange(e.target.value)}
+              onChange={(e) => { setActive(0); onQueryChange(e.target.value); }}
+              onKeyDown={(event) => {
+                if (event.nativeEvent.isComposing) return;
+                if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                  event.preventDefault();
+                  setActive(Math.max(0, Math.min(activeIndex + (event.key === "ArrowDown" ? 1 : -1), filtered.length - 1)));
+                } else if (event.key === "Enter") {
+                  event.preventDefault();
+                  if (filtered[activeIndex]) select(filtered[activeIndex].id);
+                }
+              }}
               onClick={(e) => e.stopPropagation()}
             />
           </div>
-          <div className="cmp-dropdown-list">
-            {filtered.length === 0 && (
-              <div className="cmp-dropdown-empty">No cards match &ldquo;{query}&rdquo;</div>
-            )}
-            {filtered.map((c) => (
+          {filtered.length === 0 && <div className="cmp-dropdown-empty" role="status">No cards match &ldquo;{query}&rdquo;</div>}
+          <div className="cmp-dropdown-list" role="listbox" tabIndex={-1} id={listId} aria-label={`${label} matches`}>
+            {filtered.map((c, index) => (
               <div
                 key={c.id}
+                id={`${listId}-${index}`}
+                role="option"
+                aria-selected={index === activeIndex}
                 className="cmp-dropdown-item"
-                onClick={() => { onSelect(c.id); onClose(); }}
+                onMouseDown={(event) => event.preventDefault()}
+                onMouseEnter={() => setActive(index)}
+                onClick={() => select(c.id)}
               >
                 <div className="cmp-di-left">
                   <div className="cmp-di-name">{catalog[c.id]?.name ?? c.name}</div>
@@ -315,6 +357,7 @@ export default function CompareSection() {
         {/* Selectors */}
         <div className="cmp-selector-row">
           <CardSlot
+            label="First card"
             selectedId={selectedIds[0]}
             otherSelectedId={selectedIds[1]}
             query={queries[0]}
@@ -332,6 +375,7 @@ export default function CompareSection() {
           <div className="cmp-vs">vs</div>
 
           <CardSlot
+            label="Second card"
             selectedId={selectedIds[1]}
             otherSelectedId={selectedIds[0]}
             query={queries[1]}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useId } from "react";
 import {
   CARDS, CardDef, SpendKey, STEPS,
   fmt, fmtRate, getBreakdown, getTopCards,
@@ -10,6 +10,7 @@ import {
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import CalculatorPreview from "@/components/CalculatorPreview";
+import Modal from "@/components/Modal";
 import { trackMetaAction } from "@/lib/metaPixel";
 
 /* ══════════════════════════════════════════════════════════
@@ -58,6 +59,7 @@ const PROFILE_STEPS = [
 const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 
 export default function InteractiveTool() {
+  const questionId = useId();
   const { spend, setSpend, income, setIncome, credit, setCredit, resetProfile } = useSpend();
   const [toolState, setToolState] = useState<ToolState>("gate");
   const [currentStep, setCurrentStep] = useState(0);
@@ -74,11 +76,6 @@ export default function InteractiveTool() {
     if (transitionTimer.current !== null) clearTimeout(transitionTimer.current);
     if (scrollTimer.current !== null) clearTimeout(scrollTimer.current);
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = modalCard ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [modalCard]);
 
   const transition = useCallback((fn: () => void) => {
     // Also guard keyboard activation before React has disabled the button.
@@ -220,7 +217,7 @@ export default function InteractiveTool() {
 
               {/* Icon + Question */}
               <div className="step-icon">{String(currentStep + 1).padStart(2, "0")}</div>
-              <h2 className="step-question">{isSpendStep ? step.question : profile.question}</h2>
+              <h2 id={questionId} className="step-question">{isSpendStep ? step.question : profile.question}</h2>
               <p className="step-hint">{isSpendStep ? step.hint : profile.hint}</p>
 
               {/* Current value display */}
@@ -236,6 +233,8 @@ export default function InteractiveTool() {
                 <input
                   type="range"
                   className="step-slider"
+                  aria-labelledby={questionId}
+                  aria-valuetext={isSpendStep ? `${fmt(stepValue)} per month` : profile.money ? `${fmt(profileValue)} per year` : String(profileValue)}
                   min={isSpendStep ? 0 : profile.min}
                   max={isSpendStep ? step.max : profile.max}
                   step={isSpendStep ? 10 : profile.sliderStep}
@@ -381,6 +380,15 @@ export default function InteractiveTool() {
                     <div
                       className={`result-card${i === 0 ? " result-card-top" : ""}`}
                       key={card.id}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`View ${card.name} details`}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          openModal(card);
+                        }
+                      }}
                       onClick={() => openModal(card)}
                       style={{ cursor: "pointer" }}
                     >
@@ -438,9 +446,10 @@ export default function InteractiveTool() {
 
     {/* ── Card Detail Modal ── */}
     {modalCard && (
+      <Modal label={modalCard.name} onClose={closeModal}>
       <div className="card-modal-overlay" onClick={closeModal}>
         <div className="card-modal" onClick={(e) => e.stopPropagation()}>
-          <button className="card-modal-close" onClick={closeModal}>✕</button>
+          <button type="button" className="card-modal-close" aria-label="Close card details" onClick={closeModal}>✕</button>
 
           {/* Left: details */}
           <div className="card-modal-left">
@@ -543,6 +552,7 @@ export default function InteractiveTool() {
           </div>
         </div>
       </div>
+      </Modal>
     )}
     </>
   );

@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CARDS } from "@/lib/cards";
 import { useCatalog } from "@/context/CatalogContext";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
+import Modal from "@/components/Modal";
 import { trackMetaAction } from "@/lib/metaPixel";
 
 interface PickCard {
@@ -80,14 +81,6 @@ export default function TopPicks() {
     };
   });
 
-  useEffect(() => {
-    document.body.style.overflow = selectedCard ? "hidden" : "";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [selectedCard]);
-
   return (
     <>
       <section id="showcase">
@@ -153,12 +146,10 @@ export default function TopPicks() {
       </section>
 
       {selectedCard && (
+        <Modal label={selectedCard.name} onClose={() => setSelectedCard(null)}>
         <div className="card-modal-overlay" onClick={() => setSelectedCard(null)}>
           <div
             className="card-modal top-picks-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-label={selectedCard.name}
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -224,6 +215,7 @@ export default function TopPicks() {
             </div>
           </div>
         </div>
+        </Modal>
       )}
     </>
   );
