@@ -357,9 +357,7 @@ export const STEPS: Step[] = [
   },
 ];
 
-export function fmt(n: number) {
-  return "$" + Math.round(n).toLocaleString("en-CA");
-}
+export { formatEstimate as fmt } from "./money";
 
 export function fmtRate(r: number): string {
   return parseFloat((r * 100).toFixed(2)) + "%";

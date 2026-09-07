@@ -70,6 +70,7 @@ const base = process.env.QA_BASE_URL || "http://127.0.0.1:3100";
     assert.equal(await page.getByRole("button", { name: /^Second card:/ }).evaluate((el) => el === document.activeElement), true);
     console.log("PASS CF-06: keyboard open/search/select/clear/Escape/Tab; zero-result recovery.");
 
+    const comparisonUrl = page.url();
     const searchTrigger = page.getByRole("button", { name: "Search", exact: true });
     await searchTrigger.click();
     let dialog = page.getByRole("dialog", { name: "Search ClearFin", exact: true });
@@ -79,7 +80,7 @@ const base = process.env.QA_BASE_URL || "http://127.0.0.1:3100";
     await input.fill("cobalt");
     await dialog.getByRole("button", { name: "Add Amex Cobalt to comparison", exact: true }).press("Enter");
     assert.equal(await dialog.isVisible(), true);
-    assert.equal(await page.url(), `${base}/compare-credit-cards-canada`);
+    assert.equal(await page.url(), comparisonUrl);
     assert.equal(await dialog.getByRole("button", { name: "Remove Amex Cobalt from comparison", exact: true }).getAttribute("aria-pressed"), "true");
     await dialog.getByRole("button", { name: "Remove Amex Cobalt", exact: true }).press("Enter");
     assert.equal(await dialog.isVisible(), true);
