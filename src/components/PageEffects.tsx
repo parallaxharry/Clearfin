@@ -62,9 +62,21 @@ export default function PageEffects() {
     });
   }, [activeSection]);
 
-  // IntersectionObserver for .reveal elements
+  // Content is visible in CSS; animation is a progressive enhancement.
   useEffect(() => {
-    const io = new IntersectionObserver(
+    const elements = Array.from(document.querySelectorAll(".reveal"));
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const animations: Animation[] = [];
+    let io: IntersectionObserver | undefined;
+    const showAll = () => {
+      io?.disconnect();
+      animations.forEach((animation) => animation.cancel());
+      elements.forEach((el) => el.classList.add("in", "in-view"));
+    };
+    const onMotionChange = () => { if (media.matches) showAll(); };
+    try {
+      if (media.matches) { showAll(); return; }
+      io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) {
@@ -72,13 +84,25 @@ export default function PageEffects() {
             if (e.target.classList.contains("feat-visual")) {
               e.target.classList.add("in-view");
             }
+            try {
+              animations.push(e.target.animate(
+                [{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "translateY(0)" }],
+                { duration: 700, easing: "ease-out" },
+              ));
+            } catch { /* The visible base style remains readable. */ }
+            io?.unobserve(e.target);
           }
         });
       },
       { threshold: 0.15 }
     );
-    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-    return () => io.disconnect();
+      elements.forEach((el) => io?.observe(el));
+      media.addEventListener("change", onMotionChange);
+    } catch { showAll(); }
+    return () => {
+      showAll();
+      media.removeEventListener("change", onMotionChange);
+    };
   }, []);
 
   return (

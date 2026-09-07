@@ -139,7 +139,7 @@ export default function Nav() {
 
       <div className="nav-right">
         <SearchTrigger className="nav-search" />
-        <Link href="/credit-card-calculator-canada" className="nav-cta">
+        <Link href="/credit-card-calculator-canada?start=1" className="nav-cta">
           Find my best card
         </Link>
         <button

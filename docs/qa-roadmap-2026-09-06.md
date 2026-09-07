@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **13/38 implemented and tested**. Batches 1–2 are live; batch 3 release verification is recorded in its pull request.
+Progress: **17/38 implemented and tested**. Batches 1–3 are live; batch 4 release verification is recorded in its pull request.
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -14,7 +14,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] CF-05 — Handle missing eligibility data and household-income alternatives.
 - [x] CF-09 — Keep edited answers when pressing Back. (Batch 1)
 - [x] CF-10 — Reset spending, income and credit score together. (Batch 1)
-- [ ] CF-11 — Open the first calculator question from the main CTA.
+- [x] CF-11 — Open the first calculator question from the main CTA. (Batch 4)
 - [x] CF-13 — Save selected comparison cards in a shareable link. (Batch 3)
 - [x] CF-14 — Highlight the actual comparison winner, including ties. (Batch 3)
 - [x] CF-20 — Show exact fees consistently, including cents. (Batch 3)
@@ -27,9 +27,9 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [x] CF-08 — Label inputs and announce form outcomes. (Batch 2)
 - [ ] CF-12 — Add catalogue search, filters, sorting and result count.
 - [x] CF-15 — Fix search keyboard shortcuts and selected-result behaviour. (Batch 2)
-- [ ] CF-16 — Improve small comparison labels and spacing.
-- [ ] CF-17 — Add carousel pause and respect reduced motion.
-- [ ] CF-18 — Keep content visible if reveal animations fail.
+- [x] CF-16 — Improve small comparison labels and spacing. (Batch 4)
+- [x] CF-17 — Add carousel pause and respect reduced motion. (Batch 4)
+- [x] CF-18 — Keep content visible if reveal animations fail. (Batch 4)
 - [x] CF-19 — Add missing page headings without changing their wording. (Batch 3)
 - [ ] CF-21 — Improve waitlist validation and failure recovery.
 - [ ] CF-22 — Add chat timeout, stop and retry.
@@ -102,3 +102,14 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Validation: 20 unit tests, focused ESLint, TypeScript and production build pass (162 routes). Browser checks pass for server/client headings, reload/history/copy/clear/invalid links, same-page search, winner swaps/ties, fee precision, clipboard fallback and 390px/320px layouts. Existing accessibility suite passes. Local build uses static catalogue fallback; real-phone testing remains open.
 - Added npm run test:qa:comparison. Browser test submissions are mocked and the copy test uses an isolated clipboard fixture. No financial profile values are encoded in shared links.
 - Release evidence is recorded in the batch 3 pull request. Progress: 13/38 implemented/tested; 25 remain. Next compact tasks: calculator entry CTA (CF-11), comparison label readability (CF-16), reduced-motion/pause controls (CF-17), and content visibility when animation fails (CF-18).
+
+## Batch 4 — calculator entry, readability and motion controls
+
+- CF-11: primary homepage/navigation CTAs open the first editable calculator question and focus its slider. The ordinary calculator URL retains its introduction. Existing in-memory answers and reset rules are unchanged.
+- CF-16: comparison labels are at least 14px with clearer contrast and spacing. Full card names and issuer labels are no longer clipped; artwork fits its column. Panels stack on narrow screens. Browser checks cover 1440px, 720px reflow, 390px, 320px and 200% CSS zoom; physical-device and native browser-zoom certification remain separate.
+- CF-17: visible pause/resume and previous/next controls; paused preference persists for the tab visit. Focus pauses until explicitly resumed. Hover, offscreen state, hidden tabs and reduced motion stop automatic rotation. Manual controls remain available; inactive cards are excluded from keyboard navigation and automatic updates are not announced.
+- CF-18: reveal content and chart bars are visible by default. Optional Web Animations enhancement safely falls back if observers/animation APIs fail; reduced motion cancels entry animations.
+- Validation: 20 unit tests, focused ESLint, TypeScript and a 162-route production build pass. New isolated Chrome suite verifies the entry CTA, real rotation/pause interval, visit persistence, manual/reduced-motion/offscreen controls, comparison text/artwork bounds and visibility with JavaScript disabled or animation/observer failures. Existing calculator Back/forward/profile/reset/reentry suite passes. Screenshots reviewed; local build uses static catalogue fallback.
+- Run `npm run test:qa:usability` with the same Playwright/runtime variables as earlier suites. Browser write endpoints are mocked; no real waitlist/chat/application submissions. No card rates, fees, SEO URLs, tracking configuration or backend changes.
+- References checked 7 September 2026: [W3C carousel pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/) and [Element.animate](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate). These checks are not formal accessibility certification.
+- Release evidence will be attached to this batch's pull request after preview and production verification. Progress: 17/38 implemented/tested; 21 remain. Next compact candidates: waitlist recovery CF-21, chat timeout/retry CF-22, helpful error/not-found screens CF-29.
