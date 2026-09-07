@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import SiteFooter from "@/components/SiteFooter";
 import Nav from "@/components/Nav";
-import InteractiveTool from "@/components/InteractiveTool";
+import CalculatorEntry from "@/components/CalculatorEntry";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 
@@ -122,7 +122,7 @@ export default async function CalculatorPage() {
 
       <main>
         <CatalogProvider map={catalog}>
-          <InteractiveTool pageHeading />
+          <CalculatorEntry />
         </CatalogProvider>
       </main>
 

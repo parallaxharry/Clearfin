@@ -119,7 +119,7 @@ export default async function HomePage() {
               the math across fees, reward rates, income requirements, and credit eligibility.
             </p>
             <div className="hero-cta-row reveal">
-              <Link href="/credit-card-calculator-canada" className="btn-primary">
+              <Link href="/credit-card-calculator-canada?start=1" className="btn-primary">
                 <span>Find my best card</span>
                 <span className="btn-arrow">→</span>
               </Link>

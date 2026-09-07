@@ -10,7 +10,8 @@
     "test:qa": "node --test scripts/qa-reliability.test.cjs scripts/meta-pixel.test.cjs",
     "test:qa:browser": "node scripts/qa-calculator.browser.cjs",
     "test:qa:accessibility": "node scripts/qa-accessibility.browser.cjs",
-    "test:qa:comparison": "node scripts/qa-comparison.browser.cjs"
+    "test:qa:comparison": "node scripts/qa-comparison.browser.cjs",
+    "test:qa:usability": "node scripts/qa-usability.browser.cjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",

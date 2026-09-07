@@ -59,11 +59,15 @@ const PROFILE_STEPS = [
 ];
 const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 
-export default function InteractiveTool({ pageHeading = false }: { pageHeading?: boolean }) {
+export default function InteractiveTool({ pageHeading = false, startOpen = false }: { pageHeading?: boolean; startOpen?: boolean }) {
   const Heading = pageHeading ? "h1" : "h2";
   const questionId = useId();
   const { spend, setSpend, income, setIncome, credit, setCredit, resetProfile } = useSpend();
-  const [toolState, setToolState] = useState<ToolState>("gate");
+  const [toolState, setToolState] = useState<ToolState>(startOpen ? "step" : "gate");
+  const directInput = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (startOpen) directInput.current?.focus({ preventScroll: true });
+  }, [startOpen]);
   const [currentStep, setCurrentStep] = useState(0);
   // Edits are saved immediately, including when users go Back or leave the page.
   const stepValue = currentStep < STEPS.length ? spend[STEPS[currentStep].key] : 0;
@@ -233,7 +237,8 @@ export default function InteractiveTool({ pageHeading = false }: { pageHeading?:
               {/* Slider */}
               <div className="step-slider-wrap">
                 <input
-                  type="range"
+                ref={directInput}
+                type="range"
                   className="step-slider"
                   aria-labelledby={questionId}
                   aria-valuetext={isSpendStep ? `${fmt(stepValue)} per month` : profile.money ? `${fmt(profileValue)} per year` : String(profileValue)}
