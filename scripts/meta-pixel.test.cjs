@@ -47,7 +47,7 @@ function fixture({ analytics, marketing, hostname = "www.clearfin.ca", storageBl
   };
   const globals = { window, document };
   const consent = loadModule("src/lib/trackingConsent.ts", globals);
-  const pixel = loadModule("src/lib/metaPixel.ts", globals, { "./trackingConsent": consent });
+  const pixel = loadModule("src/lib/metaPixel.ts", globals, { "./trackingConsent": consent, "./trackingDiagnostics": { reportTrackingFailure() {} } });
   const unsubscribe = consent.subscribeToConsent(pixel.syncMetaPixel);
   return {
     window, consent, pixel, inserted, cookies, calls, values, unsubscribe,

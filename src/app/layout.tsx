@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import dynamic from "next/dynamic";
 import AnalyticsConsent from "@/components/AnalyticsConsent";
 import MetaPixel from "@/components/MetaPixel";
@@ -112,31 +112,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body>
-        <Script id="clearfin-consent-default" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            window.gtag = gtag;
-            var clearfinConsent = null;
-            try { clearfinConsent = window.localStorage.getItem("clearfin-analytics-consent"); } catch (e) {}
-            gtag("consent", "default", {
-              analytics_storage: clearfinConsent === "granted" ? "granted" : "denied",
-              wait_for_update: 500
-            });
-          `}
-        </Script>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="clearfin-google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = window.gtag || function(){dataLayer.push(arguments);}
-            window.gtag("js", new Date());
-            window.gtag("config", "${GOOGLE_ANALYTICS_ID}");
-          `}
-        </Script>
+        <GoogleAnalytics id={GOOGLE_ANALYTICS_ID} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

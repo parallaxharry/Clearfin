@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:qa": "node --test scripts/qa-reliability.test.cjs scripts/meta-pixel.test.cjs",
+    "test:qa": "node --test scripts/qa-reliability.test.cjs scripts/meta-pixel.test.cjs scripts/qa-tracking.test.cjs",
     "test:qa:browser": "node scripts/qa-calculator.browser.cjs",
     "test:qa:accessibility": "node scripts/qa-accessibility.browser.cjs",
     "test:qa:comparison": "node scripts/qa-comparison.browser.cjs",
@@ -15,7 +15,8 @@
     "test:qa:recovery": "node scripts/qa-recovery.browser.cjs",
     "test:qa:catalogue": "node scripts/qa-catalogue.browser.cjs",
     "test:qa:performance": "node scripts/qa-performance.browser.cjs",
-    "test:qa:scroll": "node scripts/qa-scroll.browser.cjs"
+    "test:qa:scroll": "node scripts/qa-scroll.browser.cjs",
+    "test:qa:tracking": "node scripts/qa-tracking.browser.cjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",

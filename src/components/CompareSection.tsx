@@ -13,6 +13,7 @@ import {
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import { trackMetaAction } from "@/lib/metaPixel";
+import { trackApplyClick } from "@/lib/trackApplyClick";
 
 function CardColumn({
   card,
@@ -85,10 +86,7 @@ function CardColumn({
 
       <div className="cmp-panel-actions">
         <a href={card.bankUrl} target="_blank" rel="noopener noreferrer" className="card-modal-cta cmp-apply"
-          onClick={() => {
-            trackMetaAction("ApplyClick");
-            fetch("/api/track-click", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({cardId:card.id}) }).catch(() => {});
-          }}>
+          onClick={() => trackApplyClick(card.id)}>
           Apply at {card.issuer} →
         </a>
         <Link href={`/credit-cards/${card.id}`} className="card-modal-view cmp-view">View full details</Link>

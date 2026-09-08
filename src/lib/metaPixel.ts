@@ -1,4 +1,5 @@
 import { MARKETING_CONSENT_KEY, readConsent } from "./trackingConsent";
+import { reportTrackingFailure } from "./trackingDiagnostics";
 
 export const META_PIXEL_ID = "1620418306380365";
 
@@ -106,6 +107,7 @@ export function syncMetaPixel() {
   script.onerror = () => {
     script?.remove();
     script = null;
+    reportTrackingFailure("meta", "load_failed");
   };
   document.head.appendChild(script);
 }

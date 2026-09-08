@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **23/38 implemented and tested**. Batches 1–6 are live; batch 7 release verification is recorded in its pull request. **15 remain open.**
+Progress: **24/38 implemented and tested**. Batches 1–7 are live; batch 8 release verification is recorded in its pull request. **14 remain open.**
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -41,7 +41,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] CF-24 — Test mobile comparison, forms and long card pages.
 - [ ] CF-25 — Measure performance before adding richer animations. (Batch 7 lab baseline saved; real hardware, field data and motion-prototype verification remain open.)
 - [ ] CF-26 — Check all card offers/content against current issuer terms.
-- [ ] CF-27 — Verify tracking, consent and private-data exclusions.
+- [x] CF-27 — Verify tracking, consent and private-data exclusions. (Batch 8 website-side checks; account receipt and infrastructure follow-ups remain explicit.)
 - [ ] CF-28 — Verify API limits and deployment protections safely.
 - [x] CF-31 — Simplify styles and scroll handling after a visual baseline. (Batch 7: scoped homepage/early-access scroll effects and progress CSS.)
 - [x] CF-32 — Check long articles, FAQ, footer and information pages. (Batch 6; editorial follow-up owners recorded separately)
@@ -139,3 +139,12 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Twelve desktop/mobile-width before/after screenshots reviewed: eleven identical under the comparator; one has 0.072% differing pixels from existing issuer-logo fallback timing, without layout change. Progress positions, height-change updates and legacy links pass. 23 unit tests, focused ESLint, TypeScript and 162-route production build pass; regression and release evidence are recorded in this batch's pull request.
 - Added repeatable npm run test:qa:performance and test:qa:scroll plus a screenshot comparator. [Method, raw data and limitations](performance-baseline-2026-09-07.md). No new packages, tracking, financial-data changes, real form submissions or richer animations.
 - CF-25 remains unchecked: lab baseline only; representative physical phones, field performance and an agreed motion-prototype budget still need verification. Count increases by **one**, to **23/38**, with **15 open**.
+
+## Batch 8 — consent, page views and honest click diagnostics
+
+- CF-27: Google loads only after Analytics consent on production hosts, separate from Meta Advertising consent. Revocation disables new Google collection and clears its first-party cookies. Old provider batches may still finish; this does not retract already-authorized data. Privacy text updated to match the implementation.
+- Fixed a measured missing SPA page view: one manual Google view per pathname, with automatic initial views disabled. Keep history-based Enhanced Measurement off in the GA property to avoid future duplicates. Page URLs/referrers exclude raw queries/fragments; bounded ordinary campaign labels are passed explicitly. No calculator answers, income, score or email are added to ClearFin's event payloads.
+- All four Apply handlers use a shared nonblocking helper. Meta ApplyClick uses Advertising consent; first-party cardId-only counting uses Analytics consent, omits credentials/referrer and has a five-second deadline. Links still open when tracking fails. Clicks mean intent, never approvals/revenue.
+- Click API returns honest 403/400/413/503/500 outcomes; only confirmed inserts return success. Fixed server/browser diagnostics contain no raw error/request payloads. Input bounds and a client consent assertion are not rate limiting, authentication or a production database-policy audit (CF-28 remains open).
+- 32 automated tests, focused ESLint, TypeScript and 162-route production build pass. Isolated browser checks use real Google/Meta SDKs, intercept measurement/site writes and replace application destinations with inert fixtures. Consent combinations, one-event behavior, calculator completion, four Apply paths, revocation, private-answer exclusion and failures are covered; final regression/release evidence is in the pull request.
+- [Tracking QA method and owner follow-ups](tracking-qa-2026-09-07.md). GA4/Meta dashboard receipt, production storage confirmation and alerts remain owner-side checks; no real test events, leads, paid chat requests or applications are submitted. One roadmap item completed: **24/38**, with **14 open**.
