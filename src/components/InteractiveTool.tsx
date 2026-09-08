@@ -14,20 +14,21 @@ import Modal from "@/components/Modal";
 import { trackMetaAction } from "@/lib/metaPixel";
 import { trackApplyClick } from "@/lib/trackApplyClick";
 import { formatCost } from "@/lib/money";
+import { checkIncome, creditGuidance } from "@/lib/eligibility";
+import styles from "./CalculatorEligibility.module.css";
 
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════════════════ */
 type ToolState = "gate" | "step" | "result";
 
-// Profile questions shown after the 5 spend questions, used to filter out cards
-// the user won't qualify for (income / credit minimums live in card_catalog).
+// Recorded income checks and estimated credit guidance are not approval rules.
 const PROFILE_STEPS = [
   {
     kind: "income" as const,
     icon: "💰",
     question: "What's your yearly income?",
-    hint: "Before tax. Used to match cards you'll qualify for.",
+    hint: "Your personal income before tax. We compare recorded income requirements, not approval odds.",
     min: 0,
     max: 250000,
     sliderStep: 5000,
@@ -44,7 +45,7 @@ const PROFILE_STEPS = [
     kind: "credit" as const,
     icon: "📊",
     question: "What's your credit score?",
-    hint: "An estimate is fine. Matches cards you can get approved for.",
+    hint: "An estimate is fine. Score ranges are guidance only; the issuer makes the approval decision.",
     min: 300,
     max: 900,
     sliderStep: 5,
@@ -63,7 +64,9 @@ const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 export default function InteractiveTool({ pageHeading = false, startOpen = false }: { pageHeading?: boolean; startOpen?: boolean }) {
   const Heading = pageHeading ? "h1" : "h2";
   const questionId = useId();
-  const { spend, setSpend, income, setIncome, credit, setCredit, resetProfile } = useSpend();
+  const { spend, setSpend, income, setIncome, householdIncome, setHouseholdIncome, credit, setCredit, resetProfile } = useSpend();
+  const householdId = useId();
+  const householdInvalid = householdIncome !== null && (!Number.isFinite(householdIncome) || householdIncome < income || householdIncome > 10000000);
   const [toolState, setToolState] = useState<ToolState>(startOpen ? "step" : "gate");
   const directInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -100,6 +103,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
   const handlePreset = (val: number) => setStepValue(val);
 
   const handleNext = () => {
+    if (currentStep === STEPS.length && householdInvalid) return;
     if (currentStep < TOTAL_STEPS - 1) {
       transition(() => setCurrentStep((s) => s + 1));
     } else {
@@ -137,18 +141,12 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
   const totalMonthly = Object.values(spend).reduce((a, b: number) => a + b, 0);
   const annualSpend = totalMonthly * 12;
   const catalog = useCatalog();
-  // Score every card (cards.ts math), overlay Supabase display, then keep only cards the
-  // user qualifies for: a card is hidden when its income/credit minimum exceeds the user's.
-  // Cards with no stated requirement always stay.
-  const eligibleCards = getTopCards(spend, CARDS.length)
+  // Keep reward scoring unchanged. Missing data stays explicitly unverified;
+  // estimated credit ranges never silently exclude a card as an approval rule.
+  const consideredCards = getTopCards(spend, CARDS.length)
     .map((c) => withCatalog(c, catalog))
-    .filter((c) => {
-      const info = catalog[c.id];
-      const incomeOk = !info?.minIncome || info.minIncome <= income;
-      const creditOk = !info?.creditMin || info.creditMin <= credit;
-      return incomeOk && creditOk;
-    });
-  const topCards = eligibleCards.slice(0, 3);
+    .filter((c) => checkIncome(catalog[c.id], income, householdIncome).state !== "below");
+  const topCards = consideredCards.slice(0, 3);
   const bestNetValue = topCards[0]?.netValue ?? 0;
 
   const isSpendStep = currentStep < STEPS.length;
@@ -179,7 +177,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                   See what your spending<br />could <span className="ital">earn.</span>
                 </Heading>
                 <p className="gate-sub">
-                  Tell us how you spend and we&apos;ll rank eligible Canadian cards by estimated
+                  Tell us how you spend and we&apos;ll rank Canadian cards by estimated
                   annual rewards after fees. Your assumptions stay visible.
                 </p>
                 <button className="gate-btn" onClick={() => {
@@ -281,12 +279,26 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                 ))}
               </div>
 
+              {!isSpendStep && profile.kind === "income" && (
+                <div className={styles.household}>
+                  <label htmlFor={householdId}>Household income per year (optional)</label>
+                  <input id={householdId} type="number" inputMode="decimal" min={income} max={10000000} step="any"
+                    value={householdIncome ?? ""} placeholder="Leave blank if unsure"
+                    aria-describedby={`${householdId}-hint`} aria-invalid={householdInvalid}
+                    onChange={(event) => setHouseholdIncome(event.target.value === "" ? null : Number(event.target.value))} />
+                  <p id={`${householdId}-hint`} role={householdInvalid ? "alert" : undefined}>
+                    {householdInvalid ? "Enter a total at least as high as your personal income, up to $10,000,000, or leave this blank."
+                      : "Total before tax, including your personal income. Used only where a household alternative is recorded. Kept in this tab only."}
+                  </p>
+                </div>
+              )}
+
               {/* Nav buttons */}
               <div className="step-nav">
                 <button className="step-back" onClick={handleBack} disabled={!visible}>
                   ← Back
                 </button>
-                <button className="step-next" onClick={handleNext} disabled={!visible}>
+                <button className="step-next" onClick={handleNext} disabled={!visible || (currentStep === STEPS.length && householdInvalid)}>
                   {currentStep < TOTAL_STEPS - 1 ? "Next →" : "See Results →"}
                 </button>
               </div>
@@ -315,13 +327,12 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
               <div className="result-header">
                 <div className="result-eyebrow">No matches yet</div>
                 <Heading className="result-title">
-                  No cards fit that <span className="ital">income</span> &amp;{" "}
-                  <span className="ital">credit score</span>.
+                  No cards match these recorded <span className="ital">income checks</span>.
                 </Heading>
               </div>
               <p className="step-hint" style={{ textAlign: "center" }}>
-                Most cards need a higher credit score or income. Try raising either, or start over
-                to adjust your spending.
+                This is not a credit decision. Check that your answers are accurate; issuers may
+                have other eligibility routes, such as assets, that this calculator does not assess.
               </p>
               <div className="step-nav">
                 <button
@@ -370,9 +381,14 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
 
               {/* Recommended cards */}
               <div className="result-cards-head">
-                <span>Your recommended card stack</span>
+                <span>Your spending-based shortlist</span>
                 <span className="result-cards-count">{topCards.length} cards</span>
               </div>
+              <p className={styles.note}>
+                This ranks estimated rewards, not approval odds. Missing requirements stay unverified.
+                Recorded income checks and estimated score ranges may be incomplete or outdated;
+                confirm the issuer&apos;s current terms before applying. Other routes, including assets, are not assessed.
+              </p>
               <div className="result-cards">
                 {topCards.map((card, i) => {
                   const earnBreakdown = Object.entries(spend).map(([k, v]) => ({
@@ -400,11 +416,15 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                       onClick={() => openModal(card)}
                       style={{ cursor: "pointer" }}
                     >
-                      {i === 0 && <div className="result-card-rank">#1 Best Match</div>}
+                      {i === 0 && <div className="result-card-rank">#1 Spending Match</div>}
                       <div className="result-card-left">
                         <div className="result-card-badge">{card.badge}</div>
                         <div className="result-card-name">{card.name}</div>
                         <div className="result-card-issuer">{card.issuer}</div>
+                        <div className={styles.requirements} data-income-check={checkIncome(catalog[card.id], income, householdIncome).state}>
+                          <strong>{checkIncome(catalog[card.id], income, householdIncome).label}</strong>
+                          <span>{creditGuidance(catalog[card.id], credit)}</span>
+                        </div>
                         <div className="result-card-desc">{card.description}</div>
                         <div className="result-card-best-for">
                           Best category: {catLabel[topCat.cat]} (+{fmt(topCat.earn)}/yr)
@@ -464,6 +484,11 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
             <div className="card-modal-badge">{modalCard.badge}</div>
             <h3 className="card-modal-name">{modalCard.name}</h3>
             <div className="card-modal-issuer">{modalCard.issuer}</div>
+            <div className={styles.requirements}>
+              <strong>{checkIncome(catalog[modalCard.id], income, householdIncome).label}</strong>
+              <span>{creditGuidance(catalog[modalCard.id], credit)}</span>
+              <span>Check current issuer terms. This is not an approval decision.</span>
+            </div>
             <div className="card-modal-net-row">
               <span className="card-modal-net">{fmt(modalCard.netValue)}</span>
               <span className="card-modal-net-label">net / year for your spend</span>
