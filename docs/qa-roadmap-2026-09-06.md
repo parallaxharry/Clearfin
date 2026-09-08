@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **24/38 implemented and tested**. Batches 1–7 are live; batch 8 release verification is recorded in its pull request. **14 remain open.**
+Progress: **25/38 implemented and tested**. Batches 1–8 are live; batch 9 release verification is recorded in its pull request. **13 remain open.**
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -11,7 +11,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] CF-02 — Calculate rewards with caps and merchant conditions.
 - [ ] CF-03 — Use consistent card fees and rates across the site.
 - [x] CF-04 — Check offer expiry against today's date. (Batch 1)
-- [ ] CF-05 — Handle missing eligibility data and household-income alternatives.
+- [x] CF-05 — Handle missing eligibility data and household-income alternatives. (Batch 9; recorded-data checks, not approval prediction or a current issuer-data audit.)
 - [x] CF-09 — Keep edited answers when pressing Back. (Batch 1)
 - [x] CF-10 — Reset spending, income and credit score together. (Batch 1)
 - [x] CF-11 — Open the first calculator question from the main CTA. (Batch 4)
@@ -148,3 +148,12 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Click API returns honest 403/400/413/503/500 outcomes; only confirmed inserts return success. Fixed server/browser diagnostics contain no raw error/request payloads. Input bounds and a client consent assertion are not rate limiting, authentication or a production database-policy audit (CF-28 remains open).
 - 32 automated tests, focused ESLint, TypeScript and 162-route production build pass. Isolated browser checks use real Google/Meta SDKs, intercept measurement/site writes and replace application destinations with inert fixtures. Consent combinations, one-event behavior, calculator completion, four Apply paths, revocation, private-answer exclusion and failures are covered; final regression/release evidence is in the pull request.
 - [Tracking QA method and owner follow-ups](tracking-qa-2026-09-07.md). GA4/Meta dashboard receipt, production storage confirmation and alerts remain owner-side checks; no real test events, leads, paid chat requests or applications are submitted. One roadmap item completed: **24/38**, with **14 open**.
+
+
+## Batch 9 — honest income checks and household alternatives
+
+- CF-05: optional household income within the existing seven-question journey (the income question remains step 6); recorded personal OR household thresholds can satisfy the income check. Missing/invalid/unavailable requirements stay unknown, not automatically satisfied. Only known, answered, unmet income alternatives exclude a card.
+- Estimated credit-score ranges are guidance, not approval filters. Results, details and empty states clearly separate spending estimates from issuer decisions; assets and other eligibility routes are not assessed.
+- Household income stays in the shared tab-memory profile, survives Back/page navigation and clears on Restart/reload. No answer storage, submission, analytics or URL field added. Existing reward scoring and card values are unchanged.
+- 36 unit tests, focused ESLint, TypeScript and 162-route production build pass. Synthetic local fixtures cover household qualification, unknown data, empty state and low estimated score; fixture page removed before publishing. Browser checks cover validation, persistence/reset, modal labels and mobile-width reflow. Final regression and release evidence are in the pull request.
+- [Method, source checks and limitations](eligibility-qa-2026-09-07.md). CF-02/03/26 remain open for source-verified reward/fee/offer data. One item completed: **25/38**, **13 open**.

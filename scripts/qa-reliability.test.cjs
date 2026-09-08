@@ -6,13 +6,13 @@ const vm = require("node:vm");
 const ts = require("typescript");
 
 const root = path.resolve(__dirname, "..");
-function load(relativePath, overrides = {}) {
+function load(relativePath, overrides = {}, globals = {}) {
   const compiled = ts.transpileModule(fs.readFileSync(path.join(root, relativePath), "utf8"), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
   }).outputText;
   const module = { exports: {} };
   vm.runInNewContext(compiled, {
-    module, exports: module.exports, Date, Intl,
+    module, exports: module.exports, Date, Intl, ...globals,
     require: (name) => Object.hasOwn(overrides, name) ? overrides[name] : require(name),
   });
   return module.exports;
@@ -23,6 +23,52 @@ const { createDefaultProfile, spendProfileReducer: reduce } = load("src/lib/spen
 const { isOfferExpired } = load("src/lib/offerExpiry.ts");
 const { resolveComparison, comparisonQuery, comparisonWinner } = load("src/lib/comparison.ts");
 const { classifyReward, filterCatalogue, DEFAULT_CATALOGUE_FILTERS } = load("src/lib/catalogueFilters.ts");
+const { checkIncome, creditGuidance, nonNegativeNumber } = load("src/lib/eligibility.ts");
+
+test("catalogue supplies household alternatives and aliases, with safe unavailable-data fallback", async () => {
+  for(const mode of ["ok", "unconfigured", "error", "throws"]){
+    let query="";
+    const data=[{id:"Amex-cobalt",rewards:[],min_income_personal:60000,min_income_household:100000,credit_score:{estimated_credit_score_range:{min:700}}}];
+    const module=load("src/lib/cardDetail.ts", {
+      react:{cache:fn=>fn}, "@supabase/supabase-js":{createClient:()=>({from:()=>({select:async s=>{query=s;if(mode==="throws")throw Error("fixture");return mode==="error"?{data:null,error:{message:"fixture"}}:{data,error:null};}})})},
+      "@/lib/cards":cards,"@/lib/cardReviewData":{CARD_REVIEW_ENRICHMENT:{}},"@/lib/catalogueFilters":{classifyReward},"@/lib/eligibility":{nonNegativeNumber},
+    },{process:{env:mode==="unconfigured"?{}:{NEXT_PUBLIC_SUPABASE_URL:"https://example.invalid",NEXT_PUBLIC_SUPABASE_ANON_KEY:"fixture"}},console:{error(){}}});
+    const map=await module.getCatalogDisplayMap();
+    if(mode==="ok"){
+      assert(query.includes("min_income_household"));assert.equal(map.cobalt.minIncomeHousehold,100000);
+      assert.equal(map.cobalt,map["Amex-cobalt"]);assert.equal(checkIncome(map.cobalt,35000,100000).state,"matched");
+    }else assert.equal(Object.keys(map).length,0);
+  }
+});
+
+test("income checks distinguish unknown, explicit zero and personal/household alternatives", () => {
+  const requirements = { minIncome: 60000, minIncomeHousehold: 100000, creditMin: 700 };
+  assert.equal(checkIncome(requirements, 60000, null).state, "matched");
+  assert.equal(checkIncome(requirements, 35000, 100000).state, "matched");
+  assert.match(checkIncome(requirements, 35000, 100000).label, /household/);
+  assert.equal(checkIncome(requirements, 35000, 99999).state, "below");
+  assert.equal(checkIncome(requirements, 35000, null).state, "unknown");
+  assert.equal(checkIncome(undefined, 200000, 250000).state, "unknown");
+  assert.equal(checkIncome({minIncome:0,minIncomeHousehold:null}, 0, null).state, "matched");
+  assert.equal(checkIncome({minIncome:null,minIncomeHousehold:100000}, 35000, 90000).state, "unknown");
+  assert.equal(checkIncome({minIncome:60000,minIncomeHousehold:null}, 35000, 100000).state, "unknown");
+  assert.equal(checkIncome(requirements, 35000, 20000).state, "unknown");
+});
+test("invalid requirement data is unknown and estimated scores remain guidance", () => {
+  for (const value of [null, undefined, "60000", -1, NaN, Infinity]) assert.equal(nonNegativeNumber(value), null);
+  assert.equal(checkIncome({minIncome:NaN,minIncomeHousehold:Infinity}, 0, null).state,"unknown");
+  assert.match(creditGuidance({creditMin:800}, 720), /Below the estimated/);
+  assert.match(creditGuidance({creditMin:700}, 720), /not an approval guarantee/);
+  for(const minimum of [null, -1, 0, 299, 901, NaN, Infinity]) assert.equal(creditGuidance({creditMin:minimum},720), "Credit-score guidance unavailable");
+});
+test("optional household income persists across edits and clears on reset/new profile", () => {
+  const original=createDefaultProfile();assert.equal(original.householdIncome,null);
+  let p=reduce(original,{type:"householdIncome",value:125000});
+  p=reduce(p,{type:"income",value:65000});p=reduce(p,{type:"credit",value:760});
+  assert.equal(p.householdIncome,125000);assert.equal(original.householdIncome,null);
+  assert.equal(reduce(p,{type:"reset"}).householdIncome,null);
+  assert.equal(reduce(p,{type:"householdIncome",value:null}).householdIncome,null);
+});
 
 test("catalogue filters combine search, issuer, fee and rewards without changing source order", () => {
   const sample = [

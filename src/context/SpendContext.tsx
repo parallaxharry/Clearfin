@@ -7,6 +7,7 @@ import { createDefaultProfile, spendProfileReducer, type SpendProfile } from "@/
 interface SpendContextValue extends SpendProfile {
   setSpend: (spend: Record<SpendKey, number>) => void;
   setIncome: (income: number) => void;
+  setHouseholdIncome: (income: number | null) => void;
   setCredit: (credit: number) => void;
   resetProfile: () => void;
 }
@@ -22,6 +23,7 @@ export function SpendProvider({ children }: { children: ReactNode }) {
       ...profile,
       setSpend: (value) => dispatch({ type: "spend", value }),
       setIncome: (value) => dispatch({ type: "income", value }),
+      setHouseholdIncome: (value) => dispatch({ type: "householdIncome", value }),
       setCredit: (value) => dispatch({ type: "credit", value }),
       resetProfile: () => dispatch({ type: "reset" }),
     }}>

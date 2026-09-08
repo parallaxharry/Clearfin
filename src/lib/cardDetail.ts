@@ -4,6 +4,7 @@ import { CARDS, type CardDef, type SpendKey } from "@/lib/cards";
 import type { SearchCard, RichSearchCard } from "@/lib/searchIndex";
 import { CARD_REVIEW_ENRICHMENT, type CardResearchLevel } from "@/lib/cardReviewData";
 import { classifyReward, type RewardKind } from "@/lib/catalogueFilters";
+import { nonNegativeNumber } from "@/lib/eligibility";
 
 // ---------- Rich card_catalog shapes (jsonb) ----------
 
@@ -497,8 +498,10 @@ export interface CatalogDisplay {
   badge: string | null;
   bankUrl: string | null;
   rewards: string[];
-  /** Eligibility (for the calculator's income/credit matching). null = no stated requirement. */
+  /** Recorded catalogue values only. null = unknown, never satisfied. */
   minIncome: number | null;
+  minIncomeHousehold: number | null;
+  /** Estimated score guidance, not a published issuer minimum. */
   creditMin: number | null;
 }
 
@@ -508,12 +511,13 @@ export interface CatalogDisplay {
  * site falls back to cards.ts. Cached per-request.
  */
 export const getCatalogDisplayMap = cache(async (): Promise<Record<string, CatalogDisplay>> => {
+  try {
   const supabase = readClient();
   if (!supabase) return {};
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,credit_score");
+    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,min_income_household,credit_score");
   if (error || !data) {
     if (error) console.error("getCatalogDisplayMap error:", error.message);
     return {};
@@ -529,6 +533,7 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
     bank_url: string | null;
     rewards: string[] | null;
     min_income_personal: number | null;
+    min_income_household: number | null;
     credit_score: CreditScore | null;
   }>) {
     const cMin = r.credit_score?.estimated_credit_score_range?.min;
@@ -539,8 +544,9 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
       badge: r.badge,
       bankUrl: r.bank_url,
       rewards: r.rewards ?? [],
-      minIncome: typeof r.min_income_personal === "number" ? r.min_income_personal : null,
-      creditMin: typeof cMin === "number" ? cMin : null,
+      minIncome: nonNegativeNumber(r.min_income_personal),
+      minIncomeHousehold: nonNegativeNumber(r.min_income_household),
+      creditMin: nonNegativeNumber(cMin),
     };
   }
 
@@ -550,6 +556,10 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
   }
 
   return map;
+  } catch {
+    console.error("getCatalogDisplayMap unavailable");
+    return {};
+  }
 });
 
 /** Lightweight card list for site search: cards.ts cards overlaid with catalog
