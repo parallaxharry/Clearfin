@@ -8532,3 +8532,114 @@ body {
     transition:none !important;
   }
 }
+
+/* Signature motion: short entrances, compositor-only depth and static fallbacks. */
+.hero-card-carousel {
+  --hero-yaw:0deg;
+  --hero-pitch:0deg;
+}
+.hero-carousel-stage {
+  transform:rotateX(var(--hero-pitch)) rotateY(var(--hero-yaw));
+  transform-style:preserve-3d;
+  transition:transform .18s cubic-bezier(.2,.75,.25,1);
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  .hero-carousel-card:not(.is-hidden) {
+    animation:hero-deck-arrive 1.45s cubic-bezier(.16,.8,.24,1) backwards;
+    animation-delay:calc(var(--card-order) * 70ms);
+  }
+  .hero-carousel-card.is-active .hero-card-reflection {
+    animation:hero-card-sheen 1.05s 1.12s ease-out 1;
+  }
+
+  #feat-app .feat-visual.in-view .app-preview-frame {
+    animation:app-preview-depth-in 1.08s cubic-bezier(.16,.8,.24,1) both;
+  }
+  #feat-app .feat-visual.in-view .app-preview-screen > * {
+    animation:app-preview-layer-in .62s cubic-bezier(.2,.75,.25,1) both;
+  }
+  #feat-app .feat-visual.in-view .app-preview-screen > :nth-child(2) { animation-delay:.12s; }
+  #feat-app .feat-visual.in-view .app-preview-screen > :nth-child(3) { animation-delay:.18s; }
+  #feat-app .feat-visual.in-view .app-preview-screen > :nth-child(4) { animation-delay:.24s; }
+  #feat-app .feat-visual.in-view .app-preview-screen > :nth-child(5) { animation-delay:.3s; }
+  #feat-app .feat-visual.in-view .app-preview-screen > :nth-child(6) { animation-delay:.36s; }
+  #feat-app .feat-visual.in-view .app-preview-screen > :nth-child(7) { animation-delay:.42s; }
+  #feat-app .feat-visual.in-view .app-float-one { animation:app-float-one-in .8s .32s cubic-bezier(.16,.8,.24,1) both; }
+  #feat-app .feat-visual.in-view .app-float-two { animation:app-float-two-in .84s .4s cubic-bezier(.16,.8,.24,1) both; }
+}
+
+@keyframes hero-deck-arrive {
+  from {
+    opacity:0;
+    transform:translate(-50%,-50%) translateX(var(--card-x)) translateY(calc(var(--card-y) + 58px)) rotateY(var(--card-tilt)) rotate(var(--card-rotate)) scale(var(--card-scale));
+  }
+  to {
+    opacity:var(--card-opacity);
+    transform:translate(-50%,-50%) translateX(var(--card-x)) translateY(var(--card-y)) rotateY(var(--card-tilt)) rotate(var(--card-rotate)) scale(var(--card-scale));
+  }
+}
+@keyframes app-preview-depth-in {
+  from { opacity:.72; transform:translate3d(0,30px,0) rotateY(-12deg) rotateX(6deg) scale(.97); }
+  to { opacity:1; transform:rotateY(-5deg) rotateX(2deg); }
+}
+@keyframes app-preview-layer-in {
+  from { opacity:0; transform:translate3d(0,12px,18px); }
+  to { opacity:1; transform:none; }
+}
+@keyframes app-float-one-in {
+  from { opacity:0; transform:translate3d(-24px,16px,0) rotate(-8deg); }
+  to { opacity:1; transform:rotate(-5deg); }
+}
+@keyframes app-float-two-in {
+  from { opacity:0; transform:translate3d(24px,16px,0) rotate(9deg); }
+  to { opacity:1; transform:rotate(5deg); }
+}
+
+/* The page effect already paints once per animation frame; these two lengths
+   give existing decorative layers different, very small scroll speeds. */
+@media (min-width:701px) and (prefers-reduced-motion:no-preference) {
+  #feat-app .app-preview-frame { translate:0 var(--page-ambient-shift,0px); }
+  #feat-app .feat-visual::before { transform:translate3d(0,var(--page-ambient-shift,0px),0); }
+  #feat-app .feat-visual::after { transform:translate3d(0,var(--page-ambient-return,0px),0); }
+  .wait-scene { transform:translate3d(0,var(--page-ambient-return,0px),0); }
+}
+
+.pick-card-img,
+.catalog-card-art { overflow:hidden; }
+.pick-card-img::before,
+.catalog-card-art::before {
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:-35% auto -35% -62%;
+  width:42%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:skewX(-13deg) translateX(0);
+  transition:transform .58s cubic-bezier(.2,.75,.25,1);
+  pointer-events:none;
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .pick-card:hover .pick-card-img::before,
+  .catalog-card:hover .catalog-card-art::before { transform:skewX(-13deg) translateX(430%); }
+}
+
+@media (max-width:700px) and (prefers-reduced-motion:no-preference) {
+  .hero-carousel-card:not(.is-hidden) { animation-duration:.9s; animation-delay:calc(var(--card-order) * 45ms); }
+  .hero-carousel-stage { transform:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .hero-carousel-stage,
+  #feat-app .app-preview-frame,
+  #feat-app .app-preview-screen > *,
+  #feat-app .app-float-card,
+  .wait-scene,
+  .pick-card-img::before,
+  .catalog-card-art::before {
+    animation:none !important;
+    transition:none !important;
+    transform:none;
+    translate:none;
+  }
+  #feat-app .app-preview-frame { transform:rotateY(-5deg) rotateX(2deg); }
+}

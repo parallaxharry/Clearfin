@@ -7,12 +7,14 @@ import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import type { CatalogListCard } from "@/lib/cardDetail";
 import { formatCost } from "@/lib/money";
 import { DEFAULT_CATALOGUE_FILTERS, filterCatalogue } from "@/lib/catalogueFilters";
+import { useOneShotGridMotion } from "@/lib/useOneShotGridMotion";
 
 export default function CatalogueBrowser({ cards: allCards }: { cards: CatalogListCard[] }) {
   const [filters, setFilters] = useState(DEFAULT_CATALOGUE_FILTERS);
   const cards = filterCatalogue(allCards, filters);
   const issuers = [...new Set(allCards.map(card => card.issuer).filter(Boolean))].sort((a,b) => a.localeCompare(b));
   const reset = () => setFilters({ ...DEFAULT_CATALOGUE_FILTERS });
+  const gridRef = useOneShotGridMotion<HTMLDivElement>(cards.map(card => card.id).join(","));
   return <>
     <div className="catalog-controls" role="search" aria-label="Filter credit card catalogue">
       <label className="catalog-query">Search cards<input type="search" maxLength={100} placeholder="Card name or issuer" value={filters.query} onChange={e => setFilters({ ...filters, query: e.target.value })} /></label>
@@ -25,9 +27,9 @@ export default function CatalogueBrowser({ cards: allCards }: { cards: CatalogLi
     <p className="catalog-filter-note">Fees shown are the listed annual fees, before any conditional waiver. Some cards do not have a classified reward type; find them under “Not classified”.</p>
     <p className="catalog-results" role="status" aria-live="polite" aria-atomic="true">{cards.length} of {allCards.length} cards shown</p>
     {cards.length === 0 && <div className="catalog-empty"><h3>No matching cards</h3><p>Try a different search or clear your filters to browse the full collection.</p><button type="button" onClick={reset}>Show all cards</button></div>}
-          <div className="catalog-grid">
-            {cards.map((card) => (
-              <Link href={`/credit-cards/${card.id}`} className="catalog-card" key={card.id}>
+          <div className="catalog-grid" ref={gridRef}>
+            {cards.map((card, index) => (
+              <Link href={`/credit-cards/${card.id}`} className="catalog-card" key={card.id} data-motion-key={`catalog-${card.id}`} data-motion-order={index}>
                 <div className="catalog-card-art">
                   <FinlyRebateBadge cardId={card.id} applicationUrl={card.bankUrl} />
                   <Image src={card.img} alt={card.name} fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 280px" style={{ objectFit: "contain" }} />

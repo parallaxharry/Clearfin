@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **30/38 implemented and tested**. Batches 1–11 are live; batch 12 release evidence is recorded in its pull request. **8 remain open.**
+Progress: **34/38 implemented and tested**. Batches 1–12 are live; batch 13 release evidence is recorded in its pull request. **4 remain open.**
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -48,10 +48,10 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 
 ## Animation — after reliability, accessibility and performance checks
 
-- [ ] AN-01 — Add a restrained layered-card hero animation.
-- [ ] AN-02 — Add depth to the app-preview phone artwork.
-- [ ] AN-03 — Add gentle card-grid entry and hover effects.
-- [ ] AN-04 — Evaluate optional background movement.
+- [x] AN-01 — Add a restrained layered-card hero animation. (Batch 13; finite 1.45-second assembly and subtle fine-pointer depth.)
+- [x] AN-02 — Add depth to the app-preview phone artwork. (Batch 13; one-shot layered settle plus tiny desktop artwork offset.)
+- [x] AN-03 — Add gentle card-grid entry and hover effects. (Batch 13; first-visible entry and fine-pointer-only sheen.)
+- [x] AN-04 — Evaluate optional background movement. (Batch 13; limited to two existing decorative layers within an 18-pixel budget.)
 - [x] AN-05 — Add quick, nonblocking calculator/comparison feedback. (Batch 11)
 - [x] AN-06 — Add restrained CTA-area movement. (Batch 11; one short decorative entrance, form controls remain still.)
 
@@ -183,3 +183,13 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Current factual corrections include the $139 BMO CashBack World Elite annual fee, the Scotia Gold 50,000-point offer ending November 1, 2026, generic rather than partner-only grocery rates, Scotia Momentum restaurant treatment, PC merchant/per-litre limits and Rogers no-service rates.
 - Validation: 48 unit/safety tests, generated-queue freshness check, focused ESLint, TypeScript and the 162-route production build pass. Isolated Chrome confirms PC/Rogers assumptions and the BMO fee/cap display across details, catalogue and comparison without form or application submissions.
 - [Product-data method, corrections and limitations](product-data-qa-2026-09-07.md). [Generated 126-product verification queue](product-verification-queue-2026-09-07.json). Three items completed: **30/38 implemented/tested**, **8 open**. Final preview/production evidence is recorded in this batch's pull request.
+
+## Batch 13 — signature motion with a fixed performance budget
+
+- AN-01: existing hero artwork assembles into its layered fan over 1.45 seconds. Fine-pointer movement changes the artwork depth by only a few degrees and resets on exit; text, calls to action and focus order stay fixed. The existing accessible pause/manual card controls remain.
+- AN-02: the app-preview frame, screen sections and two callouts settle once when entering view. A small desktop scroll offset affects artwork only; mobile stays shorter and still-first.
+- AN-03: Top Picks and catalogue cards animate only the first time they become visible in their mounted view. Hover-capable fine pointers receive a brief artwork reflection; touch interaction never depends on hover.
+- AN-04: optional background movement was evaluated and restricted to two existing decorative layers moving at different speeds within an 18-pixel page-scroll budget. No new asset, dependency, canvas or WebGL rendering.
+- Reduced motion removes all four signature effects. Content is visible without JavaScript/observers/animation support. Browser checks pass at 1440 and 390 pixels with no horizontal overflow or uncaught errors; settled screenshots were reviewed.
+- Three-run local production comparison at 390×844 with four-times CPU and constrained network found no increased median CLS. Median LCP deltas were -8 to +32 ms, action-readiness deltas -14 to +5 ms, and script transfer increased 692–1,196 bytes. These are lab-noise-sized observations, not field/physical-device evidence.
+- [Motion behavior, performance results and limitations](signature-motion-qa-2026-09-08.md). Four items completed: **34/38 implemented/tested**, **4 open**. CF-23/24/25 stay open for physical devices/field evidence; CF-28 stays open for deployed protection evidence. Final preview/production evidence is recorded in this batch's pull request.

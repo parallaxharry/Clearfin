@@ -21,6 +21,7 @@
     "test:qa:api": "node scripts/qa-api.browser.cjs",
     "test:qa:feedback": "node scripts/qa-feedback.browser.cjs",
     "test:qa:motion-performance": "node scripts/qa-motion-performance.browser.cjs",
+    "test:qa:signature-motion": "node scripts/qa-signature-motion.browser.cjs",
     "generate:product-verification": "node scripts/generate-product-verification.cjs",
     "test:qa:product-data": "node scripts/generate-product-verification.cjs --check",
     "test:qa:product-data:browser": "node scripts/qa-product-data.browser.cjs"

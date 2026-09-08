@@ -103,6 +103,8 @@ export default function HeroCardCarousel() {
   const { paused, blocked } = useCarouselMotion();
   const rotating = !paused && !blocked && !interacting && !hovered && inView;
   const pointerStart = useRef<number | null>(null);
+  const depthFrame = useRef(0);
+  const depthPoint = useRef({ x: 0, y: 0 });
   const dragged = useRef(false);
   const lastWheel = useRef(0);
 
@@ -127,6 +129,30 @@ export default function HeroCardCarousel() {
     } catch { /* Manual controls remain usable when visibility detection is unavailable. */ }
     return () => observer?.disconnect();
   }, []);
+
+  useEffect(() => () => window.cancelAnimationFrame(depthFrame.current), []);
+
+  const resetDepth = () => {
+    if (!root.current) return;
+    root.current.style.setProperty("--hero-yaw", "0deg");
+    root.current.style.setProperty("--hero-pitch", "0deg");
+  };
+
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    depthPoint.current = { x: event.clientX, y: event.clientY };
+    if (depthFrame.current) return;
+    depthFrame.current = window.requestAnimationFrame(() => {
+      depthFrame.current = 0;
+      const element = root.current;
+      if (!element) return;
+      const bounds = element.getBoundingClientRect();
+      const x = ((depthPoint.current.x - bounds.left) / bounds.width - 0.5) * 2;
+      const y = ((depthPoint.current.y - bounds.top) / bounds.height - 0.5) * 2;
+      element.style.setProperty("--hero-yaw", `${(x * 2.4).toFixed(2)}deg`);
+      element.style.setProperty("--hero-pitch", `${(y * -1.8).toFixed(2)}deg`);
+    });
+  };
 
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     pointerStart.current = event.clientX;
@@ -168,7 +194,8 @@ export default function HeroCardCarousel() {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCarouselPaused(true);
       }}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseLeave={() => { setHovered(false); resetDepth(); }}
+      onPointerMove={onPointerMove}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerCancel={() => {
@@ -205,6 +232,7 @@ export default function HeroCardCarousel() {
             "--card-tilt": `${offset * -13}deg`,
             "--card-scale": Math.max(0.68, 1 - distance * 0.15),
             "--card-opacity": distance === 0 ? 1 : distance === 1 ? 0.72 : 0.34,
+            "--card-order": Math.min(distance, 2),
             zIndex: 10 - distance,
           } as CSSProperties;
 
