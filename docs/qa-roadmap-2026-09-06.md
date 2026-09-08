@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **22/38 implemented and tested**. Batches 1–5 are live; batch 6 release verification is recorded in its pull request.
+Progress: **23/38 implemented and tested**. Batches 1–6 are live; batch 7 release verification is recorded in its pull request. **15 remain open.**
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -39,11 +39,11 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 
 - [ ] CF-23 — Test mobile navigation and overlays on real phones.
 - [ ] CF-24 — Test mobile comparison, forms and long card pages.
-- [ ] CF-25 — Measure performance before adding richer animations.
+- [ ] CF-25 — Measure performance before adding richer animations. (Batch 7 lab baseline saved; real hardware, field data and motion-prototype verification remain open.)
 - [ ] CF-26 — Check all card offers/content against current issuer terms.
 - [ ] CF-27 — Verify tracking, consent and private-data exclusions.
 - [ ] CF-28 — Verify API limits and deployment protections safely.
-- [ ] CF-31 — Simplify styles and scroll handling after a visual baseline.
+- [x] CF-31 — Simplify styles and scroll handling after a visual baseline. (Batch 7: scoped homepage/early-access scroll effects and progress CSS.)
 - [x] CF-32 — Check long articles, FAQ, footer and information pages. (Batch 6; editorial follow-up owners recorded separately)
 
 ## Animation — after reliability, accessibility and performance checks
@@ -131,3 +131,11 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Validation: 23 unit tests, focused ESLint, TypeScript and 162-route production build pass. New browser suite tests combined catalogue narrowing, fee order, keyboard reset/empty recovery, 320/390px layouts and no-JS discoverability. Checks 19 editorial/info routes, all generated contents links, initial hash and client navigation, tables, static FAQs, mail/footer links and 200% CSS zoom. Screenshots reviewed. No actual submissions or application-funnel visits.
 - Remaining factual/date/policy/external-destination checks have confirmation owners in [editorial follow-ups](editorial-qa-followups-2026-09-07.md). CF-32 covers shared interactions and assigned follow-ups, not a legal or full editorial sign-off. Current offer/data verification remains CF-26; real-device checks remain CF-23/24.
 - Run npm run test:qa:catalogue with the same Playwright/runtime environment as earlier suites. Local build uses static fallback data; release verification is recorded in this batch's pull request. Progress: 22/38 implemented/tested; 16 remain. Next safe candidate: measured performance baseline CF-25 before optional animation work.
+
+## Batch 7 — measured scroll cleanup
+
+- CF-31: removed unused hidden-rail section scanning and scroll-driven React state from shared homepage/early-access effects. Coalesced animation-frame updates paint a transform-based progress bar, with resize/body-height updates and cleanup. Consolidated duplicate progress CSS; existing design, reveal fallbacks, reduced-motion support and legacy hash routes retained.
+- Measured three runs per route before/after in isolated throttled Chrome. Homepage controlled-scroll median scripting: 90.479 → 49.393 ms; layouts: 125 → 14; legacy section lookups: 960 → 0. Load timing and observed layout stability broadly unchanged. This is not a claim of 45% faster page loads or physical-device performance.
+- Twelve desktop/mobile-width before/after screenshots reviewed: eleven identical under the comparator; one has 0.072% differing pixels from existing issuer-logo fallback timing, without layout change. Progress positions, height-change updates and legacy links pass. 23 unit tests, focused ESLint, TypeScript and 162-route production build pass; regression and release evidence are recorded in this batch's pull request.
+- Added repeatable npm run test:qa:performance and test:qa:scroll plus a screenshot comparator. [Method, raw data and limitations](performance-baseline-2026-09-07.md). No new packages, tracking, financial-data changes, real form submissions or richer animations.
+- CF-25 remains unchecked: lab baseline only; representative physical phones, field performance and an agreed motion-prototype budget still need verification. Count increases by **one**, to **23/38**, with **15 open**.
