@@ -32,16 +32,12 @@ export function saveConsent(analytics: ConsentChoice, marketing: ConsentChoice) 
       sessionChoices[key] = choice;
     }
   }
-  window.gtag?.("consent", "update", { analytics_storage: analytics });
   window.dispatchEvent(new Event(CONSENT_CHANGED_EVENT));
 }
 
 export function subscribeToConsent(onChange: () => void) {
   const onStorage = (event: StorageEvent) => {
     if (event.key === null || event.key === MARKETING_CONSENT_KEY || event.key === ANALYTICS_CONSENT_KEY) {
-      window.gtag?.("consent", "update", {
-        analytics_storage: readConsent(ANALYTICS_CONSENT_KEY) ?? "denied",
-      });
       onChange();
     }
   };

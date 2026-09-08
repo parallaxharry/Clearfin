@@ -12,6 +12,7 @@ import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import CalculatorPreview from "@/components/CalculatorPreview";
 import Modal from "@/components/Modal";
 import { trackMetaAction } from "@/lib/metaPixel";
+import { trackApplyClick } from "@/lib/trackApplyClick";
 import { formatCost } from "@/lib/money";
 
 /* ══════════════════════════════════════════════════════════
@@ -543,10 +544,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
               target="_blank"
               rel="noopener noreferrer"
               className="card-modal-cta"
-              onClick={() => {
-                trackMetaAction("ApplyClick");
-                fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {});
-              }}
+              onClick={() => trackApplyClick(modalCard.id)}
             >
               Apply at {modalCard.issuer} →
             </a>

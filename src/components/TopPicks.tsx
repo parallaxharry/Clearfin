@@ -7,7 +7,7 @@ import { CARDS } from "@/lib/cards";
 import { useCatalog } from "@/context/CatalogContext";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import Modal from "@/components/Modal";
-import { trackMetaAction } from "@/lib/metaPixel";
+import { trackApplyClick } from "@/lib/trackApplyClick";
 
 interface PickCard {
   id: string;
@@ -49,19 +49,6 @@ const PICKS: PickCard[] = CURATION.flatMap((pick) => {
     perks: card.perks,
   }];
 });
-
-async function trackClick(cardId: string) {
-  trackMetaAction("ApplyClick");
-  try {
-    await fetch("/api/track-click", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cardId }),
-    });
-  } catch {
-    // Silent because analytics should not block the user.
-  }
-}
 
 export default function TopPicks() {
   const [selectedCard, setSelectedCard] = useState<PickCard | null>(null);
@@ -187,7 +174,7 @@ export default function TopPicks() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="card-modal-cta"
-                onClick={() => trackClick(selectedCard.id)}
+                onClick={() => trackApplyClick(selectedCard.id)}
               >
                 Apply at {selectedCard.issuer} -&gt;
               </a>
