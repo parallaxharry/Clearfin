@@ -8,6 +8,7 @@ import { useCatalog } from "@/context/CatalogContext";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import Modal from "@/components/Modal";
 import { trackApplyClick } from "@/lib/trackApplyClick";
+import { useOneShotGridMotion } from "@/lib/useOneShotGridMotion";
 
 interface PickCard {
   id: string;
@@ -67,6 +68,7 @@ export default function TopPicks() {
       perks: info.rewards.length > 0 ? info.rewards : p.perks,
     };
   });
+  const gridRef = useOneShotGridMotion<HTMLDivElement>(picks.map(card => card.id).join(","));
 
   return (
     <>
@@ -84,12 +86,14 @@ export default function TopPicks() {
             </p>
           </div>
 
-          <div className="top-picks-grid">
+          <div className="top-picks-grid" ref={gridRef}>
             {picks.map((card, index) => (
               <button
                 key={card.id}
                 type="button"
                 className="pick-card"
+                data-motion-key={`top-${card.id}`}
+                data-motion-order={index}
                 onClick={() => setSelectedCard(card)}
               >
                 <div className="pick-card-topline">

@@ -188,7 +188,7 @@ export default async function HomePage() {
             </Link>
             <div className="feat-trust"><span>No card numbers</span><span>Read-only by design</span><span>Canada first</span></div>
           </div>
-          <div className="feat-visual">
+          <div className="feat-visual reveal">
             <div className="app-preview-frame">
               <div className="app-preview-screen">
                 <div className="app-preview-header">

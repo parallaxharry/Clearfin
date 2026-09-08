@@ -40,6 +40,9 @@ export default function PageEffects() {
       const distance = h.scrollHeight - h.clientHeight;
       const progress = distance > 0 ? Math.min(1, Math.max(0, h.scrollTop / distance)) : 0;
       if (progressBar.current) progressBar.current.style.transform = `scaleX(${progress})`;
+      const ambient = (progress - 0.5) * 18;
+      h.style.setProperty("--page-ambient-shift", `${ambient.toFixed(2)}px`);
+      h.style.setProperty("--page-ambient-return", `${(-ambient * 0.65).toFixed(2)}px`);
     };
     const schedule = () => { if (!frame) frame = window.requestAnimationFrame(paint); };
     paint();
@@ -52,6 +55,8 @@ export default function PageEffects() {
       window.removeEventListener("resize", schedule);
       window.cancelAnimationFrame(frame);
       observer?.disconnect();
+      document.documentElement.style.removeProperty("--page-ambient-shift");
+      document.documentElement.style.removeProperty("--page-ambient-return");
     };
   }, []);
 
