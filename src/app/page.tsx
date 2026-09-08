@@ -5,6 +5,7 @@ import InteractiveTool from "@/components/InteractiveTool";
 import CompareSection from "@/components/CompareSection";
 import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
+import WaitlistScene from "@/components/WaitlistScene";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 import HeroCardCarousel from "@/components/HeroCardCarousel";
@@ -234,6 +235,7 @@ export default async function HomePage() {
           06 WAITLIST
       ══════════════════════════════════════ */}
       <section id="waitlist">
+        <WaitlistScene />
         <div className="wait-wrap">
           <h2 className="wait-title">
             Stop leaving<br />

@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **25/38 implemented, tested and live**. **13 remain open.** Batch 10 partially advances CF-28; its release evidence is recorded in the pull request.
+Progress: **27/38 implemented and tested**. Batches 1–10 are live; batch 11 release evidence is recorded in its pull request. **11 remain open.**
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -52,8 +52,8 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] AN-02 — Add depth to the app-preview phone artwork.
 - [ ] AN-03 — Add gentle card-grid entry and hover effects.
 - [ ] AN-04 — Evaluate optional background movement.
-- [ ] AN-05 — Add quick, nonblocking calculator/comparison feedback.
-- [ ] AN-06 — Add restrained CTA-area movement.
+- [x] AN-05 — Add quick, nonblocking calculator/comparison feedback. (Batch 11)
+- [x] AN-06 — Add restrained CTA-area movement. (Batch 11; one short decorative entrance, form controls remain still.)
 
 ## Batch 1 policy and boundaries
 
@@ -166,3 +166,11 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - 46 unit tests, focused ESLint, TypeScript and 162-route build pass. New Chrome checks cover long conversations, bounded context, preserved visible answers and 413 retry; existing form/chat recovery checks pass. External work is mocked. Four tiny invalid-body probes exercise actual handlers without valid identities, emails, cards or questions.
 - Signed-in Vercel firewall overview observed active firewall, zero custom rules and inactive bot protection. No hosting, firewall, database, secret or plan changes. This is not full abuse-resistance verification.
 - [Controls, verification and remaining owners](api-safety-qa-2026-09-07.md). CF-28 remains unchecked for durable rate/budget enforcement, actual database policies and alerts; chat lookup-failure/concurrency follow-ups are explicit. Count stays **25/38**, **13 open**. Release evidence is recorded in this batch's pull request.
+
+## Batch 11 — immediate tool feedback and a still-first closing CTA
+
+- AN-05: calculator figures confirm each immediate change in 240 ms; comparison value panels briefly tint when a card/value changes. No count-up, interaction delay, focus change or calculation change. Reduced-motion is completely static.
+- AN-06: shared homepage/early-access waitlist background adds two soft blue forms and two glass-card shapes. One 720–900 ms entrance then still; the form/copy never move. Decorations are aria-hidden, pointer-free and contained; no assets, libraries or downloads.
+- New Chrome suite verifies normal/reduced motion, one-shot iteration, stable form position, immediate values, comparison selection, 390 px reflow and no browser errors. Existing calculator/comparison suites and 46 unit tests pass. Desktop/mobile screenshots reviewed.
+- Three-run controlled 390 px before/after lab comparison found no added layout shift, LCP changes of 0–60 ms and 27–43 additional script bytes. [Method and limitations](motion-feedback-qa-2026-09-07.md). This is not physical-device, field-performance or conversion evidence; CF-23/24/25 stay open.
+- Two roadmap items completed: **27/38 implemented/tested**, **11 open**. Final preview/production evidence is recorded in this batch's pull request.

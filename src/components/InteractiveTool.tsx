@@ -227,7 +227,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
 
               {/* Current value display */}
               <div className="step-amount-display">
-                <span className="step-amount-value">
+                <span className="step-amount-value" key={`${currentStep}-${isSpendStep ? stepValue : profileValue}`}>
                   {isSpendStep ? fmt(stepValue) : profile.money ? fmt(profileValue) : profileValue}
                 </span>
                 <span className="step-amount-label">{isSpendStep ? "per month" : profile.unit}</span>

@@ -18,7 +18,9 @@
     "test:qa:scroll": "node scripts/qa-scroll.browser.cjs",
     "test:qa:tracking": "node scripts/qa-tracking.browser.cjs",
     "test:qa:eligibility": "node scripts/qa-eligibility.browser.cjs",
-    "test:qa:api": "node scripts/qa-api.browser.cjs"
+    "test:qa:api": "node scripts/qa-api.browser.cjs",
+    "test:qa:feedback": "node scripts/qa-feedback.browser.cjs",
+    "test:qa:motion-performance": "node scripts/qa-motion-performance.browser.cjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",

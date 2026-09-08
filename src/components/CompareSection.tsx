@@ -58,7 +58,7 @@ function CardColumn({
         </div>
       </div>
 
-      <div className="cmp-panel-value">
+      <div className="cmp-panel-value cmp-value-feedback" key={`${card.id}-${card.netValue}`}>
         <div><span>Estimated net value</span><strong>{fmt(card.netValue)}</strong><small>per year after fees</small></div>
         <p>Gross {fmt(gross)} <i>−</i> fee {formatCost(card.annualFee)}</p>
       </div>
