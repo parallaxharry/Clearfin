@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { readBoundedJson, requestBodyFailure } from "@/lib/requestBody";
 
 export const runtime = "nodejs";
 
@@ -10,11 +11,10 @@ export async function POST(req: NextRequest) {
   }
   let body: unknown;
   try {
-    const raw = await req.text();
-    if (raw.length > 1024) return NextResponse.json({ ok: false, error: "Body too large." }, { status: 413 });
-    body = JSON.parse(raw);
-  } catch {
-    return NextResponse.json({ ok: false, error: "Invalid JSON." }, { status: 400 });
+    body = await readBoundedJson(req, 1024);
+  } catch (error) {
+    const failure = requestBodyFailure(error);
+    return NextResponse.json({ ok: false, error: failure.error }, { status: failure.status });
   }
   if (!body || typeof body !== "object" || Array.isArray(body)
     || Object.keys(body).length !== 1 || !("cardId" in body)

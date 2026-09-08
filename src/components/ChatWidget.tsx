@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { chatHistoryForRequest } from "@/lib/chatRequest";
 
 interface Msg {
   role: "user" | "assistant";
@@ -130,7 +131,7 @@ export default function ChatWidget() {
           headers: { "Content-Type": "application/json" },
           signal: request.controller.signal,
           body: JSON.stringify({
-            messages: next,
+            messages: chatHistoryForRequest(next),
             cardId,
             clientId: getClientId(),
             email: emailOverride ?? storedEmail ?? undefined,

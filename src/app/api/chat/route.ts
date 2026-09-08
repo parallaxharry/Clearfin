@@ -3,6 +3,8 @@ import OpenAI from "openai";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { CHAT_MODEL, getSlimCatalogue, buildSystemPrompt } from "@/lib/chatContext";
 import { CHAT_TOOLS, runChatTool } from "@/lib/chatTools";
+import { readBoundedJson, requestBodyFailure } from "@/lib/requestBody";
+import { isChatRequest, MAX_CHAT_BODY_BYTES, MAX_MESSAGE_CHARS, MAX_HISTORY_TURNS } from "@/lib/chatRequest";
 import {
   getSession,
   checkGate,
@@ -11,7 +13,6 @@ import {
   recordPrompt,
   logMessage,
   isValidEmail,
-  isUuid,
   hashIp,
   clientIpFrom,
   MAX_PROMPTS,
@@ -23,8 +24,6 @@ export const runtime = "nodejs";
 /** Never cache a conversation. */
 export const dynamic = "force-dynamic";
 
-const MAX_MESSAGE_CHARS = 1000;
-const MAX_HISTORY_TURNS = 10;
 const REQUEST_TIMEOUT_MS = 45_000;
 
 /**
@@ -38,11 +37,6 @@ const TOOL_STATUS: Record<string, string> = {
   rank_cards: "Running your numbers",
 };
 
-interface IncomingMessage {
-  role: "user" | "assistant";
-  content: string;
-}
-
 export async function POST(req: NextRequest) {
   if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json(
@@ -51,36 +45,18 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: {
-    messages?: IncomingMessage[];
-    cardId?: string | null;
-    clientId?: string;
-    email?: string;
-  };
+  let body: unknown;
   try {
-    body = await req.json();
-  } catch {
+    body = await readBoundedJson(req, MAX_CHAT_BODY_BYTES);
+  } catch (error) {
+    const failure = requestBodyFailure(error);
+    return NextResponse.json({ error: failure.error }, { status: failure.status });
+  }
+  if (!isChatRequest(body)) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
-
-  const history = Array.isArray(body.messages) ? body.messages : [];
+  const history = body.messages;
   const latest = history[history.length - 1];
-  if (!latest || latest.role !== "user" || typeof latest.content !== "string") {
-    return NextResponse.json({ error: "No question supplied." }, { status: 400 });
-  }
-  if (latest.content.trim().length === 0) {
-    return NextResponse.json({ error: "No question supplied." }, { status: 400 });
-  }
-  if (latest.content.length > MAX_MESSAGE_CHARS) {
-    return NextResponse.json(
-      { error: `Please keep questions under ${MAX_MESSAGE_CHARS} characters.` },
-      { status: 400 }
-    );
-  }
-
-  if (!isUuid(body.clientId)) {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
-  }
   const clientId = body.clientId;
 
   const ipHash = hashIp(clientIpFrom(req.headers));
@@ -228,8 +204,8 @@ export async function POST(req: NextRequest) {
             if (text) send(text);
           }
         }
-      } catch (err) {
-        console.error("chat route error:", err instanceof Error ? err.message : err);
+      } catch {
+        console.error("ClearFin chat response unavailable");
         send(
           "\n\nSorry — I couldn't finish that one. You can try again, or use the calculator and compare tool, which run on the same data."
         );
@@ -250,4 +226,3 @@ export async function POST(req: NextRequest) {
     },
   });
 }
-

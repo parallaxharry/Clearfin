@@ -10,7 +10,7 @@ function load(file, globals = {}, overrides = {}) {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
   }).outputText;
   vm.runInNewContext(code, { module, exports: module.exports, console, Event, CustomEvent,
-    AbortController, URL, setTimeout, clearTimeout, ...globals,
+    AbortController, URL, TextDecoder, setTimeout, clearTimeout, ...globals,
     require: name => Object.hasOwn(overrides, name) ? overrides[name] : require(name),
   });
   return module.exports;
@@ -89,9 +89,10 @@ function clickRoute({configured=true, fail=false, throws=false}={}) {
     console:{error: (...a)=>logs.push(a)},
   }, {
     "next/server": {NextResponse:{json:(body,opts)=>({body,status:opts.status})}},
+    "@/lib/requestBody": load("src/lib/requestBody.ts"),
     "@supabase/supabase-js": {createClient:()=>({from:()=>({insert:async value=>{inserts.push(value);if(throws)throw Error("private payload");return {error:fail?{message:"private payload"}:null};}})})},
   });
-  const request=(raw,consent="granted")=>new Request("https://example.invalid/api/track-click", {method:"POST",headers:{"x-clearfin-analytics-consent":consent},body:raw});
+  const request=(raw,consent="granted")=>new Request("https://example.invalid/api/track-click", {method:"POST",headers:{"content-type":"application/json","x-clearfin-analytics-consent":consent},body:raw});
   return {route,inserts,logs,request};
 }
 test("click API rejects missing consent, malformed/unbounded payloads and extra private fields before storage", async()=>{

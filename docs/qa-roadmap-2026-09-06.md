@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **25/38 implemented and tested**. Batches 1–8 are live; batch 9 release verification is recorded in its pull request. **13 remain open.**
+Progress: **25/38 implemented, tested and live**. **13 remain open.** Batch 10 partially advances CF-28; its release evidence is recorded in the pull request.
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -42,7 +42,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] CF-25 — Measure performance before adding richer animations. (Batch 7 lab baseline saved; real hardware, field data and motion-prototype verification remain open.)
 - [ ] CF-26 — Check all card offers/content against current issuer terms.
 - [x] CF-27 — Verify tracking, consent and private-data exclusions. (Batch 8 website-side checks; account receipt and infrastructure follow-ups remain explicit.)
-- [ ] CF-28 — Verify API limits and deployment protections safely.
+- [ ] CF-28 — Verify API limits and deployment protections safely. (Batch 10: bounded JSON, chat validation and read-only firewall observations complete; distributed limits, database policies and monitoring remain open.)
 - [x] CF-31 — Simplify styles and scroll handling after a visual baseline. (Batch 7: scoped homepage/early-access scroll effects and progress CSS.)
 - [x] CF-32 — Check long articles, FAQ, footer and information pages. (Batch 6; editorial follow-up owners recorded separately)
 
@@ -157,3 +157,12 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - Household income stays in the shared tab-memory profile, survives Back/page navigation and clears on Restart/reload. No answer storage, submission, analytics or URL field added. Existing reward scoring and card values are unchanged.
 - 36 unit tests, focused ESLint, TypeScript and 162-route production build pass. Synthetic local fixtures cover household qualification, unknown data, empty state and low estimated score; fixture page removed before publishing. Browser checks cover validation, persistence/reset, modal labels and mobile-width reflow. Final regression and release evidence are in the pull request.
 - [Method, source checks and limitations](eligibility-qa-2026-09-07.md). CF-02/03/26 remain open for source-verified reward/fee/offer data. One item completed: **25/38**, **13 open**.
+
+
+## Batch 10 — bounded requests and chat input safety (CF-28 partial)
+
+- Added streaming UTF-8 byte limits and a 10-second body-read deadline to click (1 KiB), waitlist (4 KiB) and chat (64 KiB) endpoints. Invalid JSON, unsupported media types, excessive input and unfinished bodies have safe errors; declared lengths cannot bypass actual-byte checks.
+- Chat validates the entire bounded history before session/storage/model work. Client sends only the ten-turn context already used by the server, keeping full visible answers/history. Waitlist rejects unexpected fields. Raw waitlist exception/chat provider messages replaced with fixed diagnostics.
+- 46 unit tests, focused ESLint, TypeScript and 162-route build pass. New Chrome checks cover long conversations, bounded context, preserved visible answers and 413 retry; existing form/chat recovery checks pass. External work is mocked. Four tiny invalid-body probes exercise actual handlers without valid identities, emails, cards or questions.
+- Signed-in Vercel firewall overview observed active firewall, zero custom rules and inactive bot protection. No hosting, firewall, database, secret or plan changes. This is not full abuse-resistance verification.
+- [Controls, verification and remaining owners](api-safety-qa-2026-09-07.md). CF-28 remains unchecked for durable rate/budget enforcement, actual database policies and alerts; chat lookup-failure/concurrency follow-ups are explicit. Count stays **25/38**, **13 open**. Release evidence is recorded in this batch's pull request.
