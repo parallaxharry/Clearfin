@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { readBoundedJson, requestBodyFailure } from "@/lib/requestBody";
 
 export async function POST(req: NextRequest) {
   let body: unknown;
-  try { body = await req.json(); }
-  catch { return NextResponse.json({ error: "Invalid request." }, { status: 400 }); }
-  if (!body || typeof body !== "object" || Array.isArray(body)) {
+  try { body = await readBoundedJson(req, 4096); }
+  catch (error) {
+    const failure = requestBodyFailure(error);
+    return NextResponse.json({ error: failure.error }, { status: failure.status });
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)
+    || Object.keys(body).some(key => key !== "email" && key !== "source")) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
   const { email: rawEmail, source = "waitlist" } = body as { email?: unknown; source?: unknown };
@@ -51,8 +56,8 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ message: "Added to waitlist.", created: true }, { status: 200 });
-  } catch (err) {
-    console.error("Waitlist API error:", err instanceof Error ? err.message : err);
+  } catch {
+    console.error("Waitlist API unavailable");
     return NextResponse.json({ error: "Server error." }, { status: 500 });
   }
 }
