@@ -80,9 +80,10 @@ img { max-width: 100%; display: block; }
    SCROLL PROGRESS
 ───────────────────────────────────────────── */
 .scroll-progress {
-  position: fixed; top: 0; left: 0; height: 1px; width: 0; z-index: 200;
-  background: linear-gradient(90deg, var(--accent), var(--accent-blue));
-  transition: width .1s linear;
+  position: fixed; top: 0; left: 0; height: 2px; width: 100%; z-index: 200;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .1s linear;
 }
 
 /* ─────────────────────────────────────────────
@@ -3524,7 +3525,6 @@ html, body { background: var(--bg); color: var(--ink); font-weight: 400; }
 body { padding-top: 0; }
 section { min-height: 0; scroll-snap-align: none; overflow: visible; }
 .grain, .rail, .loader, .scroll-hint, #hero .section-num { display: none; }
-.scroll-progress { height: 2px; background: var(--accent); }
 
 .nav {
   top: 0; left: 0; right: 0; width: 100%; transform: none;

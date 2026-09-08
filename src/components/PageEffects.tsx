@@ -1,16 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
-const SECTIONS = [
-  "hero", "tool", "showcase", "feat-1", "feat-2", "feat-3", "feat-4", "waitlist",
-];
+import { useEffect, useRef } from "react";
 
 export default function PageEffects() {
   const router = useRouter();
-  const [progress, setProgress] = useState(0);
-  const [activeSection, setActiveSection] = useState(0);
+  const progressBar = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const legacyRoutes: Record<string, string> = {
@@ -37,30 +32,28 @@ export default function PageEffects() {
   }, [router]);
 
   useEffect(() => {
-    // Scroll progress + active section
-    const onScroll = () => {
+    // One compositor-friendly update per frame; no React renders or obsolete rail lookups.
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
       const h = document.documentElement;
-      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-      setProgress(pct);
-
-      let cur = 0;
-      SECTIONS.forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) cur = i;
-      });
-      setActiveSection(cur);
+      const distance = h.scrollHeight - h.clientHeight;
+      const progress = distance > 0 ? Math.min(1, Math.max(0, h.scrollTop / distance)) : 0;
+      if (progressBar.current) progressBar.current.style.transform = `scaleX(${progress})`;
     };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const schedule = () => { if (!frame) frame = window.requestAnimationFrame(paint); };
+    paint();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(schedule) : null;
+    observer?.observe(document.body);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
   }, []);
-
-  // Update rail active class
-  useEffect(() => {
-    document.querySelectorAll(".rail-item").forEach((el, i) => {
-      el.classList.toggle("active", i === activeSection);
-    });
-  }, [activeSection]);
 
   // Content is visible in CSS; animation is a progressive enhancement.
   useEffect(() => {
@@ -108,7 +101,8 @@ export default function PageEffects() {
   return (
     <div
       className="scroll-progress"
-      style={{ width: `${progress}%` }}
+      ref={progressBar}
+      aria-hidden="true"
     />
   );
 }
