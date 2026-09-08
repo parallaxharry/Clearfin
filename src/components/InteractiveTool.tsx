@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useCallback, useRef, useId } from "react";
 import {
-  CARDS, CardDef, SpendKey, STEPS,
-  fmt, fmtRate, getBreakdown, getTopCards,
+  CARDS, CardDef, STEPS,
+  fmt, getBreakdown, getTopCards,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
@@ -143,8 +143,8 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
   const catalog = useCatalog();
   // Keep reward scoring unchanged. Missing data stays explicitly unverified;
   // estimated credit ranges never silently exclude a card as an approval rule.
-  const consideredCards = getTopCards(spend, CARDS.length)
-    .map((c) => withCatalog(c, catalog))
+  const resolvedCards = CARDS.map((card) => withCatalog(card, catalog));
+  const consideredCards = getTopCards(spend, resolvedCards.length, resolvedCards)
     .filter((c) => checkIncome(catalog[c.id], income, householdIncome).state !== "below");
   const topCards = consideredCards.slice(0, 3);
   const bestNetValue = topCards[0]?.netValue ?? 0;
@@ -391,9 +391,9 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
               </p>
               <div className="result-cards">
                 {topCards.map((card, i) => {
-                  const earnBreakdown = Object.entries(spend).map(([k, v]) => ({
-                    cat: k,
-                    earn: v * 12 * card.rates[k as SpendKey],
+                  const earnBreakdown = getBreakdown(card, spend).rows.map((row) => ({
+                    cat: row.key,
+                    earn: row.annual,
                   }));
                   const topCat = earnBreakdown.sort((a, b) => b.earn - a.earn)[0];
                   const catLabel: Record<string, string> = {
@@ -504,7 +504,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
 
             {/* Calculation breakdown */}
             {(() => {
-              const { rows, gross } = getBreakdown(modalCard, spend);
+              const { rows, gross, assumptions } = getBreakdown(modalCard, spend);
               return (
                 <div className="modal-breakdown">
                   <div className="modal-breakdown-label">How we calculated this</div>
@@ -519,7 +519,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                       <div key={r.key} className="modal-bd-row">
                         <span className="modal-bd-cat">{r.label}</span>
                         <span className="modal-bd-monthly">{fmt(spend[r.key])}</span>
-                        <span className="modal-bd-rate">{fmtRate(r.rate)}</span>
+                        <span className="modal-bd-rate">{r.rateLabel}</span>
                         <span className="modal-bd-earn">{fmt(r.annual)}</span>
                       </div>
                     ))}
@@ -544,6 +544,12 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                       <span className="modal-bd-earn">{fmt(gross - modalCard.annualFee)}</span>
                     </div>
                   </div>
+                  {assumptions.length > 0 && (
+                    <div className="modal-bd-assumptions">
+                      <strong>Caps and merchant assumptions</strong>
+                      <ul>{assumptions.map((assumption) => <li key={assumption}>{assumption}</li>)}</ul>
+                    </div>
+                  )}
                 </div>
               );
             })()}

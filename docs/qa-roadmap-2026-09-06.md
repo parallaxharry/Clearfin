@@ -1,6 +1,6 @@
 # ClearFin QA roadmap — 6 September 2026
 
-Progress: **27/38 implemented and tested**. Batches 1–10 are live; batch 11 release evidence is recorded in its pull request. **11 remain open.**
+Progress: **30/38 implemented and tested**. Batches 1–11 are live; batch 12 release evidence is recorded in its pull request. **8 remain open.**
 Batch 1: CF-01, CF-04, CF-09, CF-10, CF-30. Batch 2: CF-06, CF-07, CF-08, CF-15.
 Source: supplied "ClearFin — website QA and animation roadmap", reviewed against live-source commit c2d617271a14a0d0b457f7a5512ec4c8bb9842cf.
 This is a tracked backlog, not a promise that untested findings are confirmed bugs.
@@ -8,8 +8,8 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 ## Core reliability
 
 - [x] CF-01 — Keep calculator answers when moving between pages. (Batch 1)
-- [ ] CF-02 — Calculate rewards with caps and merchant conditions.
-- [ ] CF-03 — Use consistent card fees and rates across the site.
+- [x] CF-02 — Calculate rewards with caps and merchant conditions. (Batch 12; 24 source-grounded conditional models plus an explicit fallback notice.)
+- [x] CF-03 — Use consistent card fees and rates across the site. (Batch 12; one resolved product record feeds catalogue, details, calculator and comparison.)
 - [x] CF-04 — Check offer expiry against today's date. (Batch 1)
 - [x] CF-05 — Handle missing eligibility data and household-income alternatives. (Batch 9; recorded-data checks, not approval prediction or a current issuer-data audit.)
 - [x] CF-09 — Keep edited answers when pressing Back. (Batch 1)
@@ -40,7 +40,7 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - [ ] CF-23 — Test mobile navigation and overlays on real phones.
 - [ ] CF-24 — Test mobile comparison, forms and long card pages.
 - [ ] CF-25 — Measure performance before adding richer animations. (Batch 7 lab baseline saved; real hardware, field data and motion-prototype verification remain open.)
-- [ ] CF-26 — Check all card offers/content against current issuer terms.
+- [x] CF-26 — Check all card offers/content against current issuer terms. (Batch 12; 126/126 local products have a dated official source, 45-day freshness control and generated dependency queue.)
 - [x] CF-27 — Verify tracking, consent and private-data exclusions. (Batch 8 website-side checks; account receipt and infrastructure follow-ups remain explicit.)
 - [ ] CF-28 — Verify API limits and deployment protections safely. (Batch 10: bounded JSON, chat validation and read-only firewall observations complete; distributed limits, database policies and monitoring remain open.)
 - [x] CF-31 — Simplify styles and scroll handling after a visual baseline. (Batch 7: scoped homepage/early-access scroll effects and progress CSS.)
@@ -174,3 +174,12 @@ This is a tracked backlog, not a promise that untested findings are confirmed bu
 - New Chrome suite verifies normal/reduced motion, one-shot iteration, stable form position, immediate values, comparison selection, 390 px reflow and no browser errors. Existing calculator/comparison suites and 46 unit tests pass. Desktop/mobile screenshots reviewed.
 - Three-run controlled 390 px before/after lab comparison found no added layout shift, LCP changes of 0–60 ms and 27–43 additional script bytes. [Method and limitations](motion-feedback-qa-2026-09-07.md). This is not physical-device, field-performance or conversion evidence; CF-23/24/25 stay open.
 - Two roadmap items completed: **27/38 implemented/tested**, **11 open**. Final preview/production evidence is recorded in this batch's pull request.
+
+## Batch 12 — source-grounded product economics and freshness
+
+- CF-02: reward calculations can model shared monthly/annual caps, after-cap rates and conservative merchant/account assumptions. Twenty-four products now have explicit rules, including American Express, Scotiabank, BMO, MBNA, PC Financial, Rogers, Canadian Tire and Simplii cards. Conditional partner, per-litre, service-linked and foreign-currency rewards are not silently applied to generic Canadian spend.
+- CF-03: the server resolves one reviewed product record before supplying the catalogue, card detail, calculator and comparison. Rates and exact annual fees overlay the shared card model, so recommendation scores and visible card facts no longer use separate values. A full-catalogue test checks the local records agree across all four consumers.
+- CF-26: the current build has 126 unique local card IDs and 126 generated detail routes. Every product has a dated official issuer source inside a 45-day freshness window. Forty-three welcome offers are tracked and fail closed when their source is absent or review is stale. The generated dependency queue maps every product change to its card, catalogue, calculator, comparison and source-matched article routes.
+- Current factual corrections include the $139 BMO CashBack World Elite annual fee, the Scotia Gold 50,000-point offer ending November 1, 2026, generic rather than partner-only grocery rates, Scotia Momentum restaurant treatment, PC merchant/per-litre limits and Rogers no-service rates.
+- Validation: 48 unit/safety tests, generated-queue freshness check, focused ESLint, TypeScript and the 162-route production build pass. Isolated Chrome confirms PC/Rogers assumptions and the BMO fee/cap display across details, catalogue and comparison without form or application submissions.
+- [Product-data method, corrections and limitations](product-data-qa-2026-09-07.md). [Generated 126-product verification queue](product-verification-queue-2026-09-07.json). Three items completed: **30/38 implemented/tested**, **8 open**. Final preview/production evidence is recorded in this batch's pull request.
