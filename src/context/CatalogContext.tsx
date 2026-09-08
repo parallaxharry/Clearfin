@@ -5,10 +5,8 @@ import type { CardDef } from "@/lib/cards";
 import type { CatalogDisplay } from "@/lib/cardDetail";
 
 /*
- * Supplies Supabase card_catalog DISPLAY fields to the home page's client
- * components. The catalog is fetched server-side (page.tsx) and passed in here.
- * Only display fields are overlaid — rates / annual fee / all reward MATH stay
- * on the static cards.ts, so the calculator's numbers are unchanged.
+ * Supplies one server-resolved product record to client views. Card detail,
+ * catalogue, calculator and comparison therefore use the same fee/rate version.
  */
 
 export type CatalogMap = Record<string, CatalogDisplay>;
@@ -24,10 +22,8 @@ export function useCatalog(): CatalogMap {
 }
 
 /**
- * Overlay catalog display fields onto a static card, matched by id.
- * Falls back to the card's own value when the catalog lacks a field or the id
- * isn't in the catalog. `perks` is replaced by the catalog's `rewards` list.
- * Never touches `rates` or `annualFee` (the calculator's math inputs).
+ * Overlay the authoritative server-resolved fields onto a static card.
+ * Calculator-only cap rules remain on the local card definition.
  */
 export function withCatalog<T extends CardDef>(card: T, map: CatalogMap): T {
   const info = map[card.id];
@@ -40,5 +36,7 @@ export function withCatalog<T extends CardDef>(card: T, map: CatalogMap): T {
     badge: info.badge ?? card.badge,
     bankUrl: info.bankUrl ?? card.bankUrl,
     perks: info.rewards.length > 0 ? info.rewards : card.perks,
+    annualFee: info.annualFee,
+    rates: info.rates,
   };
 }

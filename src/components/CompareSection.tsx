@@ -8,7 +8,7 @@ import { comparisonQuery, comparisonWinner, resolveComparison, type ComparisonPa
 import { formatCost } from "@/lib/money";
 import {
   CARDS, CardDef, SpendKey,
-  fmt, fmtRate, getBreakdown, scoreCard, getTopCards,
+  fmt, getBreakdown, scoreCard, getTopCards,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
@@ -26,7 +26,7 @@ function CardColumn({
   rank: number;
   outcome: "winner" | "tie" | null;
 }) {
-  const { rows, gross } = getBreakdown(card, spend);
+  const { rows, gross, assumptions } = getBreakdown(card, spend);
   const [imgErr, setImgErr] = useState(false);
 
   return (
@@ -73,7 +73,7 @@ function CardColumn({
             <div key={row.key} className="modal-bd-row">
               <span className="modal-bd-cat">{row.label}</span>
               <span className="modal-bd-monthly">{fmt(spend[row.key])}</span>
-              <span className="modal-bd-rate">{fmtRate(row.rate)}</span>
+              <span className="modal-bd-rate">{row.rateLabel}</span>
               <span className="modal-bd-earn">{fmt(row.annual)}</span>
             </div>
           ))}
@@ -82,6 +82,12 @@ function CardColumn({
             <span className="modal-bd-earn">{fmt(card.netValue)}</span>
           </div>
         </div>
+        {assumptions.length > 0 && (
+          <div className="modal-bd-assumptions">
+            <strong>Caps and merchant assumptions</strong>
+            <ul>{assumptions.map((assumption) => <li key={assumption}>{assumption}</li>)}</ul>
+          </div>
+        )}
       </div>
 
       <div className="cmp-panel-actions">
@@ -270,7 +276,7 @@ function CardSlot({
                   <div className="cmp-di-name">{catalog[c.id]?.name ?? c.name}</div>
                   <div className="cmp-di-issuer">{catalog[c.id]?.issuer ?? c.issuer}</div>
                 </div>
-                <div className="cmp-di-val">{fmt(scoreCard(c, spend))}/yr</div>
+                <div className="cmp-di-val">{fmt(scoreCard(withCatalog(c, catalog), spend))}/yr</div>
               </div>
             ))}
           </div>
@@ -285,7 +291,9 @@ const comparableIds = new Set(CARDS.map((card) => card.id));
 function CompareCards({ compareParam }: { compareParam: string | null }) {
   const { spend: effectiveSpend } = useSpend();
 
-  const [defaultIds] = useState<ComparisonPair>(() => getTopCards(effectiveSpend, 2).map((c) => c.id) as ComparisonPair);
+  const catalog = useCatalog();
+  const resolvedCards = CARDS.map((card) => withCatalog(card, catalog));
+  const [defaultIds] = useState<ComparisonPair>(() => getTopCards(effectiveSpend, 2, resolvedCards).map((c) => c.id) as ComparisonPair);
   const selectedIds = resolveComparison(compareParam, defaultIds, comparableIds);
   const [queries, setQueries] = useState<[string, string]>(["", ""]);
   const [openSlot, setOpenSlot] = useState<0 | 1 | null>(null);
@@ -334,13 +342,12 @@ function CompareCards({ compareParam }: { compareParam: string | null }) {
     setOpenSlot(slot);
   };
 
-  const catalog = useCatalog();
   const scoredCards = selectedIds.map((id) => {
     if (!id) return null;
     const card = CARDS.find((c) => c.id === id);
     if (!card) return null;
-    // Display fields from Supabase; scoreCard uses cards.ts rates/fee (math unchanged).
-    return withCatalog({ ...card, netValue: scoreCard(card, effectiveSpend) }, catalog);
+    const resolved = withCatalog(card, catalog);
+    return { ...resolved, netValue: scoreCard(resolved, effectiveSpend) };
   }) as [(CardDef & { netValue: number }) | null, (CardDef & { netValue: number }) | null];
   const winner = comparisonWinner([scoredCards[0]?.netValue ?? null, scoredCards[1]?.netValue ?? null]);
 

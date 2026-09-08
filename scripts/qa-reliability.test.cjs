@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports, @next/next/no-assign-module-variable */
 const assert = require("node:assert/strict");
 const test = require("node:test");
 const fs = require("node:fs");
@@ -19,6 +20,7 @@ function load(relativePath, overrides = {}, globals = {}) {
 }
 const money = load("src/lib/money.ts");
 const cards = load("src/lib/cards.ts", { "./money": money });
+const reviews = load("src/lib/cardReviewData.ts", { "@/lib/cards": cards });
 const { createDefaultProfile, spendProfileReducer: reduce } = load("src/lib/spendProfile.ts", { "./cards": cards });
 const { isOfferExpired } = load("src/lib/offerExpiry.ts");
 const { resolveComparison, comparisonQuery, comparisonWinner } = load("src/lib/comparison.ts");
@@ -35,9 +37,76 @@ test("catalogue supplies household alternatives and aliases, with safe unavailab
     },{process:{env:mode==="unconfigured"?{}:{NEXT_PUBLIC_SUPABASE_URL:"https://example.invalid",NEXT_PUBLIC_SUPABASE_ANON_KEY:"fixture"}},console:{error(){}}});
     const map=await module.getCatalogDisplayMap();
     if(mode==="ok"){
-      assert(query.includes("min_income_household"));assert.equal(map.cobalt.minIncomeHousehold,100000);
+      assert.equal(query,"*");assert.equal(map.cobalt.minIncomeHousehold,100000);
       assert.equal(map.cobalt,map["Amex-cobalt"]);assert.equal(checkIncome(map.cobalt,35000,100000).state,"matched");
-    }else assert.equal(Object.keys(map).length,0);
+    }else {
+      assert(Object.keys(map).length>=cards.CARDS.length);
+      assert.equal(map.cobalt.annualFee,191.88);
+      assert.equal(map.cobalt.rates.grocery,0.05);
+    }
+  }
+});
+
+test("reward estimates apply shared caps, after-cap rates and conservative merchant assumptions", () => {
+  const empty = { dining:0, grocery:0, gas:0, travel:0, other:0 };
+  const card = id => cards.CARDS.find(item => item.id === id);
+
+  const cobaltAt = cards.getBreakdown(card("cobalt"), {...empty,dining:1000,grocery:1500});
+  const cobaltOver = cards.getBreakdown(card("cobalt"), {...empty,dining:1500,grocery:1500});
+  assert.equal(cobaltAt.gross,1500);
+  assert.equal(cobaltOver.gross,1560);
+  assert(cobaltOver.assumptions.some(note=>note.includes("$2,500")));
+
+  const preferredAt = cards.getBreakdown(card("amex-simply-cash-preferred"), {...empty,grocery:2000,gas:500});
+  const preferredOver = cards.getBreakdown(card("amex-simply-cash-preferred"), {...empty,grocery:2500,gas:500});
+  assert.equal(preferredAt.gross,1200);
+  assert.equal(preferredOver.gross,1320);
+
+  const bmoUnder = cards.getBreakdown(card("bmo-cashback"), {...empty,grocery:400});
+  const bmoOver = cards.getBreakdown(card("bmo-cashback"), {...empty,grocery:600});
+  assert.equal(bmoUnder.gross,144);
+  assert.equal(bmoOver.gross,186);
+
+  const mbna = cards.getBreakdown(card("mbna-smart-cash"), {...empty,grocery:400,gas:300});
+  assert.equal(mbna.gross,132);
+
+  const scotiaGeneric = cards.getBreakdown(card("scotia-gold"), {...empty,grocery:1000});
+  const sceneGeneric = cards.getBreakdown(card("scene-plus-visa"), {...empty,grocery:1000});
+  assert.equal(scotiaGeneric.gross,600);
+  assert.equal(sceneGeneric.gross,120);
+  assert(scotiaGeneric.assumptions.some(note=>note.includes("6x rate is limited")));
+});
+
+test("every local product has a recent traceable issuer review and stale offers fail closed", async () => {
+  const now = new Date("2026-09-07T12:00:00Z");
+  assert.equal(Object.keys(reviews.CARD_REVIEW_ENRICHMENT).length, cards.CARDS.length);
+  for (const card of cards.CARDS) {
+    const review = reviews.CARD_REVIEW_ENRICHMENT[card.id];
+    assert(review, card.id);
+    assert.match(review.sourceUrl, /^https:\/\//, card.id);
+    assert.match(review.reviewedAt, /^2026-08-\d{2}$|^2026-09-07$/, card.id);
+  }
+
+  const module = load("src/lib/cardDetail.ts", {
+    react:{cache:fn=>fn}, "@supabase/supabase-js":{createClient(){throw Error("unconfigured");}},
+    "@/lib/cards":cards,"@/lib/cardReviewData":reviews,"@/lib/catalogueFilters":{classifyReward},"@/lib/eligibility":{nonNegativeNumber},
+  },{process:{env:{}},console:{error(){}}});
+  assert.equal(module.isProductReviewFresh("2026-08-06", now),true);
+  assert.equal(module.isProductReviewFresh("2026-07-01", now),false);
+  assert.equal(module.isProductReviewFresh("invalid", now),false);
+
+  const map = await module.getCatalogDisplayMap();
+  const list = await module.getCatalogOrderedCards();
+  const listById = new Map(list.map(card => [card.id, card]));
+  for (const card of cards.CARDS) {
+    const detail = await module.getCard(card.id);
+    assert.equal(map[card.id].annualFee, detail.annualFee, `${card.id} fee`);
+    assert.deepEqual(map[card.id].rates, detail.rates, `${card.id} rates`);
+    assert.equal(listById.get(card.id).annualFee, detail.annualFee, `${card.id} catalogue fee`);
+    if (detail.welcomeBonus) {
+      assert.match(detail.sourceUrl, /^https:\/\//, card.id);
+      assert(module.isProductReviewFresh(detail.reviewedAt, now), card.id);
+    }
   }
 });
 

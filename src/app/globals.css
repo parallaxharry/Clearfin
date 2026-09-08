@@ -1625,6 +1625,12 @@ section {
   font-family: var(--font-fraunces), serif; font-style: italic;
   font-size: 20px; color: var(--accent-blue); font-weight: 300;
 }
+.modal-bd-assumptions { margin-top:12px; padding:12px 14px; border:1px solid rgba(0,113,227,.18); border-radius:10px; background:rgba(0,113,227,.06); color:rgba(245,245,242,.72); font-family:var(--font-archivo),sans-serif; font-size:10px; line-height:1.5; }
+.modal-bd-assumptions strong { display:block; margin-bottom:5px; color:var(--paper); font-size:10px; }
+.modal-bd-assumptions ul { margin:0; padding-left:16px; }
+.modal-bd-assumptions li + li { margin-top:4px; }
+#compare .modal-bd-assumptions { color:#666c64; background:#f3f7fb; }
+#compare .modal-bd-assumptions strong { color:#253446; }
 
 /* ─────────────────────────────────────────────
    TOP PICKS GRID (category cards)

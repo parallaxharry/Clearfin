@@ -20,7 +20,10 @@
     "test:qa:eligibility": "node scripts/qa-eligibility.browser.cjs",
     "test:qa:api": "node scripts/qa-api.browser.cjs",
     "test:qa:feedback": "node scripts/qa-feedback.browser.cjs",
-    "test:qa:motion-performance": "node scripts/qa-motion-performance.browser.cjs"
+    "test:qa:motion-performance": "node scripts/qa-motion-performance.browser.cjs",
+    "generate:product-verification": "node scripts/generate-product-verification.cjs",
+    "test:qa:product-data": "node scripts/generate-product-verification.cjs --check",
+    "test:qa:product-data:browser": "node scripts/qa-product-data.browser.cjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",
