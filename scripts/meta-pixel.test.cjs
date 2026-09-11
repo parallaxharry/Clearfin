@@ -16,7 +16,7 @@ function loadModule(relativePath, globals = {}, overrides = {}) {
   vm.runInNewContext(compiled, {
     module, exports: module.exports,
     require: (name) => Object.hasOwn(overrides, name) ? overrides[name] : require(name),
-    console, Event, URL, TextDecoder, setTimeout, clearTimeout, ...globals,
+    console, Event, URL, ...globals,
   }, { filename: relativePath });
   return module.exports;
 }
@@ -47,7 +47,7 @@ function fixture({ analytics, marketing, hostname = "www.clearfin.ca", storageBl
   };
   const globals = { window, document };
   const consent = loadModule("src/lib/trackingConsent.ts", globals);
-  const pixel = loadModule("src/lib/metaPixel.ts", globals, { "./trackingConsent": consent, "./trackingDiagnostics": { reportTrackingFailure() {} } });
+  const pixel = loadModule("src/lib/metaPixel.ts", globals, { "./trackingConsent": consent });
   const unsubscribe = consent.subscribeToConsent(pixel.syncMetaPixel);
   return {
     window, consent, pixel, inserted, cookies, calls, values, unsubscribe,
@@ -170,11 +170,6 @@ test("blocked SDK does not queue conversion events; all action payloads omit use
   assert(f.events().every(c => c.length === 3));
 });
 
-const jsonRequest = value => new Request("https://example.invalid/api/waitlist", {
-  method: "POST", headers: {"content-type":"application/json"}, body: JSON.stringify(value),
-});
-const requestBody = loadModule("src/lib/requestBody.ts");
-
 test("waitlist distinguishes a new lead from duplicate, failed, and invalid submissions", async () => {
   for (const [error, expectedStatus, created] of [
     [null, 200, true], [{ code: "23505" }, 200, false], [{ code: "XX000" }, 500, undefined],
@@ -184,34 +179,13 @@ test("waitlist distinguishes a new lead from duplicate, failed, and invalid subm
       console: { error() {} },
     }, {
       "next/server": { NextResponse: { json: (body, opts) => ({ body, status: opts.status }) } },
-      "@/lib/requestBody": requestBody,
       "@supabase/supabase-js": { createClient: () => ({ from: () => ({ insert: async () => ({ error }) }) }) },
     });
-    const result = await route.POST(jsonRequest({ email: "test@example.invalid" }));
+    const result = await route.POST({ json: async () => ({ email: "test@example.invalid" }) });
     assert.equal(result.status, expectedStatus);
     assert.equal(result.body.created, created);
-    const invalid = await route.POST(jsonRequest({ email: "invalid" }));
+    const invalid = await route.POST({ json: async () => ({ email: "invalid" }) });
     assert.equal(invalid.status, 400);
     assert.equal(invalid.body.created, undefined);
   }
-});
-
-test("waitlist rejects malformed bodies before storage and normalizes valid input", async () => {
-  const inserts = [];
-  const route = loadModule("src/app/api/waitlist/route.ts", {
-    process: { env: { NEXT_PUBLIC_SUPABASE_URL: "https://test.invalid", NEXT_PUBLIC_SUPABASE_ANON_KEY: "test" } },
-    console: { error() {} },
-  }, {
-    "next/server": { NextResponse: { json: (body, opts) => ({ body, status: opts.status }) } },
-    "@/lib/requestBody": requestBody,
-    "@supabase/supabase-js": { createClient: () => ({ from: () => ({ insert: async (value) => { inserts.push(value); return { error: null }; } }) }) },
-  });
-  for (const body of [null, [], 1, "text", {}, { email: 1 }, { email: "a@b" }, { email: "a@@b.ca" }, { email: "a b@example.ca" }, { email: "a".repeat(65) + "@example.ca" }, { email: "a@" + "b".repeat(250) + ".ca" }, { email: "a@example.ca", source: {} }, { email: "a@example.ca", source: "x".repeat(101) }]) {
-    assert.equal((await route.POST(jsonRequest(body))).status, 400);
-  }
-  assert.equal((await route.POST(new Request("https://example.invalid", {method:"POST",headers:{"content-type":"application/json"},body:"{"}))).status, 400);
-  assert.equal(inserts.length, 0);
-  assert.equal((await route.POST(jsonRequest({ email: "  HELLO+test@Example.CA  ", source: " home " }))).status, 200);
-  assert.equal(inserts[0].email, "hello+test@example.ca");
-  assert.equal(inserts[0].source, "home");
 });

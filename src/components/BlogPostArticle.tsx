@@ -97,7 +97,6 @@ export default function BlogPostArticle({
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            table: ({ children }) => <div className="seo-table-wrap" role="region" aria-label="Article comparison table" tabIndex={0}><table>{children}</table></div>,
             a: ({ href, children, ...props }) => {
               const external = href?.startsWith("http");
               return (

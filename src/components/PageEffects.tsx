@@ -1,11 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
+
+const SECTIONS = [
+  "hero", "tool", "showcase", "feat-1", "feat-2", "feat-3", "feat-4", "waitlist",
+];
 
 export default function PageEffects() {
   const router = useRouter();
-  const progressBar = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState(0);
 
   useEffect(() => {
     const legacyRoutes: Record<string, string> = {
@@ -32,49 +37,34 @@ export default function PageEffects() {
   }, [router]);
 
   useEffect(() => {
-    // One compositor-friendly update per frame; no React renders or obsolete rail lookups.
-    let frame = 0;
-    const paint = () => {
-      frame = 0;
+    // Scroll progress + active section
+    const onScroll = () => {
       const h = document.documentElement;
-      const distance = h.scrollHeight - h.clientHeight;
-      const progress = distance > 0 ? Math.min(1, Math.max(0, h.scrollTop / distance)) : 0;
-      if (progressBar.current) progressBar.current.style.transform = `scaleX(${progress})`;
-      const ambient = (progress - 0.5) * 18;
-      h.style.setProperty("--page-ambient-shift", `${ambient.toFixed(2)}px`);
-      h.style.setProperty("--page-ambient-return", `${(-ambient * 0.65).toFixed(2)}px`);
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      setProgress(pct);
+
+      let cur = 0;
+      SECTIONS.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) cur = i;
+      });
+      setActiveSection(cur);
     };
-    const schedule = () => { if (!frame) frame = window.requestAnimationFrame(paint); };
-    paint();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(schedule) : null;
-    observer?.observe(document.body);
-    return () => {
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      window.cancelAnimationFrame(frame);
-      observer?.disconnect();
-      document.documentElement.style.removeProperty("--page-ambient-shift");
-      document.documentElement.style.removeProperty("--page-ambient-return");
-    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Content is visible in CSS; animation is a progressive enhancement.
+  // Update rail active class
   useEffect(() => {
-    const elements = Array.from(document.querySelectorAll(".reveal"));
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const animations: Animation[] = [];
-    let io: IntersectionObserver | undefined;
-    const showAll = () => {
-      io?.disconnect();
-      animations.forEach((animation) => animation.cancel());
-      elements.forEach((el) => el.classList.add("in", "in-view"));
-    };
-    const onMotionChange = () => { if (media.matches) showAll(); };
-    try {
-      if (media.matches) { showAll(); return; }
-      io = new IntersectionObserver(
+    document.querySelectorAll(".rail-item").forEach((el, i) => {
+      el.classList.toggle("active", i === activeSection);
+    });
+  }, [activeSection]);
+
+  // IntersectionObserver for .reveal elements
+  useEffect(() => {
+    const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) {
@@ -82,32 +72,19 @@ export default function PageEffects() {
             if (e.target.classList.contains("feat-visual")) {
               e.target.classList.add("in-view");
             }
-            try {
-              animations.push(e.target.animate(
-                [{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "translateY(0)" }],
-                { duration: 700, easing: "ease-out" },
-              ));
-            } catch { /* The visible base style remains readable. */ }
-            io?.unobserve(e.target);
           }
         });
       },
       { threshold: 0.15 }
     );
-      elements.forEach((el) => io?.observe(el));
-      media.addEventListener("change", onMotionChange);
-    } catch { showAll(); }
-    return () => {
-      showAll();
-      media.removeEventListener("change", onMotionChange);
-    };
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 
   return (
     <div
       className="scroll-progress"
-      ref={progressBar}
-      aria-hidden="true"
+      style={{ width: `${progress}%` }}
     />
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 
 interface TocItem {
   id: string;
@@ -20,7 +19,6 @@ function slugify(value: string, index: number) {
 export default function SeoTableOfContents() {
   const [items, setItems] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState("");
-  const pathname = usePathname();
 
   useEffect(() => {
     const headings = Array.from(
@@ -34,21 +32,15 @@ export default function SeoTableOfContents() {
       while (used.has(id)) id = `${base}-${duplicate++}`;
       used.add(id);
       heading.id = id;
-      heading.tabIndex = -1;
       return { id, label: heading.textContent?.trim() || `Section ${index + 1}` };
     });
     const frame = window.requestAnimationFrame(() => {
       setItems(nextItems);
       setActiveId(nextItems[0]?.id ?? "");
-      try {
-        const target = decodeURIComponent(window.location.hash.slice(1));
-        if (nextItems.some(item => item.id === target)) document.getElementById(target)?.scrollIntoView();
-      } catch { /* Malformed incoming anchors leave the article usable. */ }
     });
 
     if (headings.length === 0) return () => window.cancelAnimationFrame(frame);
-    let observer: IntersectionObserver | undefined;
-    try { observer = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
@@ -57,20 +49,18 @@ export default function SeoTableOfContents() {
       },
       { rootMargin: "-112px 0px -68% 0px", threshold: 0 },
     );
-    headings.forEach((heading) => observer?.observe(heading));
-    } catch { /* Contents links work even without active-section highlighting. */ }
+    headings.forEach((heading) => observer.observe(heading));
     return () => {
       window.cancelAnimationFrame(frame);
-      observer?.disconnect();
+      observer.disconnect();
     };
-  }, [pathname]);
+  }, []);
 
   return (
     <nav
       className={`seo-toc${items.length < 2 ? " is-loading" : ""}`}
       aria-label="On this page"
       aria-hidden={items.length < 2 || undefined}
-      hidden={items.length < 2}
     >
       <span className="seo-toc-label">On this page</span>
       <ol>
@@ -78,7 +68,6 @@ export default function SeoTableOfContents() {
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              onClick={() => document.getElementById(item.id)?.focus({ preventScroll: true })}
               className={activeId === item.id ? "is-active" : undefined}
               aria-current={activeId === item.id ? "location" : undefined}
             >

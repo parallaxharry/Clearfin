@@ -2,13 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CARDS } from "@/lib/cards";
 import { useCatalog } from "@/context/CatalogContext";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
-import Modal from "@/components/Modal";
-import { trackApplyClick } from "@/lib/trackApplyClick";
-import { useOneShotGridMotion } from "@/lib/useOneShotGridMotion";
+import { trackMetaAction } from "@/lib/metaPixel";
 
 interface PickCard {
   id: string;
@@ -51,6 +49,19 @@ const PICKS: PickCard[] = CURATION.flatMap((pick) => {
   }];
 });
 
+async function trackClick(cardId: string) {
+  trackMetaAction("ApplyClick");
+  try {
+    await fetch("/api/track-click", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cardId }),
+    });
+  } catch {
+    // Silent because analytics should not block the user.
+  }
+}
+
 export default function TopPicks() {
   const [selectedCard, setSelectedCard] = useState<PickCard | null>(null);
   const catalog = useCatalog();
@@ -68,7 +79,14 @@ export default function TopPicks() {
       perks: info.rewards.length > 0 ? info.rewards : p.perks,
     };
   });
-  const gridRef = useOneShotGridMotion<HTMLDivElement>(picks.map(card => card.id).join(","));
+
+  useEffect(() => {
+    document.body.style.overflow = selectedCard ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedCard]);
 
   return (
     <>
@@ -86,14 +104,12 @@ export default function TopPicks() {
             </p>
           </div>
 
-          <div className="top-picks-grid" ref={gridRef}>
+          <div className="top-picks-grid">
             {picks.map((card, index) => (
               <button
                 key={card.id}
                 type="button"
                 className="pick-card"
-                data-motion-key={`top-${card.id}`}
-                data-motion-order={index}
                 onClick={() => setSelectedCard(card)}
               >
                 <div className="pick-card-topline">
@@ -137,10 +153,12 @@ export default function TopPicks() {
       </section>
 
       {selectedCard && (
-        <Modal label={selectedCard.name} onClose={() => setSelectedCard(null)}>
         <div className="card-modal-overlay" onClick={() => setSelectedCard(null)}>
           <div
             className="card-modal top-picks-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={selectedCard.name}
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -178,7 +196,7 @@ export default function TopPicks() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="card-modal-cta"
-                onClick={() => trackApplyClick(selectedCard.id)}
+                onClick={() => trackClick(selectedCard.id)}
               >
                 Apply at {selectedCard.issuer} -&gt;
               </a>
@@ -206,7 +224,6 @@ export default function TopPicks() {
             </div>
           </div>
         </div>
-        </Modal>
       )}
     </>
   );

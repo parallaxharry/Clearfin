@@ -1,39 +1,27 @@
 "use client";
 
-import { createContext, useContext, useReducer, ReactNode } from "react";
-import { SpendKey } from "@/lib/cards";
-import { createDefaultProfile, spendProfileReducer, type SpendProfile } from "@/lib/spendProfile";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { SpendKey, DEFAULT_SPEND } from "@/lib/cards";
 
-interface SpendContextValue extends SpendProfile {
+interface SpendContextValue {
+  spend: Record<SpendKey, number>;
   setSpend: (spend: Record<SpendKey, number>) => void;
-  setIncome: (income: number) => void;
-  setHouseholdIncome: (income: number | null) => void;
-  setCredit: (credit: number) => void;
-  resetProfile: () => void;
 }
 
-const SpendContext = createContext<SpendContextValue | null>(null);
+const SpendContext = createContext<SpendContextValue>({
+  spend: DEFAULT_SPEND,
+  setSpend: () => {},
+});
 
 export function SpendProvider({ children }: { children: ReactNode }) {
-  // Root-layout state survives internal navigation. A reload/new tab starts fresh;
-  // financial answers are not written to browser storage or sent to analytics.
-  const [profile, dispatch] = useReducer(spendProfileReducer, undefined, createDefaultProfile);
+  const [spend, setSpend] = useState<Record<SpendKey, number>>(DEFAULT_SPEND);
   return (
-    <SpendContext.Provider value={{
-      ...profile,
-      setSpend: (value) => dispatch({ type: "spend", value }),
-      setIncome: (value) => dispatch({ type: "income", value }),
-      setHouseholdIncome: (value) => dispatch({ type: "householdIncome", value }),
-      setCredit: (value) => dispatch({ type: "credit", value }),
-      resetProfile: () => dispatch({ type: "reset" }),
-    }}>
+    <SpendContext.Provider value={{ spend, setSpend }}>
       {children}
     </SpendContext.Provider>
   );
 }
 
 export function useSpend() {
-  const context = useContext(SpendContext);
-  if (!context) throw new Error("useSpend must be used within SpendProvider");
-  return context;
+  return useContext(SpendContext);
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import SiteFooter from "@/components/SiteFooter";
 import Nav from "@/components/Nav";
-import CalculatorEntry from "@/components/CalculatorEntry";
+import InteractiveTool from "@/components/InteractiveTool";
+import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 
@@ -11,7 +12,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Credit Card Rewards Calculator Canada | ClearFin",
   description:
-    "Answer 7 quick questions about your spending, income, and credit score. Compare estimated Canadian card rewards and recorded income checks. Issuer approval is separate.",
+    "Answer 7 quick questions about your spending, income, and credit score. ClearFin calculates your reward leak and ranks the Canadian credit cards you qualify for by real net value.",
   keywords: [
     "credit card calculator Canada",
     "credit card rewards calculator",
@@ -57,7 +58,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "How to find your best Canadian credit card with ClearFin",
   description:
-    "Answer 7 quick questions about your spending, income, and credit score. ClearFin compares estimated card rewards and recorded income checks, not approval odds.",
+    "Answer 7 quick questions about your spending, income, and credit score. ClearFin calculates your exact reward leak and shows which Canadian credit cards you qualify for earn you the most.",
   totalTime: "PT1M",
   step: [
     {
@@ -120,11 +121,11 @@ export default async function CalculatorPage() {
       <div className="grain" />
       <Nav />
 
-      <main>
+      <SpendProvider>
         <CatalogProvider map={catalog}>
-          <CalculatorEntry />
+          <InteractiveTool />
         </CatalogProvider>
-      </main>
+      </SpendProvider>
 
       <SiteFooter />
     </>

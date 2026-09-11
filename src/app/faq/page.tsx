@@ -63,7 +63,7 @@ const faqs = [
   {
     question: "Can I upload my credit card statement?",
     answer:
-      "No. The current ClearFin website does not accept credit card statement uploads. You can enter your monthly spending manually in the calculator. Please do not send full card numbers or statements. See the Privacy Statement for details.",
+      "Yes. ClearFin offers an optional statement upload feature that analyzes your actual spending breakdown. Your statement is stored privately and securely and is not shared with third parties. See the Privacy Statement for full details.",
   },
   {
     question: "How do I request a correction to card information?",

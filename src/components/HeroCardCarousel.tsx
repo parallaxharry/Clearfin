@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, PointerEvent, WheelEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { setCarouselPaused, useCarouselMotion } from "@/lib/carouselMotion";
 
 /**
  * Hero showcase deck.
@@ -97,14 +96,7 @@ function circularOffset(index: number, active: number) {
 export default function HeroCardCarousel() {
   const [active, setActive] = useState(0);
   const [interacting, setInteracting] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const [inView, setInView] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
-  const { paused, blocked } = useCarouselMotion();
-  const rotating = !paused && !blocked && !interacting && !hovered && inView;
   const pointerStart = useRef<number | null>(null);
-  const depthFrame = useRef(0);
-  const depthPoint = useRef({ x: 0, y: 0 });
   const dragged = useRef(false);
   const lastWheel = useRef(0);
 
@@ -116,43 +108,10 @@ export default function HeroCardCarousel() {
   }, []);
 
   useEffect(() => {
-    if (!rotating) return;
+    if (interacting) return;
     const timer = window.setInterval(() => step(1), 4200);
     return () => window.clearInterval(timer);
-  }, [rotating, step]);
-
-  useEffect(() => {
-    let observer: IntersectionObserver | undefined;
-    try {
-      observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.1 });
-      if (root.current) observer.observe(root.current);
-    } catch { /* Manual controls remain usable when visibility detection is unavailable. */ }
-    return () => observer?.disconnect();
-  }, []);
-
-  useEffect(() => () => window.cancelAnimationFrame(depthFrame.current), []);
-
-  const resetDepth = () => {
-    if (!root.current) return;
-    root.current.style.setProperty("--hero-yaw", "0deg");
-    root.current.style.setProperty("--hero-pitch", "0deg");
-  };
-
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== "mouse" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    depthPoint.current = { x: event.clientX, y: event.clientY };
-    if (depthFrame.current) return;
-    depthFrame.current = window.requestAnimationFrame(() => {
-      depthFrame.current = 0;
-      const element = root.current;
-      if (!element) return;
-      const bounds = element.getBoundingClientRect();
-      const x = ((depthPoint.current.x - bounds.left) / bounds.width - 0.5) * 2;
-      const y = ((depthPoint.current.y - bounds.top) / bounds.height - 0.5) * 2;
-      element.style.setProperty("--hero-yaw", `${(x * 2.4).toFixed(2)}deg`);
-      element.style.setProperty("--hero-pitch", `${(y * -1.8).toFixed(2)}deg`);
-    });
-  };
+  }, [interacting, step]);
 
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     pointerStart.current = event.clientX;
@@ -184,18 +143,15 @@ export default function HeroCardCarousel() {
 
   return (
     <div
-      ref={root}
       className="hero-card-carousel"
-      data-rotating={rotating}
       role="region"
       aria-roledescription="carousel"
-      aria-label="Featured Canadian credit cards"
-      onFocus={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCarouselPaused(true);
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => { setHovered(false); resetDepth(); }}
-      onPointerMove={onPointerMove}
+      aria-label="ClearFin top 10 Canadian credit cards"
+      tabIndex={0}
+      onFocus={() => setInteracting(true)}
+      onBlur={() => setInteracting(false)}
+      onMouseEnter={() => setInteracting(true)}
+      onMouseLeave={() => setInteracting(false)}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerCancel={() => {
@@ -204,8 +160,8 @@ export default function HeroCardCarousel() {
       }}
       onWheel={onWheel}
       onKeyDown={(event) => {
-        if (event.key === "ArrowLeft") { event.preventDefault(); step(-1); }
-        if (event.key === "ArrowRight") { event.preventDefault(); step(1); }
+        if (event.key === "ArrowLeft") step(-1);
+        if (event.key === "ArrowRight") step(1);
       }}
     >
       <div className="hero-carousel-ambient" aria-hidden="true" />
@@ -214,14 +170,7 @@ export default function HeroCardCarousel() {
         <span>10 Canadian cards · Featured</span>
       </div>
 
-      <div className="hero-carousel-controls">
-        <button type="button" disabled={blocked} onPointerDown={(event) => { event.preventDefault(); event.stopPropagation(); }}
-          onClick={() => setCarouselPaused(!paused)}>{blocked ? "Automatic rotation off" : paused ? "Resume automatic rotation" : "Pause automatic rotation"}</button>
-        <button type="button" aria-label="Previous featured card" onPointerDown={(event) => event.stopPropagation()} onClick={() => step(-1)}>←</button>
-        <button type="button" aria-label="Next featured card" onPointerDown={(event) => event.stopPropagation()} onClick={() => step(1)}>→</button>
-      </div>
-
-      <div className="hero-carousel-stage" aria-live={rotating ? "off" : "polite"}>
+      <div className="hero-carousel-stage" aria-live="polite">
         {FEATURED_CARDS.map((card, index) => {
           const offset = circularOffset(index, active);
           const distance = Math.abs(offset);
@@ -232,7 +181,6 @@ export default function HeroCardCarousel() {
             "--card-tilt": `${offset * -13}deg`,
             "--card-scale": Math.max(0.68, 1 - distance * 0.15),
             "--card-opacity": distance === 0 ? 1 : distance === 1 ? 0.72 : 0.34,
-            "--card-order": Math.min(distance, 2),
             zIndex: 10 - distance,
           } as CSSProperties;
 
@@ -242,8 +190,6 @@ export default function HeroCardCarousel() {
               className={`hero-carousel-card${offset === 0 ? " is-active" : ""}${distance > 2 ? " is-hidden" : ""}`}
               style={style}
               aria-label={`View ${card.name}`}
-              tabIndex={offset === 0 ? 0 : -1}
-              aria-hidden={offset !== 0}
               aria-current={offset === 0 ? "true" : undefined}
               onClick={(event) => {
                 if (dragged.current) {

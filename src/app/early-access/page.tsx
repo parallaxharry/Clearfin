@@ -4,7 +4,6 @@ import Nav from "@/components/Nav";
 import PageEffects from "@/components/PageEffects";
 import ScrollToSectionButton from "@/components/ScrollToSectionButton";
 import WaitlistForm from "@/components/WaitlistForm";
-import WaitlistScene from "@/components/WaitlistScene";
 import ClearFinWordmark from "@/components/ClearFinWordmark";
 
 export const metadata: Metadata = {
@@ -126,7 +125,6 @@ export default function EarlyAccessPage() {
       ══════════════════════════════════════ */}
       <section id="waitlist">
         <div className="section-num">Waitlist</div>
-        <WaitlistScene />
         <div className="wait-wrap">
           <div className="wait-eyebrow reveal">Limited spots · Calgary first</div>
           <h2 className="wait-title reveal">

@@ -9,11 +9,8 @@ import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import { CARDS } from "@/lib/cards";
-import { isOfferExpired } from "@/lib/offerExpiry";
-import { formatEstimate as money, formatCost as feeMoney } from "@/lib/money";
 
-// ISR: refresh catalogue and offer expiry on requests after five minutes.
-// The first stale request can serve the prior page while regeneration completes.
+// ISR: Supabase card_catalog edits go live within ~5 min, no redeploy needed.
 export const revalidate = 300;
 // Cards added to card_catalog after build render on first visit, then cache.
 export const dynamicParams = true;
@@ -32,7 +29,7 @@ export async function generateMetadata({
   const card = await getCard(id);
   if (!card) return { title: "Card not found - ClearFin" };
 
-  const feeText = card.annualFee > 0 ? `${feeMoney(card.annualFee)}/year` : "no annual fee";
+  const feeText = card.annualFee > 0 ? `$${card.annualFee}/year` : "no annual fee";
   const title = `${card.name} Review (2026) - Rewards, Fees & Perks | ClearFin`;
   const description = `${card.name} from ${card.issuer}: ${feeText}, full earn rates, welcome bonus, fees and benefits. Compare it against every Canadian card on ClearFin.`;
 
@@ -52,6 +49,12 @@ export async function generateMetadata({
 
 // ---------- formatting helpers ----------
 
+const money = (n: number) => `$${Math.round(n).toLocaleString("en-CA")}`;
+const feeMoney = (n: number) =>
+  `$${n.toLocaleString("en-CA", {
+    minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
+    maximumFractionDigits: 2,
+  })}`;
 
 const CAT = [
   { key: "dining", icon: "🍽️", label: "Dining" },
@@ -206,6 +209,11 @@ const CREDIT_TIERS = [
   { label: "Excellent", min: 760, color: "#313a68" },
 ] as const;
 
+// Offer freshness is evaluated against the catalogue audit date. Keeping this
+// deterministic avoids a page changing between React renders; the date moves
+// forward with each issuer-research pass.
+const OFFER_AUDIT_TIMESTAMP = Date.parse("2026-08-09T00:00:00Z");
+
 function buildCreditTiers(min: number) {
   return CREDIT_TIERS.map((t, i) => {
     const upper = CREDIT_TIERS[i + 1]?.min ?? 900;
@@ -232,7 +240,8 @@ export default async function CardPage({
   // Treat those as having no welcome so we don't render awkward "earn no bonus" copy.
   const wbHeadline = wb?.headline ?? "";
   const wbIsNone = /^no\b/i.test(wbHeadline) && /\b(welcome|bonus)\b/i.test(wbHeadline);
-  const wbIsExpired = isOfferExpired(wb?.offer_end_date);
+  const offerEnd = wb?.offer_end_date ? Date.parse(wb.offer_end_date) : Number.NaN;
+  const wbIsExpired = Number.isFinite(offerEnd) && offerEnd < OFFER_AUDIT_TIMESTAMP;
   const hasWelcome =
     !!wb && !wbIsNone && !wbIsExpired && (!!wb.headline || (wb.stages?.length ?? 0) > 0);
   const welcomeValue =
@@ -330,7 +339,7 @@ export default async function CardPage({
     { label: "Income requirement", value: card.minIncomePersonal !== null ? money(card.minIncomePersonal) : "Not stated", note: "Issuer approval criteria apply" },
   ];
   if (card.balanceTransferApr !== null) economics.push({ label: "Balance transfer interest", value: `${card.balanceTransferApr}%` });
-  if (card.additionalCardFee !== null) economics.push({ label: "Additional card", value: feeMoney(card.additionalCardFee) });
+  if (card.additionalCardFee !== null) economics.push({ label: "Additional card", value: card.additionalCardFee === 0 ? "$0" : money(card.additionalCardFee) });
   if (card.minIncomeHousehold !== null) economics.push({ label: "Household income", value: money(card.minIncomeHousehold), note: "Alternative minimum" });
 
   const verdictPros = card.pros.length > 0 ? card.pros : [

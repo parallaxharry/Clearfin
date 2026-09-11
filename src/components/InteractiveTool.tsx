@@ -2,33 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useCallback, useRef, useId } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
-  CARDS, CardDef, STEPS,
-  fmt, getBreakdown, getTopCards,
+  CARDS, CardDef, SpendKey, DEFAULT_SPEND, STEPS,
+  fmt, fmtRate, getBreakdown, getTopCards,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import CalculatorPreview from "@/components/CalculatorPreview";
-import Modal from "@/components/Modal";
 import { trackMetaAction } from "@/lib/metaPixel";
-import { trackApplyClick } from "@/lib/trackApplyClick";
-import { formatCost } from "@/lib/money";
-import { checkIncome, creditGuidance } from "@/lib/eligibility";
-import styles from "./CalculatorEligibility.module.css";
 
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════════════════ */
 type ToolState = "gate" | "step" | "result";
 
-// Recorded income checks and estimated credit guidance are not approval rules.
+// Profile questions shown after the 5 spend questions, used to filter out cards
+// the user won't qualify for (income / credit minimums live in card_catalog).
 const PROFILE_STEPS = [
   {
     kind: "income" as const,
     icon: "💰",
     question: "What's your yearly income?",
-    hint: "Your personal income before tax. We compare recorded income requirements, not approval odds.",
+    hint: "Before tax. Used to match cards you'll qualify for.",
     min: 0,
     max: 250000,
     sliderStep: 5000,
@@ -45,7 +41,7 @@ const PROFILE_STEPS = [
     kind: "credit" as const,
     icon: "📊",
     question: "What's your credit score?",
-    hint: "An estimate is fine. Score ranges are guidance only; the issuer makes the approval decision.",
+    hint: "An estimate is fine. Matches cards you can get approved for.",
     min: 300,
     max: 900,
     sliderStep: 5,
@@ -61,39 +57,33 @@ const PROFILE_STEPS = [
 ];
 const TOTAL_STEPS = STEPS.length + PROFILE_STEPS.length;
 
-export default function InteractiveTool({ pageHeading = false, startOpen = false }: { pageHeading?: boolean; startOpen?: boolean }) {
-  const Heading = pageHeading ? "h1" : "h2";
-  const questionId = useId();
-  const { spend, setSpend, income, setIncome, householdIncome, setHouseholdIncome, credit, setCredit, resetProfile } = useSpend();
-  const householdId = useId();
-  const householdInvalid = householdIncome !== null && (!Number.isFinite(householdIncome) || householdIncome < income || householdIncome > 10000000);
-  const [toolState, setToolState] = useState<ToolState>(startOpen ? "step" : "gate");
-  const directInput = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (startOpen) directInput.current?.focus({ preventScroll: true });
-  }, [startOpen]);
+export default function InteractiveTool() {
+  const { spend, setSpend: onSpendChange } = useSpend();
+  const [toolState, setToolState] = useState<ToolState>("gate");
   const [currentStep, setCurrentStep] = useState(0);
-  // Edits are saved immediately, including when users go Back or leave the page.
-  const stepValue = currentStep < STEPS.length ? spend[STEPS[currentStep].key] : 0;
-  const setStepValue = (value: number) => setSpend({ ...spend, [STEPS[currentStep].key]: value });
+  const [stepValue, setStepValue] = useState(STEPS[0].defaultVal);
+  const [income, setIncome] = useState(60000);
+  const [credit, setCredit] = useState(720);
   const [animDir, setAnimDir] = useState<"in" | "out">("in");
   const [visible, setVisible] = useState(true);
   const [modalCard, setModalCard] = useState<(CardDef & { netValue: number }) | null>(null);
 
-  const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => {
-    if (transitionTimer.current !== null) clearTimeout(transitionTimer.current);
-    if (scrollTimer.current !== null) clearTimeout(scrollTimer.current);
-  }, []);
+  // Sync stepValue when entering a spend step (profile steps bind their own state).
+  useEffect(() => {
+    // The displayed slider value must follow the newly selected spending category.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (currentStep < STEPS.length) setStepValue(spend[STEPS[currentStep].key]);
+  }, [currentStep]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    document.body.style.overflow = modalCard ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [modalCard]);
 
   const transition = useCallback((fn: () => void) => {
-    // Also guard keyboard activation before React has disabled the button.
-    if (transitionTimer.current !== null) return;
     setAnimDir("out");
     setVisible(false);
-    transitionTimer.current = setTimeout(() => {
-      transitionTimer.current = null;
+    setTimeout(() => {
       fn();
       setAnimDir("in");
       setVisible(true);
@@ -103,7 +93,12 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
   const handlePreset = (val: number) => setStepValue(val);
 
   const handleNext = () => {
-    if (currentStep === STEPS.length && householdInvalid) return;
+    // Spend steps persist their slider value; profile steps already bind income/credit.
+    if (currentStep < STEPS.length) {
+      const key = STEPS[currentStep].key;
+      onSpendChange({ ...spend, [key]: stepValue });
+    }
+
     if (currentStep < TOTAL_STEPS - 1) {
       transition(() => setCurrentStep((s) => s + 1));
     } else {
@@ -125,7 +120,8 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
   const handleRestart = () => {
     transition(() => {
       setCurrentStep(0);
-      resetProfile();
+      onSpendChange(DEFAULT_SPEND);
+      setStepValue(STEPS[0].defaultVal);
       setToolState("step");
     });
   };
@@ -141,12 +137,18 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
   const totalMonthly = Object.values(spend).reduce((a, b: number) => a + b, 0);
   const annualSpend = totalMonthly * 12;
   const catalog = useCatalog();
-  // Keep reward scoring unchanged. Missing data stays explicitly unverified;
-  // estimated credit ranges never silently exclude a card as an approval rule.
-  const resolvedCards = CARDS.map((card) => withCatalog(card, catalog));
-  const consideredCards = getTopCards(spend, resolvedCards.length, resolvedCards)
-    .filter((c) => checkIncome(catalog[c.id], income, householdIncome).state !== "below");
-  const topCards = consideredCards.slice(0, 3);
+  // Score every card (cards.ts math), overlay Supabase display, then keep only cards the
+  // user qualifies for: a card is hidden when its income/credit minimum exceeds the user's.
+  // Cards with no stated requirement always stay.
+  const eligibleCards = getTopCards(spend, CARDS.length)
+    .map((c) => withCatalog(c, catalog))
+    .filter((c) => {
+      const info = catalog[c.id];
+      const incomeOk = !info?.minIncome || info.minIncome <= income;
+      const creditOk = !info?.creditMin || info.creditMin <= credit;
+      return incomeOk && creditOk;
+    });
+  const topCards = eligibleCards.slice(0, 3);
   const bestNetValue = topCards[0]?.netValue ?? 0;
 
   const isSpendStep = currentStep < STEPS.length;
@@ -173,17 +175,16 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
             <div className="tool-gate">
               <div className="gate-copy">
                 <div className="gate-eyebrow"><span>Live calculator</span> · Built for Canada</div>
-                <Heading className="gate-title">
+                <h2 className="gate-title">
                   See what your spending<br />could <span className="ital">earn.</span>
-                </Heading>
+                </h2>
                 <p className="gate-sub">
-                  Tell us how you spend and we&apos;ll rank Canadian cards by estimated
+                  Tell us how you spend and we&apos;ll rank eligible Canadian cards by estimated
                   annual rewards after fees. Your assumptions stay visible.
                 </p>
                 <button className="gate-btn" onClick={() => {
                   setToolState("step");
-                  scrollTimer.current = setTimeout(() => {
-                    scrollTimer.current = null;
+                  setTimeout(() => {
                     document.getElementById("tool")?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }, 100);
                 }}>
@@ -222,12 +223,12 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
 
               {/* Icon + Question */}
               <div className="step-icon">{String(currentStep + 1).padStart(2, "0")}</div>
-              <Heading id={questionId} className="step-question">{isSpendStep ? step.question : profile.question}</Heading>
+              <h2 className="step-question">{isSpendStep ? step.question : profile.question}</h2>
               <p className="step-hint">{isSpendStep ? step.hint : profile.hint}</p>
 
               {/* Current value display */}
               <div className="step-amount-display">
-                <span className="step-amount-value" key={`${currentStep}-${isSpendStep ? stepValue : profileValue}`}>
+                <span className="step-amount-value">
                   {isSpendStep ? fmt(stepValue) : profile.money ? fmt(profileValue) : profileValue}
                 </span>
                 <span className="step-amount-label">{isSpendStep ? "per month" : profile.unit}</span>
@@ -236,11 +237,8 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
               {/* Slider */}
               <div className="step-slider-wrap">
                 <input
-                ref={directInput}
-                type="range"
+                  type="range"
                   className="step-slider"
-                  aria-labelledby={questionId}
-                  aria-valuetext={isSpendStep ? `${fmt(stepValue)} per month` : profile.money ? `${fmt(profileValue)} per year` : String(profileValue)}
                   min={isSpendStep ? 0 : profile.min}
                   max={isSpendStep ? step.max : profile.max}
                   step={isSpendStep ? 10 : profile.sliderStep}
@@ -279,26 +277,12 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                 ))}
               </div>
 
-              {!isSpendStep && profile.kind === "income" && (
-                <div className={styles.household}>
-                  <label htmlFor={householdId}>Household income per year (optional)</label>
-                  <input id={householdId} type="number" inputMode="decimal" min={income} max={10000000} step="any"
-                    value={householdIncome ?? ""} placeholder="Leave blank if unsure"
-                    aria-describedby={`${householdId}-hint`} aria-invalid={householdInvalid}
-                    onChange={(event) => setHouseholdIncome(event.target.value === "" ? null : Number(event.target.value))} />
-                  <p id={`${householdId}-hint`} role={householdInvalid ? "alert" : undefined}>
-                    {householdInvalid ? "Enter a total at least as high as your personal income, up to $10,000,000, or leave this blank."
-                      : "Total before tax, including your personal income. Used only where a household alternative is recorded. Kept in this tab only."}
-                  </p>
-                </div>
-              )}
-
               {/* Nav buttons */}
               <div className="step-nav">
-                <button className="step-back" onClick={handleBack} disabled={!visible}>
+                <button className="step-back" onClick={handleBack}>
                   ← Back
                 </button>
-                <button className="step-next" onClick={handleNext} disabled={!visible || (currentStep === STEPS.length && householdInvalid)}>
+                <button className="step-next" onClick={handleNext}>
                   {currentStep < TOTAL_STEPS - 1 ? "Next →" : "See Results →"}
                 </button>
               </div>
@@ -326,13 +310,14 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
             <div className={`result-shell${visible ? " result-visible" : ""} result-${animDir}`}>
               <div className="result-header">
                 <div className="result-eyebrow">No matches yet</div>
-                <Heading className="result-title">
-                  No cards match these recorded <span className="ital">income checks</span>.
-                </Heading>
+                <h2 className="result-title">
+                  No cards fit that <span className="ital">income</span> &amp;{" "}
+                  <span className="ital">credit score</span>.
+                </h2>
               </div>
               <p className="step-hint" style={{ textAlign: "center" }}>
-                This is not a credit decision. Check that your answers are accurate; issuers may
-                have other eligibility routes, such as assets, that this calculator does not assess.
+                Most cards need a higher credit score or income. Try raising either, or start over
+                to adjust your spending.
               </p>
               <div className="step-nav">
                 <button
@@ -361,10 +346,10 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
               {/* Header */}
               <div className="result-header">
                 <div className="result-eyebrow">Your personalised analysis</div>
-                <Heading className="result-title">
+                <h2 className="result-title">
                   <span className="ital">{topCards[0]?.name}</span> could earn you an
                   estimated <span className="result-leak">{fmt(bestNetValue)}</span> a year.
-                </Heading>
+                </h2>
               </div>
 
               {/* Stats row */}
@@ -381,19 +366,14 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
 
               {/* Recommended cards */}
               <div className="result-cards-head">
-                <span>Your spending-based shortlist</span>
+                <span>Your recommended card stack</span>
                 <span className="result-cards-count">{topCards.length} cards</span>
               </div>
-              <p className={styles.note}>
-                This ranks estimated rewards, not approval odds. Missing requirements stay unverified.
-                Recorded income checks and estimated score ranges may be incomplete or outdated;
-                confirm the issuer&apos;s current terms before applying. Other routes, including assets, are not assessed.
-              </p>
               <div className="result-cards">
                 {topCards.map((card, i) => {
-                  const earnBreakdown = getBreakdown(card, spend).rows.map((row) => ({
-                    cat: row.key,
-                    earn: row.annual,
+                  const earnBreakdown = Object.entries(spend).map(([k, v]) => ({
+                    cat: k,
+                    earn: v * 12 * card.rates[k as SpendKey],
                   }));
                   const topCat = earnBreakdown.sort((a, b) => b.earn - a.earn)[0];
                   const catLabel: Record<string, string> = {
@@ -404,27 +384,14 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                     <div
                       className={`result-card${i === 0 ? " result-card-top" : ""}`}
                       key={card.id}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`View ${card.name} details`}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-                          openModal(card);
-                        }
-                      }}
                       onClick={() => openModal(card)}
                       style={{ cursor: "pointer" }}
                     >
-                      {i === 0 && <div className="result-card-rank">#1 Spending Match</div>}
+                      {i === 0 && <div className="result-card-rank">#1 Best Match</div>}
                       <div className="result-card-left">
                         <div className="result-card-badge">{card.badge}</div>
                         <div className="result-card-name">{card.name}</div>
                         <div className="result-card-issuer">{card.issuer}</div>
-                        <div className={styles.requirements} data-income-check={checkIncome(catalog[card.id], income, householdIncome).state}>
-                          <strong>{checkIncome(catalog[card.id], income, householdIncome).label}</strong>
-                          <span>{creditGuidance(catalog[card.id], credit)}</span>
-                        </div>
                         <div className="result-card-desc">{card.description}</div>
                         <div className="result-card-best-for">
                           Best category: {catLabel[topCat.cat]} (+{fmt(topCat.earn)}/yr)
@@ -434,7 +401,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                         <div className="result-card-net">{fmt(card.netValue)}</div>
                         <div className="result-card-net-label">net/year</div>
                         <div className="result-card-fee">
-                          {card.annualFee === 0 ? "No annual fee" : `${formatCost(card.annualFee)}/yr fee`}
+                          {card.annualFee === 0 ? "No annual fee" : `$${card.annualFee}/yr fee`}
                         </div>
                         <div className="result-card-tap">Tap for details →</div>
                       </div>
@@ -474,21 +441,15 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
 
     {/* ── Card Detail Modal ── */}
     {modalCard && (
-      <Modal label={modalCard.name} onClose={closeModal}>
       <div className="card-modal-overlay" onClick={closeModal}>
         <div className="card-modal" onClick={(e) => e.stopPropagation()}>
-          <button type="button" className="card-modal-close" aria-label="Close card details" onClick={closeModal}>✕</button>
+          <button className="card-modal-close" onClick={closeModal}>✕</button>
 
           {/* Left: details */}
           <div className="card-modal-left">
             <div className="card-modal-badge">{modalCard.badge}</div>
             <h3 className="card-modal-name">{modalCard.name}</h3>
             <div className="card-modal-issuer">{modalCard.issuer}</div>
-            <div className={styles.requirements}>
-              <strong>{checkIncome(catalog[modalCard.id], income, householdIncome).label}</strong>
-              <span>{creditGuidance(catalog[modalCard.id], credit)}</span>
-              <span>Check current issuer terms. This is not an approval decision.</span>
-            </div>
             <div className="card-modal-net-row">
               <span className="card-modal-net">{fmt(modalCard.netValue)}</span>
               <span className="card-modal-net-label">net / year for your spend</span>
@@ -504,7 +465,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
 
             {/* Calculation breakdown */}
             {(() => {
-              const { rows, gross, assumptions } = getBreakdown(modalCard, spend);
+              const { rows, gross } = getBreakdown(modalCard, spend);
               return (
                 <div className="modal-breakdown">
                   <div className="modal-breakdown-label">How we calculated this</div>
@@ -519,7 +480,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                       <div key={r.key} className="modal-bd-row">
                         <span className="modal-bd-cat">{r.label}</span>
                         <span className="modal-bd-monthly">{fmt(spend[r.key])}</span>
-                        <span className="modal-bd-rate">{r.rateLabel}</span>
+                        <span className="modal-bd-rate">{fmtRate(r.rate)}</span>
                         <span className="modal-bd-earn">{fmt(r.annual)}</span>
                       </div>
                     ))}
@@ -534,7 +495,7 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                       <span />
                       <span />
                       <span className="modal-bd-earn">
-                        {modalCard.annualFee === 0 ? "None" : `-${formatCost(modalCard.annualFee)}`}
+                        {modalCard.annualFee === 0 ? "None" : `-$${modalCard.annualFee}`}
                       </span>
                     </div>
                     <div className="modal-bd-row bd-net">
@@ -544,12 +505,6 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
                       <span className="modal-bd-earn">{fmt(gross - modalCard.annualFee)}</span>
                     </div>
                   </div>
-                  {assumptions.length > 0 && (
-                    <div className="modal-bd-assumptions">
-                      <strong>Caps and merchant assumptions</strong>
-                      <ul>{assumptions.map((assumption) => <li key={assumption}>{assumption}</li>)}</ul>
-                    </div>
-                  )}
                 </div>
               );
             })()}
@@ -575,7 +530,10 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
               target="_blank"
               rel="noopener noreferrer"
               className="card-modal-cta"
-              onClick={() => trackApplyClick(modalCard.id)}
+              onClick={() => {
+                trackMetaAction("ApplyClick");
+                fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {});
+              }}
             >
               Apply at {modalCard.issuer} →
             </a>
@@ -588,7 +546,6 @@ export default function InteractiveTool({ pageHeading = false, startOpen = false
           </div>
         </div>
       </div>
-      </Modal>
     )}
     </>
   );

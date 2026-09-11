@@ -70,9 +70,7 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
   "scotia-gold": {
     purchaseApr: 21.99,
     cashAdvanceApr: 22.99,
-    welcomeBonus: { headline: "Up to 50,000 Scene+ points — up to $500 toward eligible travel", eligibility: "Open a new account by November 1, 2026. Spending, new-account and account-standing conditions apply.", offer_end_date: "2026-11-01" },
-    sourceUrl: "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/gold-card.html",
-    reviewedAt: "2026-09-07",
+    welcomeBonus: { headline: "Up to 50,000 Scene+ points — up to $500 toward eligible travel", eligibility: "The issuer currently advertises up to $950 in first-year value when the welcome points, annual fee and selected benefits are combined. Full offer terms apply." },
   },
   "scotia-passport": {
     purchaseApr: 20.99,
@@ -138,10 +136,10 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
   "bmo-eclipse-privilege": { purchaseApr: 21.99, cashAdvanceApr: 23.99, minIncomePersonal: 150000, minIncomeHousehold: 200000 },
   "bmo-viporter": { purchaseApr: 21.99, cashAdvanceApr: 23.99 },
   "bmo-viporter-world-elite": { purchaseApr: 21.99, cashAdvanceApr: 23.99, minIncomePersonal: 80000, minIncomeHousehold: 150000 },
-  "bmo-cashback-world-elite": { annualFee: 139, purchaseApr: 21.99, cashAdvanceApr: 23.99, minIncomePersonal: 80000, minIncomeHousehold: 150000, sourceUrl: "https://www.bmo.com/en-ca/main/personal/credit-cards/bmo-cashback-world-elite-mastercard/", reviewedAt: "2026-09-07" },
+  "bmo-cashback-world-elite": { purchaseApr: 21.99, cashAdvanceApr: 23.99, minIncomePersonal: 80000, minIncomeHousehold: 150000 },
   "bmo-cashback": { purchaseApr: 21.99, cashAdvanceApr: 23.99 },
   "bmo-preferred-rate": { purchaseApr: 13.99 },
-  "bmo-student": { purchaseApr: 21.99, cashAdvanceApr: 23.99, sourceUrl: "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard-student/", reviewedAt: "2026-09-07" },
+  "bmo-student": { purchaseApr: 21.99, cashAdvanceApr: 23.99 },
 
   "cibc-aventura-infinite": { purchaseApr: 20.99, cashAdvanceApr: 22.99, minIncomePersonal: 60000, minIncomeHousehold: 100000 },
   "cibc-aventura-privilege": { purchaseApr: 20.99, cashAdvanceApr: 22.99, minIncomePersonal: 150000, minIncomeHousehold: 200000 },
@@ -190,10 +188,10 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
   "mbna-true-line": { purchaseApr: 12.99, cashAdvanceApr: 24.99, balanceTransferApr: 17.99, additionalCardFee: 0, welcomeBonus: { headline: "0% promotional balance-transfer rate for 12 months", eligibility: "Eligible transfers must be completed within 90 days of account opening. A transfer fee and full issuer conditions apply." } },
   "mbna-true-line-gold": { purchaseApr: 10.99, cashAdvanceApr: 24.99, balanceTransferApr: 13.99 },
 
-  "pc-mastercard": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0, sourceUrl: "https://www.pcfinancial.ca/en/credit-cards/", reviewedAt: "2026-09-07" },
-  "pc-world": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0, minIncomePersonal: 50000, minIncomeHousehold: 80000, sourceUrl: "https://www.pcfinancial.ca/en/credit-cards/", reviewedAt: "2026-09-07" },
-  "pc-world-elite": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0, minIncomePersonal: 80000, minIncomeHousehold: 150000, sourceUrl: "https://www.pcfinancial.ca/en/credit-cards/", reviewedAt: "2026-09-07" },
-  "pc-insiders": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0, minIncomePersonal: 80000, minIncomeHousehold: 150000, sourceUrl: "https://www.pcfinancial.ca/en/credit-cards/", reviewedAt: "2026-09-07" },
+  "pc-mastercard": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0 },
+  "pc-world": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0, minIncomePersonal: 50000, minIncomeHousehold: 80000 },
+  "pc-world-elite": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0, minIncomePersonal: 80000, minIncomeHousehold: 150000 },
+  "pc-insiders": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0, minIncomePersonal: 80000, minIncomeHousehold: 150000 },
 
   "brim-world-elite": { fxFee: 1.5 },
   brim: { fxFee: 1.5 },
@@ -206,19 +204,10 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
     insuranceSourceUrl: "https://www.rogersbank.com/legaldocs/en/Rogers_Red_World_Elite_Mastercard_Benefits_Guide.pdf",
     researchLevel: "certificate",
     researchNote: "Rogers publishes an account-dependent APR range, so ClearFin shows the official range in the research note instead of reducing it to a misleading single rate: purchases 21.99%–25.99% from the August 2026 statement period; cash advances and balance transfers 22.99%–27.99%.",
-    reviewedAt: "2026-09-07",
   },
   "rogers-red": {
     additionalCardFee: 0,
-    sourceUrl: "https://www.rogersbank.com/en/rogers_red_mastercard",
-    reviewedAt: "2026-09-07",
     researchNote: "Rogers publishes account-dependent APR ranges. ClearFin does not replace those ranges with a single estimated APR; review the issuer disclosure supplied with an application.",
-  },
-  "rogers-red-world": {
-    additionalCardFee: 0,
-    sourceUrl: "https://www.rogersbank.com/en/rogers_red_world_mastercard",
-    reviewedAt: "2026-09-07",
-    researchNote: "The calculator uses the published rate for cardholders without a qualifying Rogers, Fido, Shaw or Comwave service; service-linked and foreign-currency bonuses remain visible as conditional benefits.",
   },
 
   "triangle-world-elite": { purchaseApr: 21.99, cashAdvanceApr: 22.99, balanceTransferApr: 22.99, additionalCardFee: 0, fxFee: 2.5, minIncomePersonal: 80000, minIncomeHousehold: 150000 },

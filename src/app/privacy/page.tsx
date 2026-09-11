@@ -138,10 +138,8 @@ export default function PrivacyPage() {
           <h2>Google Analytics</h2>
           <p>
             ClearFin uses Google Analytics only according to the choice saved
-            in your browser. The Google tag loads only after you accept
-            analytics. Withdrawing that choice disables new Google Analytics
-            measurements and removes its first-party analytics cookies from
-            ClearFin; it does not retract information already sent. When
+            in your browser. When analytics storage is declined, ClearFin
+            tells Google that analytics storage is denied. When it is
             accepted, Google Analytics can use cookies and similar
             technologies to help us understand site traffic and page use.
             Learn more in{" "}

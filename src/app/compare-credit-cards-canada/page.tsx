@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import SiteFooter from "@/components/SiteFooter";
 import Nav from "@/components/Nav";
 import CompareSection from "@/components/CompareSection";
+import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 
@@ -55,11 +56,11 @@ export default async function CompareCreditCardsPage() {
       <div className="grain" />
       <Nav />
 
-      <main>
+      <SpendProvider>
         <CatalogProvider map={catalog}>
-          <CompareSection pageHeading />
+          <CompareSection />
         </CatalogProvider>
-      </main>
+      </SpendProvider>
 
       <SiteFooter />
     </>

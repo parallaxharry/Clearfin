@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef, useCallback, useId } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { searchAll, GROUP_ORDER, type SearchCard, type RichSearchCard } from "@/lib/searchIndex";
-import Modal from "@/components/Modal";
 
 function SearchIcon() {
   return (
@@ -55,7 +54,6 @@ export default function SearchPalette({
   // the compare page's math needs their rates.
   const [compare, setCompare] = useState<{ id: string; name: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const resultsId = useId();
   const router = useRouter();
   const comparableIds = useMemo(() => new Set(cards.map((c) => c.id)), [cards]);
 
@@ -78,16 +76,19 @@ export default function SearchPalette({
     };
   }, []);
 
-  // Keyboard order must match the visually grouped order, including page results.
-  const results = useMemo(() => {
-    const matches = searchAll(query, cards, rich);
-    return query.trim() ? GROUP_ORDER.flatMap((group) => matches.filter((r) => r.group === group)) : matches;
-  }, [query, cards, rich]);
+  const results = useMemo(() => searchAll(query, cards, rich), [query, cards, rich]);
   const isPopular = query.trim() === "";
-  const activeIndex = Math.min(active, Math.max(0, results.length - 1));
+
+  useEffect(() => setActive(0), [query]);
+
   useEffect(() => {
-    document.getElementById(`${resultsId}-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
-  }, [activeIndex, results, resultsId]);
+    inputRef.current?.focus();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   const go = useCallback(
     (href: string) => {
@@ -108,27 +109,24 @@ export default function SearchPalette({
   const goCompare = () => {
     if (compare.length !== 2) return;
     const ids = compare.map((c) => c.id);
-    const href = `/compare-credit-cards-canada?compare=${ids.join(",")}`;
-    if (window.location.pathname === "/compare-credit-cards-canada") {
-      // Change only URL state when the comparison is already on screen.
-      window.history.pushState(null, "", href);
-    } else {
-      router.push(href);
-    }
     onClose();
+    router.push(`/compare-credit-cards-canada?compare=${ids.join(",")}`);
+    // Same-page case: the compare page is already mounted and listens for this.
+    window.dispatchEvent(new CustomEvent("clearfin:compare", { detail: { ids } }));
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.nativeEvent.isComposing) return;
-    if (e.key === "ArrowDown") {
+    if (e.key === "Escape") {
+      onClose();
+    } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      setActive(Math.max(0, Math.min(activeIndex + 1, results.length - 1)));
+      setActive((a) => Math.min(a + 1, results.length - 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActive(Math.max(activeIndex - 1, 0));
+      setActive((a) => Math.max(a - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      const r = results[activeIndex];
+      const r = results[active];
       if (r) go(r.href);
     }
   };
@@ -141,14 +139,16 @@ export default function SearchPalette({
   })).filter((s) => s.items.length > 0);
 
   return (
-    <Modal label="Search ClearFin" onClose={onClose} initialFocusRef={inputRef}>
     <div
       className="search-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search ClearFin"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="search-panel">
+      <div className="search-panel" onKeyDown={onKeyDown}>
         <div className="search-input-row">
           <span className="search-input-icon">
             <SearchIcon />
@@ -159,48 +159,37 @@ export default function SearchPalette({
             type="text"
             placeholder="Search cards, guides, pages…"
             aria-label="Search ClearFin"
-            role="combobox"
-            aria-haspopup="grid"
-            aria-autocomplete="list"
-            aria-expanded={results.length > 0}
-            aria-controls={results.length ? resultsId : undefined}
-            aria-activedescendant={results.length ? `${resultsId}-${activeIndex}` : undefined}
             value={query}
-            onChange={(e) => { setActive(0); setQuery(e.target.value); }}
-            onKeyDown={onKeyDown}
+            onChange={(e) => setQuery(e.target.value)}
           />
           <button className="search-esc" onClick={onClose} aria-label="Close search">
             esc
           </button>
         </div>
 
-        <div className="search-results" id={resultsId} role={results.length ? "grid" : undefined} aria-label={results.length ? "Search results" : undefined}>
+        <div className="search-results">
           {isPopular ? (
-            <div className="search-pop" role="rowgroup" aria-label="Popular searches">
-              <div className="search-group-label" aria-hidden="true">Popular searches</div>
+            <div className="search-pop">
+              <div className="search-group-label">Popular searches</div>
               <div className="search-pills">
                 {results.map((r, i) => (
-                  <div key={r.key} role="row" id={`${resultsId}-${i}`} aria-selected={i === activeIndex}>
-                  <div role="gridcell">
                   <button
-                    type="button"
-                    className={`search-pill${i === activeIndex ? " is-active" : ""}`}
+                    key={r.key}
+                    className={`search-pill${i === active ? " is-active" : ""}`}
                     onMouseEnter={() => setActive(i)}
                     onClick={() => go(r.href)}
                   >
                     {r.label}
                   </button>
-                  </div>
-                  </div>
                 ))}
               </div>
             </div>
           ) : results.length === 0 ? (
-            <div className="search-empty" role="status">No results for &ldquo;{query}&rdquo;</div>
+            <div className="search-empty">No results for &ldquo;{query}&rdquo;</div>
           ) : (
             sections.map((section) => (
-              <div className="search-group" key={section.group} role="rowgroup" aria-label={section.group}>
-                <div className="search-group-label" aria-hidden="true">{section.group}</div>
+              <div className="search-group" key={section.group}>
+                <div className="search-group-label">{section.group}</div>
                 {section.items.map((r) => {
                   flatIdx += 1;
                   const idx = flatIdx;
@@ -209,15 +198,12 @@ export default function SearchPalette({
                   return (
                     <div
                       key={r.key}
-                      role="row"
-                      id={`${resultsId}-${idx}`}
-                      aria-selected={idx === activeIndex}
-                      className={`search-item${idx === activeIndex ? " is-active" : ""}`}
+                      role="button"
+                      tabIndex={-1}
+                      className={`search-item${idx === active ? " is-active" : ""}`}
                       onMouseEnter={() => setActive(idx)}
-                      onFocusCapture={() => setActive(idx)}
+                      onClick={() => go(r.href)}
                     >
-                      <div role="gridcell" className="search-open-cell">
-                      <button type="button" className="search-result-open" onClick={() => go(r.href)}>
                       {r.type === "card" && r.img ? (
                         <span className="search-item-thumb">
                           <Image src={r.img} alt="" width={44} height={28} />
@@ -246,14 +232,10 @@ export default function SearchPalette({
                           r.sublabel && <span className="search-item-sub">{r.sublabel}</span>
                         )}
                       </span>
-                      </button>
-                      </div>
                       {canCompare && (
-                        <div role="gridcell">
                         <button
                           type="button"
                           className={`search-cmp-btn${inCompare ? " is-on" : ""}`}
-                          aria-pressed={inCompare}
                           aria-label={
                             inCompare
                               ? `Remove ${r.label} from comparison`
@@ -266,7 +248,6 @@ export default function SearchPalette({
                         >
                           {inCompare ? "✓" : "+"} Compare
                         </button>
-                        </div>
                       )}
                     </div>
                   );
@@ -316,6 +297,5 @@ export default function SearchPalette({
         </div>
       </div>
     </div>
-    </Modal>
   );
 }

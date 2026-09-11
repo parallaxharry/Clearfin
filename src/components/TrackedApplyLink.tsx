@@ -1,12 +1,21 @@
 "use client";
 
-import { trackApplyClick } from "@/lib/trackApplyClick";
+import { trackMetaAction } from "@/lib/metaPixel";
 
 interface TrackedApplyLinkProps {
   cardId: string;
   href: string;
   issuer: string;
   className?: string;
+}
+
+function trackClick(cardId: string) {
+  trackMetaAction("ApplyClick");
+  fetch("/api/track-click", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cardId }),
+  }).catch(() => {});
 }
 
 /**
@@ -26,7 +35,7 @@ export default function TrackedApplyLink({
       target="_blank"
       rel="noopener noreferrer"
       className={className}
-      onClick={() => trackApplyClick(cardId)}
+      onClick={() => trackClick(cardId)}
     >
       <span>Apply at {issuer}</span>
       <span className="cardpg-apply-arrow" aria-hidden="true">

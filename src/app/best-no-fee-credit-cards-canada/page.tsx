@@ -145,7 +145,7 @@ export default function BestNoFeeCreditCardsCanada() {
         <AffiliateDisclosure />
 
         <h2>Quick comparison</h2>
-        <div className="seo-table-wrap" role="region" aria-label="Card comparison table" tabIndex={0}>
+        <div className="seo-table-wrap">
           <table className="seo-table">
             <thead>
               <tr>

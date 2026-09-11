@@ -3,8 +3,6 @@ import { createClient } from "@supabase/supabase-js";
 import { CARDS, type CardDef, type SpendKey } from "@/lib/cards";
 import type { SearchCard, RichSearchCard } from "@/lib/searchIndex";
 import { CARD_REVIEW_ENRICHMENT, type CardResearchLevel } from "@/lib/cardReviewData";
-import { classifyReward, type RewardKind } from "@/lib/catalogueFilters";
-import { nonNegativeNumber } from "@/lib/eligibility";
 
 // ---------- Rich card_catalog shapes (jsonb) ----------
 
@@ -160,19 +158,6 @@ function readClient() {
 function num(...vals: (number | null | undefined)[]): number {
   for (const v of vals) if (typeof v === "number" && !Number.isNaN(v)) return v;
   return 0;
-}
-
-export const PRODUCT_REVIEW_MAX_AGE_DAYS = 45;
-
-export function isProductReviewFresh(
-  reviewedAt: string | null | undefined,
-  now: Date = new Date(),
-  maxAgeDays = PRODUCT_REVIEW_MAX_AGE_DAYS,
-): boolean {
-  if (!reviewedAt || !/^\d{4}-\d{2}-\d{2}$/.test(reviewedAt)) return false;
-  const checked = new Date(`${reviewedAt}T23:59:59.999Z`);
-  if (Number.isNaN(checked.getTime()) || checked.getTime() > now.getTime() + 86400000) return false;
-  return now.getTime() - checked.getTime() <= maxAgeDays * 86400000;
 }
 
 const INSURANCE_TERMS = /insurance|purchase (?:security|protection)|extended (?:warranty|protection)|warranty|collision damage|rental (?:car|vehicle) coverage|travel accident|baggage|trip cancellation|trip interruption|emergency medical/i;
@@ -379,18 +364,6 @@ function merge(row: CardCatalogRow | null, fallback: CardDef | undefined): CardD
   const resolvedIncome = row?.min_income_personal ?? review?.minIncomePersonal ?? null;
   const resolvedPerks = row?.perks?.length ? row.perks : fallback?.perks ?? [];
   const resolvedRewardProgram = row?.reward_program ?? null;
-  const resolvedSourceUrl = review?.authoritative
-    ? review.sourceUrl ?? row?.source_url ?? row?.bank_url ?? fallback?.bankUrl ?? null
-    : row?.source_url ?? review?.sourceUrl ?? row?.bank_url ?? fallback?.bankUrl ?? null;
-  const resolvedReviewedAt = review?.authoritative
-    ? review.reviewedAt ?? row?.reviewed_at ?? null
-    : row?.reviewed_at ?? review?.reviewedAt ?? null;
-  const welcomeCandidate = review?.authoritative
-    ? review.welcomeBonus ?? row?.welcome_bonus ?? null
-    : row?.welcome_bonus ?? review?.welcomeBonus ?? null;
-  const resolvedWelcomeBonus = resolvedSourceUrl && isProductReviewFresh(resolvedReviewedAt)
-    ? welcomeCandidate
-    : null;
 
   const reviewRate = (key: SpendKey) => review?.rates?.[key];
   const rates: Record<SpendKey, number> = {
@@ -431,7 +404,9 @@ function merge(row: CardCatalogRow | null, fallback: CardDef | undefined): CardD
       : row?.additional_card_fee ?? review?.additionalCardFee ?? null,
     fxFee: review?.authoritative ? review.fxFee ?? row?.fx_fee ?? null : row?.fx_fee ?? review?.fxFee ?? null,
     pointValueCpp: row?.point_value_cpp ?? null,
-    welcomeBonus: resolvedWelcomeBonus,
+    welcomeBonus: review?.authoritative
+      ? review.welcomeBonus ?? row?.welcome_bonus ?? null
+      : row?.welcome_bonus ?? review?.welcomeBonus ?? null,
     earnCaps: row?.earn_caps ?? null,
     creditScore: row?.credit_score ?? estimateCreditScore(resolvedName, resolvedFee, resolvedIncome),
     benefits: review?.authoritative && review.benefits?.length
@@ -475,11 +450,15 @@ function merge(row: CardCatalogRow | null, fallback: CardDef | undefined): CardD
     editorialSummary: review?.authoritative
       ? review.editorialSummary ?? row?.editorial_summary ?? null
       : row?.editorial_summary ?? review?.editorialSummary ?? null,
-    sourceUrl: resolvedSourceUrl,
+    sourceUrl: review?.authoritative
+      ? review.sourceUrl ?? row?.source_url ?? row?.bank_url ?? fallback?.bankUrl ?? null
+      : row?.source_url ?? review?.sourceUrl ?? row?.bank_url ?? fallback?.bankUrl ?? null,
     insuranceSourceUrl: review?.authoritative
       ? review.insuranceSourceUrl ?? row?.insurance_source_url ?? null
       : row?.insurance_source_url ?? review?.insuranceSourceUrl ?? null,
-    reviewedAt: resolvedReviewedAt,
+    reviewedAt: review?.authoritative
+      ? review.reviewedAt ?? row?.reviewed_at ?? null
+      : row?.reviewed_at ?? review?.reviewedAt ?? null,
     researchLevel: row?.research_level ?? review?.researchLevel ?? null,
     researchNote: row?.research_note ?? review?.researchNote ?? null,
   };
@@ -517,79 +496,51 @@ export interface CatalogDisplay {
   badge: string | null;
   bankUrl: string | null;
   rewards: string[];
-  annualFee: number;
-  rates: Record<SpendKey, number>;
-  /** Recorded catalogue values only. null = unknown, never satisfied. */
+  /** Eligibility (for the calculator's income/credit matching). null = no stated requirement. */
   minIncome: number | null;
-  minIncomeHousehold: number | null;
-  /** Estimated score guidance, not a published issuer minimum. */
   creditMin: number | null;
-  sourceUrl: string | null;
-  reviewedAt: string | null;
-  researchLevel: CardResearchLevel | null;
-}
-
-function catalogDisplay(card: CardDetail): CatalogDisplay {
-  return {
-    name: card.name,
-    issuer: card.issuer,
-    img: card.img,
-    badge: card.badge,
-    bankUrl: card.bankUrl,
-    rewards: card.rewards,
-    annualFee: card.annualFee,
-    rates: card.rates,
-    minIncome: nonNegativeNumber(card.minIncomePersonal),
-    minIncomeHousehold: nonNegativeNumber(card.minIncomeHousehold),
-    creditMin: nonNegativeNumber(card.creditScore?.estimated_credit_score_range?.min),
-    sourceUrl: card.sourceUrl,
-    reviewedAt: card.reviewedAt,
-    researchLevel: card.researchLevel,
-  };
-}
-
-function staticCatalogDisplayMap(): Record<string, CatalogDisplay> {
-  return Object.fromEntries(CARDS.flatMap((card) => {
-    const detail = merge(null, card);
-    return detail ? [[card.id, catalogDisplay(detail)]] : [];
-  }));
 }
 
 /**
- * Map of id → one resolved product record. Static reviewed records are always
- * returned; live catalogue rows are merged through the same function used by
- * card details. Cached per request.
+ * Map of id → catalog display fields, for overlaying Supabase info onto the
+ * home page's static cards. Returns {} when Supabase is unconfigured so the
+ * site falls back to cards.ts. Cached per-request.
  */
 export const getCatalogDisplayMap = cache(async (): Promise<Record<string, CatalogDisplay>> => {
-  try {
   const supabase = readClient();
-  if (!supabase) return staticCatalogDisplayMap();
+  if (!supabase) return {};
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("*");
+    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,credit_score");
   if (error || !data) {
     if (error) console.error("getCatalogDisplayMap error:", error.message);
-    return staticCatalogDisplayMap();
+    return {};
   }
 
   const map: Record<string, CatalogDisplay> = {};
-  const rows = data as CardCatalogRow[];
-  const rowsById = new Map(rows.map((row) => [row.id, row]));
-
-  for (const card of CARDS) {
-    const detail = merge(rowsById.get(catalogId(card.id)) ?? null, card);
-    if (detail) {
-      map[card.id] = catalogDisplay(detail);
-      map[catalogId(card.id)] = map[card.id];
-    }
-  }
-
-  for (const row of rows) {
-    const id = siteCardId(row.id);
-    if (map[id]) continue;
-    const detail = merge(row, CARDS_BY_ID.get(id));
-    if (detail) map[id] = catalogDisplay(detail);
+  for (const r of data as Array<{
+    id: string;
+    name: string | null;
+    issuer: string | null;
+    img: string | null;
+    badge: string | null;
+    bank_url: string | null;
+    rewards: string[] | null;
+    min_income_personal: number | null;
+    credit_score: CreditScore | null;
+  }>) {
+    const cMin = r.credit_score?.estimated_credit_score_range?.min;
+    map[r.id] = {
+      name: r.name,
+      issuer: r.issuer,
+      img: r.img,
+      badge: r.badge,
+      bankUrl: r.bank_url,
+      rewards: r.rewards ?? [],
+      minIncome: typeof r.min_income_personal === "number" ? r.min_income_personal : null,
+      creditMin: typeof cMin === "number" ? cMin : null,
+    };
   }
 
   // Mirror catalog rows under their cards.ts alias id so those cards overlay too.
@@ -598,10 +549,6 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
   }
 
   return map;
-  } catch {
-    console.error("getCatalogDisplayMap unavailable");
-    return staticCatalogDisplayMap();
-  }
 });
 
 /** Lightweight card list for site search: cards.ts cards overlaid with catalog
@@ -624,7 +571,6 @@ export interface CatalogListCard extends SearchCard {
   annualFee: number | null;
   badge: string;
   bankUrl: string | null;
-  rewardKind: RewardKind;
 }
 
 /**
@@ -632,17 +578,15 @@ export interface CatalogListCard extends SearchCard {
  * when a card exists in card_catalog but has not yet been added to cards.ts.
  */
 export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]> => {
-  const resolved = await getCatalogDisplayMap();
   const fallback = (): CatalogListCard[] =>
     CARDS.map((card) => ({
       id: card.id,
-      name: resolved[card.id]?.name ?? card.name,
-      issuer: resolved[card.id]?.issuer ?? card.issuer,
-      img: resolved[card.id]?.img ?? card.img,
-      annualFee: resolved[card.id]?.annualFee ?? card.annualFee,
-      badge: resolved[card.id]?.badge ?? card.badge,
-      bankUrl: resolved[card.id]?.bankUrl ?? card.bankUrl,
-      rewardKind: classifyReward(null, `${card.name} ${card.description}`),
+      name: card.name,
+      issuer: card.issuer,
+      img: card.img,
+      annualFee: card.annualFee,
+      badge: card.badge,
+      bankUrl: card.bankUrl,
     }));
 
   const supabase = readClient();
@@ -650,7 +594,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,sort_order,annual_fee,badge,bank_url,reward_program")
+    .select("id,name,issuer,img,sort_order,annual_fee,badge,bank_url")
     .order("sort_order", { ascending: true });
   if (error || !data) {
     if (error) console.error("getCatalogOrderedCards error:", error.message);
@@ -668,34 +612,27 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
     annual_fee: number | null;
     badge: string | null;
     bank_url: string | null;
-    reward_program: string | null;
-  }>).map((row) => {
-    const id = staticIdByCatalogId.get(row.id) ?? row.id;
-    return {
-      id,
-      name: resolved[id]?.name ?? row.name ?? row.id,
-      issuer: resolved[id]?.issuer ?? row.issuer ?? "",
-      img: resolved[id]?.img ?? row.img ?? "",
-      annualFee: resolved[id]?.annualFee ?? row.annual_fee,
-      badge: resolved[id]?.badge ?? row.badge ?? "",
-      bankUrl: resolved[id]?.bankUrl ?? row.bank_url,
-      rewardKind: classifyReward(row.reward_program, row.name ?? ""),
-    };
-  });
+  }>).map((row) => ({
+    id: staticIdByCatalogId.get(row.id) ?? row.id,
+    name: row.name ?? row.id,
+    issuer: row.issuer ?? "",
+    img: row.img ?? "",
+    annualFee: row.annual_fee,
+    badge: row.badge ?? "",
+    bankUrl: row.bank_url,
+  }));
 });
 
 /** Rich, Supabase-backed search index used by /api/search-index. */
 export const getRichSearchIndex = cache(async (): Promise<RichSearchCard[]> => {
-  const resolved = await getCatalogDisplayMap();
   const byId = new Map<string, RichSearchCard>();
   for (const card of CARDS) {
-    const info = resolved[card.id];
     byId.set(card.id, {
       id: card.id,
-      name: info?.name ?? card.name,
-      issuer: info?.issuer ?? card.issuer,
-      img: info?.img ?? card.img,
-      annualFee: info?.annualFee ?? card.annualFee,
+      name: card.name,
+      issuer: card.issuer,
+      img: card.img,
+      annualFee: card.annualFee,
       fxFee: null,
       badge: card.badge,
       network: null,
@@ -738,10 +675,10 @@ export const getRichSearchIndex = cache(async (): Promise<RichSearchCard[]> => {
     const base = byId.get(id);
     byId.set(id, {
       id,
-      name: resolved[id]?.name ?? row.name ?? base?.name ?? row.id,
-      issuer: resolved[id]?.issuer ?? row.issuer ?? base?.issuer ?? "",
-      img: resolved[id]?.img ?? row.img ?? base?.img ?? "",
-      annualFee: resolved[id]?.annualFee ?? row.annual_fee ?? base?.annualFee ?? null,
+      name: row.name ?? base?.name ?? row.id,
+      issuer: row.issuer ?? base?.issuer ?? "",
+      img: row.img ?? base?.img ?? "",
+      annualFee: row.annual_fee ?? base?.annualFee ?? null,
       fxFee: row.fx_fee,
       badge: row.badge ?? base?.badge ?? "",
       network: row.network,

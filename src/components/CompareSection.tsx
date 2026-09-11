@@ -2,39 +2,33 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, useState, useEffect, useRef, useId } from "react";
-import { useSearchParams } from "next/navigation";
-import { comparisonQuery, comparisonWinner, resolveComparison, type ComparisonPair } from "@/lib/comparison";
-import { formatCost } from "@/lib/money";
+import { useState, useEffect, useRef } from "react";
 import {
   CARDS, CardDef, SpendKey,
-  fmt, getBreakdown, scoreCard, getTopCards,
+  fmt, fmtRate, getBreakdown, scoreCard, getTopCards,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import { trackMetaAction } from "@/lib/metaPixel";
-import { trackApplyClick } from "@/lib/trackApplyClick";
 
 function CardColumn({
   card,
   spend,
   rank,
-  outcome,
 }: {
   card: CardDef & { netValue: number };
   spend: Record<SpendKey, number>;
   rank: number;
-  outcome: "winner" | "tie" | null;
 }) {
-  const { rows, gross, assumptions } = getBreakdown(card, spend);
+  const { rows, gross } = getBreakdown(card, spend);
+  const isTop = rank === 1;
   const [imgErr, setImgErr] = useState(false);
 
   return (
-    <div className={`cmp-card-col cmp-col-b${outcome === "winner" ? " cmp-winner" : ""}`}>
+    <div className={`cmp-card-col${isTop ? " cmp-col-a" : " cmp-col-b"}`}>
       <div className="cmp-panel-top">
         <div className="cmp-panel-identity">
           <div className="cmp-panel-index">0{rank}</div>
-          {outcome && <div className="cmp-outcome">{outcome === "winner" ? "Higher estimated value" : "Same rounded estimate"}</div>}
           <div className="card-modal-badge">{card.badge}</div>
           <h3 className="card-modal-name">{card.name}</h3>
           <div className="card-modal-issuer">{card.issuer}</div>
@@ -58,9 +52,9 @@ function CardColumn({
         </div>
       </div>
 
-      <div className="cmp-panel-value cmp-value-feedback" key={`${card.id}-${card.netValue}`}>
+      <div className="cmp-panel-value">
         <div><span>Estimated net value</span><strong>{fmt(card.netValue)}</strong><small>per year after fees</small></div>
-        <p>Gross {fmt(gross)} <i>−</i> fee {formatCost(card.annualFee)}</p>
+        <p>Gross {fmt(gross)} <i>−</i> fee {card.annualFee === 0 ? "$0" : fmt(card.annualFee)}</p>
       </div>
 
       <div className="modal-breakdown">
@@ -73,7 +67,7 @@ function CardColumn({
             <div key={row.key} className="modal-bd-row">
               <span className="modal-bd-cat">{row.label}</span>
               <span className="modal-bd-monthly">{fmt(spend[row.key])}</span>
-              <span className="modal-bd-rate">{row.rateLabel}</span>
+              <span className="modal-bd-rate">{fmtRate(row.rate)}</span>
               <span className="modal-bd-earn">{fmt(row.annual)}</span>
             </div>
           ))}
@@ -82,17 +76,14 @@ function CardColumn({
             <span className="modal-bd-earn">{fmt(card.netValue)}</span>
           </div>
         </div>
-        {assumptions.length > 0 && (
-          <div className="modal-bd-assumptions">
-            <strong>Caps and merchant assumptions</strong>
-            <ul>{assumptions.map((assumption) => <li key={assumption}>{assumption}</li>)}</ul>
-          </div>
-        )}
       </div>
 
       <div className="cmp-panel-actions">
         <a href={card.bankUrl} target="_blank" rel="noopener noreferrer" className="card-modal-cta cmp-apply"
-          onClick={() => trackApplyClick(card.id)}>
+          onClick={() => {
+            trackMetaAction("ApplyClick");
+            fetch("/api/track-click", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({cardId:card.id}) }).catch(() => {});
+          }}>
           Apply at {card.issuer} →
         </a>
         <Link href={`/credit-cards/${card.id}`} className="card-modal-view cmp-view">View full details</Link>
@@ -103,7 +94,6 @@ function CardColumn({
 }
 
 function CardSlot({
-  label,
   selectedId,
   otherSelectedId,
   query,
@@ -115,7 +105,6 @@ function CardSlot({
   onClear,
   onQueryChange,
 }: {
-  label: string;
   selectedId: string | null;
   otherSelectedId: string | null;
   query: string;
@@ -129,9 +118,6 @@ function CardSlot({
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const listId = useId();
-  const [active, setActive] = useState(0);
 
   useEffect(() => {
     if (isOpen) inputRef.current?.focus();
@@ -189,44 +175,26 @@ function CardSlot({
       return a.name.localeCompare(b.name);
     });
 
-  const activeIndex = Math.min(active, Math.max(0, filtered.length - 1));
-  useEffect(() => {
-    if (isOpen) document.getElementById(`${listId}-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
-  }, [activeIndex, isOpen, listId, query]);
-
-  const dismiss = () => { onClose(); triggerRef.current?.focus(); };
-  const select = (id: string) => { onSelect(id); dismiss(); };
-
   return (
-    <div className="cmp-slot-wrap" ref={wrapRef}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onClose();
-      }}
-      onKeyDown={(event) => {
-        if (isOpen && event.key === "Escape") { event.preventDefault(); event.stopPropagation(); dismiss(); }
-      }}
-    >
+    <div className="cmp-slot-wrap" ref={wrapRef}>
       <div
         className={`cmp-slot${selectedCard ? " cmp-slot-filled" : ""}${isOpen ? " cmp-slot-open" : ""}`}
+        onClick={() => (isOpen ? onClose() : onOpen())}
       >
-        <button type="button" ref={triggerRef} className="cmp-slot-trigger"
-          aria-label={`${label}: ${selectedCard?.name ?? "Search cards"}`}
-          aria-expanded={isOpen} aria-haspopup="listbox" aria-controls={isOpen ? listId : undefined}
-          onClick={() => { setActive(0); if (isOpen) onClose(); else onOpen(); }}
-        >
-          {selectedCard ? <span className="cmp-slot-name">{selectedCard.name}</span> : (
-            <span className="cmp-slot-placeholder">{isOpen ? "" : "Search cards…"}</span>
-          )}
-        </button>
-        {selectedCard && (
+        {selectedCard ? (
+          <>
+            <span className="cmp-slot-name">{selectedCard.name}</span>
             <button
-              type="button"
               className="cmp-slot-x"
-              aria-label={`Clear ${label.toLowerCase()}: ${selectedCard.name}`}
-              onClick={() => { setActive(0); onClear(); }}
+              onClick={(e) => { e.stopPropagation(); onClear(); }}
             >
               ✕
             </button>
+          </>
+        ) : (
+          <span className="cmp-slot-placeholder">
+            {isOpen ? "" : "Search cards…"}
+          </span>
         )}
       </div>
 
@@ -237,46 +205,27 @@ function CardSlot({
             <input
               ref={inputRef}
               type="text"
-              role="combobox"
-              aria-label={`Search ${label.toLowerCase()} by card or issuer`}
-              aria-expanded="true"
-              aria-autocomplete="list"
-              aria-controls={listId}
-              aria-activedescendant={filtered.length ? `${listId}-${activeIndex}` : undefined}
               placeholder="Search by card or issuer…"
               value={query}
-              onChange={(e) => { setActive(0); onQueryChange(e.target.value); }}
-              onKeyDown={(event) => {
-                if (event.nativeEvent.isComposing) return;
-                if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-                  event.preventDefault();
-                  setActive(Math.max(0, Math.min(activeIndex + (event.key === "ArrowDown" ? 1 : -1), filtered.length - 1)));
-                } else if (event.key === "Enter") {
-                  event.preventDefault();
-                  if (filtered[activeIndex]) select(filtered[activeIndex].id);
-                }
-              }}
+              onChange={(e) => onQueryChange(e.target.value)}
               onClick={(e) => e.stopPropagation()}
             />
           </div>
-          {filtered.length === 0 && <div className="cmp-dropdown-empty" role="status">No cards match &ldquo;{query}&rdquo;</div>}
-          <div className="cmp-dropdown-list" role="listbox" tabIndex={-1} id={listId} aria-label={`${label} matches`}>
-            {filtered.map((c, index) => (
+          <div className="cmp-dropdown-list">
+            {filtered.length === 0 && (
+              <div className="cmp-dropdown-empty">No cards match &ldquo;{query}&rdquo;</div>
+            )}
+            {filtered.map((c) => (
               <div
                 key={c.id}
-                id={`${listId}-${index}`}
-                role="option"
-                aria-selected={index === activeIndex}
                 className="cmp-dropdown-item"
-                onMouseDown={(event) => event.preventDefault()}
-                onMouseEnter={() => setActive(index)}
-                onClick={() => select(c.id)}
+                onClick={() => { onSelect(c.id); onClose(); }}
               >
                 <div className="cmp-di-left">
                   <div className="cmp-di-name">{catalog[c.id]?.name ?? c.name}</div>
                   <div className="cmp-di-issuer">{catalog[c.id]?.issuer ?? c.issuer}</div>
                 </div>
-                <div className="cmp-di-val">{fmt(scoreCard(withCatalog(c, catalog), spend))}/yr</div>
+                <div className="cmp-di-val">{fmt(scoreCard(c, spend))}/yr</div>
               </div>
             ))}
           </div>
@@ -286,48 +235,41 @@ function CardSlot({
   );
 }
 
-const comparableIds = new Set(CARDS.map((card) => card.id));
-
-function CompareCards({ compareParam }: { compareParam: string | null }) {
+export default function CompareSection() {
   const { spend: effectiveSpend } = useSpend();
 
-  const catalog = useCatalog();
-  const resolvedCards = CARDS.map((card) => withCatalog(card, catalog));
-  const [defaultIds] = useState<ComparisonPair>(() => getTopCards(effectiveSpend, 2, resolvedCards).map((c) => c.id) as ComparisonPair);
-  const selectedIds = resolveComparison(compareParam, defaultIds, comparableIds);
+  const defaultIds = getTopCards(effectiveSpend, 2).map((c) => c.id) as [string, string];
+  const [selectedIds, setSelectedIds] = useState<[string | null, string | null]>(defaultIds);
   const [queries, setQueries] = useState<[string, string]>(["", ""]);
   const [openSlot, setOpenSlot] = useState<0 | 1 | null>(null);
-  const [copyStatus, setCopyStatus] = useState("");
-  const [manualLink, setManualLink] = useState("");
 
-  const updatePair = (pair: ComparisonPair) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set("compare", comparisonQuery(pair));
-    window.history.pushState(null, "", `${url.pathname}${url.search}${url.hash}`);
-    setCopyStatus("");
-    setManualLink("");
-  };
-
-  const copyLink = async () => {
-    const url = new URL("/compare-credit-cards-canada", window.location.origin);
-    url.searchParams.set("compare", comparisonQuery(selectedIds));
-    try {
-      await navigator.clipboard.writeText(url.href);
-      setCopyStatus("Comparison link copied.");
-      setManualLink("");
-    } catch {
-      setManualLink(url.href);
-      setCopyStatus("Select and copy the link below.");
-    }
-  };
+  // Compare-from-search: ?compare=a,b on page load, and the clearfin:compare
+  // event when the palette is used while this section is already mounted.
+  useEffect(() => {
+    const apply = (ids: string[]) => {
+      const valid = ids.filter((id) => CARDS.some((c) => c.id === id)).slice(0, 2);
+      if (valid.length === 2) setSelectedIds([valid[0], valid[1]]);
+      else if (valid.length === 1) setSelectedIds((prev) => [valid[0], prev[1]]);
+    };
+    const fromUrl = new URLSearchParams(window.location.search).get("compare");
+    if (fromUrl) apply(fromUrl.split(","));
+    const onCompare = (e: Event) => {
+      const ids = (e as CustomEvent<{ ids?: string[] }>).detail?.ids;
+      if (ids) apply(ids);
+    };
+    window.addEventListener("clearfin:compare", onCompare);
+    return () => window.removeEventListener("clearfin:compare", onCompare);
+  }, []);
 
   const selectCard = (slot: 0 | 1, id: string) => {
     if (selectedIds[slot] !== id && selectedIds[slot === 0 ? 1 : 0]) {
       trackMetaAction("CardComparison");
     }
-    const next: ComparisonPair = [...selectedIds];
-    next[slot] = id;
-    updatePair(next);
+    setSelectedIds((prev) => {
+      const next: [string | null, string | null] = [...prev] as [string | null, string | null];
+      next[slot] = id;
+      return next;
+    });
     setQueries((prev) => {
       const next: [string, string] = [...prev] as [string, string];
       next[slot] = "";
@@ -336,27 +278,43 @@ function CompareCards({ compareParam }: { compareParam: string | null }) {
   };
 
   const clearSlot = (slot: 0 | 1) => {
-    const next: ComparisonPair = [...selectedIds];
-    next[slot] = null;
-    updatePair(next);
+    setSelectedIds((prev) => {
+      const next: [string | null, string | null] = [...prev] as [string | null, string | null];
+      next[slot] = null;
+      return next;
+    });
     setOpenSlot(slot);
   };
 
+  const catalog = useCatalog();
   const scoredCards = selectedIds.map((id) => {
     if (!id) return null;
     const card = CARDS.find((c) => c.id === id);
     if (!card) return null;
-    const resolved = withCatalog(card, catalog);
-    return { ...resolved, netValue: scoreCard(resolved, effectiveSpend) };
+    // Display fields from Supabase; scoreCard uses cards.ts rates/fee (math unchanged).
+    return withCatalog({ ...card, netValue: scoreCard(card, effectiveSpend) }, catalog);
   }) as [(CardDef & { netValue: number }) | null, (CardDef & { netValue: number }) | null];
-  const winner = comparisonWinner([scoredCards[0]?.netValue ?? null, scoredCards[1]?.netValue ?? null]);
 
   return (
-    <>
+    <section id="compare">
+      <div className="section-num">04 / Compare Cards</div>
+      <div className="cmp-wrap">
+
+        {/* Header */}
+        <div className="cmp-header">
+          <div className="cmp-eyebrow">Side-by-side card analysis</div>
+          <h2 className="cmp-title">
+            Which card puts <span className="ital">more</span> back in your wallet?
+          </h2>
+          <p className="cmp-sub">
+            Choose two cards and ClearFin will calculate the stronger fit for your spending.
+            We include annual fees and show exactly where each card earns more.
+          </p>
+        </div>
+
         {/* Selectors */}
         <div className="cmp-selector-row">
           <CardSlot
-            label="First card"
             selectedId={selectedIds[0]}
             otherSelectedId={selectedIds[1]}
             query={queries[0]}
@@ -374,7 +332,6 @@ function CompareCards({ compareParam }: { compareParam: string | null }) {
           <div className="cmp-vs">vs</div>
 
           <CardSlot
-            label="Second card"
             selectedId={selectedIds[1]}
             otherSelectedId={selectedIds[0]}
             query={queries[1]}
@@ -388,13 +345,6 @@ function CompareCards({ compareParam }: { compareParam: string | null }) {
               setQueries((prev) => [prev[0], q])
             }
           />
-        </div>
-
-        <div className="cmp-share">
-          <button type="button" onClick={copyLink} disabled={!selectedIds[0] || !selectedIds[1]}>Copy comparison link</button>
-          <span>Shares the cards. Estimates use each visitor&apos;s spending.</span>
-          <span role="status" aria-live="polite">{copyStatus}</span>
-          {manualLink && <input aria-label="Comparison link" readOnly value={manualLink} onFocus={(event) => event.currentTarget.select()} />}
         </div>
 
         {/* Comparison grid */}
@@ -414,7 +364,7 @@ function CompareCards({ compareParam }: { compareParam: string | null }) {
               );
             }
             return (
-              <CardColumn key={card.id} card={card} spend={effectiveSpend} rank={i + 1} outcome={winner === i ? "winner" : winner === "tie" ? "tie" : null} />
+              <CardColumn key={card.id} card={card} spend={effectiveSpend} rank={i + 1} />
             );
           })}
         </div>
@@ -424,28 +374,6 @@ function CompareCards({ compareParam }: { compareParam: string | null }) {
           Actual rewards may vary · ClearFin is independent of card issuers ·{" "}
           <a href="/credit-card-rewards-canada-guide">View our methodology</a>
         </p>
-    </>
-  );
-}
-
-function CompareFromUrl() {
-  const searchParams = useSearchParams();
-  return <CompareCards compareParam={searchParams.get("compare")} />;
-}
-
-export default function CompareSection({ pageHeading = false }: { pageHeading?: boolean }) {
-  const Heading = pageHeading ? "h1" : "h2";
-  return (
-    <section id="compare">
-      <div className="section-num">04 / Compare Cards</div>
-      <div className="cmp-wrap">
-        <div className="cmp-header">
-          <div className="cmp-eyebrow">Side-by-side card analysis</div>
-          <Heading className="cmp-title">Which card puts <span className="ital">more</span> back in your wallet?</Heading>
-          <p className="cmp-sub">Choose two cards and ClearFin will calculate the stronger fit for your spending.
-            We include annual fees and show exactly where each card earns more.</p>
-        </div>
-        <Suspense fallback={<CompareCards compareParam={null} />}><CompareFromUrl /></Suspense>
       </div>
       <div className="section-divider-bottom" />
     </section>

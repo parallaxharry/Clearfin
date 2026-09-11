@@ -5,7 +5,7 @@ import InteractiveTool from "@/components/InteractiveTool";
 import CompareSection from "@/components/CompareSection";
 import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
-import WaitlistScene from "@/components/WaitlistScene";
+import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
 import HeroCardCarousel from "@/components/HeroCardCarousel";
@@ -120,7 +120,7 @@ export default async function HomePage() {
               the math across fees, reward rates, income requirements, and credit eligibility.
             </p>
             <div className="hero-cta-row reveal">
-              <Link href="/credit-card-calculator-canada?start=1" className="btn-primary">
+              <Link href="/credit-card-calculator-canada" className="btn-primary">
                 <span>Find my best card</span>
                 <span className="btn-arrow">→</span>
               </Link>
@@ -144,22 +144,24 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <CatalogProvider map={catalog}>
-        {/* ══════════════════════════════════════
-            02 INTERACTIVE TOOL
-        ══════════════════════════════════════ */}
-        <InteractiveTool />
+      <SpendProvider>
+        <CatalogProvider map={catalog}>
+          {/* ══════════════════════════════════════
+              02 INTERACTIVE TOOL
+          ══════════════════════════════════════ */}
+          <InteractiveTool />
 
-        {/* ══════════════════════════════════════
-            03 TOP PICKS BY CATEGORY
-        ══════════════════════════════════════ */}
-        <TopPicks />
+          {/* ══════════════════════════════════════
+              03 TOP PICKS BY CATEGORY
+          ══════════════════════════════════════ */}
+          <TopPicks />
 
-        {/* ══════════════════════════════════════
-            04 COMPARE CARDS
-        ══════════════════════════════════════ */}
-        <CompareSection />
-      </CatalogProvider>
+          {/* ══════════════════════════════════════
+              04 COMPARE CARDS
+          ══════════════════════════════════════ */}
+          <CompareSection />
+        </CatalogProvider>
+      </SpendProvider>
 
       {/* ══════════════════════════════════════
           05 APP PREVIEW + CLEARSAVE
@@ -188,7 +190,7 @@ export default async function HomePage() {
             </Link>
             <div className="feat-trust"><span>No card numbers</span><span>Read-only by design</span><span>Canada first</span></div>
           </div>
-          <div className="feat-visual reveal">
+          <div className="feat-visual">
             <div className="app-preview-frame">
               <div className="app-preview-screen">
                 <div className="app-preview-header">
@@ -235,7 +237,6 @@ export default async function HomePage() {
           06 WAITLIST
       ══════════════════════════════════════ */}
       <section id="waitlist">
-        <WaitlistScene />
         <div className="wait-wrap">
           <h2 className="wait-title">
             Stop leaving<br />

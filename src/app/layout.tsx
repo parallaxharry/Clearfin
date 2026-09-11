@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Script from "next/script";
 import dynamic from "next/dynamic";
 import AnalyticsConsent from "@/components/AnalyticsConsent";
 import MetaPixel from "@/components/MetaPixel";
 import { SearchProvider } from "@/context/SearchContext";
-import { SpendProvider } from "@/context/SpendContext";
 import { getSearchCards } from "@/lib/cardDetail";
 // Self-hosted copies of the same files next/font/google used to download at
 // build time. Fetching them from Google was intermittently failing the build.
@@ -112,7 +111,31 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body>
-        <GoogleAnalytics id={GOOGLE_ANALYTICS_ID} />
+        <Script id="clearfin-consent-default" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+            var clearfinConsent = null;
+            try { clearfinConsent = window.localStorage.getItem("clearfin-analytics-consent"); } catch (e) {}
+            gtag("consent", "default", {
+              analytics_storage: clearfinConsent === "granted" ? "granted" : "denied",
+              wait_for_update: 500
+            });
+          `}
+        </Script>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="clearfin-google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function(){dataLayer.push(arguments);}
+            window.gtag("js", new Date());
+            window.gtag("config", "${GOOGLE_ANALYTICS_ID}");
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -121,9 +144,7 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        <SpendProvider>
-          <SearchProvider cards={searchCards}>{children}</SearchProvider>
-        </SpendProvider>
+        <SearchProvider cards={searchCards}>{children}</SearchProvider>
         <AnalyticsConsent />
         <MetaPixel />
         <ChatWidget />

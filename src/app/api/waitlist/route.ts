@@ -1,27 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { readBoundedJson, requestBodyFailure } from "@/lib/requestBody";
 
 export async function POST(req: NextRequest) {
-  let body: unknown;
-  try { body = await readBoundedJson(req, 4096); }
-  catch (error) {
-    const failure = requestBodyFailure(error);
-    return NextResponse.json({ error: failure.error }, { status: failure.status });
-  }
-  if (!body || typeof body !== "object" || Array.isArray(body)
-    || Object.keys(body).some(key => key !== "email" && key !== "source")) {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
-  }
-  const { email: rawEmail, source = "waitlist" } = body as { email?: unknown; source?: unknown };
-  const email = typeof rawEmail === "string" ? rawEmail.trim().toLowerCase() : "";
-  if (!email || email.length > 254 || email.split("@")[0].length > 64 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-    return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
-  }
-  if (typeof source !== "string" || !source.trim() || source.trim().length > 100) {
-    return NextResponse.json({ error: "Invalid request source." }, { status: 400 });
-  }
   try {
+    const body = await req.json();
+    const { email, source } = body as { email?: string; source?: string };
+
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+      return NextResponse.json({ error: "Valid email required." }, { status: 400 });
+    }
+
     // Check env vars exist
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -42,8 +30,8 @@ export async function POST(req: NextRequest) {
     const { error } = await supabase
       .from("waitlist_users")
       .insert({
-        email,
-        source: source.trim(),
+        email: email.toLowerCase().trim(),
+        source: source ?? "waitlist",
       });
 
     if (error) {
@@ -51,13 +39,13 @@ export async function POST(req: NextRequest) {
       if (error.code === "23505") {
         return NextResponse.json({ message: "Already on the list!", created: false }, { status: 200 });
       }
-      console.error("Supabase waitlist error code:", error.code);
+      console.error("Supabase waitlist error:", JSON.stringify(error));
       return NextResponse.json({ error: "Failed to add to waitlist." }, { status: 500 });
     }
 
     return NextResponse.json({ message: "Added to waitlist.", created: true }, { status: 200 });
-  } catch {
-    console.error("Waitlist API unavailable");
+  } catch (err) {
+    console.error("Waitlist API error:", err instanceof Error ? err.message : err);
     return NextResponse.json({ error: "Server error." }, { status: 500 });
   }
 }
