@@ -6772,7 +6772,15 @@ body {
 #hero .btn-primary,
 .gate-btn,
 .step-next,
-.top-picks-modal .card-modal-cta,
+/* Unscoped so it also covers the calculator modal's Apply button. That one
+   predates this theme and still sets color:#000 + background:var(--ink) on
+   hover — tokens that flipped from cream to near-black in this generation,
+   which turned the hovered button into black text on a black fill. */
+.card-modal-cta,
+/* Same story on the best-X pages, plus its fill came from --accent-warm,
+   a token this generation never defines — so it rendered as bare blue text
+   that turned into a black-on-black box on hover. */
+.seo-card-apply,
 #compare .cmp-apply,
 .feat-cta,
 #waitlist .wait-form button,
@@ -6807,7 +6815,8 @@ body {
 #hero .btn-primary:hover,
 .gate-btn:hover,
 .step-next:hover,
-.top-picks-modal .card-modal-cta:hover,
+.card-modal-cta:hover,
+.seo-card-apply:hover,
 #compare .cmp-apply:hover,
 #feat-app .feat-cta:hover,
 #waitlist .wait-form button:hover:not(:disabled),
