@@ -8209,6 +8209,31 @@ body {
   letter-spacing: -.03em;
 }
 
+/* ─────────────────────────────────────────────
+   Calculator card modal — dark panel, light-theme tokens
+   This modal still paints a #0a0a0e surface (.card-modal, :1409), but every
+   piece of text inside it reads its colour from a token, and generation 2
+   redefined those tokens for a light page: --ink cream → #1d1d1f, --ink-mute
+   → #6e6e73, --line* white → black. The card title, the breakdown figures and
+   "View full details" were rendering near-black on near-black (1.1:1), the
+   perks sat at 3.9:1, and the table's rules were invisible.
+
+   Rather than restate a colour on each of the ~15 selectors, give the panel
+   back the generation-1 token values it was written against. Scoped away from
+   .top-picks-modal, which is the light modal with its own palette (:4946).
+   The Apply CTA keeps the site's blue/white treatment — that override is
+   !important and wins over --accent-blue here.
+───────────────────────────────────────────── */
+.card-modal:not(.top-picks-modal) {
+  --ink: #f5f5f2;
+  --ink-mute: #8b8b85;
+  --line: rgba(255,255,255,.08);
+  --line-strong: rgba(255,255,255,.16);
+  --accent: #a8cff7;
+  --accent-blue: #a8cff7;
+  --accent-rose: #ffb89b;
+}
+
 /* Gold rebate ribbon: same design, roughly a third less space. */
 .finly-rebate-badge {
   min-width: 104px;
