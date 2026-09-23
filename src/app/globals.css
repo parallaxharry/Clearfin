@@ -8210,29 +8210,64 @@ body {
 }
 
 /* ─────────────────────────────────────────────
-   Calculator card modal — dark panel, light-theme tokens
-   This modal still paints a #0a0a0e surface (.card-modal, :1409), but every
-   piece of text inside it reads its colour from a token, and generation 2
-   redefined those tokens for a light page: --ink cream → #1d1d1f, --ink-mute
-   → #6e6e73, --line* white → black. The card title, the breakdown figures and
-   "View full details" were rendering near-black on near-black (1.1:1), the
-   perks sat at 3.9:1, and the table's rules were invisible.
+   Calculator card modal — light panel
+   The modal was built for the original dark theme: a #0a0a0e surface whose
+   text colours come from tokens, plus cream rgba(245,245,242,…) literals for
+   the summary, disclaimer and breakdown table. Generation 2 flipped those
+   tokens for a light page, so the title, the breakdown figures and "View full
+   details" rendered near-black on near-black and the table's white rules
+   turned black-on-black.
 
-   Rather than restate a colour on each of the ~15 selectors, give the panel
-   back the generation-1 token values it was written against. Scoped away from
-   .top-picks-modal, which is the light modal with its own palette (:4946).
-   The Apply CTA keeps the site's blue/white treatment — that override is
-   !important and wins over --accent-blue here.
+   Converted to a light panel rather than re-darkened, matching the search
+   palette (:8226), the Top Picks modal (:4946) and the compare page's copy of
+   this same breakdown table (:5014). Tokens now resolve correctly on their
+   own; what remains here is the surface plus the cream literals, which no
+   token controls. Scoped away from .top-picks-modal, which has its own
+   palette. The Apply CTA keeps the site's blue/white treatment.
 ───────────────────────────────────────────── */
-.card-modal:not(.top-picks-modal) {
-  --ink: #f5f5f2;
-  --ink-mute: #8b8b85;
-  --line: rgba(255,255,255,.08);
-  --line-strong: rgba(255,255,255,.16);
-  --accent: #a8cff7;
-  --accent-blue: #a8cff7;
-  --accent-rose: #ffb89b;
+.card-modal-overlay:has(.card-modal:not(.top-picks-modal)) {
+  background: rgba(23,24,21,.48);
 }
+.card-modal:not(.top-picks-modal) {
+  background: #fff;
+  border-color: rgba(28,30,26,.1);
+  box-shadow: 0 34px 90px rgba(20,22,19,.22);
+}
+.card-modal:not(.top-picks-modal) .card-modal-left { border-right-color: #e4e4df; }
+.card-modal:not(.top-picks-modal) .card-modal-right {
+  background: radial-gradient(ellipse at center, rgba(0,113,227,.07) 0%, transparent 70%);
+}
+/* The card art's drop shadow was tuned for a black panel; at .6 alpha it reads
+   as a grey smudge on white. */
+.card-modal:not(.top-picks-modal) .card-modal-spin-front {
+  box-shadow: 0 18px 40px rgba(20,22,19,.18);
+}
+.card-modal:not(.top-picks-modal) .card-modal-close {
+  background: #f5f4f0; border-color: #dedfd9; color: #666b64;
+}
+.card-modal:not(.top-picks-modal) .card-modal-close:hover { background: #ebeae4; color: #1b1d1a; }
+/* --ink-mute (#6e6e73) clears AA on white; these literals are the cream ones. */
+.card-modal:not(.top-picks-modal) .card-modal-summary,
+.card-modal:not(.top-picks-modal) .card-modal-disclaimer { color: #6b706a; }
+.card-modal:not(.top-picks-modal) .card-modal-view { border-color: #d8d9d3; }
+.card-modal:not(.top-picks-modal) .card-modal-view:hover {
+  background: #f5f6f3; border-color: #1b1d1a;
+}
+/* Breakdown table — same values the compare page already uses (:5014). */
+.card-modal:not(.top-picks-modal) .modal-bd-head { background: #f7f7f4; }
+.card-modal:not(.top-picks-modal) .modal-bd-head span { color: #6b706a; }
+.card-modal:not(.top-picks-modal) .modal-bd-cat { color: #3b3f39; }
+.card-modal:not(.top-picks-modal) .modal-bd-monthly,
+.card-modal:not(.top-picks-modal) .modal-bd-rate { color: #6b706a; }
+.card-modal:not(.top-picks-modal) .modal-bd-row.bd-gross { background: #f9f9f6; }
+.card-modal:not(.top-picks-modal) .modal-bd-row.bd-fee .modal-bd-cat { color: #6b706a; }
+.card-modal:not(.top-picks-modal) .modal-bd-row.bd-net {
+  background: rgba(0,113,227,.07); border-top-color: rgba(0,113,227,.22);
+}
+/* --accent-blue on the tinted net row lands at 4.3:1; #0066cc (the shade the
+   compare page and Top Picks modal already use) clears AA at 5.1:1. */
+.card-modal:not(.top-picks-modal) .modal-bd-row.bd-net .modal-bd-cat,
+.card-modal:not(.top-picks-modal) .modal-bd-row.bd-net .modal-bd-earn { color: #0066cc; }
 
 /* Gold rebate ribbon: same design, roughly a third less space. */
 .finly-rebate-badge {
