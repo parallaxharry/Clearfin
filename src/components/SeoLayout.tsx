@@ -68,6 +68,7 @@ export default function SeoLayout({
                 alt={heroImageAlt ?? title}
                 fill
                 sizes="(max-width: 720px) 92vw, (max-width: 1100px) 40vw, 430px"
+                quality={90}
                 style={{ objectFit: "cover" }}
                 preload
               />

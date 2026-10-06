@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /* Next 16 allows only quality 75 unless more are listed here. Page hero
+     images are photographs shown large, and 75 visibly softens them. */
+  images: {
+    qualities: [75, 90],
+  },
+
   /* The blog pages are ISR, so content/blog is read on the server when a page
      revalidates, not only at build time. The tracer does not follow a readdir
      on a runtime-built path, and the failure mode is ENOENT in production
