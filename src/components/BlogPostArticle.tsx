@@ -108,6 +108,15 @@ export default function BlogPostArticle({
                 </h2>
               );
             },
+            // Marks post tables so they can size to their content instead of
+            // stretching to the column width. A wrapper div would be simpler
+            // but SeoTableOfContents selects ".seo-content > h2" as a direct
+            // child, and nesting the body would hide every heading from it.
+            table: ({ children, ...props }) => (
+              <table className="blog-table" {...props}>
+                {children}
+              </table>
+            ),
             a: ({ href, children, ...props }) => {
               const external = href?.startsWith("http");
               return (

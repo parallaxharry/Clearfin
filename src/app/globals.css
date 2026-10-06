@@ -8342,3 +8342,13 @@ body {
    value, so it loses the italic too. */
 .modal-bd-earn { font-style: normal; font-weight: 800; }
 
+
+/* Blog post tables size to their content. The shared article table is
+   width:100%, which on a two-column table leaves a wide empty gutter after
+   short cells. Scoped to .blog-table so the wider tables on the best-X pages
+   keep filling the column. */
+.seo-page .seo-content table.blog-table,
+.seo-content table.blog-table {
+  width: auto;
+  max-width: 100%;
+}
