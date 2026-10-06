@@ -85,7 +85,8 @@ add a read policy, or drop the table. Not touched by this work.
 
 Each post is 1200–1600 words and contains:
 
-- An opening that answers the query in the first two sentences, before any setup.
+- A first H2 of **"The Short Answer"** that answers the query outright, before
+  any setup.
 - At least one GFM table built from live catalog data — the piece of the post a
   competitor cannot copy without the same dataset.
 - A worked example in dollars, using a realistic Canadian spend profile.
@@ -96,6 +97,41 @@ Each post is 1200–1600 words and contains:
 
 No FAQ-schema padding, no restating the title as a heading, no filler sections
 that exist to hit a word count.
+
+## Competitive reference: FinlyWealth
+
+Reviewed 2026-10-05. FinlyWealth is the affiliate partner and the closest
+structural comparison.
+
+| | FinlyWealth | ClearFin |
+| --- | --- | --- |
+| Post URL | `/blog/<category>/<slug>` | `/blog/<slug>` |
+| Category pages | **None** — `/blog/credit-cards` 404s; filters are client-side | None |
+| Archive size | ~29 pages of pagination | 5 posts |
+| Index card | category, title, description, author, date, read time | tag, title, description, read time |
+| Article page | breadcrumbs, TOC, fact-checked badge, author bios, FAQ, newsletter, affiliate CTAs | breadcrumbs, Article JSON-LD |
+| Body | 2,200–2,400 words, prose only — no tables, no inline images | markdown with GFM tables available |
+
+Two takeaways:
+
+1. Their category-shaped URLs have no landing pages behind them. Copying the URL
+   shape without the pages copies the defect, which is why this spec stays flat.
+2. They write *about* cards in prose. The differentiator available here is
+   publishing the numbers — live tables from 122 cards. This is already required
+   by the Post shape section and is the main reason to keep that requirement.
+
+Worth adopting from them: a table of contents, and "The Short Answer" as the
+first H2 so the query is answered visibly, not just early.
+
+## Page features
+
+Decided 2026-10-05. Recorded so they are not revisited each session.
+
+- **Table of contents — yes.** Auto-generated from the post's H2s.
+- **Author bio and fact-check badge — no.** Deferred.
+- **FAQ block with FAQPage schema — no.** Google has pulled back on showing these.
+- **Related posts — no.** Revisit once the archive is large enough to make the
+  links worth following.
 
 ## Accuracy rules
 
@@ -159,6 +195,8 @@ First two to be written: #1 and #2.
 - The five existing posts keep rendering unchanged.
 - `/blog` lists file posts alongside them, newest first.
 - Every card fact in a published post matches `card_catalog` on its publish date.
+- File posts render a table of contents; the five existing posts are unaffected
+  whether or not they gain one.
 
 ## Known issue, not addressed here
 
