@@ -3,6 +3,7 @@ title: Credit Cards With No Foreign Transaction Fees in Canada
 description: Only five of the 122 cards we track waive the 2.5% foreign transaction fee — and four of them come from the same bank.
 tags: [travel, fees]
 publishedAt: 2026-10-05
+coverImg: /images/blog/no-foreign-transaction-fee-credit-cards-canada.webp
 ---
 
 ## The Short Answer
