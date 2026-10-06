@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import SeoLayout from "@/components/SeoLayout";
 import type { BlogPost } from "@/lib/blog";
 import { formatPostDate } from "@/lib/blog";
+import { slugifyHeading } from "@/lib/blogToc";
 
 const SITE_URL = "https://www.clearfin.ca";
 
@@ -97,6 +98,16 @@ export default function BlogPostArticle({
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
+            h2: ({ children, ...props }) => {
+              const text = Array.isArray(children)
+                ? children.filter((child) => typeof child === "string").join("")
+                : String(children ?? "");
+              return (
+                <h2 id={slugifyHeading(text)} {...props}>
+                  {children}
+                </h2>
+              );
+            },
             a: ({ href, children, ...props }) => {
               const external = href?.startsWith("http");
               return (

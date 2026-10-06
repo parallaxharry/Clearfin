@@ -23,6 +23,9 @@ Copied from `docs/superpowers/specs/2026-10-05-blog-content-pipeline-design.md`.
 - **The five existing posts must keep rendering unchanged.**
 - **Caching model:** this project does *not* set `cacheComponents: true`, so it uses the previous model — `export const revalidate` and React `cache()`. Do not introduce `use cache` / `cacheLife`.
 - **Tests run with** `node --test scripts/<name>.test.cjs`.
+- **No post is published without a human edit pass.** Tasks 4 and 5 produce
+  drafts and stop. The author reads, edits and humanises the prose; only then is
+  the file committed and pushed. Tasks 1–3 are infrastructure and ship normally.
 
 ---
 
@@ -474,240 +477,23 @@ git commit -m "feat(blog): serve markdown posts ahead of the hardcoded fallbacks
 
 ### Task 3: Table of contents
 
-**Files:**
-- Create: `src/lib/blogToc.ts`
-- Create: `scripts/blog-toc.test.cjs`
-- Modify: `src/components/BlogPostArticle.tsx:97-115` (the `ReactMarkdown` call)
-- Modify: `src/app/globals.css` (append a styles block)
+**CORRECTED DURING IMPLEMENTATION (2026-10-05).** A table of contents already
+exists: `SeoLayout` renders `SeoTableOfContents`, a client component that builds
+the rail from `.seo-content > h2`, assigns ids where a heading has none, and
+tracks the active section with an IntersectionObserver. The plan missed it
+because the planning pass grepped `BlogPostArticle.tsx`, and the rail lives one
+component above it. Building a second one produced two "On this page" blocks on
+the same page.
 
-**Interfaces:**
-- Consumes: nothing from earlier tasks.
-- Produces:
-  - `slugifyHeading(text: string): string`
-  - `extractH2s(bodyMd: string): { id: string; text: string }[]`
+What shipped instead is the useful half: **server-rendered heading ids.** The
+rail assigns ids on hydration, so without this the anchors are absent from the
+static HTML — deep links do not work on first paint and a crawler never sees
+them. `SeoTableOfContents` uses `heading.id || slugify(...)`, so a server id
+wins and the two stay consistent.
 
-Both the list and the headings must derive their ids from the same function or the links break. `ReactMarkdown` does not add heading ids on its own, so `BlogPostArticle` supplies an `h2` renderer that sets one.
-
-- [ ] **Step 1: Write the failing test**
-
-Create `scripts/blog-toc.test.cjs`:
-
-```js
-const assert = require("node:assert/strict");
-const test = require("node:test");
-const fs = require("node:fs");
-const path = require("node:path");
-const vm = require("node:vm");
-const ts = require("typescript");
-
-const root = path.resolve(__dirname, "..");
-
-function loadModule(relativePath) {
-  const source = fs.readFileSync(path.join(root, relativePath), "utf8");
-  const compiled = ts.transpileModule(source, {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-  }).outputText;
-  const module = { exports: {} };
-  vm.runInNewContext(compiled, { module, exports: module.exports, require, console },
-    { filename: relativePath });
-  return module.exports;
-}
-
-test("headings slugify to url-safe ids", () => {
-  const { slugifyHeading } = loadModule("src/lib/blogToc.ts");
-  assert.equal(slugifyHeading("The Short Answer"), "the-short-answer");
-  assert.equal(slugifyHeading("What a 2.5% FX Fee Costs You"), "what-a-25-fx-fee-costs-you");
-  assert.equal(slugifyHeading("Who This Isn't For"), "who-this-isnt-for");
-});
-
-test("only h2 headings are collected", () => {
-  const { extractH2s } = loadModule("src/lib/blogToc.ts");
-  const md = "# Title\n\n## First\n\ntext\n\n### Nested\n\n## Second\n";
-  assert.deepEqual(extractH2s(md), [
-    { id: "first", text: "First" },
-    { id: "second", text: "Second" },
-  ]);
-});
-
-test("headings inside fenced code blocks are not collected", () => {
-  const { extractH2s } = loadModule("src/lib/blogToc.ts");
-  const md = "## Real\n\n```md\n## Not A Heading\n```\n\n## Also Real\n";
-  assert.deepEqual(extractH2s(md).map((h) => h.text), ["Real", "Also Real"]);
-});
-
-test("duplicate headings get distinct ids", () => {
-  const { extractH2s } = loadModule("src/lib/blogToc.ts");
-  assert.deepEqual(extractH2s("## Fees\n\n## Fees\n").map((h) => h.id), ["fees", "fees-2"]);
-});
-
-test("a post with no h2s yields an empty list", () => {
-  const { extractH2s } = loadModule("src/lib/blogToc.ts");
-  assert.deepEqual(extractH2s("Just a paragraph.\n"), []);
-});
-```
-
-- [ ] **Step 2: Run the test to verify it fails**
-
-Run: `node --test scripts/blog-toc.test.cjs`
-Expected: FAIL — `src/lib/blogToc.ts` does not exist.
-
-- [ ] **Step 3: Write the implementation**
-
-Create `src/lib/blogToc.ts`:
-
-```ts
-/*
- * The contents list and the rendered headings must agree on ids, so both go
- * through slugifyHeading. ReactMarkdown does not add heading ids itself; the
- * h2 renderer in BlogPostArticle supplies them.
- */
-
-export function slugifyHeading(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
-}
-
-export function extractH2s(bodyMd: string): { id: string; text: string }[] {
-  const headings: { id: string; text: string }[] = [];
-  const seen = new Map<string, number>();
-  let inFence = false;
-
-  for (const line of bodyMd.replace(/\r\n/g, "\n").split("\n")) {
-    if (/^\s*(```|~~~)/.test(line)) {
-      inFence = !inFence;
-      continue;
-    }
-    if (inFence) continue;
-
-    const match = /^##\s+(.+?)\s*$/.exec(line);
-    if (!match) continue;
-
-    const text = match[1].replace(/\s*#+\s*$/, "");
-    const base = slugifyHeading(text);
-    const count = (seen.get(base) ?? 0) + 1;
-    seen.set(base, count);
-    headings.push({ id: count === 1 ? base : `${base}-${count}`, text });
-  }
-
-  return headings;
-}
-```
-
-- [ ] **Step 4: Run the test to verify it passes**
-
-Run: `node --test scripts/blog-toc.test.cjs`
-Expected: PASS, 5 tests.
-
-- [ ] **Step 5: Render the contents list and give the headings ids**
-
-In `src/components/BlogPostArticle.tsx`, add the import:
-
-```tsx
-import { extractH2s, slugifyHeading } from "@/lib/blogToc";
-```
-
-Inside the component, above the returned JSX:
-
-```tsx
-  const headings = extractH2s(post.bodyMd);
-```
-
-Then replace the `<ReactMarkdown>` element (lines 97-115) with:
-
-```tsx
-        {headings.length > 2 && (
-          <nav className="blog-toc" aria-label="On this page">
-            <p className="blog-toc-label">On this page</p>
-            <ol>
-              {headings.map((heading) => (
-                <li key={heading.id}>
-                  <a href={`#${heading.id}`}>{heading.text}</a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        )}
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          components={{
-            h2: ({ children, ...props }) => {
-              const text = Array.isArray(children)
-                ? children.filter((child) => typeof child === "string").join("")
-                : String(children ?? "");
-              return <h2 id={slugifyHeading(text)} {...props}>{children}</h2>;
-            },
-            a: ({ href, children, ...props }) => {
-              const external = href?.startsWith("http");
-              return (
-                <a
-                  href={href}
-                  target={external ? "_blank" : undefined}
-                  rel={external ? "noopener noreferrer" : undefined}
-                  {...props}
-                >
-                  {children}
-                </a>
-              );
-            },
-          }}
-        >
-          {post.bodyMd}
-        </ReactMarkdown>
-```
-
-Note the duplicate-heading case: `extractH2s` appends `-2` to the second identical heading but the `h2` renderer cannot know the ordinal, so its id stays the base slug. Two identical H2s in one post is a content smell; the post shape in the spec does not produce them. Do not add ordinal tracking to the renderer for it.
-
-- [ ] **Step 6: Style the contents list**
-
-Append to `src/app/globals.css`:
-
-```css
-/* ─────────────────────────────────────────────
-   Blog post table of contents
-───────────────────────────────────────────── */
-.blog-toc {
-  margin: 0 0 32px;
-  padding: 18px 22px;
-  border: 1px solid rgba(28, 30, 26, .1);
-  border-radius: 12px;
-  background: #f9f9f6;
-}
-.blog-toc-label {
-  margin: 0 0 10px;
-  font-family: var(--font-jetbrains), monospace;
-  font-size: 10px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: #6b706a;
-}
-.blog-toc ol {
-  margin: 0;
-  padding-left: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-.blog-toc li { font-size: 14px; line-height: 1.45; }
-.blog-toc a { color: #0066cc; text-decoration: none; }
-.blog-toc a:hover { text-decoration: underline; }
-```
-
-- [ ] **Step 7: Verify in the browser**
-
-Run: `npm run dev`, then open an existing post, for example
-`http://localhost:3000/blog/best-credit-card-combination-canada`.
-Expected: a contents list above the body; clicking an entry jumps to that heading.
-
-- [ ] **Step 8: Run the whole suite and commit**
-
-```bash
-npm test
-git add src/lib/blogToc.ts scripts/blog-toc.test.cjs src/components/BlogPostArticle.tsx src/app/globals.css
-git commit -m "feat(blog): add a table of contents built from post headings"
-```
+`src/lib/blogToc.ts` therefore exports only `slugifyHeading`; the `extractH2s`
+helper and the `.blog-toc` styles were written, found redundant, and removed
+rather than left as dead code.
 
 ---
 
@@ -813,7 +599,14 @@ done
 
 Expected: `200` for all five.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 7: Hand the draft over for editing — do not commit yet**
+
+Tell the author the draft is ready at the path above and on localhost. They edit
+and humanise the prose. Wait.
+
+- [ ] **Step 8: Commit the edited post**
+
+Only after the author says it is ready:
 
 ```bash
 git add content/blog/no-foreign-transaction-fee-credit-cards-canada.md
@@ -906,7 +699,11 @@ Run `npm run dev`, open
 `http://localhost:3000/blog/credit-card-earn-rate-caps-canada`, then check
 every `/credit-cards/<id>` the post links to returns `200`, as in Task 4 Step 6.
 
-- [ ] **Step 6: Run the whole suite, build, and commit**
+- [ ] **Step 6: Hand the draft over for editing — do not commit yet**
+
+As in Task 4: the author edits and humanises the prose first. Wait.
+
+- [ ] **Step 7: Run the whole suite, build, and commit the edited post**
 
 ```bash
 npm test && npm run build

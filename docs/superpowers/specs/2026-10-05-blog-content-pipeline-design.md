@@ -127,7 +127,15 @@ first H2 so the query is answered visibly, not just early.
 
 Decided 2026-10-05. Recorded so they are not revisited each session.
 
-- **Table of contents — yes.** Auto-generated from the post's H2s.
+- **Table of contents — already existed.** Corrected 2026-10-05 during
+  implementation. `SeoLayout` renders a `SeoTableOfContents` rail that builds
+  itself from `.seo-content > h2`, assigns ids and highlights the active
+  section. The original review of this file missed it because it lives one
+  component above `BlogPostArticle`. Nothing was built; what the work added is
+  **server-rendered `id` attributes on post headings**, so the anchors exist in
+  the static HTML rather than being assigned client-side on hydration. That
+  component uses `heading.id || slugify(...)`, so the server id wins and the
+  two stay consistent.
 - **Author bio and fact-check badge — no.** Deferred.
 - **FAQ block with FAQPage schema — no.** Google has pulled back on showing these.
 - **Related posts — no.** Revisit once the archive is large enough to make the
@@ -195,8 +203,8 @@ First two to be written: #1 and #2.
 - The five existing posts keep rendering unchanged.
 - `/blog` lists file posts alongside them, newest first.
 - Every card fact in a published post matches `card_catalog` on its publish date.
-- File posts render a table of contents; the five existing posts are unaffected
-  whether or not they gain one.
+- Post headings carry `id` attributes in the server-rendered HTML, and the
+  existing on-page rail keeps working unchanged.
 
 ## Known issue, not addressed here
 
