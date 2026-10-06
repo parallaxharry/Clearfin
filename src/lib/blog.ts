@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { EDITORIAL_BLOG_POSTS } from "@/lib/editorialBlogPosts";
+import { getFilePosts } from "@/lib/blogFiles";
 
 export interface BlogPost {
   slug: string;
@@ -231,9 +232,24 @@ For people who prefer simplicity, a cash back setup may be better. For people wh
   },
 ];
 
+/* Markdown files in content/blog/ outrank the hardcoded posts below them, and a
+   database row (if the blog_posts table is ever populated and made readable)
+   outranks both. */
 const CODE_POSTS = [...EDITORIAL_BLOG_POSTS, ...FALLBACK_POSTS].sort(
   (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
 );
+
+function mergeBySlug(...sources: BlogPost[][]): BlogPost[] {
+  const bySlug = new Map<string, BlogPost>();
+  for (const source of sources) {
+    for (const post of source) {
+      if (!bySlug.has(post.slug)) bySlug.set(post.slug, post);
+    }
+  }
+  return [...bySlug.values()].sort(
+    (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
+  );
+}
 
 export function getPostPath(post: BlogPost): string {
   return post.path ?? `/blog/${post.slug}`;
@@ -241,8 +257,9 @@ export function getPostPath(post: BlogPost): string {
 
 /** All published posts, newest first. Table rows win; fallback keeps the blog alive without them. */
 export const getPosts = cache(async (): Promise<BlogPost[]> => {
+  const filePosts = getFilePosts();
   const supabase = readClient();
-  if (!supabase) return CODE_POSTS;
+  if (!supabase) return mergeBySlug(filePosts, CODE_POSTS);
 
   const { data, error } = await supabase
     .from("blog_posts")
@@ -250,23 +267,16 @@ export const getPosts = cache(async (): Promise<BlogPost[]> => {
     .eq("published", true)
     .order("published_at", { ascending: false });
 
-  if (error || !data || data.length === 0) {
-    if (error) console.error("getPosts blog_posts error:", error.message);
-    return CODE_POSTS;
-  }
+  if (error) console.error("getPosts blog_posts error:", error.message);
 
   const codeBySlug = new Map(CODE_POSTS.map((post) => [post.slug, post]));
-  const databasePosts = (data as BlogPostRow[]).map((row) => {
+  const databasePosts = (!error && data ? (data as BlogPostRow[]) : []).map((row) => {
     const databasePost = fromRow(row);
     const codePost = codeBySlug.get(databasePost.slug);
     return codePost ? { ...codePost, ...databasePost } : databasePost;
   });
-  const databaseSlugs = new Set(databasePosts.map((post) => post.slug));
 
-  return [
-    ...databasePosts,
-    ...CODE_POSTS.filter((post) => !databaseSlugs.has(post.slug)),
-  ].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  return mergeBySlug(databasePosts, filePosts, CODE_POSTS);
 });
 
 export const getPost = cache(async (slug: string): Promise<BlogPost | null> => {

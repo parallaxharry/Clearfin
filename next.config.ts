@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /* The blog pages are ISR, so content/blog is read on the server when a page
+     revalidates, not only at build time. The tracer does not follow a readdir
+     on a runtime-built path, and the failure mode is ENOENT in production
+     while local dev is fine. Keys are picomatch globs — "/blog/[slug]" would
+     read as a character class, hence "/blog/*". */
+  outputFileTracingIncludes: {
+    "/blog": ["content/blog/**/*.md"],
+    "/blog/*": ["content/blog/**/*.md"],
+  },
+
   async redirects() {
     return [
       // The combination guide lives under /blog since 2026-08-10; older URLs follow it.
