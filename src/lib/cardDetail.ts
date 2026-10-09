@@ -465,6 +465,12 @@ function merge(row: CardCatalogRow | null, fallback: CardDef | undefined): CardD
 }
 
 /**
+ * PostgREST filter for cards still on sale. Discontinued cards keep their row
+ * with is_active = false; null counts as active. (`.neq` would drop nulls.)
+ */
+const ACTIVE_ONLY = "is_active.is.null,is_active.eq.true";
+
+/**
  * Fetch one card by id: card_catalog enrichment merged with cards.ts fallback.
  * Wrapped in React cache() so generateMetadata + the page share a single DB call per render.
  */
@@ -478,6 +484,7 @@ export const getCard = cache(async (id: string): Promise<CardDetail | null> => {
     .from("card_catalog")
     .select("*")
     .eq("id", catalogId(id))
+    .or(ACTIVE_ONLY)
     .maybeSingle();
 
   if (error) {
@@ -512,7 +519,8 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,credit_score");
+    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,credit_score")
+    .or(ACTIVE_ONLY);
   if (error || !data) {
     if (error) console.error("getCatalogDisplayMap error:", error.message);
     return {};
@@ -595,6 +603,7 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
   const { data, error } = await supabase
     .from("card_catalog")
     .select("id,name,issuer,img,sort_order,annual_fee,badge,bank_url")
+    .or(ACTIVE_ONLY)
     .order("sort_order", { ascending: true });
   if (error || !data) {
     if (error) console.error("getCatalogOrderedCards error:", error.message);
@@ -648,7 +657,8 @@ export const getRichSearchIndex = cache(async (): Promise<RichSearchCard[]> => {
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,badge,annual_fee,fx_fee,network,reward_program,rewards,benefits,pros");
+    .select("id,name,issuer,img,badge,annual_fee,fx_fee,network,reward_program,rewards,benefits,pros")
+    .or(ACTIVE_ONLY);
   if (error || !data) {
     if (error) console.error("getRichSearchIndex error:", error.message);
     return [...byId.values()];
@@ -701,7 +711,7 @@ export async function getAllCardIds(): Promise<string[]> {
   const supabase = readClient();
   if (!supabase) return staticIds;
 
-  const { data, error } = await supabase.from("card_catalog").select("id");
+  const { data, error } = await supabase.from("card_catalog").select("id").or(ACTIVE_ONLY);
   if (error || !data) {
     console.error("getAllCardIds card_catalog error:", error?.message);
     return staticIds;

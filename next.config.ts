@@ -39,6 +39,13 @@ const nextConfig: NextConfig = {
         destination: "/compare-credit-cards-canada",
         permanent: false,
       },
+      // Capital One discontinued both Aspire cards and asked for them to be
+      // removed (2026-10-09). Rows stay in card_catalog with is_active = false.
+      {
+        source: "/credit-cards/:id(capital-one-aspire|capital-one-aspire-cash)",
+        destination: "/credit-cards",
+        permanent: true,
+      },
     ];
   },
 };

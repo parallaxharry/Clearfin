@@ -979,22 +979,6 @@ insert into public.card_catalog (id, name, issuer, annual_fee, dining_rate, groc
   color=excluded.color, description=excluded.description, img=excluded.img,
   bank_url=excluded.bank_url, perks=excluded.perks, sort_order=excluded.sort_order, updated_at=now();
 insert into public.card_catalog (id, name, issuer, annual_fee, dining_rate, grocery_rate, gas_rate, travel_rate, other_rate, badge, color, description, img, bank_url, perks, sort_order) values (
-  'capital-one-aspire-cash', 'Capital One Aspire Cash Platinum Mastercard', 'Capital One', 0, 0.01, 0.01, 0.01, 0.01, 0.01, '💵 1% Cashback', '#004A97', '1% cash rewards on every $1 spent. No annual fee.', '/cards/capital-one-aspire-cash.png', 'https://www.capitalone.ca/', ARRAY['1% cash rewards on all purchases', 'No annual fee', 'No cap on cash rewards', 'Purchase protections', 'Simple flat-rate cashback']::text[], 117
-) on conflict (id) do update set
-  name=excluded.name, issuer=excluded.issuer, annual_fee=excluded.annual_fee,
-  dining_rate=excluded.dining_rate, grocery_rate=excluded.grocery_rate, gas_rate=excluded.gas_rate,
-  travel_rate=excluded.travel_rate, other_rate=excluded.other_rate, badge=excluded.badge,
-  color=excluded.color, description=excluded.description, img=excluded.img,
-  bank_url=excluded.bank_url, perks=excluded.perks, sort_order=excluded.sort_order, updated_at=now();
-insert into public.card_catalog (id, name, issuer, annual_fee, dining_rate, grocery_rate, gas_rate, travel_rate, other_rate, badge, color, description, img, bank_url, perks, sort_order) values (
-  'capital-one-aspire', 'Capital One Aspire Travel Platinum Mastercard', 'Capital One', 0, 0.01, 0.01, 0.01, 0.01, 0.01, '✈️ Reward Miles', '#004A97', '1 Reward mile per $1 on all purchases (~1% in travel value). No annual fee.', '/cards/Capital_one_aspire-travel-card-art.png', 'https://www.capitalone.ca/', ARRAY['1 Reward mile per $1 on all purchases', 'Redeem miles for travel (100 miles = $1)', 'No annual fee', 'Travel & purchase protections', 'Flexible travel redemptions']::text[], 118
-) on conflict (id) do update set
-  name=excluded.name, issuer=excluded.issuer, annual_fee=excluded.annual_fee,
-  dining_rate=excluded.dining_rate, grocery_rate=excluded.grocery_rate, gas_rate=excluded.gas_rate,
-  travel_rate=excluded.travel_rate, other_rate=excluded.other_rate, badge=excluded.badge,
-  color=excluded.color, description=excluded.description, img=excluded.img,
-  bank_url=excluded.bank_url, perks=excluded.perks, sort_order=excluded.sort_order, updated_at=now();
-insert into public.card_catalog (id, name, issuer, annual_fee, dining_rate, grocery_rate, gas_rate, travel_rate, other_rate, badge, color, description, img, bank_url, perks, sort_order) values (
   'scotiabank-student', 'Scotiabank Scene+ Student Visa', 'Scotiabank', 0, 0.02, 0.01, 0.01, 0.01, 0.01, '🎓 Student Scene+', '#CC0000', 'Scene+ points with no annual fee for students. Great movie rewards.', '/cards/scotia_no_fee_visa.webp', 'https://www.scotiabank.com/ca/en/personal/credit-cards/student.html', ARRAY['2x Scene+ Points on dining & entertainment', '1x Scene+ Point on all other purchases', 'Redeem for movies, travel, food & more', 'No annual fee · No minimum income required', 'Access to Scene+ rewards program']::text[], 119
 ) on conflict (id) do update set
   name=excluded.name, issuer=excluded.issuer, annual_fee=excluded.annual_fee,

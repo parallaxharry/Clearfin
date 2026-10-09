@@ -10,7 +10,7 @@ coverImg: /images/blog/credit-card-earn-rate-caps-canada.webp
 
 Most accelerated earn rates in Canada stop at a spending threshold. Spend past it and the card quietly drops to its base rate for the rest of the period.
 
-Of the 122 cards in our catalogue, **63 disclose some form of earning cap** and 59 publish none. The caps that matter are the ones on a card's headline category — the 5% or the 5x that sold you the card in the first place — and they range from **$1,000 a month** to **$50,000 a year**.
+Of the 120 cards in our catalogue, **61 disclose some form of earning cap** and 59 publish none. The caps that matter are the ones on a card's headline category — the 5% or the 5x that sold you the card in the first place — and they range from **$1,000 a month** to **$50,000 a year**.
 
 ## What an Earn Rate Cap Is
 

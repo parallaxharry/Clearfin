@@ -10,7 +10,7 @@ coverImg: /images/blog/credit-card-minimum-income-requirements-canada.webp
 
 Canadian credit card income requirements fall into a handful of fixed tiers, and the tier is set mostly by the card's network level, not by the bank or the annual fee.
 
-Of the 122 cards in our catalogue, **65 publish a minimum income**. Only **8 cards** ask for six figures of personal income. If you earn $60,000, you already qualify for most of the travel and cash back cards.
+Of the 120 cards in our catalogue, **65 publish a minimum income**. Only **8 cards** ask for six figures of personal income. If you earn $60,000, you already qualify for most of the travel and cash back cards.
 
 ## How Income Tiers Work
 
@@ -25,7 +25,7 @@ That is why the requirement is so predictable once you know the card's full name
 | Visa Infinite | $60,000 | $100,000 | 12 |
 | World Mastercard | $50,000 | $80,000 | 6 |
 | Entry-level cards | $12,000–$15,000 | — | 21 |
-| No published minimum | — | — | 57 |
+| No published minimum | — | — | 55 |
 
 Verified against our catalogue on **7 October 2026**. One card breaks the pattern: the RBC Avion Visa Infinite Privilege asks for **$200,000** personal or household, higher than every other Privilege card.
 
@@ -89,7 +89,7 @@ The surprise is what sits in this tier. The [Scotiabank Platinum Amex](/credit-c
 
 ## The Cards That Publish No Minimum
 
-Fifty-seven cards in our catalogue publish no income requirement. Most are what you would expect — no-fee cards, student cards and secured cards. But the list also includes some of the most expensive cards in the country:
+Fifty-five cards in our catalogue publish no income requirement. Most are what you would expect — no-fee cards, student cards and secured cards. But the list also includes some of the most expensive cards in the country:
 
 | Card | Annual fee |
 | --- | --- |

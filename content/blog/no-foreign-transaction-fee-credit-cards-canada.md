@@ -1,6 +1,6 @@
 ---
 title: Credit Cards With No Foreign Transaction Fees in Canada
-description: Only five of the 122 cards we track waive the 2.5% foreign transaction fee — and four of them come from the same bank.
+description: Only five of the 120 cards we track waive the 2.5% foreign transaction fee — and four of them come from the same bank.
 tags: [travel, fees]
 publishedAt: 2026-10-05
 coverImg: /images/blog/no-foreign-transaction-fee-credit-cards-canada.webp
@@ -10,7 +10,7 @@ coverImg: /images/blog/no-foreign-transaction-fee-credit-cards-canada.webp
 
 Five Canadian credit cards charge no foreign transaction fee: the [Scotia Gold Amex](/credit-cards/scotia-gold), the [Scotia Passport Visa Infinite +](/credit-cards/scotia-passport), the [Wealthsimple Card](/credit-cards/wealthsimple), the [Scotiabank Platinum Amex](/credit-cards/scotia-platinum), and the [Scotia Passport Visa Infinite Privilege](/credit-cards/scotia-passport-privilege).
 
-That is five out of the 122 cards in our catalogue, and four of the five come from Scotiabank. Everyone else charges you to spend in another currency — usually 2.5%, sometimes more.
+That is five out of the 120 cards in our catalogue, and four of the five come from Scotiabank. Everyone else charges you to spend in another currency — usually 2.5%, sometimes more.
 
 ## What the 2.5% FX Fee Actually Costs
 
