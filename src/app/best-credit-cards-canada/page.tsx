@@ -11,7 +11,7 @@ export const revalidate = 300;
 const pageUrl = "https://www.clearfin.ca/best-credit-cards-canada";
 const pageTitle = "Best Credit Cards in Canada for 2026";
 const pageDescription =
-  "Compare useful Canadian credit cards for food, cash back, travel and everyday spending, with current annual fees and important trade-offs explained.";
+  "See useful Canadian credit cards for food, cash back, travel and everyday spending, with current annual fees and important trade-offs explained.";
 
 export const metadata: Metadata = {
   title: "Best Credit Cards in Canada 2026 | ClearFin",
@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   keywords: [
     "best credit cards Canada",
     "best credit cards in Canada 2026",
-    "credit card rewards comparison Canada",
     "best credit card sign-up bonus Canada",
     "best credit card for online shopping Canada",
     "best credit card for everyday spending Canada",
@@ -115,12 +114,8 @@ export default function BestCreditCardsCanadaPage() {
     mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
     headline: pageTitle,
     description: pageDescription,
-    author: { "@type": "Organization", name: "ClearFin" },
-    publisher: {
-      "@type": "Organization",
-      name: "ClearFin",
-      url: "https://www.clearfin.ca",
-    },
+    author: { "@id": "https://www.clearfin.ca/#organization" },
+    publisher: { "@id": "https://www.clearfin.ca/#organization" },
     articleSection: "Credit Card Guides",
     datePublished: "2026-01-15",
     dateModified: "2026-08-02",
@@ -157,7 +152,7 @@ export default function BestCreditCardsCanadaPage() {
         ]}
         lastUpdated="August 2, 2026"
       >
-        <h2>Five cards worth comparing for different reasons</h2>
+        <h2>Five cards worth considering for different reasons</h2>
         <p>
           A credit card can look excellent in an advertisement and still be a
           poor fit at home. The result changes with the stores you use, the
