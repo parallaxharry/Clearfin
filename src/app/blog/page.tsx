@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
 import { getPosts, getPostPath, formatPostDate } from "@/lib/blog";
+import { resolveBlogCover } from "@/lib/blogCover";
 
 // ISR: new blog_posts rows go live within ~5 min, no redeploy needed.
 export const revalidate = 300;
@@ -56,32 +57,35 @@ export default async function BlogIndex() {
             <p className="blog-index-empty">No guides published yet — check back soon.</p>
           ) : (
             <div className="catalog-grid">
-              {posts.map((post) => (
-                <Link href={getPostPath(post)} className="catalog-card" key={post.slug}>
-                  <div className="catalog-card-art blog-index-art">
-                    {post.coverImg ? (
-                      <Image src={post.coverImg} alt="" fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 380px" style={{ objectFit: "cover" }} />
-                    ) : (
-                      <>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v18H7.5A3.5 3.5 0 0 0 4 23V5.5ZM20 5.5A3.5 3.5 0 0 0 16.5 2H12v18h4.5A3.5 3.5 0 0 1 20 23V5.5Z" />
-                        </svg>
-                        <span>{post.tags[0] ?? "Guide"}</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="catalog-card-copy">
-                    <span>{formatPostDate(post.publishedAt)}</span>
-                    <h3>{post.title}</h3>
-                    <p>{post.description}</p>
-                    <div>
-                      <small>Read time</small>
-                      <strong>{readMinutes(post.bodyMd)} min</strong>
+              {posts.map((post) => {
+                const coverImg = resolveBlogCover(post.slug, post.coverImg);
+                return (
+                  <Link href={getPostPath(post)} className="catalog-card" key={post.slug}>
+                    <div className="catalog-card-art blog-index-art">
+                      {coverImg ? (
+                        <Image src={coverImg} alt="" fill sizes="(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 380px" style={{ objectFit: "cover" }} />
+                      ) : (
+                        <>
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v18H7.5A3.5 3.5 0 0 0 4 23V5.5ZM20 5.5A3.5 3.5 0 0 0 16.5 2H12v18h4.5A3.5 3.5 0 0 1 20 23V5.5Z" />
+                          </svg>
+                          <span>{post.tags[0] ?? "Guide"}</span>
+                        </>
+                      )}
                     </div>
-                    <em>Read the guide <b>→</b></em>
-                  </div>
-                </Link>
-              ))}
+                    <div className="catalog-card-copy">
+                      <span>{formatPostDate(post.publishedAt)}</span>
+                      <h3>{post.title}</h3>
+                      <p>{post.description}</p>
+                      <div>
+                        <small>Read time</small>
+                        <strong>{readMinutes(post.bodyMd)} min</strong>
+                      </div>
+                      <em>Read the guide <b>→</b></em>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </section>
