@@ -4,14 +4,22 @@ import remarkGfm from "remark-gfm";
 import SeoLayout from "@/components/SeoLayout";
 import type { BlogPost } from "@/lib/blog";
 import { formatPostDate } from "@/lib/blog";
+import { resolveBlogCover } from "@/lib/blogCover";
 import { slugifyHeading } from "@/lib/blogToc";
 
 const SITE_URL = "https://www.clearfin.ca";
+
+function absoluteImageUrl(src?: string): string | undefined {
+  if (!src) return undefined;
+  return src.startsWith("http") ? src : SITE_URL + src;
+}
 
 export function buildBlogPostMetadata(
   post: BlogPost,
   path: string,
 ): Metadata {
+  const coverImg = resolveBlogCover(post.slug, post.coverImg);
+
   return {
     title: post.metaTitle ?? post.title + " | ClearFin Blog",
     description: post.description,
@@ -25,16 +33,16 @@ export function buildBlogPostMetadata(
       locale: "en_CA",
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
-      images: post.coverImg
-        ? [{ url: post.coverImg, alt: post.title, width: 1672, height: 941 }]
+      images: coverImg
+        ? [{ url: coverImg, alt: post.title, width: 1672, height: 941 }]
         : undefined,
     },
-    twitter: post.coverImg
+    twitter: coverImg
       ? {
           card: "summary_large_image",
           title: post.title,
           description: post.description,
-          images: [post.coverImg],
+          images: [coverImg],
         }
       : undefined,
   };
@@ -47,6 +55,7 @@ export default function BlogPostArticle({
   post: BlogPost;
   path: string;
 }) {
+  const coverImg = resolveBlogCover(post.slug, post.coverImg);
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -73,7 +82,7 @@ export default function BlogPostArticle({
       },
     },
     articleSection: post.tags,
-    image: post.coverImg ? SITE_URL + post.coverImg : undefined,
+    image: absoluteImageUrl(coverImg),
   };
 
   return (
@@ -92,7 +101,7 @@ export default function BlogPostArticle({
         ]}
         lastUpdated={formatPostDate(post.updatedAt)}
         eyebrow="ClearFin blog"
-        heroImage={post.coverImg}
+        heroImage={coverImg}
         heroImageAlt={post.title}
       >
         <ReactMarkdown
