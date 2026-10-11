@@ -3,6 +3,8 @@ import Link from "next/link";
 import InfoPageLayout from "@/components/InfoPageLayout";
 import { getCatalogOrderedCards } from "@/lib/cardDetail";
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "About | ClearFin",
   description:
