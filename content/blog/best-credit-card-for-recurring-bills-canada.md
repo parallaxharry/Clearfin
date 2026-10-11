@@ -1,200 +1,161 @@
 ---
 title: Best Credit Card for Recurring Bills in Canada: Turn Monthly Payments Into Rewards
 metaTitle: Best Credit Card for Recurring Bills Canada (2026) | ClearFin
-description: Compare Canadian credit cards for recurring bills such as phone, internet, insurance and subscriptions, and see how automatic payments can earn more rewards.
+description: Compare Canadian credit cards for recurring bills such as phone, internet, insurance and subscriptions, and see how much those monthly payments can earn.
 tags: [recurring bills, cashback, rewards, bills]
 publishedAt: 2026-09-13
 updatedAt: 2026-10-10
 author: ClearFin Editorial Team
+coverImg: /images/blog/best-credit-card-for-recurring-bills-canada.webp
 ---
 
-Recurring bills are one of the easiest credit-card categories to overlook.
+Recurring bills are easy to ignore because they do not feel like "shopping." They just happen.
 
-Phone plans, internet, streaming, insurance, subscriptions and other automatic payments can quietly add up to hundreds or even thousands of dollars every month.
+Phone plans, internet, streaming, insurance and memberships can add up to thousands of dollars a year. If your card pays a higher rate on qualifying recurring payments, that spending can quietly become one of your best reward categories.
 
-If your card gives an accelerated rate on recurring bill payments, that spending can become a meaningful source of cash back without changing your lifestyle at all.
+The catch is important: **a bill does not qualify just because you pay it every month.** It generally has to be processed by the merchant as a pre-authorized recurring transaction.
 
-The challenge is that **not every monthly payment qualifies as a recurring bill**. The merchant usually has to submit the transaction to the card network as a pre-authorized recurring payment.
+## The short answer
 
-So the best credit card for recurring bills in Canada is the one that combines a strong recurring-payment rate with a fee structure and reward caps that fit your actual bill total.
+Two current examples show why this category is worth checking:
 
-## The Short Answer
+- **Scotia Momentum Visa Infinite** earns 4% cash back on eligible recurring bill payments, subject to its stated annual cap.
+- **TD Cash Back Visa Infinite** earns 3% cash back on eligible recurring bill payments, also subject to its category cap.
 
-Some Canadian cards currently offer elevated rewards on qualifying recurring payments.
+Those rates are useful, but they do not automatically tell you which card is better. Annual fees and the rest of your spending still matter.
 
-Two useful examples are:
+## What counts as a recurring bill?
 
-- **Scotia Momentum Visa Infinite**, which currently earns 4% cash back on eligible recurring bill payments, subject to its annual spending limit.
-- **TD Cash Back Visa Infinite**, which currently earns 3% cash back on eligible recurring bill payments, also subject to category limits.
-
-Those headline rates are strong, but the better card depends on your annual bill total, annual fee and what each card earns on the rest of your spending.
-
-## What Counts as a Recurring Bill?
-
-A transaction normally needs to be automatically billed by the merchant on a regular schedule.
-
-Typical examples can include:
+Qualifying payments can include things such as:
 
 - mobile phone plans;
-- home internet;
-- cable or television services;
-- insurance premiums;
+- internet and cable;
+- streaming subscriptions;
 - gym or membership fees;
-- subscription services;
+- insurance premiums;
 - some utilities;
-- and other pre-authorized monthly or annual charges.
+- and other automatic charges set up with the merchant.
 
-But not every merchant processes payments the same way.
+The key is how the merchant submits the payment.
 
-If you log in every month and manually press "Pay," your card issuer may treat that as an ordinary purchase rather than a recurring payment.
+If you sign in every month and manually click "Pay," the transaction may be treated as a normal purchase. If the merchant automatically charges your card on a regular schedule, it is more likely to qualify as a recurring payment.
 
-The network coding matters more than how recurring the bill feels to you.
+When one bill makes up a large part of your calculation, it is worth checking how that merchant processes the transaction.
 
-## How Much Can Recurring-Bill Rewards Be Worth?
+## What can the category be worth?
 
-Suppose your monthly automatic payments look like this:
+Assume your automatic monthly payments look like this:
 
 | Bill | Monthly amount |
 | --- | ---: |
 | Mobile phones | $140 |
 | Internet | $90 |
 | Insurance | $250 |
-| Streaming/subscriptions | $70 |
-| Gym/memberships | $80 |
+| Streaming | $70 |
+| Memberships | $80 |
 | Other recurring charges | $120 |
 | **Total** | **$750** |
 
-That is **$9,000 per year** in recurring payments.
+That is $9,000 per year.
 
-At different cash-back rates:
-
-| Cash-back rate | Approx. annual rewards on $9,000 |
+| Reward rate | Approx. annual rewards |
 | --- | ---: |
 | 1% | $90 |
 | 2% | $180 |
 | 3% | $270 |
 | 4% | $360 |
 
-Moving $9,000 of annual spending from a 1% card to a 4% recurring-bill card creates a difference of roughly **$270 per year before annual fees**.
+Moving $9,000 of qualifying spending from a 1% card to a 4% card is worth roughly **$270 more per year before fees**.
 
-That is large enough to matter.
+That is enough to change a card decision.
 
-## Scotia Momentum Visa Infinite for Recurring Bills
+## Scotia Momentum Visa Infinite: a strong recurring-bill rate
 
-Scotiabank currently advertises **4% cash back on eligible grocery purchases and recurring bill payments** on the Scotia Momentum Visa Infinite.
+Scotiabank currently advertises 4% cash back on eligible grocery purchases, recurring bill payments and subscription purchases on the Scotia Momentum Visa Infinite.
 
-The accelerated 4% rate applies up to the card's stated annual category spending limit, after which purchases earn the applicable lower rate.
+The 4% rate applies to the first $25,000 of eligible annual spending in the relevant accelerated categories under the card's current terms, with lower earnings after the cap is reached.
 
-This can make the card particularly attractive for households with large monthly bills, especially when the same card also fits their grocery spending.
+That makes the card especially interesting for households that have both high grocery spending and substantial automatic bills.
 
-But the 4% rate should not be considered in isolation.
+But the annual fee still needs to be included. A 4% category rate can look impressive and still lose to a cheaper card if your qualifying spend is modest.
 
-You still need to subtract the annual fee and compare the card against the strongest no-fee alternative you would otherwise use.
+## TD Cash Back Visa Infinite: broader 3% coverage
 
-## TD Cash Back Visa Infinite for Recurring Bills
+TD currently advertises 3% cash back on eligible recurring bill payments, along with 3% on groceries, gas and EV charging, public transit, and certain streaming or digital purchases.
 
-TD currently advertises **3% cash back on eligible recurring bill payments**, along with 3% on several other categories including grocery, gas and EV charging, public transit and certain streaming/digital purchases.
+TD's current terms apply an annual cap to each accelerated category.
 
-That broader 3% structure can be useful for someone who wants one card covering several everyday categories instead of maximizing only recurring bills.
+The advantage here is breadth. Someone who wants one everyday card may prefer a slightly lower recurring-bill rate if the same card performs well across several other categories.
 
-Again, the annual fee and category caps matter.
+## Why 4% does not automatically beat 3%
 
-A slightly lower recurring-bill rate can still win overall if the card earns more across the rest of your budget.
+Suppose you spend $6,000 a year on qualifying recurring bills.
 
-## 4% Is Not Automatically Better Than 3%
-
-Suppose Card A earns 4% on recurring bills but has a higher annual fee or weaker rewards elsewhere.
-
-Card B earns 3% on recurring bills but also earns 3% on gas and several other categories you use heavily.
-
-If your recurring bills are $6,000 per year, the difference between 4% and 3% is only:
+The difference between 4% and 3% is only:
 
 **$6,000 × 1% = $60 per year**
 
-If Card B produces more than $60 of additional value elsewhere, Card B wins overall.
+If the 3% card earns more than $60 elsewhere in your budget, it can still be the better choice.
 
-This is why single-category rankings can be misleading.
+That is why a single-category comparison should always be checked against your full spending profile.
 
-## Watch the Spending Cap
+## Watch for payment surcharges
 
-Accelerated recurring-bill rates often have annual limits.
+Some insurers, utilities, rent-payment services and other billers charge a fee for credit-card payments.
 
-If your bills are high enough to exceed the cap, the portion above the limit may earn only the base rate.
+A 3% reward is not exciting if the merchant charges 2.5% to accept the card.
 
-For example, if a card gives 4% on the first $25,000 in a combined accelerated category and 1% afterward, a household with unusually high qualifying spending should calculate both portions separately.
-
-Do not assume the advertised rate applies without limit.
-
-Our guide to [credit card earn-rate caps in Canada](/blog/credit-card-earn-rate-caps-canada) explains how these thresholds can change a card comparison.
-
-## Should You Put Insurance Payments on a Credit Card?
-
-Only if the insurer accepts credit cards without adding a surcharge that wipes out the reward.
-
-A 3% cash-back rate is not useful if the merchant adds a 2.5% or 3% card-processing fee.
-
-Always compare:
+Use this quick check:
 
 **reward earned − payment surcharge = real benefit**
 
-The same rule applies to utilities, rent-payment services and other bills that may charge extra for credit-card use.
+If the result is tiny, use a cheaper payment method.
 
-## Manual Payments Versus Pre-Authorized Payments
+## Annual fees can still be justified by bills alone
 
-This is one of the most important details in the category.
+Imagine a $120-fee card earns 4% on $9,000 of qualifying recurring bills.
 
-A payment can happen every month without being coded as recurring.
+That is about $360 in gross cash back.
 
-If you manually submit the transaction, it may not receive the bonus rate.
+If your no-fee alternative earns 1%, it would return about $90.
 
-If the merchant automatically bills the card under a recurring-payment arrangement, it is much more likely to qualify — assuming the issuer and network recognize the transaction that way.
+The difference after the premium card's fee is:
 
-If a particular bill is important to your calculation, confirm how the merchant processes it.
+**$360 − $90 − $120 = $150**
 
-## Recurring Bills Can Make an Annual Fee Easier to Justify
+In that example, recurring bills alone create a $150 advantage.
 
-Imagine a premium card costs $120 per year and earns 4% on $9,000 of qualifying recurring bills.
+With only $150 or $200 per month of recurring bills, the conclusion could be completely different.
 
-That produces about **$360 in gross cash back**.
+## Check the biggest categories first
 
-If your no-fee alternative earns 1%, it would produce about **$90**.
+Recurring bills are worth optimizing, but they may not be the biggest part of your budget.
 
-The premium card's advantage before considering other spending is:
+If you spend $250 a month on automatic payments and $1,200 a month on groceries and dining, the larger categories may deserve more attention.
 
-**$360 − $90 − $120 annual fee = $150**
+A useful rule is to optimize the categories where **spending × reward difference** is largest, not simply the category with the highest percentage.
 
-In that situation, the recurring-bill category alone may justify the annual fee.
+## Compare the whole budget
 
-For someone with only $150 per month of recurring bills, the math would look very different.
+Enter your actual monthly spending into the [ClearFin credit card calculator](/credit-card-calculator-canada) to compare estimated annual value after fees.
 
-## Do Not Forget Your Other Spending
+If you already have two cards in mind, the [ClearFin side-by-side comparison](/compare-credit-cards-canada) shows where each card earns more.
 
-The best recurring-bill card should also be evaluated against groceries, dining, gas, transit, travel and general purchases.
+For the underlying math, see our [cash back calculator Canada guide](/blog/cash-back-calculator-canada).
 
-Someone with $1,000 per month in recurring bills may reasonably optimize around this category.
+## Bottom line
 
-Someone with $250 per month in recurring bills but $1,500 per month in groceries and dining should probably focus on the larger categories first.
+Recurring bills are one of the easiest categories to optimize because the spending is already happening.
 
-The category with the highest reward rate is not necessarily the category that has the biggest impact on your annual return.
+A card paying 3% or 4% on qualifying automatic payments can add meaningful value, especially for households with large telecom, insurance or subscription bills.
 
-## Use ClearFin to Compare the Full Picture
+Just make sure the transactions actually qualify, the annual fee still makes sense, and the card works for the rest of your budget too.
 
-Enter your monthly spending into the [ClearFin credit card calculator](/credit-card-calculator-canada) and compare the estimated annual value after fees.
+### Sources checked
 
-If you already have two cards in mind, use the [ClearFin comparison tool](/compare-credit-cards-canada) to see where each card earns more.
-
-You can also use our [cash back calculator guide](/blog/cash-back-calculator-canada) to understand the math behind the estimates.
-
-## Bottom Line
-
-Recurring bills are one of the easiest categories to optimize because the spending already happens every month.
-
-A card earning 3% or 4% on qualifying recurring payments can create significantly more value than a 1% general-spend card, especially for households with large insurance, telecom and subscription bills.
-
-But the best card still depends on your total budget, annual fee and spending caps.
-
-**Optimize the bills you already pay — then make sure the card still wins across the rest of your spending.**
+- Scotiabank — Scotia Momentum Visa Infinite current earn rates and category limits
+- TD Canada Trust — TD Cash Back Visa Infinite current earn rates and annual caps
 
 ---
 
-**Last reviewed: October 10, 2026.** Reward rates, annual fees, merchant coding and spending limits can change. Confirm current terms directly with the issuer before applying.
+**Last reviewed: October 10, 2026.** Reward rates, fees, merchant coding and spending limits can change. Confirm current terms directly with the issuer before applying.
