@@ -106,18 +106,7 @@ export default async function CalculatorPage() {
       <Nav />
 
       <main>
-        <header className="mx-auto max-w-5xl px-6 pt-32 pb-4 text-center md:pt-36">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--accent)]">
-            Free Canadian card calculator
-          </p>
-          <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-[1.02] tracking-[-0.04em] text-[color:var(--ink)] md:text-6xl">
-            Credit card rewards <span className="text-[color:var(--accent)]">calculator for Canada.</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[color:var(--ink-mute)] md:text-lg">
-            Answer seven quick questions about your spending, income and credit profile. ClearFin
-            estimates which eligible Canadian cards could return more value after annual fees.
-          </p>
-        </header>
+        <h1 className="sr-only">Credit card rewards calculator for Canada</h1>
 
         <SpendProvider>
           <CatalogProvider map={catalog}>
@@ -125,8 +114,8 @@ export default async function CalculatorPage() {
           </CatalogProvider>
         </SpendProvider>
 
-        <section
-          className="mx-auto max-w-5xl px-6 py-20 text-[color:var(--ink)] md:py-24"
+        <div
+          className="mx-auto w-full max-w-[1400px] px-6 py-20 text-[color:var(--ink)] md:px-10 md:py-24"
           aria-labelledby="calculator-method"
         >
           <div className="grid gap-12 md:grid-cols-[1.15fr_0.85fr] md:gap-16">
@@ -159,7 +148,7 @@ export default async function CalculatorPage() {
               </div>
             </div>
 
-            <aside className="rounded-3xl border border-white/10 bg-white/[0.035] p-7 md:p-8">
+            <aside className="self-start rounded-3xl border border-white/10 bg-white/[0.035] p-7 md:p-8">
               <h2 className="text-xl font-semibold tracking-[-0.02em]">What you&apos;ll need</h2>
               <div className="mt-5 space-y-5 text-sm leading-6 text-[color:var(--ink-mute)]">
                 <div>
@@ -193,7 +182,7 @@ export default async function CalculatorPage() {
             </Link>
             .
           </div>
-        </section>
+        </div>
       </main>
 
       <SiteFooter />
