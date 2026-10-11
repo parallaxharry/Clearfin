@@ -503,8 +503,9 @@ export interface CatalogDisplay {
   badge: string | null;
   bankUrl: string | null;
   rewards: string[];
-  /** Eligibility (for the calculator's income/credit matching). null = no stated requirement. */
+  /** Eligibility (for the calculator's income matching). null = no stated requirement. */
   minIncome: number | null;
+  minHouseholdIncome: number | null;
   creditMin: number | null;
 }
 
@@ -519,7 +520,7 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,credit_score")
+    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,min_income_household,credit_score")
     .or(ACTIVE_ONLY);
   if (error || !data) {
     if (error) console.error("getCatalogDisplayMap error:", error.message);
@@ -536,6 +537,7 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
     bank_url: string | null;
     rewards: string[] | null;
     min_income_personal: number | null;
+    min_income_household: number | null;
     credit_score: CreditScore | null;
   }>) {
     const cMin = r.credit_score?.estimated_credit_score_range?.min;
@@ -547,6 +549,7 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
       bankUrl: r.bank_url,
       rewards: r.rewards ?? [],
       minIncome: typeof r.min_income_personal === "number" ? r.min_income_personal : null,
+      minHouseholdIncome: typeof r.min_income_household === "number" ? r.min_income_household : null,
       creditMin: typeof cMin === "number" ? cMin : null,
     };
   }

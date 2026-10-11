@@ -42,7 +42,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "How to find your best Canadian credit card with ClearFin",
   description:
-    "Answer 7 quick questions about your spending, income, and credit score. ClearFin calculates your exact reward leak and shows which Canadian credit cards you qualify for earn you the most.",
+    "Answer 7 quick questions about your spending plus personal and household income. ClearFin estimates annual reward value and matches issuer-published income requirements where available.",
   totalTime: "PT1M",
   step: [
     {
@@ -117,7 +117,7 @@ export default async function HomePage() {
             </h1>
             <p className="hero-sub reveal">
               Compare Canadian credit cards using your real monthly spending. ClearFin does
-              the math across fees, reward rates, income requirements, and credit eligibility.
+              the math across fees, reward rates, and issuer-published income requirements.
             </p>
             <div className="hero-cta-row reveal">
               <Link href="/credit-card-calculator-canada" className="btn-primary">
