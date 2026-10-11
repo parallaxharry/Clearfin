@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import InfoPageLayout from "@/components/InfoPageLayout";
+import { getCatalogOrderedCards } from "@/lib/cardDetail";
 
 export const metadata: Metadata = {
   title: "About | ClearFin",
@@ -62,7 +63,11 @@ const aboutSchema = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const cards = await getCatalogOrderedCards();
+  const cardCount = cards.length;
+  const issuerCount = new Set(cards.map((card) => card.issuer).filter(Boolean)).size;
+
   return (
     <>
       <script
@@ -99,8 +104,8 @@ export default function AboutPage() {
           <h2>What is available today</h2>
           <p>
             ClearFin Web is available now. The calculator and side-by-side comparison
-            tools are free to use and cover 120+ active Canadian credit cards across 19
-            issuers. No signup or card number is required to run a comparison.
+            tools are free to use and cover {cardCount} active Canadian credit cards across {issuerCount}
+            {" "}issuers. No signup or card number is required to run a comparison.
           </p>
           <p>
             We are also developing the ClearFin mobile app, with features planned around
