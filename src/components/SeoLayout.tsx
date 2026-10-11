@@ -69,25 +69,44 @@ export default function SeoLayout({
               style={
                 heroIsCardArt
                   ? {
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                       background: "linear-gradient(135deg, #f8fafc 0%, #eef3f8 100%)",
-                      padding: "30px",
+                      padding: "34px",
                     }
                   : undefined
               }
             >
-              <Image
-                src={heroImage}
-                alt={heroImageAlt ?? title}
-                fill
-                sizes="(max-width: 720px) 92vw, (max-width: 1100px) 40vw, 430px"
-                quality={90}
-                style={{
-                  objectFit: heroIsCardArt ? "contain" : "cover",
-                  objectPosition: "center",
-                  padding: heroIsCardArt ? "30px" : undefined,
-                }}
-                preload
-              />
+              {heroIsCardArt ? (
+                <Image
+                  src={heroImage}
+                  alt={heroImageAlt ?? title}
+                  width={1200}
+                  height={760}
+                  sizes="(max-width: 720px) 84vw, (max-width: 1100px) 36vw, 390px"
+                  quality={92}
+                  style={{
+                    width: "92%",
+                    height: "auto",
+                    maxHeight: "300px",
+                    objectFit: "contain",
+                    borderRadius: "14px",
+                    boxShadow: "0 18px 45px rgba(15, 23, 42, 0.16)",
+                  }}
+                  preload
+                />
+              ) : (
+                <Image
+                  src={heroImage}
+                  alt={heroImageAlt ?? title}
+                  fill
+                  sizes="(max-width: 720px) 92vw, (max-width: 1100px) 40vw, 430px"
+                  quality={90}
+                  style={{ objectFit: "cover" }}
+                  preload
+                />
+              )}
             </figure>
           ) : null}
         </header>
