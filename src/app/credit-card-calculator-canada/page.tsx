@@ -14,7 +14,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Credit Card Rewards Calculator Canada | ClearFin",
   description:
-    "Answer 7 questions about your spending, income and credit score. ClearFin ranks eligible Canadian cards by estimated annual rewards after fees.",
+    "Answer 7 questions about your spending plus personal and household income. ClearFin ranks eligible Canadian cards by estimated annual rewards after fees.",
   keywords: [
     "credit card calculator Canada",
     "credit card rewards calculator Canada",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Credit Card Rewards Calculator Canada | ClearFin",
     description:
-      "Answer 7 questions and compare Canadian credit cards based on your actual spending, annual fees and eligibility profile.",
+      "Answer 7 questions and compare Canadian credit cards based on your actual spending, annual fees and issuer-published income requirements.",
     url: "https://www.clearfin.ca/credit-card-calculator-canada",
     siteName: "ClearFin",
     type: "website",
@@ -41,7 +41,7 @@ const softwareApplicationSchema = {
   operatingSystem: "Web",
   url: "https://www.clearfin.ca/credit-card-calculator-canada",
   description:
-    "Estimate which Canadian credit cards may deliver more annual reward value based on your monthly spending, annual fees, income and credit profile.",
+    "Estimate which Canadian credit cards may deliver more annual reward value based on your monthly spending, annual fees and issuer-published income requirements.",
   offers: {
     "@type": "Offer",
     price: "0",
@@ -55,7 +55,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "How to compare Canadian credit cards for your spending with ClearFin",
   description:
-    "Enter your spending and eligibility profile, then review Canadian credit cards ranked by estimated annual reward value after fees.",
+    "Enter your spending and income profile, then review Canadian credit cards ranked by estimated annual reward value after fees.",
   totalTime: "PT1M",
   step: [
     {
@@ -73,18 +73,12 @@ const howToSchema = {
     {
       "@type": "HowToStep",
       position: 3,
-      name: "Enter your annual income",
-      text: "Provide an approximate annual income so cards with stated income requirements can be matched more appropriately.",
+      name: "Enter your personal and household income",
+      text: "Provide approximate annual personal and household income so cards with issuer-published income requirements can be matched using either qualifying route where available.",
     },
     {
       "@type": "HowToStep",
       position: 4,
-      name: "Enter an estimated credit score",
-      text: "Provide an approximate credit score to help filter cards using ClearFin's eligibility estimates.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 5,
       name: "Review the ranked cards",
       text: "Compare estimated annual reward value after annual fees and review each card's current issuer terms before applying.",
     },
@@ -125,9 +119,9 @@ export default async function CalculatorPage() {
               <div className={styles.body}>
                 <p>
                   ClearFin starts with five monthly spending categories: dining, groceries, gas,
-                  travel and other purchases. It then uses your approximate income and credit score
-                  to avoid presenting every card as equally realistic when a product has stated
-                  eligibility requirements.
+                  travel and other purchases. It then uses your approximate personal and household
+                  income to avoid presenting every card as equally realistic when an issuer publishes
+                  an income requirement.
                 </p>
                 <p>
                   The calculator estimates how much each card could earn across those categories over
@@ -138,8 +132,8 @@ export default async function CalculatorPage() {
                 <p>
                   The calculation is an estimate, not a promise of rewards or approval. Merchant
                   category coding, reward caps, point valuations, redemption choices and issuer terms
-                  can change the final result. Income and credit-score information is also used only
-                  for matching; the card issuer makes the actual approval decision.
+                  can change the final result. ClearFin does not use estimated credit-score ranges as
+                  hard approval cutoffs; the card issuer makes the actual approval decision.
                 </p>
               </div>
             </div>
@@ -152,8 +146,8 @@ export default async function CalculatorPage() {
                   <p>A reasonable estimate is enough. You can adjust the amounts and rerun the calculator whenever your spending changes.</p>
                 </div>
                 <div>
-                  <h3>Income and credit estimates</h3>
-                  <p>These help narrow the results. They do not pre-qualify you for a card and are not an approval decision.</p>
+                  <h3>Personal and household income</h3>
+                  <p>These help match issuer-published income requirements. They do not pre-qualify you for a card and are not an approval decision.</p>
                 </div>
                 <div>
                   <h3>No signup or card numbers</h3>
