@@ -140,26 +140,45 @@ export default function InteractiveTool() {
   const catalog = useCatalog();
 
   // Start with the existing static calculator math, then apply only narrowly verified
-  // corrections where the broad ClearFin "Travel" bucket differs from an issuer's
-  // published earn scope. This avoids changing the rest of the recommendation model.
+  // corrections where the static model differs from current issuer-published terms.
   const scoredCards = getTopCards(spend, CARDS.length)
     .map((c) => {
-      let travelRate = c.rates.travel;
+      let annualFee = c.annualFee;
+      let rates = { ...c.rates };
+      let description = c.description;
+      let changed = false;
 
       // TD/CIBC Aeroplan Infinite: the accelerated rate is for direct Air Canada
       // purchases, not generic hotels/car rentals/other travel in our broad bucket.
       if (c.id === "td-aeroplan" || c.id === "cibc-aeroplan-infinite") {
-        travelRate = 0.01;
+        rates.travel = 0.01;
+        changed = true;
       }
 
       // RBC Avion Visa Infinite publishes 1.25x on eligible travel purchases.
       if (c.id === "rbc-avion") {
-        travelRate = 0.0125;
+        rates.travel = 0.0125;
+        changed = true;
       }
 
-      if (travelRate === c.rates.travel) return c;
+      // RBC changed the Cash Back Preferred World Elite Mastercard on October 1, 2026.
+      // Keep calculator math aligned with the current public terms until cards.ts is
+      // migrated to a single verified source of truth.
+      if (c.id === "rbc-cashback-world-elite") {
+        annualFee = 120;
+        rates = {
+          dining: 0.005,
+          grocery: 0.02,
+          gas: 0.01,
+          travel: 0.005,
+          other: 0.005,
+        };
+        description = "2% cash back on eligible groceries, 1% on eligible gas, EV charging, transit and rideshare, and 0.5% on other eligible purchases.";
+        changed = true;
+      }
 
-      const rates = { ...c.rates, travel: travelRate };
+      if (!changed) return c;
+
       const annualEarn = Object.entries(spend).reduce(
         (sum, [key, value]) => sum + value * 12 * rates[key as SpendKey],
         0
@@ -167,8 +186,10 @@ export default function InteractiveTool() {
 
       return {
         ...c,
+        annualFee,
         rates,
-        netValue: annualEarn - c.annualFee,
+        description,
+        netValue: annualEarn - annualFee,
       };
     })
     // TD states the Emerald Flex Rate Visa is no longer available to new applicants.
