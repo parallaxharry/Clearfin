@@ -6,7 +6,7 @@ tags: [annual fee, rewards, strategy, calculator]
 publishedAt: 2026-09-19
 updatedAt: 2026-10-10
 author: ClearFin Editorial Team
-coverImg: /images/blog/is-credit-card-annual-fee-worth-it-canada.webp
+coverImg: /images/blog/is-credit-card-annual-fee-worth-it-canada.svg
 ---
 
 A $120 or $150 annual fee is not automatically expensive. It is only expensive if the card fails to earn enough extra value to justify it.
