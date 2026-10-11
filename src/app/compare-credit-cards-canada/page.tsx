@@ -57,18 +57,7 @@ export default async function CompareCreditCardsPage() {
       <Nav />
 
       <main>
-        <header className="mx-auto max-w-5xl px-6 pt-32 pb-4 text-center md:pt-36">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--accent)]">
-            Canadian credit card comparison
-          </p>
-          <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-[1.02] tracking-[-0.04em] text-[color:var(--ink)] md:text-6xl">
-            Compare credit cards in Canada <span className="text-[color:var(--accent)]">side by side.</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[color:var(--ink-mute)] md:text-lg">
-            Pick any two cards and compare how they perform for your monthly spending, including
-            category rewards, annual fees and estimated net value after fees.
-          </p>
-        </header>
+        <h1 className="sr-only">Compare credit cards in Canada side by side</h1>
 
         <SpendProvider>
           <CatalogProvider map={catalog}>
@@ -76,8 +65,8 @@ export default async function CompareCreditCardsPage() {
           </CatalogProvider>
         </SpendProvider>
 
-        <section
-          className="mx-auto max-w-5xl px-6 py-20 text-[color:var(--ink)] md:py-24"
+        <div
+          className="mx-auto w-full max-w-[1400px] px-6 py-20 text-[color:var(--ink)] md:px-10 md:py-24"
           aria-labelledby="how-clearfin-compares"
         >
           <div className="grid gap-12 md:grid-cols-[1.2fr_0.8fr] md:gap-16">
@@ -110,7 +99,7 @@ export default async function CompareCreditCardsPage() {
               </div>
             </div>
 
-            <aside className="rounded-3xl border border-white/10 bg-white/[0.035] p-7 md:p-8">
+            <aside className="self-start rounded-3xl border border-white/10 bg-white/[0.035] p-7 md:p-8">
               <h2 className="text-xl font-semibold tracking-[-0.02em]">What to compare before applying</h2>
               <div className="mt-5 space-y-5 text-sm leading-6 text-[color:var(--ink-mute)]">
                 <div>
@@ -144,7 +133,7 @@ export default async function CompareCreditCardsPage() {
             </Link>
             {" "}to see how estimated reward values are calculated.
           </div>
-        </section>
+        </div>
       </main>
 
       <SiteFooter />
