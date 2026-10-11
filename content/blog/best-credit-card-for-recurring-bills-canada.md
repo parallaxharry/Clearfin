@@ -6,7 +6,7 @@ tags: [recurring bills, cashback, rewards, bills]
 publishedAt: 2026-09-13
 updatedAt: 2026-10-10
 author: ClearFin Editorial Team
-coverImg: /images/blog/best-credit-card-for-recurring-bills-canada.webp
+coverImg: /images/blog/best-credit-card-for-recurring-bills-canada.svg
 ---
 
 Recurring bills are easy to ignore because they do not feel like "shopping." They just happen.
