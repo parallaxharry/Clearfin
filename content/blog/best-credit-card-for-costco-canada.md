@@ -6,7 +6,7 @@ tags: [costco, cashback, shopping, mastercard]
 publishedAt: 2026-09-07
 updatedAt: 2026-10-10
 author: ClearFin Editorial Team
-coverImg: /images/blog/best-credit-card-for-costco-canada.webp
+coverImg: /images/blog/best-credit-card-for-costco-canada.svg
 ---
 
 Costco is one of those places where a great grocery card can suddenly become an ordinary card.
