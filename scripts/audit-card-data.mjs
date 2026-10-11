@@ -13,12 +13,13 @@ const supabase = createClient(url, key, {
 });
 
 const STALE_DAYS = Number(process.env.CLEARFIN_REVIEW_STALE_DAYS ?? 60);
+const OFFER_STALE_DAYS = Number(process.env.CLEARFIN_OFFER_STALE_DAYS ?? 30);
 const now = Date.now();
 const insuranceWords = /insurance|emergency medical|flight delay|baggage|rental (?:car|vehicle)|purchase protection|warranty|mobile device/i;
 
 const { data, error } = await supabase
   .from("card_catalog")
-  .select("id,name,issuer,is_active,bank_url,affiliate_url,source_url,insurance_source_url,reviewed_at,research_level,reward_program,benefits,insurance,updated_at")
+  .select("id,name,issuer,is_active,bank_url,affiliate_url,source_url,insurance_source_url,reviewed_at,research_level,reward_program,welcome_bonus,benefits,insurance,updated_at")
   .or("is_active.is.null,is_active.eq.true")
   .order("issuer", { ascending: true })
   .order("name", { ascending: true });
@@ -43,17 +44,38 @@ for (const card of rows) {
     add("ERROR", card, "apply-source-not-separated", "Apply URL and official source are the same affiliate URL.");
   }
 
+  let reviewAgeDays = null;
   if (!card.reviewed_at) {
     add("WARN", card, "missing-review-date", "No database review date is stored yet.");
   } else {
     const reviewed = Date.parse(card.reviewed_at);
     if (Number.isFinite(reviewed)) {
-      const ageDays = Math.floor((now - reviewed) / 86_400_000);
-      if (ageDays > STALE_DAYS) {
-        add("WARN", card, "stale-review", `Last database review is ${ageDays} days old (threshold ${STALE_DAYS}).`);
+      reviewAgeDays = Math.floor((now - reviewed) / 86_400_000);
+      if (reviewAgeDays > STALE_DAYS) {
+        add("WARN", card, "stale-review", `Last database review is ${reviewAgeDays} days old (threshold ${STALE_DAYS}).`);
       }
     } else {
       add("ERROR", card, "invalid-review-date", `Could not parse reviewed_at: ${card.reviewed_at}`);
+    }
+  }
+
+  const offer = card.welcome_bonus && typeof card.welcome_bonus === "object" ? card.welcome_bonus : null;
+  const offerHeadline = typeof offer?.headline === "string" && offer.headline.trim().length > 0;
+  const offerStages = Array.isArray(offer?.stages) && offer.stages.length > 0;
+  const hasCurrentOffer = Boolean(offerHeadline || offerStages);
+
+  if (hasCurrentOffer && reviewAgeDays !== null && reviewAgeDays > OFFER_STALE_DAYS) {
+    add("WARN", card, "offer-needs-refresh", `Welcome-offer data was last reviewed ${reviewAgeDays} days ago (offer threshold ${OFFER_STALE_DAYS}).`);
+  }
+
+  const offerEndRaw = typeof offer?.offer_end_date === "string" ? offer.offer_end_date.trim() : "";
+  if (offerEndRaw) {
+    const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(offerEndRaw);
+    const parsedOfferEnd = Date.parse(dateOnly ? `${offerEndRaw}T23:59:59Z` : offerEndRaw);
+    if (!Number.isFinite(parsedOfferEnd)) {
+      add("ERROR", card, "invalid-offer-end-date", `Could not parse welcome offer end date: ${offerEndRaw}`);
+    } else if (parsedOfferEnd < now) {
+      add("WARN", card, "expired-offer", `Stored welcome offer ended ${offerEndRaw}; remove or re-verify it.`);
     }
   }
 
@@ -77,8 +99,12 @@ for (const card of rows) {
 const errors = findings.filter((f) => f.severity === "ERROR");
 const warnings = findings.filter((f) => f.severity === "WARN");
 const issuers = new Set(rows.map((r) => r.issuer).filter(Boolean));
+const reviewedCount = rows.filter((r) => Boolean(r.reviewed_at)).length;
+const coveragePct = rows.length ? ((reviewedCount / rows.length) * 100).toFixed(1) : "0.0";
 
 console.log(`ClearFin card data audit: ${rows.length} active cards across ${issuers.size} issuers.`);
+console.log(`Review coverage: ${reviewedCount}/${rows.length} cards (${coveragePct}%).`);
+console.log(`Freshness thresholds: ${STALE_DAYS} days for card data; ${OFFER_STALE_DAYS} days for active welcome offers.`);
 console.log(`Findings: ${errors.length} error(s), ${warnings.length} warning(s).`);
 
 if (findings.length) {
