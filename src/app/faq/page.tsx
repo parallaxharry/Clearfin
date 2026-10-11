@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "How does ClearFin work?",
     answer:
-      "ClearFin compares Canadian credit cards based on your monthly spending. Answer 7 quick questions about dining, groceries, gas, travel, other spending, income, and your estimated credit score. ClearFin applies the card earn rates used by our calculator, estimates annual rewards, subtracts the annual fee, and ranks eligible matches by estimated net annual value.",
+      "ClearFin compares Canadian credit cards based on your monthly spending. Answer 7 quick questions covering dining, groceries, gas, travel, other spending, personal income, and household income. ClearFin applies the card earn rates used by our calculator, estimates annual rewards, subtracts the annual fee, and uses issuer-published income requirements where available to rank eligible matches by estimated net annual value.",
   },
   {
     question: "Is ClearFin free to use?",
@@ -58,7 +58,7 @@ const faqs = [
   {
     question: "How does the credit card calculator work?",
     answer:
-      "Enter your monthly spend across five categories — dining, groceries, gas, travel, and other — plus approximate income and credit score. ClearFin estimates annual rewards, subtracts the annual fee, applies its eligibility matching, and ranks the resulting cards by estimated net value. The process takes about 30 seconds.",
+      "Enter your monthly spend across five categories — dining, groceries, gas, travel, and other — plus approximate personal and household income. ClearFin estimates annual rewards, subtracts the annual fee, applies issuer-published personal or household income requirements where available, and ranks the resulting cards by estimated net value. The process takes about 30 seconds.",
   },
   {
     question: "Can I upload my credit card statement?",
@@ -78,7 +78,7 @@ const faqs = [
   {
     question: "Does using ClearFin affect my credit score?",
     answer:
-      "No. Using the ClearFin website does not perform a hard credit check or submit a credit-card application. The credit score entered in the calculator is an estimate used for matching. If you choose to apply for a card, the issuer's own application and underwriting process applies.",
+      "No. Using the ClearFin website does not access your credit report, perform a hard credit check, or submit a credit-card application. The current calculator does not use a credit-score estimate as a hard eligibility cutoff. Some card pages may show ClearFin credit-range estimates for context, but the issuer makes the actual approval decision using its own underwriting process.",
   },
 ];
 
