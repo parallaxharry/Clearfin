@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
      images are photographs shown large, and 75 visibly softens them. */
   images: {
     qualities: [75, 90],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+    ],
   },
 
   /* The blog pages are ISR, so content/blog is read on the server when a page
