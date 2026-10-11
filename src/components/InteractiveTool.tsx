@@ -17,14 +17,15 @@ import { trackMetaAction } from "@/lib/metaPixel";
 ══════════════════════════════════════════════════════════ */
 type ToolState = "gate" | "step" | "result";
 
-// Profile questions shown after the 5 spend questions, used to filter out cards
-// the user won't qualify for (income / credit minimums live in card_catalog).
+// Profile questions shown after the 5 spend questions. Income eligibility is
+// matched against issuer-published personal OR household thresholds. Estimated
+// credit-score ranges are not used as hard approval filters.
 const PROFILE_STEPS = [
   {
     kind: "income" as const,
     icon: "💰",
-    question: "What's your yearly income?",
-    hint: "Before tax. Used to match cards you'll qualify for.",
+    question: "What's your personal yearly income?",
+    hint: "Before tax. Some cards use a personal-income requirement.",
     min: 0,
     max: 250000,
     sliderStep: 5000,
@@ -38,20 +39,20 @@ const PROFILE_STEPS = [
     ],
   },
   {
-    kind: "credit" as const,
-    icon: "📊",
-    question: "What's your credit score?",
-    hint: "An estimate is fine. Matches cards you can get approved for.",
-    min: 300,
-    max: 900,
-    sliderStep: 5,
-    unit: "approx. score",
-    money: false,
+    kind: "householdIncome" as const,
+    icon: "🏠",
+    question: "What's your household yearly income?",
+    hint: "Combined before-tax household income. If you live alone, use your personal income again.",
+    min: 0,
+    max: 400000,
+    sliderStep: 5000,
+    unit: "per year",
+    money: true,
     presets: [
-      { label: "Fair (650)", value: 650 },
-      { label: "Good (720)", value: 720 },
-      { label: "Very good (770)", value: 770 },
-      { label: "Excellent (820)", value: 820 },
+      { label: "Under $80k", value: 70000 },
+      { label: "$100k", value: 100000 },
+      { label: "$150k", value: 150000 },
+      { label: "$200k+", value: 200000 },
     ],
   },
 ];
@@ -63,7 +64,7 @@ export default function InteractiveTool() {
   const [currentStep, setCurrentStep] = useState(0);
   const [stepValue, setStepValue] = useState(STEPS[0].defaultVal);
   const [income, setIncome] = useState(60000);
-  const [credit, setCredit] = useState(720);
+  const [householdIncome, setHouseholdIncome] = useState(60000);
   const [animDir, setAnimDir] = useState<"in" | "out">("in");
   const [visible, setVisible] = useState(true);
   const [modalCard, setModalCard] = useState<(CardDef & { netValue: number }) | null>(null);
@@ -93,7 +94,7 @@ export default function InteractiveTool() {
   const handlePreset = (val: number) => setStepValue(val);
 
   const handleNext = () => {
-    // Spend steps persist their slider value; profile steps already bind income/credit.
+    // Spend steps persist their slider value; profile steps bind their own income state.
     if (currentStep < STEPS.length) {
       const key = STEPS[currentStep].key;
       onSpendChange({ ...spend, [key]: stepValue });
@@ -174,15 +175,23 @@ export default function InteractiveTool() {
     .filter((c) => c.id !== "td-emerald")
     .sort((a, b) => b.netValue - a.netValue);
 
-  // Overlay Supabase display data, then keep only cards the user qualifies for.
-  // Eligibility logic is intentionally unchanged in this narrow accuracy pass.
+  // Overlay Supabase display data, then apply issuer-published income eligibility.
+  // When a card publishes both personal and household thresholds, either path qualifies.
+  // ClearFin credit-score estimates are intentionally not used as hard exclusions.
   const eligibleCards = scoredCards
     .map((c) => withCatalog(c, catalog))
     .filter((c) => {
       const info = catalog[c.id];
-      const incomeOk = !info?.minIncome || info.minIncome <= income;
-      const creditOk = !info?.creditMin || info.creditMin <= credit;
-      return incomeOk && creditOk;
+      const personalMin = info?.minIncome;
+      const householdMin = info?.minHouseholdIncome;
+      const hasPersonalMin = typeof personalMin === "number" && personalMin > 0;
+      const hasHouseholdMin = typeof householdMin === "number" && householdMin > 0;
+
+      if (!hasPersonalMin && !hasHouseholdMin) return true;
+
+      const qualifiesPersonally = hasPersonalMin && income >= personalMin;
+      const qualifiesByHousehold = hasHouseholdMin && householdIncome >= householdMin;
+      return qualifiesPersonally || qualifiesByHousehold;
     });
   const topCards = eligibleCards.slice(0, 3);
   const bestNetValue = topCards[0]?.netValue ?? 0;
@@ -190,8 +199,8 @@ export default function InteractiveTool() {
   const isSpendStep = currentStep < STEPS.length;
   const step = STEPS[currentStep];
   const profile = PROFILE_STEPS[currentStep - STEPS.length];
-  const profileValue = profile?.kind === "income" ? income : credit;
-  const setProfileValue = profile?.kind === "income" ? setIncome : setCredit;
+  const profileValue = profile?.kind === "income" ? income : householdIncome;
+  const setProfileValue = profile?.kind === "income" ? setIncome : setHouseholdIncome;
   const pct = isSpendStep
     ? Math.min((stepValue / step.max) * 100, 100)
     : Math.min(((profileValue - profile.min) / (profile.max - profile.min)) * 100, 100);
@@ -265,7 +274,7 @@ export default function InteractiveTool() {
               {/* Current value display */}
               <div className="step-amount-display">
                 <span className="step-amount-value">
-                  {isSpendStep ? fmt(stepValue) : profile.money ? fmt(profileValue) : profileValue}
+                  {isSpendStep ? fmt(stepValue) : fmt(profileValue)}
                 </span>
                 <span className="step-amount-label">{isSpendStep ? "per month" : profile.unit}</span>
               </div>
@@ -285,14 +294,8 @@ export default function InteractiveTool() {
                   }
                 />
                 <div className="step-slider-labels">
-                  <span>{isSpendStep ? "$0" : profile.money ? fmt(profile.min) : profile.min}</span>
-                  <span>
-                    {isSpendStep
-                      ? fmt(step.max)
-                      : profile.money
-                        ? `${fmt(profile.max)}+`
-                        : profile.max}
-                  </span>
+                  <span>{isSpendStep ? "$0" : fmt(profile.min)}</span>
+                  <span>{isSpendStep ? fmt(step.max) : `${fmt(profile.max)}+`}</span>
                 </div>
               </div>
 
@@ -332,7 +335,7 @@ export default function InteractiveTool() {
                     </span>
                   ))}
                   {currentStep > STEPS.length && (
-                    <span className="step-summary-chip">💰 {fmt(income)}/yr</span>
+                    <span className="step-summary-chip">💰 {fmt(income)}/yr personal</span>
                   )}
                 </div>
               )}
@@ -347,13 +350,12 @@ export default function InteractiveTool() {
               <div className="result-header">
                 <div className="result-eyebrow">No matches yet</div>
                 <h2 className="result-title">
-                  No cards fit that <span className="ital">income</span> &amp;{" "}
-                  <span className="ital">credit score</span>.
+                  No cards match that <span className="ital">income profile</span>.
                 </h2>
               </div>
               <p className="step-hint" style={{ textAlign: "center" }}>
-                Most cards need a higher credit score or income. Try raising either, or start over
-                to adjust your spending.
+                The cards in this result set have issuer-published income requirements above the
+                personal and household income values you entered.
               </p>
               <div className="step-nav">
                 <button
@@ -365,7 +367,7 @@ export default function InteractiveTool() {
                     })
                   }
                 >
-                  ← Adjust income / credit
+                  ← Review income
                 </button>
                 <button className="step-next" onClick={handleRestart}>
                   Start over →
@@ -459,9 +461,9 @@ export default function InteractiveTool() {
 
               {/* Disclaimer */}
               <p className="result-disclaimer">
-                Estimates based on publicly available reward rates. Actual rewards depend on
-                your spending mix, bonus categories, and program terms. ClearFin does not
-                endorse specific cards — we surface the math.
+                Estimates based on publicly available reward rates and issuer-published income
+                requirements. Credit-score ranges shown elsewhere on ClearFin are estimates and do
+                not determine approval. Actual rewards and approval depend on issuer terms.
               </p>
             </div>
           )}
