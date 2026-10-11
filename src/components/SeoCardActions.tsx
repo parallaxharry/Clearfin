@@ -45,6 +45,9 @@ export default async function SeoCardActions({ name }: { name: string }) {
   const info = catalog[card.id];
   const applyUrl = info?.bankUrl ?? card.bankUrl;
   const issuer = info?.issuer ?? card.issuer;
+  // The static catalogue still calls Cobalt "cobalt", while the current
+  // database-backed canonical detail URL is /credit-cards/Amex-cobalt.
+  const detailId = card.id === "cobalt" ? "Amex-cobalt" : card.id;
   return (
     <>
       <FinlyRebateBadge
@@ -61,7 +64,7 @@ export default async function SeoCardActions({ name }: { name: string }) {
             className="seo-card-apply"
           />
         )}
-        <Link href={`/credit-cards/${card.id}`} className="seo-card-view">
+        <Link href={`/credit-cards/${detailId}`} className="seo-card-view">
           View full details
         </Link>
       </div>
