@@ -19,6 +19,6 @@ const STOCK_BLOG_COVERS: Record<string, string> = {
 export function resolveBlogCover(
   slug: string,
   coverImg?: string | null,
-): string | null | undefined {
-  return STOCK_BLOG_COVERS[slug] ?? coverImg;
+): string | undefined {
+  return STOCK_BLOG_COVERS[slug] ?? coverImg ?? undefined;
 }
