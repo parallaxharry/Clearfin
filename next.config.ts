@@ -48,13 +48,11 @@ const nextConfig: NextConfig = {
       // card_catalog historically used "Amex-cobalt" while the public site used
       // "cobalt". Search Console now sees both. Keep the catalog-backed URL as
       // the single canonical destination until the data id is normalized.
+      // Do not add a separate lowercase amex-cobalt redirect here: Next's route
+      // matching is case-insensitive, which would also match the destination and
+      // create a redirect loop.
       {
         source: "/credit-cards/cobalt",
-        destination: "/credit-cards/Amex-cobalt",
-        permanent: true,
-      },
-      {
-        source: "/credit-cards/amex-cobalt",
         destination: "/credit-cards/Amex-cobalt",
         permanent: true,
       },
