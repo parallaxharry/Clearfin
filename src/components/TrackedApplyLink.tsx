@@ -18,10 +18,14 @@ function trackClick(cardId: string) {
   }).catch(() => {});
 }
 
+function isAffiliateApplicationLink(href: string) {
+  return /finlywealth\.com|utm_source=maximize-with-clearfin/i.test(href);
+}
+
 /**
- * Apply CTA that logs a click to /api/track-click, then opens the issuer's own
- * application page. No affiliate offer is implied — this is a plain outbound link.
- * When affiliate links arrive, swap `href` for the card's affiliate_url upstream.
+ * Application CTA. `href` may be a direct issuer application URL or a disclosed
+ * affiliate application URL. Official research/source links are stored separately
+ * on the card record and must never be inferred from this application URL.
  */
 export default function TrackedApplyLink({
   cardId,
@@ -29,11 +33,13 @@ export default function TrackedApplyLink({
   issuer,
   className = "cardpg-apply",
 }: TrackedApplyLinkProps) {
+  const affiliate = isAffiliateApplicationLink(href);
+
   return (
     <a
       href={href}
       target="_blank"
-      rel="noopener noreferrer"
+      rel={affiliate ? "sponsored noopener noreferrer" : "noopener noreferrer"}
       className={className}
       onClick={() => trackClick(cardId)}
     >

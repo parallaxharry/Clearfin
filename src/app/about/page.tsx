@@ -5,14 +5,14 @@ import InfoPageLayout from "@/components/InfoPageLayout";
 export const metadata: Metadata = {
   title: "About | ClearFin",
   description:
-    "ClearFin was built by Canadians who got tired of missing payments and leaving rewards unclaimed. Meet the team making credit cards simple.",
+    "ClearFin is a Canadian credit card comparison platform built in Calgary. Meet the team and learn how our independent card comparisons work.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
     title: "About | ClearFin",
     description:
-      "ClearFin was built by Canadians who got tired of missing payments and leaving rewards unclaimed. Meet the team making credit cards simple.",
+      "ClearFin is a Canadian credit card comparison platform built in Calgary. Meet the team and learn how our independent card comparisons work.",
     type: "website",
     locale: "en_CA",
     url: "https://www.clearfin.ca/about",
@@ -53,7 +53,7 @@ const aboutSchema = {
       name: "Calgary, Alberta, Canada",
     },
     description:
-      "ClearFin is a Canadian credit card optimisation platform that helps people choose the right card for every purchase and manage their finances in one unified app.",
+      "ClearFin is a Canadian credit card comparison platform that helps people compare cards using their spending, fees, reward rates, and eligibility profile.",
     founder: team.map((m) => ({
       "@type": "Person",
       name: m.name,
@@ -73,41 +73,55 @@ export default function AboutPage() {
         eyebrow="About"
         title="Built for"
         accent="real life."
-        description="We are Canadians who ran into the same problems everyone else does — and decided to actually fix them."
-        meta="Founded 2026 · Calgary first"
+        description="We are Canadians who ran into the same credit-card decisions everyone else does — and wanted a clearer way to compare them."
+        meta="Founded 2026 · Calgary, Alberta"
       >
-
         <section className="info-section">
           <h2>Why we built this</h2>
           <p>
-            It started with the small frustrations that add up. A missed credit card
-            payment. Realising you used the wrong card at the grocery store and left 4x
-            points on the table. Owning four cards and having no idea which one to tap.
+            Credit card rewards are useful only when people can understand them. Earn
+            rates change by merchant category, annual fees can erase part of the return,
+            and the strongest card for one household can be a poor fit for another.
           </p>
           <p>
-            The average Canadian holds four credit cards and leaves $847 a year in
-            rewards unclaimed — not because they don&apos;t care, but because the system
-            is genuinely confusing. Banks don&apos;t make it easy. Reward programs are
-            designed to be complicated.
+            We built ClearFin to make those trade-offs easier to see. Instead of starting
+            with a headline welcome offer or one advertised multiplier, ClearFin starts
+            with how you actually spend and estimates the annual value after card fees.
           </p>
           <p>
-            We wanted one place that makes all of it simple: which card to use, when to
-            use it, and how much you are actually earning. No spreadsheets. No guessing.
-            One app.
+            The goal is simple: make the assumptions visible, keep the underlying card
+            information traceable, and give Canadians a clearer starting point before
+            they apply.
           </p>
         </section>
 
         <section className="info-section">
-          <h2>What we are building</h2>
+          <h2>What is available today</h2>
           <p>
-            ClearFin is a unified financial system for your credit cards. The calculator
-            shows you which of 120+ Canadian cards earns the most for your actual spending
-            habits. The app tracks your cards, reminds you before payments are due, flags
-            active subscriptions, and tells you — in real time — whether you used the
-            right card for every purchase.
+            ClearFin Web is available now. The calculator and side-by-side comparison
+            tools are free to use and cover 120+ active Canadian credit cards across 19
+            issuers. No signup or card number is required to run a comparison.
           </p>
           <p>
-            Everything visible. Everything simple. One place.
+            We are also developing the ClearFin mobile app, with features planned around
+            card organization, reward guidance, bill reminders, and easier day-to-day
+            card decisions. The mobile product is separate from the tools already live on
+            this website.
+          </p>
+        </section>
+
+        <section className="info-section">
+          <h2>How we handle card information</h2>
+          <p>
+            We use issuer information, product pages, benefit guides, insurance
+            certificates, and other primary sources where available. Card terms can
+            change, so detail pages show source and review information when we have it,
+            and we encourage users to confirm current issuer terms before applying.
+          </p>
+          <p>
+            If you spot something that looks outdated or incorrect, email us at{" "}
+            <a href="mailto:info@clearfin.ca">info@clearfin.ca</a>. Corrections are part of
+            maintaining the catalogue, not an afterthought.
           </p>
         </section>
 
@@ -125,18 +139,17 @@ export default function AboutPage() {
         </section>
 
         <section className="info-section">
-          <h2>Independence</h2>
+          <h2>Independence and how we make money</h2>
           <p>
-            ClearFin is not affiliated with any bank, credit card issuer, or payment
-            network. We are not sponsored or endorsed by any of them, and every
-            comparison is based on publicly available rates and terms.
+            ClearFin is not a bank, credit card issuer, or payment network. Comparisons
+            use publicly available card terms and ClearFin&apos;s calculation methodology.
           </p>
           <p>
             Some &ldquo;Apply&rdquo; links are affiliate links. ClearFin may earn a
             commission if you are approved for a card through one, at no extra cost to
-            you. This never affects how we rank or review cards — every card is scored
-            by the same calculation, and we do not accept payment for placement. Read
-            the full <Link href="/disclosures">site disclosures</Link>.
+            you. Affiliate compensation does not change a card&apos;s calculated value or
+            its position in our recommendation logic, and we do not accept payment for
+            placement. Read the full <Link href="/disclosures">site disclosures</Link>.
           </p>
         </section>
 
@@ -147,8 +160,7 @@ export default function AboutPage() {
             <a href="mailto:info@clearfin.ca">info@clearfin.ca</a>.
           </p>
         </section>
-
-            </InfoPageLayout>
+      </InfoPageLayout>
     </>
   );
 }
