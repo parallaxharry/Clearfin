@@ -16,6 +16,9 @@ const STOCK_BLOG_COVERS: Record<string, string> = {
  * visual language of the rest of the ClearFin blog. The source photographs
  * are free-to-use Pexels images; all other posts keep their existing artwork.
  */
-export function resolveBlogCover(slug: string, coverImg?: string): string | undefined {
+export function resolveBlogCover(
+  slug: string,
+  coverImg?: string | null,
+): string | null | undefined {
   return STOCK_BLOG_COVERS[slug] ?? coverImg;
 }
