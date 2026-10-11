@@ -11,6 +11,7 @@ import { useSpend } from "@/context/SpendContext";
 import { useCatalog, withCatalog } from "@/context/CatalogContext";
 import CalculatorPreview from "@/components/CalculatorPreview";
 import { trackMetaAction } from "@/lib/metaPixel";
+import { loadCardProfile, saveCardProfile } from "@/lib/savedCardProfile";
 
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -69,12 +70,19 @@ export default function InteractiveTool() {
   const [visible, setVisible] = useState(true);
   const [modalCard, setModalCard] = useState<(CardDef & { netValue: number }) | null>(null);
 
-  // Sync stepValue when entering a spend step (profile steps bind their own state).
+  // Sync stepValue when entering a spend step or when a saved profile is restored.
   useEffect(() => {
     // The displayed slider value must follow the newly selected spending category.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (currentStep < STEPS.length) setStepValue(spend[STEPS[currentStep].key]);
-  }, [currentStep]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentStep, spend]);
+
+  useEffect(() => {
+    const saved = loadCardProfile();
+    if (!saved) return;
+    setIncome(saved.personalIncome);
+    setHouseholdIncome(saved.householdIncome);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = modalCard ? "hidden" : "";
@@ -103,6 +111,14 @@ export default function InteractiveTool() {
     if (currentStep < TOTAL_STEPS - 1) {
       transition(() => setCurrentStep((s) => s + 1));
     } else {
+      saveCardProfile({
+        version: 1,
+        spend,
+        personalIncome: income,
+        householdIncome,
+        results: eligibleCards.map((card) => ({ id: card.id, netValue: card.netValue })),
+        savedAt: new Date().toISOString(),
+      });
       transition(() => {
         setToolState("result");
         trackMetaAction("CalculatorCompleted");
