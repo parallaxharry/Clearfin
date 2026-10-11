@@ -1,3 +1,5 @@
+import { REWARD_MODEL_VERSION } from "./rewardModel";
+
 import type { SpendKey } from "@/lib/cards";
 
 export interface SavedCardResult {
@@ -7,6 +9,7 @@ export interface SavedCardResult {
 
 export interface SavedCardProfile {
   version: 1;
+  rewardModelVersion?: string;
   spend: Record<SpendKey, number>;
   personalIncome: number;
   householdIncome: number;
@@ -55,7 +58,10 @@ export function loadCardProfile(): SavedCardProfile | null {
       window.localStorage.removeItem(STORAGE_KEY);
       return null;
     }
-    return parsed;
+    // Preserve inputs, but never show rankings produced by an older math model.
+    return parsed.rewardModelVersion === REWARD_MODEL_VERSION
+      ? parsed
+      : { ...parsed, results: [] };
   } catch {
     return null;
   }

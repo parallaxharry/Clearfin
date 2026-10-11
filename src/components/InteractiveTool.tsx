@@ -4,11 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import {
-  CARDS, CardDef, SpendKey, DEFAULT_SPEND, STEPS,
-  fmt, fmtRate, getBreakdown, getTopCards,
+  CardDef, SpendKey, DEFAULT_SPEND, STEPS,
+  fmt, fmtRate, getBreakdown,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
-import { useCatalog, withCatalog } from "@/context/CatalogContext";
+import { useCatalog } from "@/context/CatalogContext";
+import { rankCards, qualifiesByIncome, REWARD_MODEL_VERSION } from "@/lib/rewardModel";
 import CalculatorPreview from "@/components/CalculatorPreview";
 import { trackMetaAction } from "@/lib/metaPixel";
 import { loadCardProfile, saveCardProfile } from "@/lib/savedCardProfile";
@@ -80,6 +81,8 @@ export default function InteractiveTool() {
   useEffect(() => {
     const saved = loadCardProfile();
     if (!saved) return;
+    // Restore browser-only storage after hydration so server/client markup agrees.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIncome(saved.personalIncome);
     setHouseholdIncome(saved.householdIncome);
   }, []);
@@ -113,6 +116,7 @@ export default function InteractiveTool() {
     } else {
       saveCardProfile({
         version: 1,
+        rewardModelVersion: REWARD_MODEL_VERSION,
         spend,
         personalIncome: income,
         householdIncome,
@@ -155,81 +159,8 @@ export default function InteractiveTool() {
   const annualSpend = totalMonthly * 12;
   const catalog = useCatalog();
 
-  // Start with the existing static calculator math, then apply only narrowly verified
-  // corrections where the static model differs from current issuer-published terms.
-  const scoredCards = getTopCards(spend, CARDS.length)
-    .map((c) => {
-      let annualFee = c.annualFee;
-      let rates = { ...c.rates };
-      let description = c.description;
-      let changed = false;
-
-      // TD/CIBC Aeroplan Infinite: the accelerated rate is for direct Air Canada
-      // purchases, not generic hotels/car rentals/other travel in our broad bucket.
-      if (c.id === "td-aeroplan" || c.id === "cibc-aeroplan-infinite") {
-        rates.travel = 0.01;
-        changed = true;
-      }
-
-      // RBC Avion Visa Infinite publishes 1.25x on eligible travel purchases.
-      if (c.id === "rbc-avion") {
-        rates.travel = 0.0125;
-        changed = true;
-      }
-
-      // RBC changed the Cash Back Preferred World Elite Mastercard on October 1, 2026.
-      // Keep calculator math aligned with the current public terms until cards.ts is
-      // migrated to a single verified source of truth.
-      if (c.id === "rbc-cashback-world-elite") {
-        annualFee = 120;
-        rates = {
-          dining: 0.005,
-          grocery: 0.02,
-          gas: 0.01,
-          travel: 0.005,
-          other: 0.005,
-        };
-        description = "2% cash back on eligible groceries, 1% on eligible gas, EV charging, transit and rideshare, and 0.5% on other eligible purchases.";
-        changed = true;
-      }
-
-      if (!changed) return c;
-
-      const annualEarn = Object.entries(spend).reduce(
-        (sum, [key, value]) => sum + value * 12 * rates[key as SpendKey],
-        0
-      );
-
-      return {
-        ...c,
-        annualFee,
-        rates,
-        description,
-        netValue: annualEarn - annualFee,
-      };
-    })
-    // TD states the Emerald Flex Rate Visa is no longer available to new applicants.
-    .filter((c) => c.id !== "td-emerald")
-    .sort((a, b) => b.netValue - a.netValue);
-
-  // Overlay Supabase display data, then apply issuer-published income eligibility.
-  // When a card publishes both personal and household thresholds, either path qualifies.
-  // ClearFin credit-score estimates are intentionally not used as hard exclusions.
-  const eligibleCards = scoredCards
-    .map((c) => withCatalog(c, catalog))
-    .filter((c) => {
-      const info = catalog[c.id];
-      const personalMin = info?.minIncome;
-      const householdMin = info?.minHouseholdIncome;
-      const hasPersonalMin = typeof personalMin === "number" && personalMin > 0;
-      const hasHouseholdMin = typeof householdMin === "number" && householdMin > 0;
-
-      if (!hasPersonalMin && !hasHouseholdMin) return true;
-
-      const qualifiesPersonally = hasPersonalMin && income >= personalMin;
-      const qualifiesByHousehold = hasHouseholdMin && householdIncome >= householdMin;
-      return qualifiesPersonally || qualifiesByHousehold;
-    });
+  const eligibleCards = rankCards(spend, catalog)
+    .filter((card) => qualifiesByIncome(catalog[card.id], income, householdIncome));
   const topCards = eligibleCards.slice(0, 3);
   const bestNetValue = topCards[0]?.netValue ?? 0;
 
@@ -500,7 +431,7 @@ export default function InteractiveTool() {
               <p className="result-disclaimer">
                 Estimates based on publicly available reward rates and issuer-published income
                 requirements. Credit-score ranges shown elsewhere on ClearFin are estimates and do
-                not determine approval. Actual rewards and approval depend on issuer terms.
+                not determine approval. Estimates exclude welcome offers, fee waivers and reward caps. Actual rewards and approval depend on issuer terms.
               </p>
             </div>
           )}

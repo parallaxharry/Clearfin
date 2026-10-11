@@ -495,7 +495,7 @@ export const getCard = cache(async (id: string): Promise<CardDetail | null> => {
   return merge((data as CardCatalogRow) ?? null, fallback);
 });
 
-/** Catalog display + eligibility fields for the home page (matched onto static cards by id). */
+/** Catalogue display, eligibility and reviewed scoring inputs, keyed by card id. */
 export interface CatalogDisplay {
   name: string | null;
   issuer: string | null;
@@ -503,15 +503,23 @@ export interface CatalogDisplay {
   badge: string | null;
   bankUrl: string | null;
   rewards: string[];
-  /** Eligibility (for the calculator's income matching). null = no stated requirement. */
+  /** Eligibility (for the calculator's income matching). null = unknown or no published requirement. */
   minIncome: number | null;
   minHouseholdIncome: number | null;
   creditMin: number | null;
+  isActive?: boolean | null;
+  /** Decimal cash-equivalent rates; point_value_cpp must not be applied again. */
+  calculation?: {
+    annualFee: number | null;
+    rates: Record<SpendKey, number | null>;
+    reviewedAt: string | null;
+    researchLevel: string | null;
+  };
 }
 
 /**
- * Map of id → catalog display fields, for overlaying Supabase info onto the
- * home page's static cards. Returns {} when Supabase is unconfigured so the
+ * Includes inactive rows so all scoring consumers can exclude them.
+ * Returns {} when Supabase is unconfigured so the
  * site falls back to cards.ts. Cached per-request.
  */
 export const getCatalogDisplayMap = cache(async (): Promise<Record<string, CatalogDisplay>> => {
@@ -520,8 +528,7 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
 
   const { data, error } = await supabase
     .from("card_catalog")
-    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,min_income_household,credit_score")
-    .or(ACTIVE_ONLY);
+    .select("id,name,issuer,img,badge,bank_url,rewards,min_income_personal,min_income_household,credit_score,is_active,annual_fee,dining_rate,grocery_rate,gas_rate,travel_rate,other_rate,reviewed_at,research_level");
   if (error || !data) {
     if (error) console.error("getCatalogDisplayMap error:", error.message);
     return {};
@@ -539,6 +546,15 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
     min_income_personal: number | null;
     min_income_household: number | null;
     credit_score: CreditScore | null;
+    is_active: boolean | null;
+    annual_fee: number | null;
+    dining_rate: number | null;
+    grocery_rate: number | null;
+    gas_rate: number | null;
+    travel_rate: number | null;
+    other_rate: number | null;
+    reviewed_at: string | null;
+    research_level: string | null;
   }>) {
     const cMin = r.credit_score?.estimated_credit_score_range?.min;
     map[r.id] = {
@@ -551,6 +567,13 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
       minIncome: typeof r.min_income_personal === "number" ? r.min_income_personal : null,
       minHouseholdIncome: typeof r.min_income_household === "number" ? r.min_income_household : null,
       creditMin: typeof cMin === "number" ? cMin : null,
+      isActive: r.is_active,
+      calculation: {
+        annualFee: r.annual_fee,
+        rates: { dining: r.dining_rate, grocery: r.grocery_rate, gas: r.gas_rate, travel: r.travel_rate, other: r.other_rate },
+        reviewedAt: r.reviewed_at,
+        researchLevel: r.research_level,
+      },
     };
   }
 
@@ -567,7 +590,7 @@ export const getCatalogDisplayMap = cache(async (): Promise<Record<string, Catal
  *  resolves. Cached; falls back to plain cards.ts when Supabase is unavailable. */
 export const getSearchCards = cache(async (): Promise<SearchCard[]> => {
   const map = await getCatalogDisplayMap();
-  return CARDS.map((c) => {
+  return CARDS.filter((c) => map[c.id]?.isActive !== false && c.id !== "td-emerald").map((c) => {
     const info = map[c.id];
     return {
       id: c.id,
