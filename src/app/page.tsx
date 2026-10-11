@@ -7,7 +7,7 @@ import TopPicks from "@/components/TopPicks";
 import WaitlistForm from "@/components/WaitlistForm";
 import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
-import { getCatalogDisplayMap } from "@/lib/cardDetail";
+import { getCatalogDisplayMap, getCatalogOrderedCards } from "@/lib/cardDetail";
 import HeroCardCarousel from "@/components/HeroCardCarousel";
 import ClearFinWordmark from "@/components/ClearFinWordmark";
 import InstitutionMarquee from "@/components/InstitutionMarquee";
@@ -16,82 +16,94 @@ import SiteFooter from "@/components/SiteFooter";
 // ISR: home-page card display refreshes from Supabase card_catalog every ~5 min.
 export const revalidate = 300;
 
-const softwareApplicationSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "ClearFin Credit Card Calculator",
-  applicationCategory: "FinanceApplication",
-  operatingSystem: "Web",
-  url: "https://www.clearfin.ca/credit-card-calculator-canada",
-  description:
-    "Compare 120+ Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "CAD",
-  },
-  creator: {
-    "@type": "Organization",
-    name: "ClearFin",
-    url: "https://www.clearfin.ca",
-  },
-};
+function buildSoftwareApplicationSchema(cardCount: number) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "ClearFin Credit Card Calculator",
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web",
+    url: "https://www.clearfin.ca/credit-card-calculator-canada",
+    description:
+      `Compare ${cardCount} active Canadian credit cards based on your actual monthly spending. Find which card earns you the most cashback and rewards across dining, groceries, gas, travel, and other spend.`,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "CAD",
+    },
+    creator: {
+      "@type": "Organization",
+      name: "ClearFin",
+      url: "https://www.clearfin.ca",
+    },
+  };
+}
 
-const howToSchema = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How to find your best Canadian credit card with ClearFin",
-  description:
-    "Answer 7 quick questions about your spending plus personal and household income. ClearFin estimates annual reward value and matches issuer-published income requirements where available.",
-  totalTime: "PT1M",
-  step: [
-    {
-      "@type": "HowToStep",
-      position: 1,
-      name: "Open the ClearFin calculator",
-      text: "Click 'Open the Calculator' or 'Start in 30 seconds' on the ClearFin homepage.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 2,
-      name: "Enter your monthly dining spend",
-      text: "Enter how much you spend each month on restaurants, cafes, takeout, and food delivery.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 3,
-      name: "Enter your monthly grocery budget",
-      text: "Enter your monthly spend at supermarkets, Costco, and grocery stores.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 4,
-      name: "Enter your monthly gas spend",
-      text: "Enter your monthly fuel costs including petrol, diesel, and EV charging.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 5,
-      name: "Enter your monthly travel spend",
-      text: "Enter your average monthly travel budget including flights, hotels, and car rentals.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 6,
-      name: "Enter your remaining monthly spend",
-      text: "Enter everything else: shopping, utilities, subscriptions, and services.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 7,
-      name: "Review your personalized card recommendations",
-      text: "ClearFin calculates your estimated annual earnings across 120+ Canadian cards and ranks them by net value for your specific spending profile.",
-    },
-  ],
-};
+function buildHowToSchema(cardCount: number) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "How to find your best Canadian credit card with ClearFin",
+    description:
+      "Answer 7 quick questions about your spending plus personal and household income. ClearFin estimates annual reward value and matches issuer-published income requirements where available.",
+    totalTime: "PT1M",
+    step: [
+      {
+        "@type": "HowToStep",
+        position: 1,
+        name: "Open the ClearFin calculator",
+        text: "Click 'Open the Calculator' or 'Start in 30 seconds' on the ClearFin homepage.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 2,
+        name: "Enter your monthly dining spend",
+        text: "Enter how much you spend each month on restaurants, cafes, takeout, and food delivery.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 3,
+        name: "Enter your monthly grocery budget",
+        text: "Enter your monthly spend at supermarkets, Costco, and grocery stores.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 4,
+        name: "Enter your monthly gas spend",
+        text: "Enter your monthly fuel costs including petrol, diesel, and EV charging.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 5,
+        name: "Enter your monthly travel spend",
+        text: "Enter your average monthly travel budget including flights, hotels, and car rentals.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 6,
+        name: "Enter your remaining monthly spend",
+        text: "Enter everything else: shopping, utilities, subscriptions, and services.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 7,
+        name: "Review your personalized card recommendations",
+        text: `ClearFin calculates your estimated annual earnings across ${cardCount} active Canadian cards and ranks them by net value for your specific spending profile.`,
+      },
+    ],
+  };
+}
 
 export default async function HomePage() {
-  const catalog = await getCatalogDisplayMap();
+  const [catalog, cards] = await Promise.all([
+    getCatalogDisplayMap(),
+    getCatalogOrderedCards(),
+  ]);
+  const cardCount = cards.length;
+  const issuerCount = new Set(cards.map((card) => card.issuer).filter(Boolean)).size;
+  const softwareApplicationSchema = buildSoftwareApplicationSchema(cardCount);
+  const howToSchema = buildHowToSchema(cardCount);
+
   return (
     <>
       <script
@@ -138,8 +150,8 @@ export default async function HomePage() {
           </div>
         </div>
         <div className="home-proof" role="region" aria-label="ClearFin coverage">
-          <div className="home-proof-item"><strong>120+</strong><span>Canadian cards compared</span></div>
-          <div className="home-proof-item"><strong>19</strong><span>Issuers covered</span></div>
+          <div className="home-proof-item"><strong>{cardCount}</strong><span>Canadian cards compared</span></div>
+          <div className="home-proof-item"><strong>{issuerCount}</strong><span>Issuers covered</span></div>
           <div className="home-proof-item"><strong>Independent</strong><span>Recommendations built around your spending</span></div>
         </div>
       </section>
