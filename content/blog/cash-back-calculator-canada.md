@@ -6,7 +6,7 @@ tags: [cashback, calculator, rewards, strategy]
 publishedAt: 2026-09-01
 updatedAt: 2026-10-10
 author: ClearFin Editorial Team
-coverImg: /images/blog/cash-back-calculator-canada.webp
+coverImg: /images/blog/cash-back-calculator-canada.svg
 ---
 
 A card that says **4% cash back** on the front page is not a 4% card for everyone.
