@@ -137,10 +137,46 @@ export default function InteractiveTool() {
   const totalMonthly = Object.values(spend).reduce((a, b: number) => a + b, 0);
   const annualSpend = totalMonthly * 12;
   const catalog = useCatalog();
-  // Score every card (cards.ts math), overlay Supabase display, then keep only cards the
-  // user qualifies for: a card is hidden when its income/credit minimum exceeds the user's.
-  // Cards with no stated requirement always stay.
-  const eligibleCards = getTopCards(spend, CARDS.length)
+
+  // Start with the existing static calculator math, then apply only narrowly verified
+  // corrections where the broad ClearFin "Travel" bucket differs from an issuer's
+  // published earn scope. This avoids changing the rest of the recommendation model.
+  const scoredCards = getTopCards(spend, CARDS.length)
+    .map((c) => {
+      let travelRate = c.rates.travel;
+
+      // TD/CIBC Aeroplan Infinite: the accelerated rate is for direct Air Canada
+      // purchases, not generic hotels/car rentals/other travel in our broad bucket.
+      if (c.id === "td-aeroplan" || c.id === "cibc-aeroplan-infinite") {
+        travelRate = 0.01;
+      }
+
+      // RBC Avion Visa Infinite publishes 1.25x on eligible travel purchases.
+      if (c.id === "rbc-avion") {
+        travelRate = 0.0125;
+      }
+
+      if (travelRate === c.rates.travel) return c;
+
+      const rates = { ...c.rates, travel: travelRate };
+      const annualEarn = Object.entries(spend).reduce(
+        (sum, [key, value]) => sum + value * 12 * rates[key as SpendKey],
+        0
+      );
+
+      return {
+        ...c,
+        rates,
+        netValue: annualEarn - c.annualFee,
+      };
+    })
+    // TD states the Emerald Flex Rate Visa is no longer available to new applicants.
+    .filter((c) => c.id !== "td-emerald")
+    .sort((a, b) => b.netValue - a.netValue);
+
+  // Overlay Supabase display data, then keep only cards the user qualifies for.
+  // Eligibility logic is intentionally unchanged in this narrow accuracy pass.
+  const eligibleCards = scoredCards
     .map((c) => withCatalog(c, catalog))
     .filter((c) => {
       const info = catalog[c.id];
