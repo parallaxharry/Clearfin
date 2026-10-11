@@ -4,14 +4,14 @@ import InfoPageLayout from "@/components/InfoPageLayout";
 export const metadata: Metadata = {
   title: "FAQ | ClearFin",
   description:
-    "Answers to common questions about ClearFin — how the credit card calculator works, which cards are tracked, data privacy, launch timing, and more.",
+    "Answers to common questions about ClearFin — how the credit card calculator works, which cards are tracked, data privacy, the mobile app, and more.",
   alternates: {
     canonical: "/faq",
   },
   openGraph: {
     title: "FAQ | ClearFin",
     description:
-      "Answers to common questions about ClearFin — how the credit card calculator works, which cards are tracked, data privacy, launch timing, and more.",
+      "Answers to common questions about ClearFin — how the credit card calculator works, which cards are tracked, data privacy, the mobile app, and more.",
     type: "website",
     locale: "en_CA",
     url: "https://www.clearfin.ca/faq",
@@ -23,62 +23,62 @@ const faqs = [
   {
     question: "How does ClearFin work?",
     answer:
-      "ClearFin compares Canadian credit cards based on your actual monthly spending. Answer 7 quick questions about your dining, grocery, gas, travel, and other spend, plus your income and credit score. ClearFin applies each card's earn rate to your numbers, calculates annual rewards, subtracts the annual fee, ranks the cards by net annual value, and shows only the cards you qualify for.",
+      "ClearFin compares Canadian credit cards based on your monthly spending. Answer 7 quick questions about dining, groceries, gas, travel, other spending, income, and your estimated credit score. ClearFin applies the card earn rates used by our calculator, estimates annual rewards, subtracts the annual fee, and ranks eligible matches by estimated net annual value.",
   },
   {
     question: "Is ClearFin free to use?",
     answer:
-      "Yes. The ClearFin calculator and card comparison tools are completely free. ClearFin is currently in early access — join the waitlist to be notified when it launches.",
+      "Yes. ClearFin Web is available now, and the credit card calculator and side-by-side comparison tools are free to use. No signup or credit card number is required to run a comparison.",
   },
   {
     question: "Which credit cards does ClearFin track?",
     answer:
-      "ClearFin tracks more than 120 Canadian credit cards across 19 major issuers, including American Express, Scotiabank, TD Bank, RBC, BMO, CIBC, Tangerine, Rogers, Wealthsimple, PC Financial, and more.",
+      "ClearFin currently tracks 120+ active Canadian credit cards across 19 issuers, including American Express, Scotiabank, TD Bank, RBC, BMO, CIBC, Tangerine, Rogers Bank, Wealthsimple, PC Financial, and others. The catalogue changes as products are added, updated, or discontinued.",
   },
   {
     question: "Is ClearFin affiliated with any bank or card issuer?",
     answer:
-      "No. ClearFin is not sponsored, endorsed, or affiliated with any bank, credit card issuer, or payment network, and comparisons are based on publicly available rates and terms. Some “Apply” links are affiliate links, so ClearFin may earn a commission if you are approved for a card through one, at no extra cost to you. That never affects how cards are ranked or reviewed — every card is scored by the same calculation, and we do not accept payment for placement.",
+      "No. ClearFin is not a bank, credit card issuer, or payment network. Some Apply links are affiliate links, so ClearFin may earn a commission if you are approved through one, at no extra cost to you. Affiliate compensation does not change a card's calculated value or its position in our recommendation logic, and we do not accept payment for placement.",
   },
   {
-    question: "How accurate are the cashback estimates?",
+    question: "How accurate are the reward estimates?",
     answer:
-      "Estimates are calculated using each card's published earn rates applied to your stated monthly spend, annualized and reduced by the annual fee. Actual rewards depend on your specific purchases, issuer terms, and any promotional rates. Always verify card details directly with the issuer before applying.",
+      "ClearFin estimates rewards using the card rates and assumptions in our catalogue, your stated spending, and the annual fee. The result is an estimate, not a guaranteed return. Merchant coding, spending caps, point values, redemption choices, promotional offers, and issuer changes can affect the actual amount you receive. Check current issuer terms before applying.",
   },
   {
-    question: "When does ClearFin launch?",
+    question: "Is the ClearFin mobile app available?",
     answer:
-      "ClearFin is launching in 2026, with early access starting in Calgary. Join the waitlist to secure your spot. We will send one email when it is your turn — no spam.",
+      "The website tools are live now. The ClearFin mobile app is still in development and is planned to roll out separately through early-access testing, starting in Calgary before a broader Canadian release.",
   },
   {
     question: "Is ClearFin available outside of Calgary?",
     answer:
-      "Early access is Calgary-first, then rolling out nationally across Canada. The card comparison calculator is available to all Canadians right now on the website.",
+      "Yes. The ClearFin website, calculator, catalogue, and comparison tools can be used across Canada today. Calgary-first messaging refers to the planned mobile-app early-access rollout, not the web tools.",
   },
   {
     question: "How does the credit card calculator work?",
     answer:
-      "Enter your monthly spend across five categories: dining, groceries, gas, travel, and other. ClearFin applies each card's earn rate to your spend, calculates annual rewards, subtracts the annual fee, and ranks every card in the catalogue by net annual value. The process takes about 30 seconds.",
+      "Enter your monthly spend across five categories — dining, groceries, gas, travel, and other — plus approximate income and credit score. ClearFin estimates annual rewards, subtracts the annual fee, applies its eligibility matching, and ranks the resulting cards by estimated net value. The process takes about 30 seconds.",
   },
   {
     question: "Can I upload my credit card statement?",
     answer:
-      "Yes. ClearFin offers an optional statement upload feature that analyzes your actual spending breakdown. Your statement is stored privately and securely and is not shared with third parties. See the Privacy Statement for full details.",
+      "Not on the current public website. ClearFin does not currently require or offer statement upload as part of the live calculator. If we add statement analysis in the future, the feature and its privacy handling will be explained before users provide any data.",
   },
   {
     question: "How do I request a correction to card information?",
     answer:
-      "If you believe any card information is inaccurate or outdated, contact us at info@clearfin.ca with the card name, page location, and the requested change. We aim to keep all card data current.",
+      "Email info@clearfin.ca with the card name, page URL, and the information you believe should be corrected. Card terms can change, so we review corrections against issuer or other primary sources before updating the catalogue.",
   },
   {
     question: "What is ClearSave?",
     answer:
-      "ClearSave is an upcoming feature in the ClearFin mobile app. It analyses the card you used for a purchase and tells you whether it was the best card for that spending category — helping you maximise rewards on every transaction. It is part of the 2026 app launch and is not yet available.",
+      "ClearSave is a planned mobile-app feature intended to help users understand whether another card in their wallet could earn more for a purchase. It is not part of the live website today, and its final functionality may change before release.",
   },
   {
     question: "Does using ClearFin affect my credit score?",
     answer:
-      "No. ClearFin is a comparison tool only. We do not access your credit report, perform any credit checks, or share your information with lenders. Your credit score is not affected in any way.",
+      "No. Using the ClearFin website does not perform a hard credit check or submit a credit-card application. The credit score entered in the calculator is an estimate used for matching. If you choose to apply for a card, the issuer's own application and underwriting process applies.",
   },
 ];
 
@@ -106,8 +106,8 @@ export default function FaqPage() {
         eyebrow="FAQ"
         title="Frequently asked"
         accent="questions"
-        description="Everything you need to know about how ClearFin works, which cards we track, and what to expect at launch."
-        meta="Updated May 2026"
+        description="Everything you need to know about the live ClearFin tools, our card data, and the mobile product we are building."
+        meta="Updated October 2026"
       >
         {faqs.map((faq) => (
           <section className="info-section" key={faq.question}>
