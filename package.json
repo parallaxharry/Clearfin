@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test scripts/*.test.cjs"
+    "test": "node --test scripts/*.test.cjs",
+    "audit:card-data": "node scripts/audit-card-data.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",
