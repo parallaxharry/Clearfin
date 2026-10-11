@@ -6,7 +6,7 @@ tags: [gas, cashback, rewards, driving]
 publishedAt: 2026-09-25
 updatedAt: 2026-10-10
 author: ClearFin Editorial Team
-coverImg: /images/blog/best-gas-credit-card-canada.webp
+coverImg: /images/blog/best-gas-credit-card-canada.svg
 ---
 
 Gas rewards are easy to understand and easy to overvalue.
