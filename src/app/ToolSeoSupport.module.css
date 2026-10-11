@@ -1,0 +1,126 @@
+.support {
+  width: min(calc(100% - 80px), 1160px);
+  margin: 72px auto 64px;
+  color: var(--ink);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: 56px;
+  align-items: start;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.heading {
+  margin: 0;
+  max-width: 690px;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -.035em;
+  color: var(--ink);
+}
+
+.body {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+  max-width: 720px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-mute);
+}
+
+.aside {
+  align-self: start;
+  padding: 28px 30px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(127, 127, 127, .035);
+}
+
+.asideTitle {
+  margin: 0 0 18px;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+
+.asideItems {
+  display: grid;
+  gap: 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-mute);
+}
+
+.asideItems h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.asideItems p,
+.body p {
+  margin: 0;
+}
+
+.foot {
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-mute);
+}
+
+.foot a {
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.foot a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .support {
+    width: min(calc(100% - 44px), 720px);
+    margin: 52px auto 48px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .heading {
+    font-size: clamp(28px, 7vw, 36px);
+  }
+}
+
+@media (max-width: 520px) {
+  .support {
+    width: calc(100% - 32px);
+    margin-top: 42px;
+  }
+
+  .aside {
+    padding: 22px;
+  }
+}

@@ -6,6 +6,7 @@ import CompareSection from "@/components/CompareSection";
 import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap } from "@/lib/cardDetail";
+import styles from "../ToolSeoSupport.module.css";
 
 // ISR: card display refreshes from Supabase card_catalog every ~5 min.
 export const revalidate = 300;
@@ -65,19 +66,14 @@ export default async function CompareCreditCardsPage() {
           </CatalogProvider>
         </SpendProvider>
 
-        <div
-          className="mx-auto w-full max-w-[1400px] px-6 py-20 text-[color:var(--ink)] md:px-10 md:py-24"
-          aria-labelledby="how-clearfin-compares"
-        >
-          <div className="grid gap-12 md:grid-cols-[1.2fr_0.8fr] md:gap-16">
+        <div className={styles.support} aria-labelledby="how-clearfin-compares">
+          <div className={styles.grid}>
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--accent)]">
-                How the comparison works
-              </p>
-              <h2 id="how-clearfin-compares" className="text-3xl font-semibold tracking-[-0.03em] md:text-4xl">
+              <p className={styles.eyebrow}>How the comparison works</p>
+              <h2 id="how-clearfin-compares" className={styles.heading}>
                 A card can look great on paper and still be the wrong fit for your spending.
               </h2>
-              <div className="mt-6 space-y-5 text-base leading-7 text-[color:var(--ink-mute)]">
+              <div className={styles.body}>
                 <p>
                   ClearFin compares cards using the spending profile in the calculator rather than
                   ranking every card by one headline earn rate. A grocery-heavy household can get a
@@ -99,36 +95,36 @@ export default async function CompareCreditCardsPage() {
               </div>
             </div>
 
-            <aside className="self-start rounded-3xl border border-white/10 bg-white/[0.035] p-7 md:p-8">
-              <h2 className="text-xl font-semibold tracking-[-0.02em]">What to compare before applying</h2>
-              <div className="mt-5 space-y-5 text-sm leading-6 text-[color:var(--ink-mute)]">
+            <aside className={styles.aside}>
+              <h2 className={styles.asideTitle}>What to compare before applying</h2>
+              <div className={styles.asideItems}>
                 <div>
-                  <h3 className="font-semibold text-[color:var(--ink)]">Rewards where you actually spend</h3>
+                  <h3>Rewards where you actually spend</h3>
                   <p>Look beyond the largest advertised multiplier and check the categories that make up most of your budget.</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[color:var(--ink)]">Annual fee after the first year</h3>
+                  <h3>Annual fee after the first year</h3>
                   <p>A first-year waiver can be useful, but the ongoing fee matters when deciding whether a card is worth keeping.</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[color:var(--ink)]">Eligibility and issuer terms</h3>
+                  <h3>Eligibility and issuer terms</h3>
                   <p>Income, credit history and issuer underwriting still determine approval. A ClearFin ranking is not an approval guarantee.</p>
                 </div>
               </div>
             </aside>
           </div>
 
-          <div className="mt-12 border-t border-white/10 pt-8 text-sm leading-6 text-[color:var(--ink-mute)]">
+          <div className={styles.foot}>
             Want a personalized starting point instead? Use the{" "}
-            <Link className="font-semibold text-[color:var(--accent)] hover:underline" href="/credit-card-calculator-canada">
+            <Link href="/credit-card-calculator-canada">
               Canadian credit card rewards calculator
             </Link>
             {" "}or browse our{" "}
-            <Link className="font-semibold text-[color:var(--accent)] hover:underline" href="/best-credit-cards-canada">
+            <Link href="/best-credit-cards-canada">
               best credit cards in Canada guide
             </Link>
             . You can also review the{" "}
-            <Link className="font-semibold text-[color:var(--accent)] hover:underline" href="/credit-card-rewards-canada-guide">
+            <Link href="/credit-card-rewards-canada-guide">
               ClearFin rewards methodology
             </Link>
             {" "}to see how estimated reward values are calculated.
