@@ -15,38 +15,18 @@ const ChatWidget = dynamic(() => import("@/components/ChatWidget"));
 
 const GOOGLE_ANALYTICS_ID = "G-7E7SRWHXL4";
 
-
-
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clearfin.ca"),
-  title: "Compare Credit Cards Canada: Find Your Best Card | ClearFin",
+  title: "ClearFin | Find a Credit Card That Fits Your Spending",
   description:
-    "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
-  keywords: [
-    "compare credit cards in Canada",
-    "Canadian credit card comparison",
-    "compare Canadian credit card rewards",
-    "best credit card based on my spending Canada",
-    "credit card rewards calculator Canada",
-    "cash back calculator Canada",
-    "which credit card should I use Canada",
-    "credit card rewards optimizer Canada",
-    "best credit cards Canada 2026",
-    "best cashback credit cards Canada",
-    "best travel credit cards Canada",
-    "best grocery credit cards Canada",
-    "best no fee credit cards Canada",
-    "best student credit cards Canada",
-    "credit card rewards guide Canada",
-  ],
+    "Find Canadian credit cards that fit your real spending, fees and eligibility. Use ClearFin's calculator, comparison tool and independent card guides.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Compare Credit Cards Canada: Find Your Best Card | ClearFin",
+    title: "ClearFin | Find a Credit Card That Fits Your Spending",
     description:
-      "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
+      "Find Canadian credit cards that fit your real spending, fees and eligibility with ClearFin's calculator, comparison tool and independent guides.",
     type: "website",
     locale: "en_CA",
     url: "https://www.clearfin.ca",
@@ -62,9 +42,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Compare Credit Cards Canada: Find Your Best Card | ClearFin",
+    title: "ClearFin | Find a Credit Card That Fits Your Spending",
     description:
-      "Compare Canadian credit cards, rewards, cash back, travel perks, and welcome bonuses with tools that help match cards to your spending habits.",
+      "Find Canadian credit cards that fit your real spending, fees and eligibility with ClearFin's calculator and comparison tools.",
     images: ["/logo.png"],
   },
   robots: { index: true, follow: true },
@@ -73,10 +53,16 @@ export const metadata: Metadata = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": "https://www.clearfin.ca/#organization",
   name: "ClearFin",
   alternateName: "ClearFin Digital Inc.",
   url: "https://www.clearfin.ca",
-  logo: "https://www.clearfin.ca/logo.png",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://www.clearfin.ca/logo.png",
+    width: 1254,
+    height: 1254,
+  },
   contactPoint: {
     "@type": "ContactPoint",
     email: "info@clearfin.ca",
@@ -94,8 +80,10 @@ const organizationSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://www.clearfin.ca/#website",
   name: "ClearFin",
   url: "https://www.clearfin.ca",
+  publisher: { "@id": "https://www.clearfin.ca/#organization" },
 };
 
 export default async function RootLayout({
