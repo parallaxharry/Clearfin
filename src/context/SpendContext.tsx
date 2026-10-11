@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { SpendKey, DEFAULT_SPEND } from "@/lib/cards";
+import { loadCardProfile } from "@/lib/savedCardProfile";
 
 interface SpendContextValue {
   spend: Record<SpendKey, number>;
@@ -15,6 +16,12 @@ const SpendContext = createContext<SpendContextValue>({
 
 export function SpendProvider({ children }: { children: ReactNode }) {
   const [spend, setSpend] = useState<Record<SpendKey, number>>(DEFAULT_SPEND);
+
+  useEffect(() => {
+    const saved = loadCardProfile();
+    if (saved) setSpend(saved.spend);
+  }, []);
+
   return (
     <SpendContext.Provider value={{ spend, setSpend }}>
       {children}
