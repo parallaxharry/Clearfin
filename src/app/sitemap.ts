@@ -18,8 +18,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 
-  // Every card detail page (card_catalog ∪ cards.ts) — the site's richest SEO content.
-  const cardIds = await getAllCardIds();
+  // Every active card detail page. The legacy public id "cobalt" redirects to
+  // the catalog-backed canonical id "Amex-cobalt", so do not publish both in
+  // the sitemap while the catalog id is being normalized.
+  const cardIds = (await getAllCardIds()).filter((id) => id !== "cobalt");
   const cardPages: MetadataRoute.Sitemap = cardIds.map((id) => ({
     url: `${baseUrl}/credit-cards/${encodeURIComponent(id)}`,
     lastModified: now,
