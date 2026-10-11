@@ -20,6 +20,11 @@ export async function generateStaticParams() {
   return ids.map((id) => ({ id }));
 }
 
+function cardSeoTitle(name: string): string {
+  const reviewTitle = `${name} Review 2026 | ClearFin`;
+  return reviewTitle.length <= 60 ? reviewTitle : `${name} | ClearFin`;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -27,11 +32,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const card = await getCard(id);
-  if (!card) return { title: "Card not found - ClearFin" };
+  if (!card) return { title: "Card not found | ClearFin" };
 
   const feeText = card.annualFee > 0 ? `$${card.annualFee}/year` : "no annual fee";
-  const title = `${card.name} Review (2026) - Rewards, Fees & Perks | ClearFin`;
-  const description = `${card.name} from ${card.issuer}: ${feeText}, full earn rates, welcome bonus, fees and benefits. Compare it against every Canadian card on ClearFin.`;
+  const title = cardSeoTitle(card.name);
+  const description = `Review ${card.name}: ${feeText}, reward rates, welcome offer and key benefits. See whether it fits your spending on ClearFin.`;
 
   return {
     title,
