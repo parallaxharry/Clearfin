@@ -1,6 +1,7 @@
 import type { ChatCompletionTool } from "openai/resources/chat/completions";
-import { getCard } from "@/lib/cardDetail";
-import { getTopCards, getBreakdown, CAT_LABELS, type SpendKey } from "@/lib/cards";
+import { getCard, getCatalogDisplayMap } from "@/lib/cardDetail";
+import { getBreakdown, CAT_LABELS, type SpendKey } from "@/lib/cards";
+import { rankCards } from "./rewardModel";
 import { getSlimCatalogue } from "@/lib/chatContext";
 
 /**
@@ -39,7 +40,7 @@ export const CHAT_TOOLS: ChatCompletionTool[] = [
     function: {
       name: "rank_cards",
       description:
-        "Rank cards by estimated net annual value for a given monthly spending pattern, using the same calculation as the ClearFin calculator. Call this whenever the user describes what they spend. Do not do this arithmetic yourself.",
+        "Rank cards by estimated net annual value for a given monthly spending pattern, using the same reward calculation as the ClearFin calculator. Income eligibility is not filtered here. Welcome offers, fee waivers and reward caps are excluded. Call this whenever the user describes what they spend. Do not do this arithmetic yourself.",
       parameters: {
         type: "object",
         properties: {
@@ -118,7 +119,7 @@ async function runGetCardDetails(args: Record<string, unknown>) {
   };
 }
 
-function runRankCards(args: Record<string, unknown>) {
+async function runRankCards(args: Record<string, unknown>) {
   const spend: Record<SpendKey, number> = {
     dining: clampSpend(args.dining),
     grocery: clampSpend(args.grocery),
@@ -130,11 +131,11 @@ function runRankCards(args: Record<string, unknown>) {
   const requested = typeof args.limit === "number" ? Math.round(args.limit) : 3;
   const limit = Math.min(Math.max(requested, 1), MAX_RANK_RESULTS);
 
-  const top = getTopCards(spend, limit);
+  const top = rankCards(spend, await getCatalogDisplayMap()).slice(0, limit);
 
   return {
     spend_used: spend,
-    note: "Net annual value is estimated yearly rewards minus the annual fee, using the same calculation as the ClearFin calculator.",
+    note: "Net annual value is estimated yearly rewards minus the annual fee, using the same reward calculation as the ClearFin calculator. Income eligibility is not filtered here. Welcome offers, fee waivers and reward caps are excluded.",
     results: top.map((card, i) => ({
       rank: i + 1,
       id: card.id,
@@ -163,7 +164,7 @@ export async function runChatTool(name: string, rawArgs: string): Promise<unknow
 
   try {
     if (name === "get_card_details") return await runGetCardDetails(args);
-    if (name === "rank_cards") return runRankCards(args);
+    if (name === "rank_cards") return await runRankCards(args);
     return { error: `Unknown tool: ${name}` };
   } catch (err) {
     console.error(`chat tool ${name} failed:`, err);

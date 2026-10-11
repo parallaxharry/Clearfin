@@ -4,11 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import {
-  CARDS, CardDef, SpendKey,
-  fmt, fmtRate, getBreakdown, scoreCard, getTopCards,
+  CardDef, SpendKey,
+  fmt, fmtRate, getBreakdown, scoreCard,
 } from "@/lib/cards";
 import { useSpend } from "@/context/SpendContext";
-import { useCatalog, withCatalog } from "@/context/CatalogContext";
+import { useCatalog } from "@/context/CatalogContext";
+import { getModelCards, rankCards } from "@/lib/rewardModel";
 import { trackMetaAction } from "@/lib/metaPixel";
 
 function CardColumn({
@@ -134,8 +135,8 @@ function CardSlot({
   }, [isOpen, onClose]);
 
   const catalog = useCatalog();
-  const selectedBase = selectedId ? CARDS.find((c) => c.id === selectedId) : null;
-  const selectedCard = selectedBase ? withCatalog(selectedBase, catalog) : null;
+  const cards = getModelCards(catalog);
+  const selectedCard = selectedId ? cards.find((c) => c.id === selectedId) : null;
 
   const PRIORITY_ISSUERS = [
     "American Express",
@@ -151,7 +152,7 @@ function CardSlot({
     return i === -1 ? PRIORITY_ISSUERS.length : i;
   };
 
-  const filtered = CARDS
+  const filtered = cards
     .filter((c) => {
       if (c.id === otherSelectedId) return false;
       if (!query) return true;
@@ -238,7 +239,9 @@ function CardSlot({
 export default function CompareSection() {
   const { spend: effectiveSpend } = useSpend();
 
-  const defaultIds = getTopCards(effectiveSpend, 2).map((c) => c.id) as [string, string];
+  const catalog = useCatalog();
+  const cards = getModelCards(catalog);
+  const defaultIds = rankCards(effectiveSpend, catalog).slice(0, 2).map((c) => c.id) as [string, string];
   const [selectedIds, setSelectedIds] = useState<[string | null, string | null]>(defaultIds);
   const [queries, setQueries] = useState<[string, string]>(["", ""]);
   const [openSlot, setOpenSlot] = useState<0 | 1 | null>(null);
@@ -247,7 +250,7 @@ export default function CompareSection() {
   // event when the palette is used while this section is already mounted.
   useEffect(() => {
     const apply = (ids: string[]) => {
-      const valid = ids.filter((id) => CARDS.some((c) => c.id === id)).slice(0, 2);
+      const valid = ids.filter((id) => getModelCards(catalog).some((c) => c.id === id)).slice(0, 2);
       if (valid.length === 2) setSelectedIds([valid[0], valid[1]]);
       else if (valid.length === 1) setSelectedIds((prev) => [valid[0], prev[1]]);
     };
@@ -259,7 +262,7 @@ export default function CompareSection() {
     };
     window.addEventListener("clearfin:compare", onCompare);
     return () => window.removeEventListener("clearfin:compare", onCompare);
-  }, []);
+  }, [catalog]);
 
   const selectCard = (slot: 0 | 1, id: string) => {
     if (selectedIds[slot] !== id && selectedIds[slot === 0 ? 1 : 0]) {
@@ -286,13 +289,11 @@ export default function CompareSection() {
     setOpenSlot(slot);
   };
 
-  const catalog = useCatalog();
   const scoredCards = selectedIds.map((id) => {
     if (!id) return null;
-    const card = CARDS.find((c) => c.id === id);
+    const card = cards.find((c) => c.id === id);
     if (!card) return null;
-    // Display fields from Supabase; scoreCard uses cards.ts rates/fee (math unchanged).
-    return withCatalog({ ...card, netValue: scoreCard(card, effectiveSpend) }, catalog);
+    return { ...card, netValue: scoreCard(card, effectiveSpend) };
   }) as [(CardDef & { netValue: number }) | null, (CardDef & { netValue: number }) | null];
 
   return (
@@ -371,7 +372,7 @@ export default function CompareSection() {
 
         <p className="cmp-disclaimer-foot">
           Points and miles are shown as estimated cash value using publicly available reward rates.
-          Actual rewards may vary · ClearFin is independent of card issuers ·{" "}
+          Estimates exclude welcome offers, fee waivers and reward caps. Actual rewards may vary · ClearFin is independent of card issuers ·{" "}
           <a href="/credit-card-rewards-canada-guide">View our methodology</a>
         </p>
       </div>

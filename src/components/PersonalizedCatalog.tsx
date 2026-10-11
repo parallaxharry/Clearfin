@@ -39,7 +39,7 @@ export default function PersonalizedCatalog({ cards }: PersonalizedCatalogProps)
 
   useEffect(() => {
     const saved = loadCardProfile();
-    if (!saved) return;
+    if (!saved || saved.results.length === 0) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setProfile(saved);
     setSortMode("best");
