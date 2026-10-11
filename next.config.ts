@@ -45,6 +45,19 @@ const nextConfig: NextConfig = {
         destination: "/compare-credit-cards-canada",
         permanent: false,
       },
+      // card_catalog historically used "Amex-cobalt" while the public site used
+      // "cobalt". Search Console now sees both. Keep the catalog-backed URL as
+      // the single canonical destination until the data id is normalized.
+      {
+        source: "/credit-cards/cobalt",
+        destination: "/credit-cards/Amex-cobalt",
+        permanent: true,
+      },
+      {
+        source: "/credit-cards/amex-cobalt",
+        destination: "/credit-cards/Amex-cobalt",
+        permanent: true,
+      },
       // Capital One discontinued both Aspire cards and asked for them to be
       // removed (2026-10-09). Rows stay in card_catalog with is_active = false.
       {
