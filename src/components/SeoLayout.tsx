@@ -25,6 +25,8 @@ export default function SeoLayout({
   heroImageAlt,
   children,
 }: SeoLayoutProps) {
+  const heroIsCardArt = heroImage?.startsWith("/cards/");
+
   return (
     <div className="seo-page">
       {/* ── Nav (shared site-wide) ── */}
@@ -62,14 +64,28 @@ export default function SeoLayout({
             </div>
           </div>
           {heroImage ? (
-            <figure className="seo-hero-image">
+            <figure
+              className="seo-hero-image"
+              style={
+                heroIsCardArt
+                  ? {
+                      background: "linear-gradient(135deg, #f8fafc 0%, #eef3f8 100%)",
+                      padding: "30px",
+                    }
+                  : undefined
+              }
+            >
               <Image
                 src={heroImage}
                 alt={heroImageAlt ?? title}
                 fill
                 sizes="(max-width: 720px) 92vw, (max-width: 1100px) 40vw, 430px"
                 quality={90}
-                style={{ objectFit: "cover" }}
+                style={{
+                  objectFit: heroIsCardArt ? "contain" : "cover",
+                  objectPosition: "center",
+                  padding: heroIsCardArt ? "30px" : undefined,
+                }}
                 preload
               />
             </figure>
