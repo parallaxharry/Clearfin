@@ -64,8 +64,8 @@ export default function SiteFooter() {
       </div>
 
       <div className="footer-disclaimer">
-        ClearFin is independent and is not affiliated with any bank, issuer, or credit
-        card provider. For corrections, removals, or updates, contact{" "}
+        ClearFin is an independent comparison platform and may earn affiliate commissions.
+        <Link href="/disclosures"> How we make money</Link>. For corrections or updates, contact{" "}
         <a href="mailto:info@clearfin.ca">info@clearfin.ca</a>.
       </div>
     </footer>

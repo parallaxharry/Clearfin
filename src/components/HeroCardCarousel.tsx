@@ -146,7 +146,7 @@ export default function HeroCardCarousel() {
       className="hero-card-carousel"
       role="region"
       aria-roledescription="carousel"
-      aria-label="ClearFin top 10 Canadian credit cards"
+      aria-label="ClearFin commercially featured Canadian credit cards"
       tabIndex={0}
       onFocus={() => setInteracting(true)}
       onBlur={() => setInteracting(false)}
@@ -222,7 +222,7 @@ export default function HeroCardCarousel() {
         </Link>
       </div>
 
-      <p className="hero-carousel-note">Rates and offers can change</p>
+      <p className="hero-carousel-note">Commercially featured · <Link href="/disclosures">How we make money</Link></p>
     </div>
   );
 }
