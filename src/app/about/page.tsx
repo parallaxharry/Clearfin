@@ -155,8 +155,9 @@ export default async function AboutPage() {
             Some &ldquo;Apply&rdquo; links are affiliate links. ClearFin may earn a
             commission if you are approved for a card through one, at no extra cost to
             you. Affiliate compensation does not change a card&apos;s calculated value or
-            its position in our recommendation logic, and we do not accept payment for
-            placement. Read the full <Link href="/disclosures">site disclosures</Link>.
+            its position in calculator results. The homepage Featured carousel is a
+            separate commercial selection: affiliate compensation can influence
+            which cards appear and their order. Read the full <Link href="/disclosures">site disclosures</Link>.
           </p>
         </section>
 

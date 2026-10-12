@@ -8,6 +8,7 @@ import TrackedApplyLink from "@/components/TrackedApplyLink";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
+import { offerExpiryStatus } from "@/lib/offerExpiry";
 import { CARDS } from "@/lib/cards";
 
 // ISR: Supabase card_catalog edits go live within ~5 min, no redeploy needed.
@@ -214,11 +215,6 @@ const CREDIT_TIERS = [
   { label: "Excellent", min: 760, color: "#313a68" },
 ] as const;
 
-// Offer freshness is evaluated against the catalogue audit date. Keeping this
-// deterministic avoids a page changing between React renders; the date moves
-// forward with each issuer-research pass.
-const OFFER_AUDIT_TIMESTAMP = Date.parse("2026-08-09T00:00:00Z");
-
 function buildCreditTiers(min: number) {
   return CREDIT_TIERS.map((t, i) => {
     const upper = CREDIT_TIERS[i + 1]?.min ?? 900;
@@ -245,10 +241,10 @@ export default async function CardPage({
   // Treat those as having no welcome so we don't render awkward "earn no bonus" copy.
   const wbHeadline = wb?.headline ?? "";
   const wbIsNone = /^no\b/i.test(wbHeadline) && /\b(welcome|bonus)\b/i.test(wbHeadline);
-  const offerEnd = wb?.offer_end_date ? Date.parse(wb.offer_end_date) : Number.NaN;
-  const wbIsExpired = Number.isFinite(offerEnd) && offerEnd < OFFER_AUDIT_TIMESTAMP;
+  const expiry = offerExpiryStatus(wb?.offer_end_date);
+  const wbIsExpired = expiry === "expired";
   const hasWelcome =
-    !!wb && !wbIsNone && !wbIsExpired && (!!wb.headline || (wb.stages?.length ?? 0) > 0);
+    !!wb && !wbIsNone && !wbIsExpired && expiry !== "invalid" && (!!wb.headline || (wb.stages?.length ?? 0) > 0);
   const welcomeValue =
     typeof wb?.estimated_value_cad === "number" && wb.estimated_value_cad > 0
       ? money(wb.estimated_value_cad)
