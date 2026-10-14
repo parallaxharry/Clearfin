@@ -6,7 +6,7 @@ tags: [amazon, cashback, rewards, shopping]
 publishedAt: 2026-10-10
 updatedAt: 2026-10-10
 author: ClearFin Editorial Team
-coverImg: /cards/amazon-mastercard.jpeg
+coverImg: /images/blog/best-credit-card-for-amazon-canada.webp
 ---
 
 If Amazon.ca takes up a noticeable part of your monthly spending, the credit card you use can make a bigger difference than you might expect.
