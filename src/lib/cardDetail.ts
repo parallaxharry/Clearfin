@@ -651,7 +651,9 @@ export const getCatalogOrderedCards = cache(async (): Promise<CatalogListCard[]>
     id: staticIdByCatalogId.get(row.id) ?? row.id,
     name: row.name ?? row.id,
     issuer: row.issuer ?? "",
-    img: row.img ?? "",
+    // Same fallback as the detail page: a row added to Supabase before its art
+    // is uploaded still renders with the cards.ts image instead of a broken tile.
+    img: row.img ?? CARDS.find((c) => c.id === (staticIdByCatalogId.get(row.id) ?? row.id))?.img ?? "",
     annualFee: row.annual_fee,
     badge: row.badge ?? "",
     bankUrl: row.bank_url,
