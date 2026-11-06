@@ -38,6 +38,8 @@ Interest is easier to judge in dollars than in percentages. Here is roughly what
 
 These are rounded, simple-interest estimates, and your own rate may differ. Interest added to an unpaid balance starts earning interest itself, so the real cost of a balance you never pay down is slightly higher.
 
+[[finly-embed:interest-calculator]]
+
 ## Interest Cancels Rewards Fast
 
 This is the part most people miss. Rewards are earned on spending; interest is charged on the balance. When you carry a balance, the second number grows much faster than the first.
@@ -91,6 +93,8 @@ A few practical steps, in order of impact:
 1. **Stop adding to it.** New purchases on a card with a balance usually start charging interest straight away. Use a different card or debit for day-to-day spending until the balance is gone.
 2. **Pay more than the minimum.** Minimum payments are designed to keep you paying for a long time. Your statement shows an estimate of how long the balance would take to clear on minimum payments alone — it is worth reading once.
 3. **Consider a lower rate.** Moving to one of the cards above, or using a balance transfer offer, can cut the cost while you pay it down. Balance transfers usually come with a fee and a promotional rate that ends, so check both before you move.
+
+[[finly-embed:balance-transfer-calculator]]
 
 ## How to Use This
 

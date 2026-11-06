@@ -10,6 +10,8 @@ import SiteFooter from "@/components/SiteFooter";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
 import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import { getFinlyRebate } from "@/lib/finlyRebates";
+import FinlyEmbed from "@/components/FinlyEmbed"; // FinlyWealth embeds experiment
+import { FINLY_EMBED_BY_CARD } from "@/lib/finlyEmbeds"; // FinlyWealth embeds experiment
 import { offerExpiryStatus } from "@/lib/offerExpiry";
 import { CARDS } from "@/lib/cards";
 
@@ -647,6 +649,8 @@ export default async function CardPage({
                 <p>Confirm whether the product earns points or cash back on the issuer&apos;s current page.</p>
               </div>
             )}
+            {/* FinlyWealth embeds experiment: points calculator for this card's program. */}
+            {FINLY_EMBED_BY_CARD[card.id] ? <FinlyEmbed embedKey={FINLY_EMBED_BY_CARD[card.id]} /> : null}
           </article>
 
           {/* ── Perks & coverage: first 8 (two rows) shown, rest behind a toggle ── */}

@@ -6,6 +6,8 @@ import type { BlogPost } from "@/lib/blog";
 import { formatPostDate } from "@/lib/blog";
 import { resolveBlogCover } from "@/lib/blogCover";
 import { slugifyHeading } from "@/lib/blogToc";
+import FinlyEmbed from "@/components/FinlyEmbed"; // FinlyWealth embeds experiment
+import { finlyEmbedKeyFromText } from "@/lib/finlyEmbeds"; // FinlyWealth embeds experiment
 
 const SITE_URL = "https://www.clearfin.ca";
 
@@ -121,6 +123,12 @@ export default function BlogPostArticle({
             // stretching to the column width. A wrapper div would be simpler
             // but SeoTableOfContents selects ".seo-content > h2" as a direct
             // child, and nesting the body would hide every heading from it.
+            // FinlyWealth embeds experiment: a paragraph that is exactly
+            // [[finly-embed:<key>]] becomes that tool. See src/lib/finlyEmbeds.ts.
+            p: ({ children, ...props }) => {
+              const embedKey = typeof children === "string" ? finlyEmbedKeyFromText(children) : null;
+              return embedKey ? <FinlyEmbed embedKey={embedKey} /> : <p {...props}>{children}</p>;
+            },
             table: ({ children, ...props }) => (
               <table className="blog-table" {...props}>
                 {children}

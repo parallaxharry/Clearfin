@@ -85,7 +85,7 @@ export default function PrivacyPage() {
       title="Privacy"
       accent="statement"
       description="How ClearFin handles your information — what we collect, what we never collect, and the choices you control."
-      meta="Last updated September 4, 2026"
+      meta="Last updated November 6, 2026"
     >
       <section className="info-section info-section-lead">
         <h2>Educational information only</h2>
@@ -169,6 +169,25 @@ export default function PrivacyPage() {
               target="_blank" rel="noopener noreferrer">Meta&apos;s privacy policy</a>.
           </p>
           <CookiePreferencesButton />
+        </section>
+
+        {/* FinlyWealth embeds experiment — remove with the embeds (see src/lib/finlyEmbeds.ts). */}
+        <section className="info-section">
+          <h2>FinlyWealth tools on ClearFin</h2>
+          <p>
+            Some ClearFin pages include calculators provided by FinlyWealth, our
+            affiliate partner. These tools load from FinlyWealth&apos;s website
+            inside a frame on our page, so what you enter in them and how you use
+            them is handled by FinlyWealth, not ClearFin, under FinlyWealth&apos;s own
+            privacy policy. FinlyWealth may also set its own cookies when the tool
+            loads. If you open a card from one of these tools, you go to
+            FinlyWealth&apos;s website, and FinlyWealth records that visit so ClearFin
+            can be credited if you apply.
+          </p>
+          <p>
+            Learn more in <a href="https://www.finlywealth.com/privacy-policy"
+              target="_blank" rel="noopener noreferrer">FinlyWealth&apos;s privacy policy</a>.
+          </p>
         </section>
 
         <section className="info-section">
