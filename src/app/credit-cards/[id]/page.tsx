@@ -276,7 +276,9 @@ export default async function CardPage({
   // Hero lede: lead with the welcome hook plus its dollar value (new info, not a label restated).
   const heroLede = (() => {
     if (hasWelcome && wb?.headline) {
-      const h = wb.headline.charAt(0).toLowerCase() + wb.headline.slice(1);
+      // "Earn 5% cash back…" would read "Start with earn 5%…", so drop a leading verb.
+      const headline = wb.headline.replace(/^(earn|get)\s+/i, "");
+      const h = headline.charAt(0).toLowerCase() + headline.slice(1);
       return welcomeCad && !headlineHasDollar
         ? `Start with ${h}, worth about ${money(welcomeCad)}.`
         : `Start with ${h}.`;
