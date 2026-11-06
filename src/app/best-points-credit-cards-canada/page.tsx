@@ -140,6 +140,7 @@ export default function BestPointsCreditCardsCanadaPage() {
         ]}
         lastUpdated="October 11, 2026"
       >
+        <AffiliateDisclosure rebates />
         <h2>The short answer</h2>
         <p>
           The best points credit card is not necessarily the one with the biggest
@@ -169,7 +170,6 @@ export default function BestPointsCreditCardsCanadaPage() {
           ))}
         </div>
 
-        <AffiliateDisclosure />
 
         <h2>Points cards side by side</h2>
         <div className="seo-table-wrap">

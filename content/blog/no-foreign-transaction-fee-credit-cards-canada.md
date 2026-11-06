@@ -41,7 +41,7 @@ Verified against our catalogue on **5 October 2026**. Fees and earn rates change
 | [Scotia Gold Amex](/credit-cards/scotia-gold) | $120 | 6% groceries, 5% dining, 3% gas | $12,000 |
 | [Scotia Passport Visa Infinite +](/credit-cards/scotia-passport) | $150 | 3% groceries, 2% dining | $60,000 |
 | [Wealthsimple Card](/credit-cards/wealthsimple) | $240 ($20/month) | 2% flat on everything | $150,000 |
-| [Scotiabank Platinum Amex](/credit-cards/scotia-platinum) | $399 | 2% flat, 9.99% purchase APR | $12,000 |
+| [Scotiabank Platinum Amex](/credit-cards/scotia-platinum) | $399 | 2% flat, low purchase interest | $12,000 |
 | [Scotia Passport Visa Infinite Privilege](/credit-cards/scotia-passport-privilege) | $599 | 3% travel, 2% dining | $150,000 |
 
 Two things in that table deserve a closer look.

@@ -5,6 +5,7 @@ import SiteFooter from "@/components/SiteFooter";
 import PersonalizedCatalog from "@/components/PersonalizedCatalog";
 import { getCatalogOrderedCards } from "@/lib/cardDetail";
 import { FINLY_REBATES_CHECKED_AT, getFinlyRebate } from "@/lib/finlyRebates";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 
 export const metadata: Metadata = {
   title: "All Credit Cards (2026) | ClearFin",
@@ -40,12 +41,13 @@ export default async function CreditCardsPage() {
             <div><span>Canadian credit cards</span><h2 id="catalog-title">Browse the full collection</h2></div>
             <Link href="/credit-card-calculator-canada">Find my best card →</Link>
           </div>
+          <AffiliateDisclosure rebates={rebateCount > 0} />
           {rebateCount > 0 ? (
             <div className="catalog-rebate-note">
               <span aria-hidden="true">$</span>
               <p>
                 <strong>{rebateCount} cards currently include a verified FinlyWealth cash rebate.</strong>
-                Look for the rebate ribbon. Rebates require an eligible application through ClearFin and approval; terms apply. Amounts checked {FINLY_REBATES_CHECKED_AT}.
+                Look for the rebate ribbon. Rebates are paid by FinlyWealth and require an eligible application through FinlyWealth and approval; terms apply. Amounts checked {FINLY_REBATES_CHECKED_AT}.
               </p>
             </div>
           ) : null}

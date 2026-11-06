@@ -12,6 +12,9 @@ import { useCatalog } from "@/context/CatalogContext";
 import { rankCards, qualifiesByIncome, REWARD_MODEL_VERSION } from "@/lib/rewardModel";
 import CalculatorPreview from "@/components/CalculatorPreview";
 import { trackMetaAction } from "@/lib/metaPixel";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import { getFinlyRebate } from "@/lib/finlyRebates";
+import { applyLabel, applyRel } from "@/lib/applyLink";
 import { loadCardProfile, saveCardProfile } from "@/lib/savedCardProfile";
 
 /* ══════════════════════════════════════════════════════════
@@ -531,23 +534,27 @@ export default function InteractiveTool() {
                 <div className="card-modal-sheen" />
               </div>
             </div>
+            <AffiliateDisclosure
+              compact
+              rebates={getFinlyRebate(modalCard.id, modalCard.bankUrl) !== null}
+            />
             <a
               href={modalCard.bankUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel={applyRel(modalCard.bankUrl)}
               className="card-modal-cta"
               onClick={() => {
                 trackMetaAction("ApplyClick");
                 fetch("/api/track-click", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cardId: modalCard.id }) }).catch(() => {});
               }}
             >
-              Apply at {modalCard.issuer} →
+              {applyLabel(modalCard.issuer, modalCard.bankUrl)} →
             </a>
             <Link href={`/credit-cards/${modalCard.id}`} className="card-modal-view">
               View full details
             </Link>
             <div className="card-modal-disclaimer">
-              Issuer terms apply. ClearFin is not affiliated with this provider.
+              Issuer terms apply. <Link href="/disclosures">How ClearFin makes money</Link>
             </div>
           </div>
         </div>

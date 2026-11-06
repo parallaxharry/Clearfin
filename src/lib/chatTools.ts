@@ -20,7 +20,7 @@ export const CHAT_TOOLS: ChatCompletionTool[] = [
     function: {
       name: "get_card_details",
       description:
-        "Get full details for specific cards: welcome bonus, benefits, insurance, earn caps, credit score guidance, APRs, pros and cons. Use when the user asks about anything not in the catalogue summary. Maximum 4 cards per call.",
+        "Get full details for specific cards: welcome bonus, benefits, insurance, earn caps, credit score guidance, interest level (low or high), pros and cons. Use when the user asks about anything not in the catalogue summary. Maximum 4 cards per call.",
       parameters: {
         type: "object",
         properties: {
@@ -103,7 +103,8 @@ async function runGetCardDetails(args: Record<string, unknown>) {
       annual_fee: c!.annualFee,
       first_year_free: c!.firstYearFree,
       min_income_personal: c!.minIncomePersonal,
-      purchase_apr: c!.purchaseApr,
+      // FinlyWealth agreement §17(a): never expose an exact interest rate to the bot.
+      interest_level: c!.purchaseApr === null ? "unknown" : c!.purchaseApr < 15 ? "low" : "high",
       fx_fee: c!.fxFee,
       reward_program: c!.rewardProgram,
       welcome_bonus: c!.welcomeBonus,

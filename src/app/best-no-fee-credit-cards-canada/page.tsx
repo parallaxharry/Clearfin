@@ -127,6 +127,7 @@ export default function BestNoFeeCreditCardsCanada() {
           comparison.
         </p>
 
+        <AffiliateDisclosure rebates />
         <h2>Five no-fee cards worth comparing</h2>
         <div className="seo-card-grid">
           {cards.map((card) => (
@@ -142,7 +143,6 @@ export default function BestNoFeeCreditCardsCanada() {
           ))}
         </div>
 
-        <AffiliateDisclosure />
 
         <h2>Quick comparison</h2>
         <div className="seo-table-wrap">

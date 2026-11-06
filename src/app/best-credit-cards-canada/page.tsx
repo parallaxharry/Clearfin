@@ -152,6 +152,7 @@ export default function BestCreditCardsCanadaPage() {
         ]}
         lastUpdated="August 2, 2026"
       >
+        <AffiliateDisclosure rebates />
         <h2>Five cards worth considering for different reasons</h2>
         <p>
           A credit card can look excellent in an advertisement and still be a
@@ -184,7 +185,6 @@ export default function BestCreditCardsCanadaPage() {
           ))}
         </div>
 
-        <AffiliateDisclosure />
 
         <h2>A quick comparison before you calculate</h2>
         <div className="seo-table-wrap">

@@ -17,7 +17,7 @@ export default function FinlyRebateBadge({
   return (
     <span
       className={`finly-rebate-badge${rebate.isPromotional ? " is-promotional" : ""}${className ? ` ${className}` : ""}`}
-      title={`FinlyWealth cash rebate for an eligible approved application. Terms apply. Amount checked ${FINLY_REBATES_CHECKED_AT}.`}
+      title={`FinlyWealth cash rebate for an eligible approved application. Terms apply. Amount checked ${rebate.checkedAt ?? FINLY_REBATES_CHECKED_AT}.`}
     >
       <small>
         <span aria-hidden="true">✦</span>

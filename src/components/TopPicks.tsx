@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { CARDS } from "@/lib/cards";
 import { useCatalog } from "@/context/CatalogContext";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import { getFinlyRebate } from "@/lib/finlyRebates";
+import { applyLabel, applyRel } from "@/lib/applyLink";
 import { trackMetaAction } from "@/lib/metaPixel";
 
 interface PickCard {
@@ -102,6 +105,7 @@ export default function TopPicks() {
               A concise starting point across Canada&apos;s most common reward priorities. Tap any
               card to review its highlights, then use your profile for a personalized ranking.
             </p>
+            <AffiliateDisclosure rebates className="top-picks-affiliate" />
           </div>
 
           <div className="top-picks-grid">
@@ -191,20 +195,24 @@ export default function TopPicks() {
                   </div>
                 ))}
               </div>
+              <AffiliateDisclosure
+                compact
+                rebates={getFinlyRebate(selectedCard.id, selectedCard.bankUrl) !== null}
+              />
               <a
                 href={selectedCard.bankUrl}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel={applyRel(selectedCard.bankUrl)}
                 className="card-modal-cta"
                 onClick={() => trackClick(selectedCard.id)}
               >
-                Apply at {selectedCard.issuer} -&gt;
+                {applyLabel(selectedCard.issuer, selectedCard.bankUrl)} -&gt;
               </a>
               <Link href={`/credit-cards/${selectedCard.id}`} className="card-modal-view">
                 View full details
               </Link>
               <div className="card-modal-disclaimer">
-                Issuer terms apply. ClearFin is not affiliated with this provider.
+                Issuer terms apply. <Link href="/disclosures">How ClearFin makes money</Link>
               </div>
             </div>
 

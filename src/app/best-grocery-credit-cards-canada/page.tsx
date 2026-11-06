@@ -127,6 +127,7 @@ export default function BestGroceryCreditCardsCanada() {
           here.
         </p>
 
+        <AffiliateDisclosure rebates />
         <h2>Five grocery cards worth putting on your shortlist</h2>
         <div className="seo-card-grid">
           {cards.map((card) => (
@@ -142,7 +143,6 @@ export default function BestGroceryCreditCardsCanada() {
           ))}
         </div>
 
-        <AffiliateDisclosure />
 
         <h2>Quick comparison</h2>
         <div className="seo-table-wrap">

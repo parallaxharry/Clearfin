@@ -127,6 +127,7 @@ export default function BestCashbackCreditCardsCanada() {
           Welcome offers change often and are not used to decide the order.
         </p>
 
+        <AffiliateDisclosure rebates />
         <h2>Five cash back cards worth comparing</h2>
         <div className="seo-card-grid">
           {cards.map((card) => (
@@ -142,7 +143,6 @@ export default function BestCashbackCreditCardsCanada() {
           ))}
         </div>
 
-        <AffiliateDisclosure />
 
         <h2>Quick comparison</h2>
         <div className="seo-table-wrap">

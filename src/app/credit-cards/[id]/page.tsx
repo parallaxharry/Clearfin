@@ -8,8 +8,18 @@ import TrackedApplyLink from "@/components/TrackedApplyLink";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
 import FinlyRebateBadge from "@/components/FinlyRebateBadge";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import { getFinlyRebate } from "@/lib/finlyRebates";
 import { offerExpiryStatus } from "@/lib/offerExpiry";
 import { CARDS } from "@/lib/cards";
+
+// FinlyWealth agreement §17(a): never show an exact interest rate — say low or high.
+const LOW_INTEREST_MAX = 15;
+function interestBand(apr: number | null): string {
+  if (apr === null) return "Confirm";
+  return apr < LOW_INTEREST_MAX ? "Low interest" : "High interest";
+}
+const RATE_NOTE = "Confirm the current rate with the issuer";
 
 // ISR: Supabase card_catalog edits go live within ~5 min, no redeploy needed.
 export const revalidate = 300;
@@ -334,12 +344,12 @@ export default async function CardPage({
   const strongestRateValue = card.rates[strongestRate.key];
   const economics: { label: string; value: string; note?: string }[] = [
     { label: "Annual fee", value: card.annualFee > 0 ? feeMoney(card.annualFee) : "$0", note: isCobaltCard ? "$15.99 billed monthly (yearly in Quebec)" : card.firstYearFree ? "First year free" : undefined },
-    { label: "Purchase interest", value: card.purchaseApr !== null ? `${card.purchaseApr}%` : "Confirm", note: card.purchaseApr === null ? "Check current issuer rate" : undefined },
-    { label: "Cash advance interest", value: card.cashAdvanceApr !== null ? `${card.cashAdvanceApr}%` : "Confirm", note: card.cashAdvanceApr === null ? "Check current issuer rate" : undefined },
+    { label: "Purchase interest", value: interestBand(card.purchaseApr), note: RATE_NOTE },
+    { label: "Cash advance interest", value: interestBand(card.cashAdvanceApr), note: RATE_NOTE },
     { label: "Foreign transaction fee", value: card.fxFee !== null ? `${card.fxFee}%` : "Confirm", note: card.fxFee === null ? "Check current issuer fee" : undefined },
     { label: "Income requirement", value: card.minIncomePersonal !== null ? money(card.minIncomePersonal) : "Not stated", note: "Issuer approval criteria apply" },
   ];
-  if (card.balanceTransferApr !== null) economics.push({ label: "Balance transfer interest", value: `${card.balanceTransferApr}%` });
+  if (card.balanceTransferApr !== null) economics.push({ label: "Balance transfer interest", value: interestBand(card.balanceTransferApr), note: RATE_NOTE });
   if (card.additionalCardFee !== null) economics.push({ label: "Additional card", value: card.additionalCardFee === 0 ? "$0" : money(card.additionalCardFee) });
   if (card.minIncomeHousehold !== null) economics.push({ label: "Household income", value: money(card.minIncomeHousehold), note: "Alternative minimum" });
 
@@ -411,6 +421,9 @@ export default async function CardPage({
             </p>
             <h1 className="cardpg-title">{card.name}</h1>
             <p className="cardpg-lede">{heroLede}</p>
+            {card.bankUrl ? (
+              <AffiliateDisclosure rebates={getFinlyRebate(card.id, card.bankUrl) !== null} />
+            ) : null}
             <div className="cardpg-hero-actions">
               {card.bankUrl ? (
                 <TrackedApplyLink cardId={card.id} href={card.bankUrl} issuer={card.issuer} />
@@ -826,7 +839,8 @@ export default async function CardPage({
 
         {/* ── Disclosure ── */}
         <p className="cardpg-disclosure">
-          Issuer terms apply. ClearFin is not affiliated with this provider.{" "}
+          Issuer terms apply. ClearFin may earn a commission from FinlyWealth if you apply through
+          links on this page.{" "}
           <Link href="/disclosures">How we make money</Link>.
           {card.sourceUrl ? card.reviewedAt
             ? <> Card facts were checked against the <a href={card.sourceUrl} target="_blank" rel="noopener noreferrer">issuer&apos;s official source</a>.{card.researchNote ? ` ${card.researchNote}` : ""}</>

@@ -94,17 +94,17 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
     minIncomeHousehold: 100000,
     welcomeBonus: {
       headline: "15% cash back for 3 months on up to $2,000 in eligible purchases, plus first-year fee rebate",
-      eligibility: "A 0% promotional balance-transfer rate for 12 months with a 2% transfer fee is also advertised. Full category, cap, account and timing terms apply.",
+      eligibility: "A low promotional balance-transfer rate for 12 months with a 2% transfer fee is also advertised. Full category, cap, account and timing terms apply.",
     },
   },
   "scotia-momentum": { purchaseApr: 21.99, cashAdvanceApr: 22.99 },
-  "scotia-momentum-student": { annualFee: 0, purchaseApr: 20.99, cashAdvanceApr: 22.99, additionalCardFee: 0, welcomeBonus: { headline: "5% cash back for 3 months on up to $2,000 in eligible purchases", eligibility: "A 0.99% promotional balance-transfer rate for 9 months with a 2% transfer fee is also advertised. Full offer terms apply." } },
+  "scotia-momentum-student": { annualFee: 0, purchaseApr: 20.99, cashAdvanceApr: 22.99, additionalCardFee: 0, welcomeBonus: { headline: "5% cash back for 3 months on up to $2,000 in eligible purchases", eligibility: "A low promotional balance-transfer rate for 9 months with a 2% transfer fee is also advertised. Full offer terms apply." } },
   "scene-plus-visa": { purchaseApr: 21.99, cashAdvanceApr: 22.99, welcomeBonus: { headline: "Up to 5,000 Scene+ points in the first 3 months", eligibility: "New-account purchase and account-standing conditions apply." } },
   "scotiabank-amex": { purchaseApr: 21.99, cashAdvanceApr: 22.99 },
   "scotia-platinum": { purchaseApr: 9.99, cashAdvanceApr: 9.99, welcomeBonus: { headline: "Up to 100,000 Scene+ points in the first 14 months", eligibility: "The issuer currently describes up to $3,000 in first-14-month value when points and selected benefits are combined. Full offer terms apply." } },
-  "scotia-momentum-no-fee": { purchaseApr: 20.99, cashAdvanceApr: 22.99, welcomeBonus: { headline: "7.99% introductory purchase rate for 6 months", eligibility: "The standard purchase rate applies after the introductory period. Full offer terms apply." } },
+  "scotia-momentum-no-fee": { purchaseApr: 20.99, cashAdvanceApr: 22.99, welcomeBonus: { headline: "Low introductory purchase rate for 6 months", eligibility: "The standard purchase rate applies after the introductory period. Full offer terms apply." } },
   "scotiabank-student": { purchaseApr: 21.99, cashAdvanceApr: 22.99, welcomeBonus: { headline: "Up to 5,000 Scene+ points in the first 3 months", estimated_value_cad: 50, eligibility: "The issuer describes the points as up to $50 toward eligible travel. Full offer terms apply." } },
-  "scotiabank-value": { purchaseApr: 13.99, cashAdvanceApr: 13.99, welcomeBonus: { headline: "0% promotional balance-transfer rate for 9 months plus first-year fee waiver", eligibility: "A 1% balance-transfer fee and the issuer's full eligibility and timing terms apply." } },
+  "scotiabank-value": { purchaseApr: 13.99, cashAdvanceApr: 13.99, welcomeBonus: { headline: "Low promotional balance-transfer rate for 9 months plus first-year fee waiver", eligibility: "A 1% balance-transfer fee and the issuer's full eligibility and timing terms apply." } },
 
   "td-aeroplan": { purchaseApr: 21.99, cashAdvanceApr: 22.99, additionalCardFee: 75, minIncomePersonal: 60000, minIncomeHousehold: 100000, welcomeBonus: { headline: "Up to 40,000 Aeroplan points plus a first-year annual-fee rebate", eligibility: "New-account eligibility, purchase, spending and account-standing conditions apply." } },
   "td-aeroplan-platinum": { purchaseApr: 21.99, cashAdvanceApr: 22.99, additionalCardFee: 35, welcomeBonus: { headline: "Up to 20,000 Aeroplan points plus a first-year annual-fee rebate", eligibility: "New-account eligibility, purchase and account-standing conditions apply." } },
@@ -115,7 +115,7 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
   "td-platinum-travel": { purchaseApr: 21.99, cashAdvanceApr: 22.99, additionalCardFee: 35, welcomeBonus: { headline: "Up to 50,000 TD Rewards points plus a first-year annual-fee rebate", eligibility: "New-account eligibility, purchase, spending and account-standing conditions apply." } },
   "td-rewards-visa": { purchaseApr: 21.99, cashAdvanceApr: 22.99, additionalCardFee: 0, welcomeBonus: { headline: "$100 in TD Rewards value for eligible Amazon.ca purchases", estimated_value_cad: 100, eligibility: "The issuer's current comparison page lists conditions for earning and using the offer." } },
   "td-business-travel": { purchaseApr: 19.99, cashAdvanceApr: 22.99, additionalCardFee: 49, welcomeBonus: { headline: "Up to 200,000 TD Rewards points plus first-year fee rebates", eligibility: "Offer effective March 2, 2026. Multiple spend milestones and account-standing requirements apply." } },
-  "td-emerald": { purchaseApr: 12.9, cashAdvanceApr: 12.9, additionalCardFee: 0, welcomeBonus: { headline: "0% promotional purchase rate for 6 months plus first-year fee rebate", eligibility: "The standard rate applies after the promotional period. Full issuer conditions apply." } },
+  "td-emerald": { purchaseApr: 12.9, cashAdvanceApr: 12.9, additionalCardFee: 0, welcomeBonus: { headline: "Low promotional purchase rate for 6 months plus first-year fee rebate", eligibility: "The standard rate applies after the promotional period. Full issuer conditions apply." } },
 
   "rbc-avion": { purchaseApr: 20.99, cashAdvanceApr: 22.99, additionalCardFee: 50, minIncomePersonal: 60000, minIncomeHousehold: 100000 },
   "rbc-avion-platinum": { purchaseApr: 20.99, cashAdvanceApr: 22.99, additionalCardFee: 50 },
@@ -169,7 +169,7 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
   "nbc-syncro": {
     fxFee: 2.5,
     additionalCardFee: 0,
-    researchNote: "The Syncro rate is variable: National Bank prime + 4% for purchases (minimum 8.90%) and prime + 8% for cash advances and balance transfers (minimum 12.90%). It is not converted to a fixed APR.",
+    researchNote: "The Syncro rate is variable and tied to National Bank's prime rate, with a lower margin on purchases than on cash advances and balance transfers. Confirm the current rate with National Bank.",
   },
 
   "desjardins-flexi": { purchaseApr: 10.9, cashAdvanceApr: 12.9, additionalCardFee: 0 },
@@ -185,7 +185,7 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
   "mbna-rewards-platinum": { purchaseApr: 21.99, cashAdvanceApr: 22.99, balanceTransferApr: 22.99, additionalCardFee: 0, welcomeBonus: { headline: "Up to 10,000 bonus MBNA Rewards points", eligibility: "New-account, purchase, spending and account-standing conditions apply." } },
   "mbna-smart-cash": { purchaseApr: 21.99, cashAdvanceApr: 22.99, balanceTransferApr: 22.99, additionalCardFee: 0, welcomeBonus: { headline: "5% cash back on gas and groceries for the first 6 months", eligibility: "The accelerated offer applies subject to the issuer's monthly purchase cap and full offer terms." } },
   "mbna-smart-cash-world": { purchaseApr: 21.99, cashAdvanceApr: 22.99, balanceTransferApr: 22.99 },
-  "mbna-true-line": { purchaseApr: 12.99, cashAdvanceApr: 24.99, balanceTransferApr: 17.99, additionalCardFee: 0, welcomeBonus: { headline: "0% promotional balance-transfer rate for 12 months", eligibility: "Eligible transfers must be completed within 90 days of account opening. A transfer fee and full issuer conditions apply." } },
+  "mbna-true-line": { purchaseApr: 12.99, cashAdvanceApr: 24.99, balanceTransferApr: 17.99, additionalCardFee: 0, welcomeBonus: { headline: "Low promotional balance-transfer rate for 12 months", eligibility: "Eligible transfers must be completed within 90 days of account opening. A transfer fee and full issuer conditions apply." } },
   "mbna-true-line-gold": { purchaseApr: 10.99, cashAdvanceApr: 24.99, balanceTransferApr: 13.99 },
 
   "pc-mastercard": { purchaseApr: 21.99, cashAdvanceApr: 22.97, additionalCardFee: 0 },
@@ -203,7 +203,7 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
     sourceUrl: "https://www.rogersbank.com/en/rogers_red_worldelite_mastercard_details/",
     insuranceSourceUrl: "https://www.rogersbank.com/legaldocs/en/Rogers_Red_World_Elite_Mastercard_Benefits_Guide.pdf",
     researchLevel: "certificate",
-    researchNote: "Rogers publishes an account-dependent APR range, so ClearFin shows the official range in the research note instead of reducing it to a misleading single rate: purchases 21.99%–25.99% from the August 2026 statement period; cash advances and balance transfers 22.99%–27.99%.",
+    researchNote: "Rogers sets interest rates per account within a published range rather than one standard rate, so confirm the rate that applies to you with Rogers.",
   },
   "rogers-red": {
     additionalCardFee: 0,

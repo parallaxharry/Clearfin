@@ -37,6 +37,7 @@ export default function BestStudentCreditCardsCanada() {
       lastUpdated="May 2026"
     >
       {/* ── Top 5 Student Cards ── */}
+      <AffiliateDisclosure rebates />
       <h2>Top 5 Student Credit Cards in Canada</h2>
       <p>
         We evaluated dozens of student cards on annual fee, earn rates, credit-building
@@ -121,7 +122,6 @@ export default function BestStudentCreditCardsCanada() {
         </div>
       </div>
 
-      <AffiliateDisclosure />
 
       {/* ── Comparison Table ── */}
       <h2>Student Card Comparison Table</h2>
@@ -276,7 +276,7 @@ export default function BestStudentCreditCardsCanada() {
       <h2>Common Mistakes Students Make with Credit Cards</h2>
       <h3>1. Carrying a Balance</h3>
       <p>
-        Student cards charge 19.99% to 22.99% interest. A $500 balance carried for a year
+        Student cards charge high interest. A $500 balance carried for a year
         costs you roughly $100 in interest — money that could go toward textbooks or rent.
         Always pay your full statement balance each month.
       </p>

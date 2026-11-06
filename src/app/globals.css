@@ -8352,3 +8352,30 @@ body {
   width: auto;
   max-width: 100%;
 }
+
+/* ── FinlyWealth affiliate disclosure (§11) — shown before the first Apply link.
+   Theme tokens only: hardcoded light rgba text is what blanked the info pages. ── */
+.affiliate-disclosure {
+  border: 1px solid var(--line-strong, rgba(0, 0, 0, .16));
+  border-left: 3px solid #c98a00;
+  border-radius: 10px;
+  background: var(--surface, #fff);
+  padding: 12px 16px;
+  margin: 0 0 20px;
+  text-align: left;
+}
+.affiliate-disclosure p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink, #1d1d1f);
+}
+.affiliate-disclosure p.affiliate-disclosure-more {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ink-mute, #6e6e73);
+}
+.affiliate-disclosure a { color: var(--accent, #0071e3); text-decoration: underline; }
+.affiliate-disclosure.is-compact { padding: 9px 12px; margin: 0 0 12px; border-radius: 8px; }
+.affiliate-disclosure.is-compact p { font-size: 11.5px; line-height: 1.5; }
+.top-picks-head .affiliate-disclosure.top-picks-affiliate { max-width: 760px; margin: 18px auto 0; }

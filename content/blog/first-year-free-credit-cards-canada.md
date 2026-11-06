@@ -102,9 +102,9 @@ If you want to put real numbers on it, the [rewards calculator](/credit-card-cal
 
 Three cards on the list earn no rewards at all: the [BMO Preferred Rate Mastercard](/credit-cards/bmo-preferred-rate), the [CIBC Select Visa](/credit-cards/cibc-select) and the [Scotiabank Value Visa](/credit-cards/scotiabank-value). Their value is the interest rate.
 
-All three charge **13.99%** on purchases. The cash back cards above that publish a purchase rate charge between **20.99% and 21.99%**. That gap of seven to eight points is what the $29 fee buys.
+All three are **low-interest cards**, charging roughly a third less on purchases than the standard high rate the cash back cards above charge. That gap is what the $29 fee buys.
 
-The break-even is low. Carrying an average balance of about **$363** across the year saves enough in interest to cover the fee, compared with a card charging 21.99%. If you carry a balance from month to month, a low-rate card is likely worth more to you than any rewards card on this list. If you pay in full every month, it earns you nothing and the $29 is a straight cost.
+The break-even is low. Carrying an average balance of about **$363** across the year saves enough in interest to cover the fee, compared with a standard high-interest card. Confirm current rates with the issuer before applying. If you carry a balance from month to month, a low-rate card is likely worth more to you than any rewards card on this list. If you pay in full every month, it earns you nothing and the $29 is a straight cost.
 
 ## What to Do Before Month 12
 

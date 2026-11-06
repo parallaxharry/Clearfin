@@ -1,6 +1,7 @@
 "use client";
 
 import { trackMetaAction } from "@/lib/metaPixel";
+import { applyLabel, applyRel } from "@/lib/applyLink";
 
 interface TrackedApplyLinkProps {
   cardId: string;
@@ -18,10 +19,6 @@ function trackClick(cardId: string) {
   }).catch(() => {});
 }
 
-function isAffiliateApplicationLink(href: string) {
-  return /finlywealth\.com|utm_source=maximize-with-clearfin/i.test(href);
-}
-
 /**
  * Application CTA. `href` may be a direct issuer application URL or a disclosed
  * affiliate application URL. Official research/source links are stored separately
@@ -33,17 +30,15 @@ export default function TrackedApplyLink({
   issuer,
   className = "cardpg-apply",
 }: TrackedApplyLinkProps) {
-  const affiliate = isAffiliateApplicationLink(href);
-
   return (
     <a
       href={href}
       target="_blank"
-      rel={affiliate ? "sponsored noopener noreferrer" : "noopener noreferrer"}
+      rel={applyRel(href)}
       className={className}
       onClick={() => trackClick(cardId)}
     >
-      <span>Apply at {issuer}</span>
+      <span>{applyLabel(issuer, href)}</span>
       <span className="cardpg-apply-arrow" aria-hidden="true">
         -&gt;
       </span>

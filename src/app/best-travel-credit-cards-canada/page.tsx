@@ -128,6 +128,7 @@ export default function BestTravelCreditCardsCanada() {
           this comparison.
         </p>
 
+        <AffiliateDisclosure rebates />
         <h2>Five travel cards worth comparing</h2>
         <div className="seo-card-grid">
           {cards.map((card) => (
@@ -143,7 +144,6 @@ export default function BestTravelCreditCardsCanada() {
           ))}
         </div>
 
-        <AffiliateDisclosure />
 
         <h2>Quick comparison</h2>
         <div className="seo-table-wrap">

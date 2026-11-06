@@ -11,6 +11,9 @@ import { useSpend } from "@/context/SpendContext";
 import { useCatalog } from "@/context/CatalogContext";
 import { getModelCards, rankCards } from "@/lib/rewardModel";
 import { trackMetaAction } from "@/lib/metaPixel";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import { getFinlyRebate } from "@/lib/finlyRebates";
+import { applyLabel, applyRel } from "@/lib/applyLink";
 
 function CardColumn({
   card,
@@ -80,15 +83,16 @@ function CardColumn({
       </div>
 
       <div className="cmp-panel-actions">
-        <a href={card.bankUrl} target="_blank" rel="noopener noreferrer" className="card-modal-cta cmp-apply"
+        <AffiliateDisclosure compact rebates={getFinlyRebate(card.id, card.bankUrl) !== null} />
+        <a href={card.bankUrl} target="_blank" rel={applyRel(card.bankUrl)} className="card-modal-cta cmp-apply"
           onClick={() => {
             trackMetaAction("ApplyClick");
             fetch("/api/track-click", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({cardId:card.id}) }).catch(() => {});
           }}>
-          Apply at {card.issuer} →
+          {applyLabel(card.issuer, card.bankUrl)} →
         </a>
         <Link href={`/credit-cards/${card.id}`} className="card-modal-view cmp-view">View full details</Link>
-        <span>Issuer terms apply · ClearFin is independent</span>
+        <span>Issuer terms apply · <Link href="/disclosures">How ClearFin makes money</Link></span>
       </div>
     </div>
   );
