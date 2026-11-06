@@ -55,7 +55,8 @@ const FINLY_REBATES: Record<string, FinlyRebateDefinition> = {
   "scotia-momentum-infinite": { baseAmount: 100, promotionalAmount: 150, promotionalEndsAt: "2027-01-01T05:00:00.000Z", sourceSlug: "scotia-momentum-visa-infinite" },
   "scotia-passport": { baseAmount: 100, promotionalAmount: 150, promotionalEndsAt: "2027-01-01T05:00:00.000Z", sourceSlug: "scotia-passport-visa-infinite" },
   "scotia-passport-privilege": { baseAmount: 175, sourceSlug: "scotia-passport-visa-infinite-privilege" },
-  "scotia-platinum": { baseAmount: 175, sourceSlug: "scotia-amex-platinum" },
+  // Override: FinlyWealth partner email of 2026-11-02 lists $50 (the 11-06 export says $175).
+  "scotia-platinum": { baseAmount: 50, sourceSlug: "scotia-amex-platinum" },
   "scotiabank-amex": { baseAmount: 50, sourceSlug: "scotia-amex" },
   "scotiabank-no-fee": { baseAmount: 50, sourceSlug: "scotia-momentum-no-fee-visa" },
   "scotiabank-value": { baseAmount: 50, sourceSlug: "scotia-value-visa" },

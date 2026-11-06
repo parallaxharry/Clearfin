@@ -99,10 +99,10 @@ const COMMON_FINANCIALS: Record<string, Partial<CardReviewEnrichment>> = {
   },
   "scotia-momentum": { purchaseApr: 21.99, cashAdvanceApr: 22.99 },
   "scotia-momentum-student": { annualFee: 0, purchaseApr: 20.99, cashAdvanceApr: 22.99, additionalCardFee: 0, welcomeBonus: { headline: "5% cash back for 3 months on up to $2,000 in eligible purchases", eligibility: "A low promotional balance-transfer rate for 9 months with a 2% transfer fee is also advertised. Full offer terms apply." } },
-  "scene-plus-visa": { purchaseApr: 21.99, cashAdvanceApr: 22.99, welcomeBonus: { headline: "Up to 5,000 Scene+ points in the first 3 months", eligibility: "New-account purchase and account-standing conditions apply." } },
+  "scene-plus-visa": { purchaseApr: 21.99, cashAdvanceApr: 22.99 },
   "scotiabank-amex": { purchaseApr: 21.99, cashAdvanceApr: 22.99 },
-  "scotia-platinum": { purchaseApr: 9.99, cashAdvanceApr: 9.99, welcomeBonus: { headline: "Up to 100,000 Scene+ points in the first 14 months", eligibility: "The issuer currently describes up to $3,000 in first-14-month value when points and selected benefits are combined. Full offer terms apply." } },
-  "scotia-momentum-no-fee": { purchaseApr: 20.99, cashAdvanceApr: 22.99, welcomeBonus: { headline: "Low introductory purchase rate for 6 months", eligibility: "The standard purchase rate applies after the introductory period. Full offer terms apply." } },
+  "scotia-platinum": { purchaseApr: 9.99, cashAdvanceApr: 9.99 },
+  "scotia-momentum-no-fee": { purchaseApr: 20.99, cashAdvanceApr: 22.99 },
   "scotiabank-student": { purchaseApr: 21.99, cashAdvanceApr: 22.99, welcomeBonus: { headline: "Up to 5,000 Scene+ points in the first 3 months", estimated_value_cad: 50, eligibility: "The issuer describes the points as up to $50 toward eligible travel. Full offer terms apply." } },
   "scotiabank-value": { purchaseApr: 13.99, cashAdvanceApr: 13.99, welcomeBonus: { headline: "Low promotional balance-transfer rate for 9 months plus first-year fee waiver", eligibility: "A 1% balance-transfer fee and the issuer's full eligibility and timing terms apply." } },
 
