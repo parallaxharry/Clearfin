@@ -125,6 +125,61 @@ export const FINLY_EMBEDS: Record<string, FinlyEmbedConfig> = {
     embedId: "hb1YsLjWbk0",
     intro: "See what MBNA Rewards points could be worth, depending on how you redeem them.",
   },
+  // Program (More Rewards) and starting balance are set in the hub.
+  "points-more-rewards": {
+    tool: "points-calculator",
+    embedId: "kn2EORWk0B4",
+    intro: "See what More Rewards points could be worth when you redeem them.",
+  },
+  // Program (National Bank À la carte Rewards) and starting balance are set in the hub.
+  "points-national-bank": {
+    tool: "points-calculator",
+    embedId: "IETGKKYWVO8",
+    intro: "See what National Bank À la carte Rewards points could be worth, depending on how you redeem them.",
+  },
+  // Program (PC Optimum) and starting balance are set in the hub.
+  "points-pc-optimum": {
+    tool: "points-calculator",
+    embedId: "ednTWUhSyOM",
+    intro: "See what PC Optimum points could be worth when you redeem them.",
+  },
+  // Program (RBC Avion — Elite tier) and starting balance are set in the hub.
+  // ION / ION+ earn the Avion Premium tier — see points-rbc-avion-premium.
+  "points-rbc-avion": {
+    tool: "points-calculator",
+    embedId: "dghidz3EBL4",
+    intro: "See what RBC Avion points could be worth, depending on how you redeem them.",
+  },
+  // Program (RBC Avion — Premium tier, ION cards) and starting balance are set in the hub.
+  "points-rbc-avion-premium": {
+    tool: "points-calculator",
+    embedId: "HtXoWOt99mM",
+    intro: "See what RBC Avion points could be worth, depending on how you redeem them.",
+  },
+  // Program (Scene+) and starting balance are set in the hub.
+  "points-scene-plus": {
+    tool: "points-calculator",
+    embedId: "eqClh5vuhWQ",
+    intro: "See what Scene+ points could be worth, depending on how you redeem them.",
+  },
+  // Program (TD Rewards) and starting balance are set in the hub.
+  "points-td-rewards": {
+    tool: "points-calculator",
+    embedId: "0Cs42Y8F7WU",
+    intro: "See what TD Rewards points could be worth, depending on how you redeem them.",
+  },
+  // Program (Porter VIPorter) and starting balance are set in the hub.
+  "points-viporter": {
+    tool: "points-calculator",
+    embedId: "ntx_nf4p8f4",
+    intro: "See what VIPorter points could be worth, depending on how you redeem them.",
+  },
+  // Program (WestJet Rewards) and starting balance are set in the hub.
+  "points-westjet": {
+    tool: "points-calculator",
+    embedId: "om3v3FBg53s",
+    intro: "See what WestJet Rewards could be worth, depending on how you redeem them.",
+  },
   // Saved for later — no ClearFin card earns these programs yet, so no page uses them.
   // Place one in a blog post with [[finly-embed:<key>]] or map card ids below.
   "points-flying-blue": {
@@ -144,6 +199,13 @@ export const FINLY_EMBEDS: Record<string, FinlyEmbedConfig> = {
   },
   // RBC Avion points transfer to Asia Miles (rbc-avion, -platinum, -privilege), but
   // those cards earn Avion — an Avion calculator suits their pages better.
+  // United MileagePlus Neo World Elite is a FinlyWealth paid offer ($125 rebate)
+  // but isn't in ClearFin's catalogue yet — add the card, then map it here.
+  "points-united-mileageplus": {
+    tool: "points-calculator",
+    embedId: "11OnFGavJX8",
+    intro: "See what United MileagePlus miles could be worth, depending on how you redeem them.",
+  },
   "points-asia-miles": {
     tool: "points-calculator",
     embedId: "p2igqnSDekE",
@@ -195,6 +257,35 @@ export const FINLY_EMBED_BY_CARD: Record<string, string> = {
   "amex-marriott": "points-marriott-bonvoy",
   "mbna-rewards-platinum": "points-mbna-rewards",
   "mbna-rewards-world-elite": "points-mbna-rewards",
+  "rbc-more-rewards": "points-more-rewards",
+  "rbc-more-rewards-infinite": "points-more-rewards",
+  "nbc-world": "points-national-bank",
+  "nbc-world-elite": "points-national-bank",
+  "nbc-world-mastercard": "points-national-bank",
+  "pc-mastercard": "points-pc-optimum",
+  "pc-world": "points-pc-optimum",
+  "pc-world-elite": "points-pc-optimum",
+  "pc-insiders": "points-pc-optimum",
+  "rbc-avion": "points-rbc-avion",
+  "rbc-avion-platinum": "points-rbc-avion",
+  "rbc-avion-privilege": "points-rbc-avion",
+  "rbc-ion": "points-rbc-avion-premium",
+  "rbc-ion-plus": "points-rbc-avion-premium",
+  "scene-plus-visa": "points-scene-plus",
+  "scotia-gold": "points-scene-plus",
+  "scotia-passport": "points-scene-plus",
+  "scotia-passport-privilege": "points-scene-plus",
+  "scotia-platinum": "points-scene-plus",
+  "scotiabank-amex": "points-scene-plus",
+  "scotiabank-student": "points-scene-plus",
+  "tangerine-rewards-world-elite": "points-scene-plus",
+  "td-first-class": "points-td-rewards",
+  "td-platinum-travel": "points-td-rewards",
+  "td-rewards-visa": "points-td-rewards",
+  "bmo-viporter": "points-viporter",
+  "bmo-viporter-world-elite": "points-viporter",
+  "rbc-westjet": "points-westjet",
+  "rbc-westjet-world-elite": "points-westjet",
 };
 
 const MARKER = /^\[\[finly-embed:([a-z0-9-]+)\]\]$/;
