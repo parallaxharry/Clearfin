@@ -103,3 +103,5 @@ Start with one question: do you pay your card off in full every month?
 If yes, ignore the interest rate and choose on rewards. The [rewards calculator](/credit-card-calculator-canada) estimates what cards could earn from your actual spending.
 
 If no, the interest rate is the number that matters most. A lower-rate card can save you more than most rewards cards earn, and the list above is the place to start. Confirm the current rate with the issuer before you apply.
+
+For current transfer options and worked repayment examples, see our [balance transfer credit card comparison](/blog/best-balance-transfer-credit-cards-canada).
