@@ -98,3 +98,5 @@ The National Bank ECHO caps gas, grocery and online purchases at $25,000 a year 
 A low cap on a card you were going to use lightly costs you nothing. But even a high cap can limit your rewards if you plan to put all your spending on that one card. The question is never whether a cap exists, it is whether your spending reaches it — which is why a cap should change which card you pick, not whether you pick a rewards card at all.
 
 If you want the full picture on which cards suit heavy category spending, our [best grocery credit cards](/best-grocery-credit-cards-canada) and [best cashback credit cards](/best-cashback-credit-cards-canada) pages rank them on merit, caps included.
+
+See how monthly and annual limits affect an actual choice in our [Amex Cobalt vs Scotiabank Gold Amex comparison](/blog/amex-cobalt-vs-scotia-gold).

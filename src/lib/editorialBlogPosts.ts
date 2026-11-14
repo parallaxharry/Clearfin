@@ -4,21 +4,23 @@ export const EDITORIAL_BLOG_POSTS: BlogPost[] = [
   {
     slug: "best-credit-card-sign-up-bonuses-and-welcome-offers-in-canada-august-2026",
     path: "/best-credit-card-sign-up-bonuses-and-welcome-offers-in-canada-august-2026",
-    metaTitle: "Best Credit Card Sign-Up Bonuses Canada | August 2026",
+    metaTitle: "Historical Welcome Offers: August 2026 | ClearFin",
     title:
-      "Best Credit Card Sign-Up Bonuses and Welcome Offers in Canada (August 2026)",
+      "Historical: Credit Card Welcome Offers in Canada (August 2026)",
     description:
-      "Compare the best credit card sign-up bonuses in Canada for August 2026, including Aeroplan, Scene+ and Avion offers, fees and spending requirements.",
+      "Historical record of Canadian credit card welcome offers checked August 25, 2026. Archived for reference; offers may have changed or expired.",
     coverImg: "/images/blog/best-credit-card-sign-up-bonuses-canada-august-2026.webp",
     tags: ["welcome offers", "credit cards"],
     author: "ClearFin Team",
     publishedAt: "2026-08-25T00:00:00Z",
-    updatedAt: "2026-08-25T00:00:00Z",
-    bodyMd: `A generous welcome offer can make a new credit card much more valuable in its first year. But the headline number is only the beginning. Some bonuses arrive after one purchase, while others require several spending milestones or keeping the account open until its anniversary.
+    updatedAt: "2026-11-14T00:00:00Z",
+    bodyMd: `> **Historical article — archived November 14, 2026.** This article records offers checked on August 25, 2026. Offer amounts, eligibility and deadlines below are historical and may have changed or expired. It is not a current offers list. Check the linked issuer pages for today’s terms.
+
+A generous welcome offer can make a new credit card much more valuable in its first year. But the headline number is only the beginning. Some bonuses arrive after one purchase, while others require several spending milestones or keeping the account open until its anniversary.
 
 For this August 2026 comparison, ClearFin checked the issuer pages again on August 25, 2026. That matters because offers can change quickly. Always read the current terms before applying, and never spend more than you normally would just to reach a bonus.
 
-| Card | Current advertised offer | Main hurdle |
+| Card | Offer recorded August 25, 2026 | Main hurdle |
 | --- | --- | --- |
 | TD Aeroplan Visa Infinite | Up to 40,000 Aeroplan points plus a first-year annual-fee rebate | $12,000 in purchases during the first 12 months for the final 15,000 points |
 | Scotiabank Gold American Express | Up to 50,000 Scene+ points | $7,500 in purchases during the first year for the final 20,000 points |
