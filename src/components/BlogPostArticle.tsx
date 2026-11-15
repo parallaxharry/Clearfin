@@ -103,12 +103,19 @@ export default function BlogPostArticle({
         ]}
         lastUpdated={formatPostDate(post.updatedAt)}
         eyebrow="ClearFin blog"
-        heroImage={coverImg}
+        heroImage={post.slug === "amex-cobalt-vs-scotia-gold" || post.slug === "best-balance-transfer-credit-cards-canada"
+          ? `/images/blog/${post.slug}-hero-v2.webp`
+          : coverImg}
         heroImageAlt={post.title}
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
+            img: ({ alt, ...props }) => (
+              // Markdown diagrams retain their full composition at every width.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img {...props} alt={alt ?? ""} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 16 }} />
+            ),
             h2: ({ children, ...props }) => {
               const text = Array.isArray(children)
                 ? children.filter((child) => typeof child === "string").join("")

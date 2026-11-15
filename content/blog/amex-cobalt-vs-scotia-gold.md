@@ -6,7 +6,7 @@ tags: [card comparisons, rewards, groceries]
 publishedAt: 2026-11-14
 updatedAt: 2026-11-14
 author: ClearFin Editorial Team
-coverImg: /images/blog/amex-cobalt-vs-scotia-gold.webp
+coverImg: /images/blog/amex-cobalt-vs-scotia-gold-v2.webp
 ---
 
 ## The Short Answer
@@ -63,6 +63,8 @@ All transactions are assumed to qualify for their stated category and be accepte
 | 1. Grocer earns 5 points with both cards | 64,200 | 66,000 | **$450.12** | **$540.00** |
 | 2. Grocer qualifies for Scotia's 6-point rate | 64,200 | 73,200 | **$450.12** | **$612.00** |
 | 3. Profile 1 plus $3,000 foreign-currency spending | 67,200 | 69,000 | **$405.12** | **$570.00** |
+
+![Annual net rewards: Cobalt $450.12 versus Scotia $540 for everyday spending; $450.12 versus $612 at a Scotia six-point grocer; $405.12 versus $570 with foreign-currency spending. Full assumptions in the surrounding text.](/images/blog/cobalt-scotia-value-comparison.webp)
 
 These are ClearFin's illustrative calculations, not issuer earnings promises.
 
