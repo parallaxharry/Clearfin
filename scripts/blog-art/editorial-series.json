@@ -1,0 +1,481 @@
+[
+  {
+    "slug": "best-credit-card-for-amazon-canada",
+    "label": "ONLINE SHOPPING",
+    "lines": [
+      "Your cart.",
+      "Your rewards."
+    ],
+    "sub": "Look beyond the store-branded card.",
+    "cards": [
+      "amazon-mastercard.jpeg"
+    ],
+    "theme": "amber",
+    "layout": 0,
+    "guide": "Before the next checkout",
+    "steps": [
+      [
+        "Membership",
+        "Use the rewards tier you actually qualify for."
+      ],
+      [
+        "Redemption",
+        "Check how and where you can use the rewards."
+      ],
+      [
+        "Whole budget",
+        "Compare online shopping alongside your other spending."
+      ]
+    ]
+  },
+  {
+    "slug": "best-credit-card-for-costco-canada",
+    "label": "WAREHOUSE WALLET",
+    "lines": [
+      "Big shop.",
+      "Smarter swipe."
+    ],
+    "sub": "The warehouse and website are different decisions.",
+    "cards": [
+      "cibc-costco.png",
+      "rogers-world-elite.png"
+    ],
+    "theme": "blue",
+    "layout": 1,
+    "guide": "A warehouse shopping checklist",
+    "steps": [
+      [
+        "Where you shop",
+        "Check warehouse and online card acceptance separately."
+      ],
+      [
+        "How it codes",
+        "Do not assume a warehouse purchase earns grocery rewards."
+      ],
+      [
+        "What you keep",
+        "Compare annual rewards after fees across your full budget."
+      ]
+    ]
+  },
+  {
+    "slug": "best-credit-card-for-recurring-bills-canada",
+    "label": "THE MONTHLY ROUTINE",
+    "lines": [
+      "Bills repeat.",
+      "Value should too."
+    ],
+    "sub": "Make the payments you already make count.",
+    "cards": [
+      "scotia-gold-amex-2.webp",
+      "td-cashback-infinite.jpeg"
+    ],
+    "theme": "mint",
+    "layout": 2,
+    "guide": "Follow the recurring-payment trail",
+    "steps": [
+      [
+        "The payment",
+        "Check that the merchant bills your card as recurring."
+      ],
+      [
+        "The deduction",
+        "Subtract any processing fee or payment surcharge."
+      ],
+      [
+        "The result",
+        "Compare the extra rewards against the card’s annual fee."
+      ]
+    ]
+  },
+  {
+    "slug": "best-gas-credit-card-canada",
+    "label": "AT THE PUMP",
+    "lines": [
+      "Fuel up.",
+      "Do the maths."
+    ],
+    "sub": "The headline rate is only the starting point.",
+    "cards": [
+      "td-cashback-infinite.jpeg",
+      "cibc-costco.png"
+    ],
+    "theme": "orange",
+    "layout": 0,
+    "guide": "Build your fuel comparison",
+    "steps": [
+      [
+        "Annual spend",
+        "Start with your actual fuel budget for the year."
+      ],
+      [
+        "Extra rewards",
+        "Compare the improvement over the card you already use."
+      ],
+      [
+        "Net value",
+        "Account for annual fees, caps and station-specific rules."
+      ]
+    ]
+  },
+  {
+    "slug": "cash-back-calculator-canada",
+    "label": "THE REWARDS EQUATION",
+    "lines": [
+      "What comes",
+      "back to you?"
+    ],
+    "sub": "Your spending is the input. Net value is the answer.",
+    "cards": [
+      "tangerine.webp",
+      "rogers-red.png"
+    ],
+    "theme": "blue",
+    "layout": 3,
+    "guide": "From spending to net cash back",
+    "steps": [
+      [
+        "Earn",
+        "Apply each eligible category rate to your actual spending."
+      ],
+      [
+        "Adjust",
+        "Account for caps, exclusions and merchant categories."
+      ],
+      [
+        "Subtract",
+        "Deduct the annual fee; keep welcome offers separate."
+      ]
+    ]
+  },
+  {
+    "slug": "credit-card-earn-rate-caps-canada",
+    "label": "READ THE LIMIT",
+    "lines": [
+      "Great rate.",
+      "Until the cap."
+    ],
+    "sub": "Find out where accelerated earning changes.",
+    "cards": [
+      "nb-world-elite.png",
+      "amex-cobalt.webp"
+    ],
+    "theme": "violet",
+    "layout": 2,
+    "guide": "Three questions about every cap",
+    "steps": [
+      [
+        "Which spending?",
+        "Check whether categories share a combined allowance."
+      ],
+      [
+        "Which period?",
+        "Distinguish monthly limits from annual limits."
+      ],
+      [
+        "What comes next?",
+        "Find the earn rate that applies after the cap."
+      ]
+    ]
+  },
+  {
+    "slug": "credit-card-interest-rates-canada",
+    "label": "THE COST OF BORROWING",
+    "lines": [
+      "The balance",
+      "changes everything."
+    ],
+    "sub": "Borrowing cost belongs in the comparison.",
+    "cards": [
+      "MBNA-true-line.png",
+      "bmo-preferred-rate.webp"
+    ],
+    "theme": "blue",
+    "layout": 1,
+    "guide": "Read the cost before the rewards",
+    "steps": [
+      [
+        "The rate",
+        "Purchase, cash-advance and transfer rates can differ."
+      ],
+      [
+        "The balance",
+        "Estimate costs using the amount you expect to carry."
+      ],
+      [
+        "The payoff",
+        "Build a repayment plan around the statement and due date."
+      ]
+    ]
+  },
+  {
+    "slug": "credit-card-minimum-income-requirements-canada",
+    "label": "BEFORE YOU APPLY",
+    "lines": [
+      "Find your fit.",
+      "Know the threshold."
+    ],
+    "sub": "Income requirements are one part of eligibility.",
+    "cards": [
+      "pc-world-elite.webp",
+      "rbc-avion-infinite.webp"
+    ],
+    "theme": "mint",
+    "layout": 3,
+    "guide": "Read eligibility in three parts",
+    "steps": [
+      [
+        "Personal income",
+        "Look up the card’s individual income requirement."
+      ],
+      [
+        "Household income",
+        "Check whether the issuer offers a household alternative."
+      ],
+      [
+        "Other criteria",
+        "Meeting an income threshold does not guarantee approval."
+      ]
+    ]
+  },
+  {
+    "slug": "first-year-free-credit-cards-canada",
+    "label": "LOOK PAST YEAR ONE",
+    "lines": [
+      "First year free.",
+      "Then what?"
+    ],
+    "sub": "Give the renewal year its own calculation.",
+    "cards": [
+      "bmo-viporter-world-elite.webp",
+      "cibc-aventura-infinite.webp"
+    ],
+    "theme": "violet",
+    "layout": 2,
+    "guide": "Two years. Two separate decisions.",
+    "steps": [
+      [
+        "Year one",
+        "Confirm the fee-rebate conditions and welcome requirements."
+      ],
+      [
+        "Year two",
+        "Use the regular annual fee and ongoing rewards."
+      ],
+      [
+        "Keep or change?",
+        "Compare renewal value with a suitable alternative."
+      ]
+    ]
+  },
+  {
+    "slug": "is-credit-card-annual-fee-worth-it-canada",
+    "label": "THE BREAK-EVEN TEST",
+    "lines": [
+      "Worth the fee?",
+      "Prove it."
+    ],
+    "sub": "Compare what you gain against what you pay.",
+    "cards": [
+      "amex-cobalt.webp",
+      "tangerine.webp"
+    ],
+    "theme": "amber",
+    "layout": 3,
+    "guide": "Test the extra value",
+    "steps": [
+      [
+        "Set a baseline",
+        "Estimate what a suitable no-fee card would earn."
+      ],
+      [
+        "Find the uplift",
+        "Count additional rewards and benefits you actually use."
+      ],
+      [
+        "Subtract the fee",
+        "Paying a fee makes sense only when the extra value does."
+      ]
+    ]
+  },
+  {
+    "slug": "no-foreign-transaction-fee-credit-cards-canada",
+    "label": "THE TRAVEL WALLET",
+    "lines": [
+      "Cross borders.",
+      "Check the markup."
+    ],
+    "sub": "Compare currency costs alongside the card fee.",
+    "cards": [
+      "Scotiabank-gold-amex.avif",
+      "scotia-passport.webp"
+    ],
+    "theme": "blue",
+    "layout": 0,
+    "guide": "What goes into a foreign purchase?",
+    "steps": [
+      [
+        "Conversion",
+        "The network converts the transaction into Canadian dollars."
+      ],
+      [
+        "Issuer markup",
+        "Check whether the card adds a foreign transaction fee."
+      ],
+      [
+        "Annual cost",
+        "Compare potential savings with the card’s ongoing fee."
+      ]
+    ]
+  },
+  {
+    "slug": "best-credit-card-sign-up-bonuses-and-welcome-offers-in-canada-august-2026",
+    "label": "HISTORICAL · AUGUST 2026",
+    "lines": [
+      "The welcome",
+      "offer archive."
+    ],
+    "sub": "A dated snapshot. Not a current offers list.",
+    "cards": [
+      "td-aeroplan-infinite.png",
+      "rbc-avion-infinite.webp"
+    ],
+    "theme": "amber",
+    "layout": 1,
+    "guide": "How to read this historical guide",
+    "steps": [
+      [
+        "Recorded",
+        "The article records offers checked August 25, 2026."
+      ],
+      [
+        "Archived",
+        "Offers, requirements and deadlines may have changed."
+      ],
+      [
+        "Before applying",
+        "Use the linked issuer pages to check current terms."
+      ]
+    ]
+  },
+  {
+    "slug": "best-credit-cards-for-restaurants-and-dining-in-canada-2026",
+    "label": "THE DINING EDIT",
+    "lines": [
+      "Pick the place.",
+      "Then the card."
+    ],
+    "sub": "A better comparison for your dining routine.",
+    "cards": [
+      "amex-cobalt.webp",
+      "Scotiabank-gold-amex.avif"
+    ],
+    "theme": "orange",
+    "layout": 0,
+    "guide": "A dining-rewards menu",
+    "steps": [
+      [
+        "Acceptance",
+        "Check whether your usual restaurants accept the card."
+      ],
+      [
+        "Eligible spending",
+        "Verify dining categories and applicable spending caps."
+      ],
+      [
+        "Usable rewards",
+        "Value points at a redemption you will actually use."
+      ]
+    ]
+  },
+  {
+    "slug": "how-clearfin-helps",
+    "label": "MEET CLEARFIN",
+    "lines": [
+      "Your spending.",
+      "A clearer choice."
+    ],
+    "sub": "Turn a monthly budget into a card comparison.",
+    "cards": [
+      "amex-cobalt.webp",
+      "rogers-red.png"
+    ],
+    "theme": "blue",
+    "layout": 3,
+    "guide": "Your route through ClearFin",
+    "steps": [
+      [
+        "Start with you",
+        "Enter your regular spending and preferences."
+      ],
+      [
+        "Compare",
+        "Review estimated rewards after annual fees."
+      ],
+      [
+        "Check the details",
+        "Confirm eligibility and current terms with the issuer."
+      ]
+    ]
+  },
+  {
+    "slug": "how-credit-card-points-work-canada",
+    "label": "POINTS, EXPLAINED",
+    "lines": [
+      "A point is",
+      "not a dollar."
+    ],
+    "sub": "The redemption gives the number its meaning.",
+    "cards": [
+      "rbc-avion-infinite.webp",
+      "amex-cobalt.webp"
+    ],
+    "theme": "violet",
+    "layout": 1,
+    "guide": "From points earned to value used",
+    "steps": [
+      [
+        "Earn rate",
+        "Work out the points earned on eligible spending."
+      ],
+      [
+        "Redemption value",
+        "Check the dollar value of the reward you plan to redeem."
+      ],
+      [
+        "Net result",
+        "Subtract fees and costs from the value you can use."
+      ]
+    ]
+  },
+  {
+    "slug": "best-credit-card-combination-canada",
+    "label": "THE TWO-CARD WALLET",
+    "lines": [
+      "Better",
+      "together?"
+    ],
+    "sub": "Give each card a job in your wallet.",
+    "cards": [
+      "amex-cobalt.webp",
+      "rogers-red.png"
+    ],
+    "theme": "mint",
+    "layout": 2,
+    "guide": "Assign a role to each card",
+    "steps": [
+      [
+        "Category card",
+        "Use one card where its eligible categories add value."
+      ],
+      [
+        "Backup card",
+        "Cover acceptance gaps and other everyday purchases."
+      ],
+      [
+        "Combined value",
+        "Subtract both fees and check that the setup stays useful."
+      ]
+    ]
+  }
+]

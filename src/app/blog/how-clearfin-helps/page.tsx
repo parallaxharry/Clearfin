@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     type: "article",
     images: [
       {
-        url: "/images/blog/how-clearfin-helps.webp",
-        width: 1800,
-        height: 1013,
-        alt: "A Canadian comparing credit cards with ClearFin",
+        url: "/images/blog/how-clearfin-helps-v3.webp",
+        width: 1672,
+        height: 941,
+        alt: "ClearFin card comparison featuring American Express Cobalt and Rogers Red card artwork",
       },
     ],
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: pageTitle,
     description: pageDescription,
-    images: ["/images/blog/how-clearfin-helps.webp"],
+    images: ["/images/blog/how-clearfin-helps-v3.webp"],
   },
 };
 
@@ -48,7 +48,7 @@ export default function HowClearFinHelpsPage() {
     author: { "@type": "Organization", name: "ClearFin Team", url: "https://www.clearfin.ca" },
     publisher: { "@type": "Organization", name: "ClearFin", url: "https://www.clearfin.ca" },
     mainEntityOfPage: pageUrl,
-    image: "https://www.clearfin.ca/images/blog/how-clearfin-helps.webp",
+    image: "https://www.clearfin.ca/images/blog/how-clearfin-helps-v3.webp",
   };
 
   return (
@@ -84,10 +84,10 @@ export default function HowClearFinHelpsPage() {
               </p>
               <figure className="how-helps-feature-image">
                 <Image
-                  src="/images/blog/how-clearfin-helps.webp"
-                  alt="A Canadian comparing credit cards with ClearFin"
-                  width={1800}
-                  height={1013}
+                  src="/images/blog/how-clearfin-helps-v3.webp"
+                  alt="ClearFin card comparison featuring American Express Cobalt and Rogers Red card artwork"
+                  width={1672}
+                  height={941}
                   sizes="(max-width: 900px) calc(100vw - 40px), 44vw"
                   preload
                 />
@@ -159,6 +159,12 @@ export default function HowClearFinHelpsPage() {
             </div>
           </div>
         </section>
+        <figure style={{ maxWidth: 900, margin: "24px auto 60px" }}>
+          <Image src="/images/blog/how-clearfin-helps-guide-v3.webp"
+            alt="Your route through ClearFin: enter your spending, compare estimated rewards after fees, then check eligibility and issuer terms."
+            width={1200} height={1160} sizes="(max-width: 900px) 92vw, 900px"
+            style={{ width: "100%", height: "auto", borderRadius: 16 }} />
+        </figure>
       </main>
       <SiteFooter />
     </>

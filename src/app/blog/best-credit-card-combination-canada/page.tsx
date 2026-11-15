@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import AffiliateDisclosure from "@/components/AffiliateDisclosure";
@@ -30,9 +31,9 @@ export const metadata: Metadata = {
     type: "article",
     images: [
       {
-        url: "/images/blog/best-credit-card-combination-canada.webp",
-        width: 1800,
-        height: 1013,
+        url: "/images/blog/best-credit-card-combination-canada-v3.webp",
+        width: 1672,
+        height: 941,
         alt: "best credit card combination Canada",
       },
     ],
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: pageTitle,
     description: pageDescription,
-    images: ["/images/blog/best-credit-card-combination-canada.webp"],
+    images: ["/images/blog/best-credit-card-combination-canada-v3.webp"],
   },
 };
 
@@ -56,7 +57,7 @@ export default function BestCreditCardCombinationCanadaPage() {
     headline: pageTitle,
     description: pageDescription,
     image:
-      "https://www.clearfin.ca/images/blog/best-credit-card-combination-canada.webp",
+      "https://www.clearfin.ca/images/blog/best-credit-card-combination-canada-v3.webp",
     author: {
       "@type": "Organization",
       name: "ClearFin",
@@ -89,7 +90,7 @@ export default function BestCreditCardCombinationCanadaPage() {
         ]}
         lastUpdated="July 26, 2026"
         eyebrow="ClearFin card strategy"
-        heroImage="/images/blog/best-credit-card-combination-canada.webp"
+        heroImage="/images/blog/best-credit-card-combination-canada-hero-v3.webp"
         heroImageAlt="Two complementary credit cards for a simple Canadian two-card strategy"
       >
         <p>
@@ -326,6 +327,12 @@ export default function BestCreditCardCombinationCanadaPage() {
         </p>
 
         <AffiliateDisclosure />
+        <figure style={{ margin: "40px 0" }}>
+          <Image src="/images/blog/best-credit-card-combination-canada-guide-v3.webp"
+            alt="Assign a role to each card: category rewards, a backup for acceptance gaps, then compare combined value after both fees."
+            width={1200} height={1160} sizes="(max-width: 720px) 92vw, 800px"
+            style={{ width: "100%", height: "auto", borderRadius: 16 }} />
+        </figure>
       </SeoLayout>
     </>
   );

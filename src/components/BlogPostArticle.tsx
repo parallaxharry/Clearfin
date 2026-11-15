@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { BLOG_ARTWORK } from "@/lib/blogArtwork";
 import type { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -103,9 +105,7 @@ export default function BlogPostArticle({
         ]}
         lastUpdated={formatPostDate(post.updatedAt)}
         eyebrow="ClearFin blog"
-        heroImage={post.slug === "amex-cobalt-vs-scotia-gold" || post.slug === "best-balance-transfer-credit-cards-canada"
-          ? `/images/blog/${post.slug}-hero-v2.webp`
-          : coverImg}
+        heroImage={BLOG_ARTWORK[post.slug]?.hero ?? coverImg}
         heroImageAlt={post.title}
       >
         <ReactMarkdown
@@ -158,6 +158,18 @@ export default function BlogPostArticle({
         >
           {post.bodyMd}
         </ReactMarkdown>
+        {BLOG_ARTWORK[post.slug]?.guide ? (
+          <figure style={{ margin: "40px 0" }}>
+            <Image
+              src={BLOG_ARTWORK[post.slug].guide!}
+              alt={BLOG_ARTWORK[post.slug].guideAlt ?? "Article visual guide"}
+              width={1200}
+              height={1160}
+              sizes="(max-width: 720px) 92vw, 800px"
+              style={{ width: "100%", height: "auto", borderRadius: 16 }}
+            />
+          </figure>
+        ) : null}
       </SeoLayout>
     </>
   );
