@@ -6,7 +6,7 @@ tags: [balance transfers, interest, credit cards]
 publishedAt: 2026-11-14
 updatedAt: 2026-11-14
 author: ClearFin Editorial Team
-coverImg: /images/blog/best-balance-transfer-credit-cards-canada.webp
+coverImg: /images/blog/best-balance-transfer-credit-cards-canada-v2.webp
 ---
 
 ## The Short Answer
@@ -48,6 +48,8 @@ The cheaper fee is useful only if the repayment schedule works. Here is the appr
 | $3,000 | $166.67 | $250.00 | $300.00 |
 | $5,000 | $277.78 | $416.67 | $500.00 |
 | $10,000 | $555.56 | $833.34 | $1,000.00 |
+
+![For a $5,000 transfer: CIBC $50 fees and ten $500 principal payments; MBNA $150 fees and twelve $416.67 payments; BMO $179 fees including renewal and eighteen $277.78 payments. Fees are separate; full promotional windows assumed.](/images/blog/balance-transfer-payoff-comparison.webp)
 
 Amounts are rounded up to cents; adjust the final payment to the actual remaining balance. These are payoff targets, not contractual minimum payments. Always pay at least the statement minimum and clear the balance before the actual expiry date. A shortened first period, processing delay or late transfer can require a larger payment.
 
