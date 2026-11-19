@@ -1,5 +1,9 @@
 /* Editorial asset registry; card faces are existing catalogue artwork. */
 export const BLOG_ARTWORK: Record<string, { cover: string; hero: string; guide?: string; guideAlt?: string }> = {
+  "statement-balance-vs-current-balance-canada": {
+    "cover": "/images/blog/statement-balance-vs-current-balance-canada.webp",
+    "hero": "/images/blog/statement-balance-vs-current-balance-canada-hero.webp"
+  },
   "best-credit-card-for-amazon-canada": {
     "cover": "/images/blog/best-credit-card-for-amazon-canada-v3.webp",
     "hero": "/images/blog/best-credit-card-for-amazon-canada-hero-v3.webp",
