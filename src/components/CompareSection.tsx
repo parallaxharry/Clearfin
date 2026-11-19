@@ -70,9 +70,9 @@ function CardColumn({
           {rows.map((row) => (
             <div key={row.key} className="modal-bd-row">
               <span className="modal-bd-cat">{row.label}</span>
-              <span className="modal-bd-monthly">{fmt(spend[row.key])}</span>
-              <span className="modal-bd-rate">{fmtRate(row.rate)}</span>
-              <span className="modal-bd-earn">{fmt(row.annual)}</span>
+              <span className="modal-bd-monthly" data-label="Monthly">{fmt(spend[row.key])}</span>
+              <span className="modal-bd-rate" data-label="Rate">{fmtRate(row.rate)}</span>
+              <span className="modal-bd-earn" data-label="Yearly">{fmt(row.annual)}</span>
             </div>
           ))}
           <div className="modal-bd-row bd-net">
@@ -191,6 +191,7 @@ function CardSlot({
             <span className="cmp-slot-name">{selectedCard.name}</span>
             <button
               className="cmp-slot-x"
+              aria-label={`Remove ${selectedCard.name}`}
               onClick={(e) => { e.stopPropagation(); onClear(); }}
             >
               ✕
