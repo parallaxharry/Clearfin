@@ -8379,3 +8379,70 @@ body {
 .affiliate-disclosure.is-compact { padding: 9px 12px; margin: 0 0 12px; border-radius: 8px; }
 .affiliate-disclosure.is-compact p { font-size: 11.5px; line-height: 1.5; }
 .top-picks-head .affiliate-disclosure.top-picks-affiliate { max-width: 760px; margin: 18px auto 0; }
+
+
+/* Comparison: disclosures span the action area rather than squeezing a button. */
+#compare .cmp-panel-actions > .affiliate-disclosure { grid-column: 1 / -1; margin: 0; }
+
+/* Phone/tablet layouts must override the legacy compact desktop panel rules. */
+@media (max-width: 1059px) {
+  #compare { padding: 100px 20px 48px; min-height: auto; }
+  #compare .cmp-wrap { width: 100%; max-width: 720px; padding: 0; }
+  #compare .cmp-header { display: block; margin: 0 0 28px; text-align: left; transform: none; }
+  #compare .cmp-title { font-size: clamp(32px, 6vw, 46px); line-height: 1.12; letter-spacing: -.035em; }
+  #compare .cmp-sub { margin: 16px 0 0; font-size: 16px; line-height: 1.65; color: #545c56; }
+  #compare .cmp-eyebrow { font-size: 14px; line-height: 1.5; }
+  #compare .cmp-selector-row { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 16px; margin-bottom: 28px; }
+  #compare .cmp-slot { min-height: 60px; padding: 10px 12px; }
+  #compare .cmp-slot-name { white-space: normal; overflow: visible; text-overflow: clip; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+  #compare .cmp-slot-placeholder { font-size: 16px; }
+  #compare .cmp-slot-x { flex: 0 0 44px; width: 44px; height: 44px; display: grid; place-items: center; }
+  #compare .cmp-vs { width: 32px; height: 32px; font-size: 14px; }
+  #compare .cmp-dropdown { left: 0; right: 0; width: 100%; min-width: 0; }
+  #compare .cmp-dropdown-input input { min-width: 0; font-size: 16px; }
+  #compare .cmp-dropdown-item { align-items: flex-start; flex-wrap: wrap; gap: 8px 16px; padding: 14px; }
+  #compare .cmp-di-left { flex: 1 1 160px; min-width: 0; }
+  #compare .cmp-di-name { font-size: 16px; line-height: 1.45; overflow-wrap: anywhere; }
+  #compare .cmp-di-issuer, #compare .cmp-di-val { font-size: 14px; line-height: 1.5; }
+  #compare .cmp-di-issuer { color: #59625b; }
+  #compare .cmp-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  #compare .cmp-card-col { border-radius: 18px; }
+  #compare .cmp-panel-top { grid-template-columns: minmax(0, 1fr) 160px; height: auto; min-height: 0; padding: 24px; gap: 20px; align-items: center; }
+  #compare .cmp-panel-index { width: 32px; height: 32px; margin-bottom: 14px; font-size: 14px; }
+  #compare .cmp-panel-top .card-modal-badge { font-size: 14px; line-height: 1.5; margin-bottom: 8px; letter-spacing: .02em; }
+  #compare .cmp-panel-top .card-modal-name { display: block; min-height: 0; overflow: visible; -webkit-line-clamp: unset; font-size: 24px; line-height: 1.3; margin-bottom: 8px; overflow-wrap: normal; }
+  #compare .cmp-panel-top .card-modal-issuer { font-size: 14px; line-height: 1.5; color: #59625b; letter-spacing: 0; }
+  #compare .cmp-panel-top .cmp-card-spinner, #compare .cmp-panel-top .cmp-card-spin-front { width: 160px; height: 102px; }
+  #compare .cmp-panel-value { padding: 20px 24px; gap: 14px; flex-direction: column; align-items: flex-start; }
+  #compare .cmp-panel-value > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  #compare .cmp-panel-value span { font-size: 14px; line-height: 1.5; color: #545c56; }
+  #compare .cmp-panel-value strong { font-size: 40px; line-height: 1.15; }
+  #compare .cmp-panel-value small, #compare .cmp-panel-value p { font-size: 16px; line-height: 1.5; color: #545c56; text-align: left; }
+  #compare .cmp-card-col > .modal-breakdown { padding: 24px; }
+  #compare .cmp-card-col > .modal-breakdown .modal-breakdown-label { font-size: 16px; line-height: 1.5; margin-bottom: 14px; }
+  #compare .cmp-card-col > .modal-breakdown .modal-bd-head { display: none; }
+  #compare .cmp-card-col > .modal-breakdown .modal-bd-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; height: auto; min-height: 0; padding: 16px; line-height: 1.5; }
+  #compare .cmp-card-col > .modal-breakdown .modal-bd-cat { grid-column: 1 / -1; font-size: 16px; font-weight: 700; color: #303832; }
+  #compare .cmp-card-col > .modal-breakdown .modal-bd-monthly,
+  #compare .cmp-card-col > .modal-breakdown .modal-bd-rate,
+  #compare .cmp-card-col > .modal-breakdown .modal-bd-earn { min-width: 0; font-size: 16px; line-height: 1.5; text-align: left; color: #303832; overflow-wrap: anywhere; }
+  #compare .modal-bd-row [data-label]::before { content: attr(data-label); display: block; margin-bottom: 4px; font-size: 14px; font-weight: 400; color: #59625b; }
+  #compare .cmp-card-col > .modal-breakdown .bd-net { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; }
+  #compare .bd-net > span:empty { display: none; }
+  #compare .cmp-card-col > .modal-breakdown .bd-net .modal-bd-earn { font-size: 24px; color: #0066cc; }
+  #compare .cmp-panel-actions { grid-template-columns: minmax(0, 1fr); padding: 20px 24px; gap: 12px; }
+  #compare .cmp-panel-actions .cmp-apply, #compare .cmp-panel-actions .cmp-view { min-height: 48px; padding: 14px !important; font-size: 16px !important; line-height: 1.5; white-space: normal; text-align: center; }
+  #compare .cmp-panel-actions .affiliate-disclosure p { font-size: 14px; line-height: 1.65; }
+  #compare .cmp-panel-actions > span { display: block; font-size: 14px; line-height: 1.6; color: #59625b; }
+  #compare .cmp-disclaimer-foot { margin-top: 28px; font-size: 14px; line-height: 1.7; text-align: left; color: #545c56; }
+  #compare .cmp-empty-col { min-height: 220px; }
+  #compare .cmp-empty-text { font-size: 16px; }
+}
+@media (max-width: 540px) {
+  #compare { padding-right: 16px; padding-left: 16px; }
+  #compare .cmp-panel-top { grid-template-columns: minmax(0, 1fr); padding: 20px; }
+  #compare .cmp-panel-top .cmp-card-spinner { justify-self: start; }
+  #compare .cmp-panel-value, #compare .cmp-panel-actions { padding: 20px; }
+  #compare .cmp-card-col > .modal-breakdown { padding: 20px 12px; }
+  #compare .cmp-card-col > .modal-breakdown .modal-bd-row { padding: 14px 12px; gap: 10px; }
+}
