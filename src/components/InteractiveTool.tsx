@@ -214,7 +214,7 @@ export default function InteractiveTool() {
                 </div>
               </div>
 
-              <div className="gate-visual" aria-hidden="true">
+              <div className="gate-visual" style={{ minWidth: 0, width: "100%", transform: "none", margin: 0 }}>
                 <CalculatorPreview />
               </div>
             </div>

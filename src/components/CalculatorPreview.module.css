@@ -1,0 +1,42 @@
+.panel { width: 100%; min-width: 0; max-width: 540px; padding: 24px; border: 1px solid #dbe6f3; border-radius: 24px; background: linear-gradient(145deg, #f0f6ff 0%, #fff 48%); box-shadow: 0 18px 48px -22px #17396530; color: #152c49; font-family: var(--font-archivo), sans-serif; text-align: left; }
+.heading h3 { margin: 8px 0; font-size: clamp(26px, 2.3vw, 34px); line-height: 1.1; font-weight: 700; letter-spacing: -.04em; }
+.eyebrow { font-size: 12px; color: #0066cc; font-weight: 700; }
+.heading p { margin: 0; color: #5a697a; font-size: 14px; line-height: 1.5; }
+.profiles { display: flex; gap: 4px; padding: 4px; margin: 18px 0 0; border: 1px solid #dbe5f1; border-radius: 12px; background: #fff; }
+.profiles button { flex: 1; min-width: 0; min-height: 42px; padding: 8px 6px; border: 0; border-radius: 8px; background: transparent; color: #526278; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.profiles button[aria-pressed="true"] { background: #086edc; color: #fff; box-shadow: 0 3px 8px #0066cc25; }
+.profiles button:focus-visible { outline: 3px solid #152c49; outline-offset: 2px; }
+.result { animation: appear .25s ease-out; }
+.spotlight { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: center; padding: 24px 0 18px; }
+.art { position: relative; width: 100%; height: 125px; transform: rotate(-5deg); filter: drop-shadow(0 12px 12px #17396525); }
+.value { display: flex; flex-direction: column; gap: 6px; }
+.value > span { font-size: 12px; line-height: 1.4; color: #526278; }
+.value > strong { font-size: clamp(36px, 3.6vw, 48px); line-height: 1; font-weight: 800; letter-spacing: -.05em; color: #0066cc; }
+.value small { font-size: 12px; line-height: 1.5; color: #526278; }
+.cardName > span { font-size: 12px; color: #5a697a; }
+.cardName h4 { margin: 5px 0 18px; font-size: 17px; line-height: 1.35; font-weight: 700; }
+.comparison { border-top: 1px solid #e1e8f2; padding-top: 16px; }
+.barLabel, .budgetTitle { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; line-height: 1.5; }
+.barLabel span { color: #526278; }
+.track { height: 7px; margin: 7px 0 12px; border-radius: 8px; background: #edf1f6; overflow: hidden; }
+.track > div { height: 100%; border-radius: inherit; }
+.baseline { background: #a3b4c8; }
+.matched { background: linear-gradient(90deg, #0066cc, #57a6ff); }
+.uplift { margin: 14px 0 0; color: #385775; font-size: 13px; line-height: 1.5; }
+.uplift strong { color: #0066cc; font-size: 21px; margin-right: 4px; }
+.budget { margin-top: 18px; padding-top: 14px; border-top: 1px solid #e1e8f2; }
+.budgetTitle { color: #526278; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.chips > span { padding: 6px 8px; border-radius: 7px; background: #f0f5fb; color: #526278; font-size: 12px; line-height: 1.4; }
+.chips b { color: #203c5c; margin-left: 3px; font-weight: 600; }
+.note { margin: 14px 0 0; color: #637181; font-size: 12px; line-height: 1.5; }
+@keyframes appear { from { opacity: .65; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .result { animation: none; } }
+@media (max-width: 540px) {
+  .panel { padding: 18px; border-radius: 18px; }
+  .spotlight { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .art { max-width: 230px; height: 145px; margin: 0 auto; }
+  .value { text-align: center; }
+  .value > strong { font-size: 44px; }
+  .profiles button { font-size: 13px; }
+}
