@@ -8530,3 +8530,12 @@ body {
   .bshow-photo .bshow-card:hover { transform:none; }
   .bshow-card:hover .bshow-media img { transform:none; }
 }
+/* Showcase: icon placeholder panels + multi-coverage lists behind the "+" */
+.bshow-media-stat svg { width:clamp(56px,6vw,76px); height:auto; color:#0b3b73; }
+.bshow-more > ul { list-style:none; margin:12px 0 0; padding:12px 0 0; border-top:1px solid rgba(35,38,33,.08); display:flex; flex-direction:column; gap:10px; }
+.bshow-more > ul li { display:flex; flex-direction:column; gap:2px; font-size:13.5px; line-height:1.55; color:#5f645c; }
+.bshow-more > ul li strong { font-size:14px; font-weight:650; color:#2a2d29; }
+.cardpg-insurance-block .bshow { margin-top:12px; }
+.cardpg-insurance-block .bshow-group-head { display:none; }
+/* Cards stay equal height when closed; once one opens, its row-mates keep their own height. */
+.bshow-grid:has(.bshow-more[open]) { align-items:start; }

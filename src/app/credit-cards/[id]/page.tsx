@@ -15,7 +15,7 @@ import { FINLY_EMBED_BY_CARD } from "@/lib/finlyEmbeds"; // FinlyWealth embeds e
 import { offerExpiryStatus } from "@/lib/offerExpiry";
 import { CARDS } from "@/lib/cards";
 import BenefitShowcase from "@/components/BenefitShowcase";
-import { getBenefitShowcase } from "@/lib/benefitShowcase";
+import { getBenefitShowcase, getCoverageShowcase } from "@/lib/benefitShowcase";
 
 // FinlyWealth agreement §17(a): never show an exact interest rate — say low or high.
 const LOW_INTEREST_MAX = 15;
@@ -247,6 +247,7 @@ export default async function CardPage({
   const card = await getCard(id);
   if (!card) notFound();
   const benefitShowcase = getBenefitShowcase(card.id, card.benefits);
+  const coverageShowcase = getCoverageShowcase(card.id, card.insurance);
   const currentStatic = CARDS.find((candidate) => candidate.id === id || candidate.name === card.name);
   const isCobaltCard = currentStatic?.id === "cobalt";
   const isCreditBuilder = /secured|guaranteed|credit builder|credit-building|rebuild/i.test(`${card.name} ${card.description}`);
@@ -373,10 +374,10 @@ export default async function CardPage({
   const quickLinks = [
     { href: "#welcome-offer", label: "Welcome offer" },
     { href: "#earning", label: card.rewards.length > 0 || strongestRateValue > 0 ? "How you earn" : "Rewards" },
-    { href: "#redemptions", label: "Redemptions" },
     { href: "#fees-eligibility", label: "Fees & eligibility" },
     { href: "#benefits", label: "Benefits" },
     { href: "#insurance", label: "Insurance" },
+    { href: "#redemptions", label: "Redemptions" },
     { href: "#verdict", label: "Verdict" },
     { href: "#detailed-review", label: "Detailed review" },
     { href: "#alternatives", label: "Alternatives" },
@@ -634,28 +635,6 @@ export default async function CardPage({
               ) : null}
           </article>
 
-          <article className="cardpg-block" id="redemptions">
-            <div className="cardpg-section-head">
-              <div><span>Using your rewards</span><h2 className="cardpg-h2">Redemption options</h2></div>
-              <p>Redemption values and availability may vary by option and can change.</p>
-            </div>
-            {card.redemptions.length > 0 ? (
-              <div className="cardpg-redemptions">
-                {card.redemptions.map((redemption, index) => {
-                  const icon = redemptionIconFor(redemption, index);
-                  return <div key={redemption}><span data-icon={icon}><CardPageIcon name={icon} /></span><p>{redemption}</p></div>;
-                })}
-              </div>
-            ) : (
-              <div className="cardpg-data-note">
-                <strong>No redemption program is verified for this card.</strong>
-                <p>Confirm whether the product earns points or cash back on the issuer&apos;s current page.</p>
-              </div>
-            )}
-            {/* FinlyWealth embeds experiment: points calculator for this card's program. */}
-            {FINLY_EMBED_BY_CARD[card.id] ? <FinlyEmbed embedKey={FINLY_EMBED_BY_CARD[card.id]} /> : null}
-          </article>
-
           {/* ── Perks & coverage: first 8 (two rows) shown, rest behind a toggle ── */}
           <article className="cardpg-block" id="benefits">
             <div className="cardpg-section-head">
@@ -737,8 +716,12 @@ export default async function CardPage({
             </div>
             {card.insurance.length > 0 ? (
               <>
-              <div className="cardpg-insurance-grid">
-                {card.insurance.map((item, index) => {
+              {coverageShowcase ? (
+                <BenefitShowcase groups={coverageShowcase.groups} cardName={card.name} />
+              ) : null}
+              {(coverageShowcase ? coverageShowcase.unplaced : card.insurance).length > 0 ? (
+              <div className={`cardpg-insurance-grid${coverageShowcase ? " bshow-unplaced" : ""}`}>
+                {(coverageShowcase ? coverageShowcase.unplaced : card.insurance).map((item, index) => {
                   const icon = protectionIconFor(`${item.title} ${item.description}`, index);
                   return <div className="cardpg-insurance-item" key={item.title}>
                     <span data-icon={icon}><CardPageIcon name={icon} /></span>
@@ -749,6 +732,7 @@ export default async function CardPage({
                   </div>;
                 })}
               </div>
+              ) : null}
               <div className="cardpg-policy-note">
                 <p>
                   Coverage is subject to eligibility, exclusions, limits, payment requirements, and claim rules in the insurance certificate.
@@ -767,6 +751,28 @@ export default async function CardPage({
                 {card.sourceUrl ? <a href={card.sourceUrl} target="_blank" rel="noopener noreferrer">Check the official card page ↗</a> : null}
               </div>
             )}
+          </article>
+
+          <article className="cardpg-block" id="redemptions">
+            <div className="cardpg-section-head">
+              <div><span>Using your rewards</span><h2 className="cardpg-h2">Redemption options</h2></div>
+              <p>Redemption values and availability may vary by option and can change.</p>
+            </div>
+            {card.redemptions.length > 0 ? (
+              <div className="cardpg-redemptions">
+                {card.redemptions.map((redemption, index) => {
+                  const icon = redemptionIconFor(redemption, index);
+                  return <div key={redemption}><span data-icon={icon}><CardPageIcon name={icon} /></span><p>{redemption}</p></div>;
+                })}
+              </div>
+            ) : (
+              <div className="cardpg-data-note">
+                <strong>No redemption program is verified for this card.</strong>
+                <p>Confirm whether the product earns points or cash back on the issuer&apos;s current page.</p>
+              </div>
+            )}
+            {/* FinlyWealth embeds experiment: points calculator for this card's program. */}
+            {FINLY_EMBED_BY_CARD[card.id] ? <FinlyEmbed embedKey={FINLY_EMBED_BY_CARD[card.id]} /> : null}
           </article>
 
           {/* ── Pros & cons ── */}

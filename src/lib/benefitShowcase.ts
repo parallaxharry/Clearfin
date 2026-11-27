@@ -12,8 +12,11 @@
  */
 
 export interface ShowcaseItem {
-  /** card_catalog.benefits[].title this item presents. */
-  match: string;
+  /**
+   * Title(s) of the benefit or insurance entries this card presents. Several titles
+   * make one card that lists each of them behind the "+" (e.g. "Travel coverage").
+   */
+  match: string | string[];
   /** Headline with the number up front, e.g. "$200 Annual Travel Credit". */
   headline: string;
   /** One or two plain-language lines. Must stay faithful to the catalogue text. */
@@ -25,6 +28,8 @@ export interface ShowcaseItem {
   imageAlt?: string;
   /** Big figure shown on the panel when there is no photo (e.g. "$240"). */
   stat?: string;
+  /** Line icon shown on the panel when there is neither a photo nor a stat. */
+  icon?: "plane" | "car" | "bag";
 }
 
 export interface ShowcaseGroup {
@@ -85,7 +90,8 @@ export const BENEFIT_SHOWCASE: Record<string, ShowcaseGroup[]> = {
           match: "$200 annual dining credit",
           headline: "$200 Annual Dining Credit",
           summary: "A statement credit after a $200+ meal at participating Canadian restaurants.",
-          stat: "$200",
+          image: `${IMG}/dining.webp`,
+          imageAlt: "Friends sharing plates at a warm, busy restaurant",
         },
         {
           match: "$100 NEXUS credit",
@@ -98,39 +104,95 @@ export const BENEFIT_SHOWCASE: Record<string, ShowcaseGroup[]> = {
   ],
 };
 
-export interface ResolvedShowcaseItem extends ShowcaseItem {
+/**
+ * Coverage & services layout for the insurance section (same component). Titles
+ * match cardReviewData.ts insurance entries for the card.
+ */
+export const COVERAGE_SHOWCASE: Record<string, ShowcaseGroup[]> = {
+  "amex-platinum": [
+    {
+      title: "Coverage & services",
+      subtitle: "The protection that comes with the card, grouped by when you'd use it.",
+      variant: "photo",
+      items: [
+        {
+          match: [
+            "Emergency medical",
+            "Trip cancellation and interruption",
+            "Flight and baggage delay",
+            "Lost or stolen baggage and hotel burglary",
+            "Travel accident",
+          ],
+          headline: "Travel coverage",
+          summary: "Emergency medical, trip cancellation, delays, lost bags and travel accident coverage while you're away.",
+          icon: "plane",
+        },
+        {
+          match: "Car-rental theft and damage",
+          headline: "Car rental coverage",
+          summary: "Theft and damage coverage for eligible rental cars you pay for with the card.",
+          icon: "car",
+        },
+        {
+          match: "Purchase Protection and Buyer's Assurance",
+          headline: "Purchase coverage",
+          summary: "Short-term theft and damage protection on eligible purchases, plus a possible warranty extension.",
+          icon: "bag",
+        },
+      ],
+    },
+  ],
+};
+
+export interface ShowcaseDetail {
+  title: string;
   description: string;
+}
+
+export interface ResolvedShowcaseItem extends ShowcaseItem {
+  /** One entry per matched title, in the order the config lists them. */
+  details: ShowcaseDetail[];
 }
 
 export interface ResolvedShowcaseGroup extends Omit<ShowcaseGroup, "items"> {
   items: ResolvedShowcaseItem[];
 }
 
-/**
- * The showcase for a card, with each item's full description pulled from the
- * catalogue. Items whose benefit is no longer in the catalogue are dropped, and
- * catalogue benefits the showcase doesn't mention are returned as `unplaced` so
- * nothing silently disappears from the page.
- */
-export function getBenefitShowcase(
-  cardId: string,
-  benefits: { title: string; description?: string | null }[],
-): { groups: ResolvedShowcaseGroup[]; unplaced: { title: string; description?: string | null }[] } | null {
-  const config = BENEFIT_SHOWCASE[cardId];
+type Entry = { title: string; description?: string | null };
+
+function resolveShowcase(
+  config: ShowcaseGroup[] | undefined,
+  entries: Entry[],
+): { groups: ResolvedShowcaseGroup[]; unplaced: Entry[] } | null {
   if (!config) return null;
-  const byTitle = new Map(benefits.map((b) => [b.title.trim(), b]));
+  const byTitle = new Map(entries.map((e) => [e.title.trim(), e]));
   const used = new Set<string>();
   const groups = config
     .map((group) => ({
       ...group,
       items: group.items.flatMap((item) => {
-        const benefit = byTitle.get(item.match);
-        if (!benefit) return [];
-        used.add(item.match);
-        return [{ ...item, description: benefit.description ?? "" }];
+        const titles = Array.isArray(item.match) ? item.match : [item.match];
+        const details = titles.flatMap((t) => {
+          const e = byTitle.get(t);
+          if (!e) return [];
+          used.add(t);
+          return [{ title: e.title, description: e.description ?? "" }];
+        });
+        return details.length ? [{ ...item, details }] : [];
       }),
     }))
     .filter((group) => group.items.length > 0);
-  const unplaced = benefits.filter((b) => !used.has(b.title.trim()));
+  const unplaced = entries.filter((e) => !used.has(e.title.trim()));
   return { groups, unplaced };
 }
+
+/**
+ * The showcase for a card, with each item's full text pulled from the page's data.
+ * Items whose entry no longer exists are dropped; entries the showcase doesn't
+ * mention come back as `unplaced` so nothing silently disappears from the page.
+ */
+export const getBenefitShowcase = (cardId: string, benefits: Entry[]) =>
+  resolveShowcase(BENEFIT_SHOWCASE[cardId], benefits);
+
+export const getCoverageShowcase = (cardId: string, insurance: Entry[]) =>
+  resolveShowcase(COVERAGE_SHOWCASE[cardId], insurance);
