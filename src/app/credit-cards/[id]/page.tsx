@@ -14,6 +14,8 @@ import FinlyEmbed from "@/components/FinlyEmbed"; // FinlyWealth embeds experime
 import { FINLY_EMBED_BY_CARD } from "@/lib/finlyEmbeds"; // FinlyWealth embeds experiment
 import { offerExpiryStatus } from "@/lib/offerExpiry";
 import { CARDS } from "@/lib/cards";
+import BenefitShowcase from "@/components/BenefitShowcase";
+import { getBenefitShowcase } from "@/lib/benefitShowcase";
 
 // FinlyWealth agreement §17(a): never show an exact interest rate — say low or high.
 const LOW_INTEREST_MAX = 15;
@@ -244,6 +246,7 @@ export default async function CardPage({
   const { id } = await params;
   const card = await getCard(id);
   if (!card) notFound();
+  const benefitShowcase = getBenefitShowcase(card.id, card.benefits);
   const currentStatic = CARDS.find((candidate) => candidate.id === id || candidate.name === card.name);
   const isCobaltCard = currentStatic?.id === "cobalt";
   const isCreditBuilder = /secured|guaranteed|credit builder|credit-building|rebuild/i.test(`${card.name} ${card.description}`);
@@ -662,7 +665,24 @@ export default async function CardPage({
               </div>
               <p>Consider these extras by the value they add to purchases and experiences you already use.</p>
             </div>
-            {card.benefits.length > 0 ? (
+            {benefitShowcase ? (
+              <>
+                <BenefitShowcase groups={benefitShowcase.groups} cardName={card.name} />
+                {benefitShowcase.unplaced.length > 0 ? (
+                  <div className="cardpg-perks bshow-unplaced">
+                    {benefitShowcase.unplaced.map((b, index) => (
+                      <div className="cardpg-perk" key={b.title}>
+                        <span className="cardpg-perk-icon" data-icon={benefitIconFor(`${b.title} ${b.description}`, index)}><CardPageIcon name={benefitIconFor(`${b.title} ${b.description}`, index)} /></span>
+                        <div>
+                          <p className="cardpg-perk-title">{b.title}</p>
+                          {b.description ? <p className="cardpg-perk-body">{b.description}</p> : null}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </>
+            ) : card.benefits.length > 0 ? (
               <>
               <div className="cardpg-perks">
                 {card.benefits.slice(0, 8).map((b, index) => (
