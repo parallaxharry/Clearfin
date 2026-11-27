@@ -9,6 +9,7 @@ import { SpendProvider } from "@/context/SpendContext";
 import { CatalogProvider } from "@/context/CatalogContext";
 import { getCatalogDisplayMap, getCatalogOrderedCards } from "@/lib/cardDetail";
 import HeroCardCarousel from "@/components/HeroCardCarousel";
+import HeroChatBar from "@/components/HeroChatBar";
 import ClearFinWordmark from "@/components/ClearFinWordmark";
 import InstitutionMarquee from "@/components/InstitutionMarquee";
 import SiteFooter from "@/components/SiteFooter";
@@ -136,9 +137,7 @@ export default async function HomePage() {
                 <span>Find my best card</span>
                 <span className="btn-arrow">→</span>
               </Link>
-              <Link href="/credit-cards" className="btn-secondary">
-                Browse credit cards <span className="btn-arrow">→</span>
-              </Link>
+              <HeroChatBar />
             </div>
             <div className="hero-microcopy reveal">
               Free to use <span /> No signup required <span /> About 30 seconds

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { ASK_EVENT } from "@/lib/askAssistant";
 
 interface Msg {
   role: "user" | "assistant";
@@ -182,6 +183,25 @@ export default function ChatWidget() {
     },
     [busy, msgs, cardId, limitReached]
   );
+
+  /**
+   * Other parts of the page (e.g. the home hero chat bar) open this assistant
+   * with a question via askAssistant() in src/lib/askAssistant.ts. A ref keeps
+   * the listener on the latest `send`.
+   */
+  const sendRef = useRef(send);
+  useEffect(() => {
+    sendRef.current = send;
+  }, [send]);
+  useEffect(() => {
+    const onAsk = (e: Event) => {
+      const question = (e as CustomEvent<string>).detail;
+      setOpen(true);
+      if (typeof question === "string" && question.trim()) void sendRef.current(question);
+    };
+    window.addEventListener(ASK_EVENT, onAsk);
+    return () => window.removeEventListener(ASK_EVENT, onAsk);
+  }, []);
 
   /** Submit the email gate, then replay the question that triggered it. */
   const submitEmail = useCallback(
