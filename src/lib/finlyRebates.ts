@@ -21,12 +21,28 @@ interface FinlyRebateDefinition {
   promotionalEndsAt?: string;
   /** When this entry was last checked, if more recent than FINLY_REBATES_CHECKED_AT. */
   checkedAt?: string;
+  /**
+   * A short partner-email boost layered over the export values (e.g. Black Friday).
+   * Wins while it runs; after endsAt the card falls back to promotional/base on its own.
+   */
+  boost?: { amount: number; endsAt: string; source: string };
 }
 
 export interface ActiveFinlyRebate extends FinlyRebateDefinition {
   amount: number;
   isPromotional: boolean;
 }
+
+/**
+ * FinlyWealth partner email "BLACK FRIDAY: $200 Scotiabank Rebates" (received 2026-11-27):
+ * $200 on Scotia Gold Amex, Passport Visa Infinite(+) and Momentum Visa Infinite(+),
+ * ending November 30, 2026 (end of day Eastern = 2026-12-01 05:00 UTC).
+ * Amex amounts in the same email match the export below unchanged.
+ */
+const BLACK_FRIDAY_2026 = {
+  boost: { amount: 200, endsAt: "2026-12-01T05:00:00.000Z", source: "FinlyWealth partner email 2026-11-27" },
+  checkedAt: "November 27, 2026",
+};
 
 const FINLY_REBATES: Record<string, FinlyRebateDefinition> = {
   // GENERATED from the FinlyWealth offers export ("Customer rebate", "Regular rebate",
@@ -50,10 +66,10 @@ const FINLY_REBATES: Record<string, FinlyRebateDefinition> = {
   "neo-world-elite-mc": { baseAmount: 100, sourceSlug: "neo-world-elite-everywhere" },
   "rbc-westjet-world-elite": { baseAmount: 50, promotionalAmount: 140, promotionalEndsAt: "2027-01-01T05:00:00.000Z", sourceSlug: "rbc-westjet-world-elite-mastercard" },
   "scene-plus-visa": { baseAmount: 50, sourceSlug: "scotia-scene-plus-visa" },
-  "scotia-gold": { baseAmount: 150, sourceSlug: "scotia-amex-gold" },
+  "scotia-gold": { baseAmount: 150, sourceSlug: "scotia-amex-gold", ...BLACK_FRIDAY_2026 },
   "scotia-momentum": { baseAmount: 60, sourceSlug: "scotia-momentum-visa" },
-  "scotia-momentum-infinite": { baseAmount: 100, promotionalAmount: 150, promotionalEndsAt: "2027-01-01T05:00:00.000Z", sourceSlug: "scotia-momentum-visa-infinite" },
-  "scotia-passport": { baseAmount: 100, promotionalAmount: 150, promotionalEndsAt: "2027-01-01T05:00:00.000Z", sourceSlug: "scotia-passport-visa-infinite" },
+  "scotia-momentum-infinite": { baseAmount: 100, promotionalAmount: 150, promotionalEndsAt: "2027-01-01T05:00:00.000Z", sourceSlug: "scotia-momentum-visa-infinite", ...BLACK_FRIDAY_2026 },
+  "scotia-passport": { baseAmount: 100, promotionalAmount: 150, promotionalEndsAt: "2027-01-01T05:00:00.000Z", sourceSlug: "scotia-passport-visa-infinite", ...BLACK_FRIDAY_2026 },
   "scotia-passport-privilege": { baseAmount: 175, sourceSlug: "scotia-passport-visa-infinite-privilege" },
   "scotia-platinum": { baseAmount: 175, sourceSlug: "scotia-amex-platinum" },
   "scotiabank-amex": { baseAmount: 50, sourceSlug: "scotia-amex" },
@@ -95,6 +111,11 @@ export function getFinlyRebate(
   if (!isFinlyRebatePageUrl(applicationUrl)) return null;
   const rebate = FINLY_REBATES[cardId] ?? FINLY_REBATES[CATALOG_ID_BY_SITE_ID[cardId] ?? ""];
   if (!rebate) return null;
+
+  const boostEnds = rebate.boost ? Date.parse(rebate.boost.endsAt) : Number.NaN;
+  if (rebate.boost && rebate.boost.amount > 0 && Number.isFinite(boostEnds) && boostEnds > Date.now()) {
+    return { ...rebate, amount: rebate.boost.amount, isPromotional: true };
+  }
 
   const promotionalEnds = rebate.promotionalEndsAt
     ? Date.parse(rebate.promotionalEndsAt)
